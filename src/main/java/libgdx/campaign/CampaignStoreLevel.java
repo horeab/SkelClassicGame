@@ -5,11 +5,13 @@ public class CampaignStoreLevel {
     private int level;
     private int status;
     private int starsWon;
+    private String name;
 
     public CampaignStoreLevel(CampaignLevel campaignLevel) {
         level = campaignLevel.getIndex();
         starsWon = 0;
         status = CampaignLevelStatusEnum.IN_PROGRESS.getStatus();
+        name = campaignLevel.getName();
     }
 
     public int getStarsWon() {
@@ -30,5 +32,9 @@ public class CampaignStoreLevel {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getName() {
+        return name;
     }
 }

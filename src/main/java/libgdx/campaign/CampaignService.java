@@ -9,7 +9,7 @@ public class CampaignService {
     private CampaignStoreService campaignStoreService = new CampaignStoreService();
 
     public List<CampaignStoreLevel> processAndGetAllLevels() {
-        List<CampaignStoreLevel> allPlayedLevels = campaignStoreService.getAllCampaignLevels();
+        List<CampaignStoreLevel> allPlayedLevels = getFinishedCampaignLevels();
         CampaignLevel[] values = (CampaignLevel[]) EnumUtils.getValues(CampaignGame.getInstance().getSubGameDependencyManager().getCampaignLevelTypeEnum());
         if (getCampaignLevel(values[0].getIndex(), allPlayedLevels) == null) {
             campaignStoreService.createCampaignLevel(values[0]);
@@ -28,6 +28,10 @@ public class CampaignService {
             }
         }
         return allPlayedLevels;
+    }
+
+    public List<CampaignStoreLevel> getFinishedCampaignLevels() {
+        return campaignStoreService.getAllCampaignLevels();
     }
 
     public int getTotalWonStars(List<CampaignStoreLevel> list) {

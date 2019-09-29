@@ -7,19 +7,23 @@ import libgdx.game.Game;
 import libgdx.preferences.PreferencesService;
 import libgdx.utils.EnumUtils;
 
-class CampaignStoreService {
+public class CampaignStoreService {
 
     private static final String CAMPAIGN_LEVEL = "CampaignLevel";
     private static final String PREF_NAME = "campaignStoreService";
 
     private PreferencesService preferencesService = new PreferencesService(PREF_NAME);
 
-    CampaignStoreService() {
+    public CampaignStoreService() {
 //        this.preferencesService.clear();
     }
 
     void createCampaignLevel(CampaignLevel campaignLevelEnum) {
         preferencesService.putInteger(formCampaignLevelKey(campaignLevelEnum), -1);
+    }
+
+    public void reset() {
+        this.preferencesService.clear();
     }
 
     private String formCampaignLevelKey(CampaignLevel campaignLevelEnum) {

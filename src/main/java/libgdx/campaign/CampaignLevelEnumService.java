@@ -65,11 +65,11 @@ public class CampaignLevelEnumService {
     }
 
     private int getDifficulty() {
-        return Integer.valueOf(campaignLevel.getName().split("_")[1]);
+        return Integer.valueOf(getSplit(campaignLevel.getName())[1]);
     }
 
     public Integer getCategory() {
-        return getCategory(campaignLevel);
+        return getCategory(campaignLevel.getName());
     }
 
 
@@ -77,12 +77,12 @@ public class CampaignLevelEnumService {
         return (SpecificResource) EnumUtils.getEnumValue(CampaignGame.getInstance().getSubGameDependencyManager().getSpecificResourceTypeEnum(), "campaign_level_" + getDifficulty() + "_" + getCategory());
     }
 
-    private static String[] getSplit(CampaignLevel campaignLevel) {
-        return campaignLevel.getName().split("_");
+    private static String[] getSplit(String name) {
+        return name.split("_");
     }
 
-    private static Integer getCategory(CampaignLevel campaignLevel) {
-        String[] split = getSplit(campaignLevel);
+    public static Integer getCategory(String name) {
+        String[] split = getSplit(name);
         return split.length == 3 ? Integer.valueOf(split[2]) : null;
     }
 
