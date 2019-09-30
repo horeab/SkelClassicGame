@@ -1,5 +1,6 @@
 package libgdx.campaign;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import libgdx.utils.EnumUtils;
@@ -49,8 +50,12 @@ public class CampaignService {
         if (storeCrossWordLevel == -1 || starsWon > campaignStoreService.getStarsWon(level)) {
             campaignStoreService.updateStarsWon(level, starsWon);
         }
+        List<Integer> finishedLevels = new ArrayList<>();
+        for (CampaignStoreLevel storeLevel:getFinishedCampaignLevels()){
+            finishedLevels.add(storeLevel.getLevel());
+        }
         CampaignLevel nextLevel = CampaignLevelEnumService.getNextLevel(level);
-        if (nextLevel != null) {
+        if (!finishedLevels.contains(nextLevel.getIndex())) {
             campaignStoreService.createCampaignLevel(nextLevel);
         }
     }
