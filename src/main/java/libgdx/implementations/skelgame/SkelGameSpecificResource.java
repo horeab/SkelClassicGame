@@ -1,5 +1,6 @@
 package libgdx.implementations.skelgame;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import libgdx.game.Game;
