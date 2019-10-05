@@ -20,6 +20,7 @@ import libgdx.preferences.SettingsService;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.DateUtils;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.startgame.test.DefaultAppInfoService;
 import libgdx.utils.startgame.test.DefaultBillingService;
 import libgdx.utils.startgame.test.DefaultFacebookService;
 
@@ -71,86 +72,14 @@ public class TestMain implements ApplicationListener {
         Mockito.when(preferencesService.getPreferences().getInteger("TransactionAmountEnum_VERSION")).thenReturn(0);
         Mockito.when(preferencesService.getPreferences().getString("TransactionAmountEnum_VALUE")).thenReturn("");
 
-        IqGame game = new IqGame(new DefaultFacebookService(), new DefaultBillingService(), new AppInfoServiceImpl());
+        Game game = new Game(new DefaultFacebookService(), new DefaultBillingService(), new DefaultAppInfoService());
         game.create();
 
-        IqGame.getInstance().setScreen(null);
+        Game.getInstance().setScreen(null);
     }
 
     public static void assertDateTimeNow(String date) {
         assertDateTimeNow(DateUtils.getDate(date).getTime());
-    }
-
-    public class AppInfoServiceImpl implements AppInfoService {
-        @Override
-        public String getGameIdPrefix() {
-            return GameIdEnum.iqgame.name();
-        }
-
-        @Override
-        public void showPopupAd() {
-        }
-
-        @Override
-        public float gameScreenTopMargin() {
-            return 0;
-        }
-
-        @Override
-        public String proVersionStoreAppId() {
-            return null;
-        }
-
-        @Override
-        public boolean isProVersion() {
-            return false;
-        }
-
-        @Override
-        public boolean screenShotMode() {
-            return false;
-        }
-
-        @Override
-        public boolean googleFacebookLoginEnabled() {
-            return false;
-        }
-
-        @Override
-        public void showRewardedVideoAd() {
-        }
-
-        @Override
-        public String getAppName() {
-            return "Hangman Arena";
-        }
-
-        @Override
-        public String getLanguage() {
-            return "ro";
-        }
-
-        @Override
-        public String getStoreAppId() {
-            return "com.bogdanICE.Raspunde";
-        }
-
-        @Override
-        public String getMainResourcesFolder() {
-            return "main_resources/main/";
-        }
-
-        @Override
-        public String getResourcesFolder() {
-            return "tournament_resources/main/";
-        }
-
-
-        @Override
-        public String getImplementationGameResourcesFolder() {
-            return "tournament_resources/implementations/" + Game.getInstance().getGameIdPrefix().toLowerCase() + "/";
-        }
-
     }
 
     public static void assertDateTimeNow(Long date) {
