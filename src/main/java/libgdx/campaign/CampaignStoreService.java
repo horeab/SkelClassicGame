@@ -44,8 +44,21 @@ public class CampaignStoreService {
         return levels;
     }
 
+
+    public int getAllStarsWon() {
+        return preferencesService.getPreferences().getInteger(formAllStarsWonKey());
+    }
+
+    public void updateAllStarsWon(int starsWon) {
+        preferencesService.putInteger(formAllStarsWonKey(), starsWon);
+    }
+
     public int getStarsWon(CampaignLevel levelEnum) {
         return preferencesService.getPreferences().getInteger(formCampaignLevelStarsWonKey(levelEnum));
+    }
+
+    void updateStarsWon(CampaignLevel campaignLevelEnum, int starsWon) {
+        preferencesService.putInteger(formCampaignLevelStarsWonKey(campaignLevelEnum), starsWon);
     }
 
     Integer getCrosswordLevel(CampaignLevel campaignLevelEnum) {
@@ -60,8 +73,8 @@ public class CampaignStoreService {
         preferencesService.putInteger(formCampaignLevelStatusKey(campaignLevelEnum), campaignLevelStatusEnum.getStatus());
     }
 
-    void updateStarsWon(CampaignLevel campaignLevelEnum, int starsWon) {
-        preferencesService.putInteger(formCampaignLevelStarsWonKey(campaignLevelEnum), starsWon);
+    private String formAllStarsWonKey() {
+        return "AllStarsWon";
     }
 
     private String formCampaignLevelStarsWonKey(CampaignLevel campaignLevelEnum) {
