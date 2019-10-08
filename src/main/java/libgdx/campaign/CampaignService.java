@@ -51,11 +51,11 @@ public class CampaignService {
             campaignStoreService.updateStarsWon(level, starsWon);
         }
         List<Integer> finishedLevels = new ArrayList<>();
-        for (CampaignStoreLevel storeLevel:getFinishedCampaignLevels()){
+        for (CampaignStoreLevel storeLevel : getFinishedCampaignLevels()) {
             finishedLevels.add(storeLevel.getLevel());
         }
         CampaignLevel nextLevel = CampaignLevelEnumService.getNextLevel(level);
-        if (!finishedLevels.contains(nextLevel.getIndex())) {
+        if (nextLevel != null && !finishedLevels.contains(nextLevel.getIndex())) {
             campaignStoreService.createCampaignLevel(nextLevel);
         }
     }
