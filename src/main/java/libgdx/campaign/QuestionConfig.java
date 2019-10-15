@@ -70,6 +70,12 @@ public class QuestionConfig {
         this.a = amount;
     }
 
+    public QuestionConfig(List<String> l, List<String> c, int a) {
+        this.l = l;
+        this.c = c;
+        this.a = a;
+    }
+
     public List<String> getQuestionDifficultyStringList() {
         return l;
     }
