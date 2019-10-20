@@ -13,7 +13,7 @@ public class QuestionConfig {
     public QuestionConfig(int amountOfQuestions) {
         this(new ArrayList<QuestionDifficulty>(Arrays.asList(EnumUtils.getValues(CampaignGame.getInstance().getSubGameDependencyManager().getQuestionDifficultyTypeEnum()))),
                 new ArrayList<QuestionCategory>(Arrays.asList(EnumUtils.getValues(CampaignGame.getInstance().getSubGameDependencyManager().getQuestionCategoryTypeEnum()))),
-                amountOfQuestions);
+                amountOfQuestions, -1);
     }
 
     public QuestionConfig(QuestionCategory questionCategory) {
@@ -29,7 +29,7 @@ public class QuestionConfig {
     }
 
     public QuestionConfig(QuestionDifficulty questionDifficulty, int amountOfQuestions) {
-        this(Collections.singletonList(questionDifficulty), new ArrayList<QuestionCategory>(Arrays.asList(EnumUtils.getValues(CampaignGame.getInstance().getSubGameDependencyManager().getQuestionCategoryTypeEnum()))), amountOfQuestions);
+        this(Collections.singletonList(questionDifficulty), new ArrayList<QuestionCategory>(Arrays.asList(EnumUtils.getValues(CampaignGame.getInstance().getSubGameDependencyManager().getQuestionCategoryTypeEnum()))), amountOfQuestions, -1);
     }
 
     public QuestionConfig(QuestionDifficulty QuestionDifficulty, QuestionCategory questionCategory) {
@@ -37,7 +37,7 @@ public class QuestionConfig {
     }
 
     public QuestionConfig(QuestionDifficulty QuestionDifficulty, QuestionCategory questionCategory, int amount) {
-        this(Collections.singletonList(QuestionDifficulty), Collections.singletonList(questionCategory), amount);
+        this(Collections.singletonList(QuestionDifficulty), Collections.singletonList(questionCategory), amount, -1);
     }
 
     public void setA(int a) {
@@ -49,18 +49,18 @@ public class QuestionConfig {
     }
 
     public QuestionConfig(List<QuestionCategory> questionCategory, int amountOfQuestions) {
-        this(new ArrayList<QuestionDifficulty>(Arrays.asList(EnumUtils.getValues(CampaignGame.getInstance().getSubGameDependencyManager().getQuestionDifficultyTypeEnum()))), questionCategory, amountOfQuestions);
+        this(new ArrayList<QuestionDifficulty>(Arrays.asList(EnumUtils.getValues(CampaignGame.getInstance().getSubGameDependencyManager().getQuestionDifficultyTypeEnum()))), questionCategory, amountOfQuestions, -1);
     }
 
     public QuestionConfig(List<QuestionDifficulty> questionDifficulty, List<QuestionCategory> questionCategory) {
-        this(questionDifficulty, questionCategory, 1);
+        this(questionDifficulty, questionCategory, 1, -1);
     }
 
     public QuestionConfig(QuestionDifficulty QuestionDifficulty, List<QuestionCategory> questionCategory, int amount) {
-        this(Collections.singletonList(QuestionDifficulty), questionCategory, amount);
+        this(Collections.singletonList(QuestionDifficulty), questionCategory, amount, -1);
     }
 
-    private QuestionConfig(List<QuestionDifficulty> questionDifficulty, List<QuestionCategory> questionCategory, int amount) {
+    private QuestionConfig(List<QuestionDifficulty> questionDifficulty, List<QuestionCategory> questionCategory, int amount, int forUniqueConstructor) {
         for (QuestionDifficulty item : questionDifficulty) {
             this.l.add(item.name());
         }
