@@ -15,7 +15,7 @@ public class CampaignStoreService {
     private PreferencesService preferencesService = new PreferencesService(PREF_NAME);
 
     public CampaignStoreService() {
-        this.preferencesService.clear();
+//        this.preferencesService.clear();
     }
 
     void createCampaignLevel(CampaignLevel campaignLevelEnum) {
