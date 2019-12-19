@@ -46,6 +46,13 @@ public class CampaignStoreService {
         return levels;
     }
 
+    public void incrementQuestionsPlayed() {
+        preferencesService.putInteger(formQuestionsPlayedKey(), getQuestionsPlayed() + 1);
+    }
+
+    public int getQuestionsPlayed() {
+        return preferencesService.getPreferences().getInteger(formQuestionsPlayedKey(), 0);
+    }
 
     public int getAllStarsWon() {
         return preferencesService.getPreferences().getInteger(formAllStarsWonKey());
@@ -73,6 +80,10 @@ public class CampaignStoreService {
 
     void updateStatus(CampaignLevel campaignLevelEnum, CampaignLevelStatusEnum campaignLevelStatusEnum) {
         preferencesService.putInteger(formCampaignLevelStatusKey(campaignLevelEnum), campaignLevelStatusEnum.getStatus());
+    }
+
+    private String formQuestionsPlayedKey() {
+        return "QuestionsPlayed";
     }
 
     private String formAllStarsWonKey() {
