@@ -3,7 +3,6 @@ package libgdx.campaign;
 import java.util.ArrayList;
 import java.util.List;
 
-import libgdx.game.Game;
 import libgdx.preferences.PreferencesService;
 import libgdx.utils.EnumUtils;
 
@@ -46,12 +45,24 @@ public class CampaignStoreService {
         return levels;
     }
 
-    public void incrementQuestionsPlayed() {
-        preferencesService.putInteger(formQuestionsPlayedKey(), getQuestionsPlayed() + 1);
+    public void putQuestionPlayed(String questionId) {
+        preferencesService.putString(formQuestionPlayedKey(), getAllQuestionsPlayed() + "#" + questionId);
     }
 
-    public int getQuestionsPlayed() {
-        return preferencesService.getPreferences().getInteger(formQuestionsPlayedKey(), 0);
+    public boolean isQuestionAlreadyPlayed(String questionId) {
+        return getAllQuestionsPlayed().contains(questionId);
+    }
+
+    public String getAllQuestionsPlayed() {
+        return preferencesService.getPreferences().getString(formQuestionPlayedKey(), "");
+    }
+
+    public void incrementNrOfQuestionsPlayed() {
+        preferencesService.putInteger(formNrOfQuestionsPlayedKey(), getNrOfQuestionsPlayed() + 1);
+    }
+
+    public int getNrOfQuestionsPlayed() {
+        return preferencesService.getPreferences().getInteger(formNrOfQuestionsPlayedKey(), 0);
     }
 
     public int getAllStarsWon() {
@@ -82,8 +93,12 @@ public class CampaignStoreService {
         preferencesService.putInteger(formCampaignLevelStatusKey(campaignLevelEnum), campaignLevelStatusEnum.getStatus());
     }
 
-    private String formQuestionsPlayedKey() {
-        return "QuestionsPlayed";
+    private String formQuestionPlayedKey() {
+        return "QuestionIdPlayed";
+    }
+
+    private String formNrOfQuestionsPlayedKey() {
+        return "NrOfQuestionsPlayed";
     }
 
     private String formAllStarsWonKey() {
