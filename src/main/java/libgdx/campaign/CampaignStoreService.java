@@ -10,6 +10,7 @@ public class CampaignStoreService {
 
     private static final String CAMPAIGN_LEVEL = "CampaignLevel";
     private static final String PREF_NAME = "campaignStoreService";
+    public static final String QUESTION_SPLIT = "#";
 
     private PreferencesService preferencesService = new PreferencesService(PREF_NAME);
 
@@ -46,11 +47,11 @@ public class CampaignStoreService {
     }
 
     public void putQuestionPlayed(String questionId) {
-        preferencesService.putString(formQuestionPlayedKey(), getAllQuestionsPlayed() + "#" + questionId);
+        preferencesService.putString(formQuestionPlayedKey(), getAllQuestionsPlayed() + QUESTION_SPLIT + questionId);
     }
 
     public boolean isQuestionAlreadyPlayed(String questionId) {
-        return getAllQuestionsPlayed().contains(questionId);
+        return getAllQuestionsPlayed().contains(QUESTION_SPLIT + questionId);
     }
 
     public String getAllQuestionsPlayed() {
