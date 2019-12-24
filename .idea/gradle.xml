@@ -4,6 +4,16 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../LibGdxControls" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/../LibGdxControls" />
+          </set>
+        </option>
+        <option name="useQualifiedModuleNames" value="true" />
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
@@ -14,10 +24,10 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/../LibGdxControls" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../SkelGame" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../LibGdxControls" />
+            <option value="$PROJECT_DIR$/../SkelGame" />
           </set>
         </option>
         <option name="useQualifiedModuleNames" value="true" />

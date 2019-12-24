@@ -8,6 +8,8 @@
       <module name="Lett_test" target="1.8" />
       <module name="LibGdxControls.main" target="1.8" />
       <module name="Skel.main" target="1.8" />
+      <module name="SkelGame.Lett.main" target="1.8" />
+      <module name="SkelGame.Lett.test" target="1.8" />
       <module name="test.controls.main" target="1.8" />
       <module name="test.controls.test" target="1.8" />
     </bytecodeTargetLevel>

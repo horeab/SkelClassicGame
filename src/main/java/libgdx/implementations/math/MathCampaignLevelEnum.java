@@ -1,6 +1,9 @@
-package libgdx.campaign;
+package libgdx.implementations.math;
 
-public enum LettersCampaignLevelEnum implements CampaignLevel {
+
+import libgdx.campaign.CampaignLevel;
+
+public enum MathCampaignLevelEnum implements CampaignLevel {
 
     //This order is displayed on the campaign screen
     LEVEL_0_0,
@@ -9,6 +12,7 @@ public enum LettersCampaignLevelEnum implements CampaignLevel {
     LEVEL_0_3,
     LEVEL_0_4,
     LEVEL_0_5,
+    ////
     ;
 
     @Override

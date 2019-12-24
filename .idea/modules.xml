@@ -8,6 +8,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Lett.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Lett.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LibGdxControls.main.iml" filepath="$PROJECT_DIR$/.idea/modules/LibGdxControls.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Skel.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Skel.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SkelGame.Lett.iml" filepath="$PROJECT_DIR$/.idea/modules/SkelGame.Lett.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SkelGame.Lett.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SkelGame.Lett.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SkelGame.Lett.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SkelGame.Lett.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test.controls.iml" filepath="$PROJECT_DIR$/.idea/modules/test.controls.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test.controls.main.iml" filepath="$PROJECT_DIR$/.idea/modules/test.controls.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test.controls.test.iml" filepath="$PROJECT_DIR$/.idea/modules/test.controls.test.iml" />
