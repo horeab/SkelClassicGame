@@ -7,7 +7,11 @@ public class MathScreenManager extends AbstractScreenManager {
 
     @Override
     public void showMainScreen() {
-        showScreen(MathScreenTypeEnum.CAMPAIGN_SCREEN);
+//        showScreen(MathScreenTypeEnum.CAMPAIGN_SCREEN);
+        showGameScreen();
     }
 
+    public void showGameScreen() {
+        showScreen(MathScreenTypeEnum.GAME_SCREEN);
+    }
 }
