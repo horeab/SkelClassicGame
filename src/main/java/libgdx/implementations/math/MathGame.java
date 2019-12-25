@@ -1,7 +1,7 @@
 package libgdx.implementations.math;
 
 
-import libgdx.GameIdEnum;
+import libgdx.implementations.GameIdEnum;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;

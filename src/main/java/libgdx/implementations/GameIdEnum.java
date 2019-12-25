@@ -1,4 +1,4 @@
-package libgdx;
+package libgdx.implementations;
 
 import libgdx.campaign.CampaignGameDependencyManager;
 import libgdx.game.GameId;

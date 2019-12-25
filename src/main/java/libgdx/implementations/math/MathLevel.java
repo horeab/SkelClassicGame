@@ -6,11 +6,16 @@ import java.util.List;
 public enum MathLevel {
 
 
-    _1_COMB(null, null, null, null, 10, null),
+    COMB_1(null, null, null, null, 10, null),
 
     _0(10, null, null, null, null, null),
-
-    _1(10, _1_COMB, null, null, null, null),
+    _1(10, COMB_1, null, null, null, null),
+    _2(10, null, null, null, null, null),
+    _3(10, null, null, null, null, null),
+    _4(10, null, null, null, null, null),
+    _5(10, null, null, null, null, null),
+    _6(10, null, null, null, null, null),
+    _7(10, null, null, null, null, null),
     ;
 
     private Integer sumMaxVal;
@@ -32,18 +37,44 @@ public enum MathLevel {
         this.divMaxVal = divMaxVal;
     }
 
+    public static List<MathLevel> getPlayableLevels() {
+        List<MathLevel> res = new ArrayList<>();
+        for (MathLevel mathLevel : values()) {
+            if (mathLevel.name().startsWith("_")) {
+                res.add(mathLevel);
+            }
+        }
+        return res;
+    }
+
+    public Integer getMaxValForOperation(Operation operation) {
+        if (operation == Operation.SUM) {
+            return sumMaxVal;
+        }
+        if (operation == Operation.SUB) {
+            return subMaxVal;
+        }
+        if (operation == Operation.MUL) {
+            return mulMaxVal;
+        }
+        if (operation == Operation.DIV) {
+            return divMaxVal;
+        }
+        return null;
+    }
+
     public List<Operation> getAvailableOperations(MathLevel mathLevel) {
         List<Operation> res = new ArrayList<>();
-        if (sumMaxVal != null) {
+        if (mathLevel.sumMaxVal != null) {
             res.add(Operation.SUM);
         }
-        if (subMaxVal != null) {
+        if (mathLevel.subMaxVal != null) {
             res.add(Operation.SUB);
         }
-        if (mulMaxVal != null) {
+        if (mathLevel.mulMaxVal != null) {
             res.add(Operation.MUL);
         }
-        if (divMaxVal != null) {
+        if (mathLevel.divMaxVal != null) {
             res.add(Operation.DIV);
         }
         return res;

@@ -1,17 +1,17 @@
 package libgdx.implementations.math.screens;
 
+import libgdx.implementations.math.MathCampaignLevelEnum;
 import libgdx.screen.AbstractScreenManager;
-import libgdx.screens.ScreenTypeEnum;
 
 public class MathScreenManager extends AbstractScreenManager {
 
     @Override
     public void showMainScreen() {
 //        showScreen(MathScreenTypeEnum.CAMPAIGN_SCREEN);
-        showGameScreen();
+        showGameScreen(MathCampaignLevelEnum.LEVEL_0_1);
     }
 
-    public void showGameScreen() {
-        showScreen(MathScreenTypeEnum.GAME_SCREEN);
+    public void showGameScreen(MathCampaignLevelEnum mathCampaignLevelEnum) {
+        showScreen(MathScreenTypeEnum.GAME_SCREEN, mathCampaignLevelEnum);
     }
 }

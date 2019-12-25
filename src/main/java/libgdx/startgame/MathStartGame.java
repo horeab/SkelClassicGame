@@ -1,6 +1,6 @@
 package libgdx.startgame;
 
-import libgdx.GameIdEnum;
+import libgdx.implementations.GameIdEnum;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 import libgdx.utils.startgame.test.DefaultBillingService;
 import libgdx.utils.startgame.test.DefaultFacebookService;

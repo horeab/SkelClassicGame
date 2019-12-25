@@ -1,6 +1,6 @@
 package libgdx.implementations.math;
 
-import libgdx.GameIdEnum;
+import libgdx.implementations.GameIdEnum;
 import libgdx.controls.labelimage.InventoryTableBuilderCreator;
 import libgdx.controls.popup.RatingService;
 import libgdx.game.MainDependencyManager;
