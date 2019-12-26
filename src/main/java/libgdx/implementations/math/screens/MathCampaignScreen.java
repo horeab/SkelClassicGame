@@ -60,7 +60,7 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                         FontColor.BLACK.getColor(),
                         Math.round(FontConfig.FONT_SIZE * 2.5f),
-                        2f)).setText("Math Game").build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 3).row();
+                        2f)).setText(Game.getInstance().getAppInfoService().getAppName()).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 3).row();
     }
 
 

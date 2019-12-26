@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ResourceBundleManager">
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_cs.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_da.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_de.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_el.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_en.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_es.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_fi.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_fr.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_hi.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_hr.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_hu.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_id.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_it.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_ja.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_ko.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_ms.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_nl.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_no.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_pl.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_pt.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_ro.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_ru.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_sk.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_sv.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_th.properties" />
     <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_tr.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_uk.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_vi.properties" />
+    <file url="file://$PROJECT_DIR$/../LibGdxControls/src/main/resources/main_resources/main/labels/main_labels_zh.properties" />
   </component>
 </project>

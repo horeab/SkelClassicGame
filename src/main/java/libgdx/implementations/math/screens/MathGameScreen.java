@@ -40,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MathGameScreen extends AbstractScreen<MathScreenManager> {
 
+    private static final String LEVEL_LABEL = "LEVEL_LABEL";
     private static final String SCORE_LABEL = "SCORE_LABEL";
 
     private static final int LEVEL_GOAL = 15;
@@ -263,7 +264,9 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
             campaignService.levelFinished(totalScore, mathCampaignLevelEnum);
             new MathLevelFinishedPopup(this, true).addToPopupManager();
             MyWrappedLabel scoreLabel = getRoot().findActor(SCORE_LABEL);
-            scoreLabel.setText(getScoreText(totalLevel));
+            scoreLabel.setText(getScoreText());
+            MyWrappedLabel levelLabel = getRoot().findActor(LEVEL_LABEL);
+            levelLabel.setText(getLevelText(totalLevel));
         } else {
             allTable.remove();
             createAllTable();
@@ -273,14 +276,21 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     private Table headerTable() {
         Table table = new Table();
         int percent = 45;
-        table.add(createLabel(0.9f, MainGameLabel.l_score.getText("" + totalScore), FontColor.WHITE.getColor())).width(ScreenDimensionsManager.getScreenWidthValue(percent));
-        MyWrappedLabel scoreLabel = createLabel(0.9f, getScoreText(totalLevel), FontColor.WHITE.getColor());
+        float fontScale = 1.4f;
+        MyWrappedLabel scoreLabel = createLabel(fontScale, getScoreText(), FontColor.WHITE.getColor());
         scoreLabel.setName(SCORE_LABEL);
         table.add(scoreLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
+        MyWrappedLabel levelLabel = createLabel(fontScale, getLevelText(totalLevel), FontColor.WHITE.getColor());
+        levelLabel.setName(LEVEL_LABEL);
+        table.add(levelLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
         return table;
     }
 
-    private String getScoreText(int totalLevel) {
+    private String getScoreText() {
+        return MainGameLabel.l_score.getText("" + totalScore);
+    }
+
+    private String getLevelText(int totalLevel) {
         return totalLevel + "/" + LEVEL_GOAL;
     }
 
