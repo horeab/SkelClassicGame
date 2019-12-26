@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IqGame.iml" filepath="$PROJECT_DIR$/.idea/modules/IqGame.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Lett.iml" filepath="$PROJECT_DIR$/.idea/modules/Lett.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Lett.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Lett.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Lett.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Lett.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LibGdxControls.main.iml" filepath="$PROJECT_DIR$/.idea/modules/LibGdxControls.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Skel.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Skel.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SkelGame.Lett.iml" filepath="$PROJECT_DIR$/.idea/modules/SkelGame.Lett.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SkelGame.Lett.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SkelGame.Lett.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SkelGame.Lett.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SkelGame.Lett.test.iml" />

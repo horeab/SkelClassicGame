@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import libgdx.campaign.CampaignService;
 import libgdx.controls.ScreenRunnable;
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.button.builders.ImageButtonBuilder;
@@ -30,7 +31,6 @@ import org.apache.commons.lang3.mutable.MutableLong;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -42,7 +42,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
 
     private static final String SCORE_LABEL = "SCORE_LABEL";
 
-    private static final int LEVEL_GOAL = 20;
+    private static final int LEVEL_GOAL = 15;
     private Table allTable;
     private MyButton hoverBackButton;
     private MutableLong countdownAmountMillis;
@@ -84,8 +84,15 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         Collections.shuffle(avOp);
         Operation op = avOp.get(0);
         Operation combOp = null;
-        Integer val1 = new Random().nextInt(mathLevel.getMaxValForOperation(op));
-        Integer val2 = new Random().nextInt(mathLevel.getMaxValForOperation(op));
+        Integer val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+        Integer val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+        int ind = 0;
+        while (val2 >= val1 && ind < 100) {
+            val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+            val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+            ind++;
+        }
+
         Integer comb = null;
         boolean useComb = new Random().nextBoolean();
         Integer maxCombVal = null;
@@ -94,24 +101,52 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
             Collections.shuffle(combOps);
             combOp = combOps.get(0);
             maxCombVal = mathLevel.getSumCombine().getMaxValForOperation(combOp);
-            comb = new Random().nextInt(maxCombVal);
+            comb = getCombVal(val2, maxCombVal, combOp);
         } else if (op == Operation.SUB && useComb && mathLevel.getSubCombine() != null) {
             List<Operation> combOps = mathLevel.getAvailableOperations(mathLevel.getSubCombine());
             Collections.shuffle(combOps);
             combOp = combOps.get(0);
             maxCombVal = mathLevel.getSubCombine().getMaxValForOperation(combOp);
-            comb = new Random().nextInt(maxCombVal);
+            comb = getCombVal(val2, maxCombVal, combOp);
         }
         String expression = createExpression(op, combOp, val1, val2, comb);
         while (calcExpression(expression) == null) {
-            val1 = new Random().nextInt(mathLevel.getMaxValForOperation(op));
-            val2 = new Random().nextInt(mathLevel.getMaxValForOperation(op));
+            val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+            val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+            ind = 0;
+            while (val2 >= val1 && ind < 100) {
+                val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+                val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+                ind++;
+            }
             if (maxCombVal != null) {
-                comb = new Random().nextInt(maxCombVal);
+                comb = getCombVal(val2, maxCombVal, combOp);
             }
             expression = createExpression(op, combOp, val1, val2, comb);
         }
         return expression;
+    }
+
+    private Integer getCombVal(int val2, int maxCombVal, Operation combOp) {
+        int comb = getRandomVal(maxCombVal, combOp);
+        int ind = 0;
+        while (val2 != 1 && comb >= val2 && ind < 100) {
+            comb = getRandomVal(maxCombVal, combOp);
+            ind++;
+        }
+        return comb;
+    }
+
+    private int getRandomVal(Integer maxValForOperation, Operation operation) {
+        int res = new Random().nextInt(maxValForOperation - 1) + 1;
+        if (operation == Operation.MUL || operation == Operation.DIV) {
+            int ind = 0;
+            while (res == 1 && ind < 100) {
+                res = new Random().nextInt(maxValForOperation - 1) + 1;
+                ind++;
+            }
+        }
+        return res;
     }
 
     private String createExpression(Operation op, Operation combOp, Integer val1, Integer val2, Integer comb) {
@@ -158,13 +193,28 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         boolean displayCorrectSum = new Random().nextBoolean();
         if (!displayCorrectSum) {
             int bound = correctSum / 8;
-            int varSum = new Random().nextInt(bound == 0 ? 1 : bound) + 1;
+            int varSum = new Random().nextInt(bound == 0 ? 1 : Math.abs(bound)) + 1;
             int wrongSum = new Random().nextBoolean() ? correctSum - varSum : correctSum + varSum;
             expression = expression + "=" + wrongSum;
         } else {
             expression = expression + "=" + correctSum;
         }
-        table.add(createLabel(3f, expression, FontColor.WHITE.getColor())).grow().row();
+        float fontScale = 3f;
+        if (expression.length() > 13) {
+            fontScale = 2.0f;
+        } else if (expression.length() > 12) {
+            fontScale = 2.1f;
+        } else if (expression.length() > 11) {
+            fontScale = 2.2f;
+        } else if (expression.length() > 10) {
+            fontScale = 2.3f;
+        } else if (expression.length() > 9) {
+            fontScale = 2.5f;
+        }
+        MyWrappedLabel expressionLabel = createLabel(fontScale, expression, FontColor.WHITE.getColor());
+        expressionLabel.setVisible(false);
+        new ActorAnimation(expressionLabel, getAbstractScreen()).animateFastFadeIn();
+        table.add(expressionLabel).grow().row();
 
         Table answerTable = new Table();
         MyButton correctButton = new ImageButtonBuilder(SkelClassicButtonSkin.MATH_CORRECT, Game.getInstance().getAbstractScreen())
