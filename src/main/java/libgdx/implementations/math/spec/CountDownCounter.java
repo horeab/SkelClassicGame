@@ -1,4 +1,4 @@
-package libgdx.implementations.math;
+package libgdx.implementations.math.spec;
 
 import com.badlogic.gdx.utils.Align;
 import libgdx.controls.ScreenRunnable;

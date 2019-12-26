@@ -16,9 +16,11 @@ import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.math.MathCampaignLevelEnum;
-import libgdx.implementations.math.MathLevel;
-import libgdx.implementations.math.Operation;
+import libgdx.implementations.math.spec.MathLevel;
+import libgdx.implementations.math.spec.MathLevelFinishedPopup;
+import libgdx.implementations.math.spec.Operation;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.DateUtils;
 import libgdx.utils.ScreenDimensionsManager;
@@ -38,8 +40,9 @@ import java.util.concurrent.TimeUnit;
 
 public class MathGameScreen extends AbstractScreen<MathScreenManager> {
 
+    private static final String SCORE_LABEL = "SCORE_LABEL";
 
-    private static final int LEVEL_GOAL = 4;
+    private static final int LEVEL_GOAL = 20;
     private Table allTable;
     private MyButton hoverBackButton;
     private MutableLong countdownAmountMillis;
@@ -49,6 +52,8 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     private MathLevel mathLevel;
     private MathCampaignLevelEnum mathCampaignLevelEnum;
     private CampaignService campaignService = new CampaignService();
+    private boolean countdownFinished = false;
+    private boolean finishedLevelPopupDisplayed = false;
 
     public MathGameScreen(MathCampaignLevelEnum mathCampaignLevelEnum) {
         this.mathLevel = mathCampaignLevelEnum.getMathLevel();
@@ -68,7 +73,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         executorService = Executors.newSingleThreadScheduledExecutor();
         allTable = new Table();
         allTable.add(headerTable()).pad(MainDimen.horizontal_general_margin.getDimen() * 2).row();
-        allTable.add(countdownProcess(9)).growX().row();
+        allTable.add(countdownProcess()).growX().row();
         allTable.add(calcTable()).grow().row();
         allTable.setFillParent(true);
         addActor(allTable);
@@ -83,17 +88,33 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         Integer val2 = new Random().nextInt(mathLevel.getMaxValForOperation(op));
         Integer comb = null;
         boolean useComb = new Random().nextBoolean();
+        Integer maxCombVal = null;
         if (op == Operation.SUM && useComb && mathLevel.getSumCombine() != null) {
             List<Operation> combOps = mathLevel.getAvailableOperations(mathLevel.getSumCombine());
             Collections.shuffle(combOps);
             combOp = combOps.get(0);
-            comb = new Random().nextInt(mathLevel.getSumCombine().getMaxValForOperation(combOp));
+            maxCombVal = mathLevel.getSumCombine().getMaxValForOperation(combOp);
+            comb = new Random().nextInt(maxCombVal);
         } else if (op == Operation.SUB && useComb && mathLevel.getSubCombine() != null) {
             List<Operation> combOps = mathLevel.getAvailableOperations(mathLevel.getSubCombine());
             Collections.shuffle(combOps);
             combOp = combOps.get(0);
-            comb = new Random().nextInt(mathLevel.getSubCombine().getMaxValForOperation(combOp));
+            maxCombVal = mathLevel.getSubCombine().getMaxValForOperation(combOp);
+            comb = new Random().nextInt(maxCombVal);
         }
+        String expression = createExpression(op, combOp, val1, val2, comb);
+        while (calcExpression(expression) == null) {
+            val1 = new Random().nextInt(mathLevel.getMaxValForOperation(op));
+            val2 = new Random().nextInt(mathLevel.getMaxValForOperation(op));
+            if (maxCombVal != null) {
+                comb = new Random().nextInt(maxCombVal);
+            }
+            expression = createExpression(op, combOp, val1, val2, comb);
+        }
+        return expression;
+    }
+
+    private String createExpression(Operation op, Operation combOp, Integer val1, Integer val2, Integer comb) {
         String expression = val1 + op.getExpr() + val2;
         if (comb != null) {
             boolean useParentheses = new Random().nextBoolean();
@@ -115,10 +136,15 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         try {
-            return (Integer) engine.eval(expr);
-        } catch (ScriptException e) {
+            Object eval = engine.eval(expr);
+            return (Integer) eval;
+        } catch (Exception e) {
             return null;
         }
+    }
+
+    public MathCampaignLevelEnum getMathCampaignLevelEnum() {
+        return mathCampaignLevelEnum;
     }
 
     private Table calcTable() {
@@ -175,39 +201,52 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     }
 
     private void wrongAnswerPressed() {
-        screenManager.showMainScreen();
+        executorService.shutdown();
+        new MathLevelFinishedPopup(this, false).addToPopupManager();
     }
 
     private void correctAnswerPressed() {
         totalLevel++;
         executorService.shutdown();
         totalScore = totalScore + countdownAmountMillis.getValue();
-        if (totalLevel > LEVEL_GOAL) {
+        if (totalLevel >= LEVEL_GOAL) {
             campaignService.levelFinished(totalScore, mathCampaignLevelEnum);
-            screenManager.showMainScreen();
+            new MathLevelFinishedPopup(this, true).addToPopupManager();
+            MyWrappedLabel scoreLabel = getRoot().findActor(SCORE_LABEL);
+            scoreLabel.setText(getScoreText(totalLevel));
+        } else {
+            allTable.remove();
+            createAllTable();
         }
-        allTable.remove();
-        createAllTable();
     }
 
     private Table headerTable() {
         Table table = new Table();
         int percent = 45;
-        table.add(createLabel(0.9f, "Score: " + totalScore, FontColor.WHITE.getColor())).width(ScreenDimensionsManager.getScreenWidthValue(percent));
-        table.add(createLabel(0.9f, totalLevel + "/" + LEVEL_GOAL, FontColor.WHITE.getColor())).width(ScreenDimensionsManager.getScreenWidthValue(percent));
+        table.add(createLabel(0.9f, MainGameLabel.l_score.getText("" + totalScore), FontColor.WHITE.getColor())).width(ScreenDimensionsManager.getScreenWidthValue(percent));
+        MyWrappedLabel scoreLabel = createLabel(0.9f, getScoreText(totalLevel), FontColor.WHITE.getColor());
+        scoreLabel.setName(SCORE_LABEL);
+        table.add(scoreLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
         return table;
     }
 
-    private Table countdownProcess(int seconds) {
+    private String getScoreText(int totalLevel) {
+        return totalLevel + "/" + LEVEL_GOAL;
+    }
+
+    private Table countdownProcess() {
         Table table = new Table();
         MyWrappedLabel countdownAmountMillisLabel = createLabel(2f, "1", FontColor.LIGHT_GREEN.getColor());
         table.add(countdownAmountMillisLabel);
+        int seconds = 9;
         countdownAmountMillis = new MutableLong(seconds * 1000);
         final int period = 100;
+        final MathGameScreen screen = this;
         executorService.scheduleAtFixedRate(new ScreenRunnable(getAbstractScreen()) {
             @Override
             public void executeOperations() {
                 if (countdownAmountMillis.getValue() <= 0) {
+                    countdownFinished = true;
                     executorService.shutdown();
                 }
                 countdownAmountMillisLabel.setText(countdownAmountMillis.getValue() <= 0 ? "0" : countdownAmountMillis.toString());
@@ -234,5 +273,14 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     @Override
     public void onBackKeyPress() {
         screenManager.showMainScreen();
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        if (countdownFinished && !finishedLevelPopupDisplayed) {
+            finishedLevelPopupDisplayed = true;
+            wrongAnswerPressed();
+        }
     }
 }

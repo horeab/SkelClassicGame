@@ -18,7 +18,6 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.math.MathCampaignLevelEnum;
-import libgdx.implementations.math.MathLevel;
 import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.skelgame.SkelGameRatingService;
 import libgdx.resources.MainResource;

@@ -2,6 +2,7 @@ package libgdx.implementations.math;
 
 
 import libgdx.campaign.CampaignLevel;
+import libgdx.implementations.math.spec.MathLevel;
 
 public enum MathCampaignLevelEnum implements CampaignLevel {
 

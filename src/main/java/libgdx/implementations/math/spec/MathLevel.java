@@ -1,4 +1,4 @@
-package libgdx.implementations.math;
+package libgdx.implementations.math.spec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,15 +7,17 @@ public enum MathLevel {
 
 
     COMB_1(null, null, null, null, 10, null),
+    COMB_2(null, null, 10, null, 10, null),
+    COMB_3(null, null, null, null, 10, 10),
 
     _0(10, null, null, null, null, null),
     _1(10, COMB_1, null, null, null, null),
-    _2(10, null, null, null, null, null),
-    _3(10, null, null, null, null, null),
-    _4(10, null, null, null, null, null),
-    _5(10, null, null, null, null, null),
-    _6(10, null, null, null, null, null),
-    _7(10, null, null, null, null, null),
+    _2(10, COMB_2, null, null, null, null),
+    _3(10, COMB_3, null, null, null, null),
+    _4(10, COMB_1, null, null, null, null),
+    _5(10, COMB_1, null, null, null, null),
+    _6(10, COMB_1, null, null, null, null),
+    _7(10, COMB_1, null, null, null, null),
     ;
 
     private Integer sumMaxVal;

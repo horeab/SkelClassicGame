@@ -1,7 +1,6 @@
 package libgdx.implementations.math.screens;
 
 import libgdx.implementations.math.MathCampaignLevelEnum;
-import libgdx.implementations.math.MathLevel;
 import libgdx.screen.AbstractScreen;
 import libgdx.screen.ScreenType;
 

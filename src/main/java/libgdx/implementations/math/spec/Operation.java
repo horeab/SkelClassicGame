@@ -1,4 +1,4 @@
-package libgdx.implementations.math;
+package libgdx.implementations.math.spec;
 
 public enum Operation {
 
