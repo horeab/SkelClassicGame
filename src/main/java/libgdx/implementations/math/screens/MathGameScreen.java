@@ -68,6 +68,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     public void buildStage() {
         createAllTable();
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
+        hoverBackButton.toFront();
     }
 
     private void createAllTable() {
@@ -81,6 +82,9 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         allTable.add(calcTable()).grow().row();
         allTable.setFillParent(true);
         addActor(allTable);
+        if (hoverBackButton != null) {
+            hoverBackButton.toFront();
+        }
     }
 
     private String processExpression() {
