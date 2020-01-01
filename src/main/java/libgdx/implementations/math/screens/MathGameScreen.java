@@ -84,51 +84,56 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     }
 
     private String processExpression() {
-        List<Operation> avOp = mathLevel.getAvailableOperations();
-        Collections.shuffle(avOp);
-        Operation op = avOp.get(0);
-        Operation combOp = null;
-        Integer val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
-        Integer val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
-        int ind = 0;
-        while (val2 >= val1 && ind < 100) {
-            val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
-            val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
-            ind++;
-        }
+        try {
 
-        Integer comb = null;
-        boolean useComb = new Random().nextBoolean();
-        Integer maxCombVal = null;
-        if (op == Operation.SUM && useComb && mathLevel.getSumCombine() != null) {
-            List<Operation> combOps = mathLevel.getAvailableOperations(mathLevel.getSumCombine());
-            Collections.shuffle(combOps);
-            combOp = combOps.get(0);
-            maxCombVal = mathLevel.getSumCombine().getMaxValForOperation(combOp);
-            comb = getCombVal(val2, maxCombVal, combOp);
-        } else if (op == Operation.SUB && useComb && mathLevel.getSubCombine() != null) {
-            List<Operation> combOps = mathLevel.getAvailableOperations(mathLevel.getSubCombine());
-            Collections.shuffle(combOps);
-            combOp = combOps.get(0);
-            maxCombVal = mathLevel.getSubCombine().getMaxValForOperation(combOp);
-            comb = getCombVal(val2, maxCombVal, combOp);
-        }
-        String expression = createExpression(op, combOp, val1, val2, comb);
-        while (calcExpression(expression) == null) {
-            val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
-            val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
-            ind = 0;
+            List<Operation> avOp = mathLevel.getAvailableOperations();
+            Collections.shuffle(avOp);
+            Operation op = avOp.get(0);
+            Operation combOp = null;
+            Integer val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+            Integer val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+            int ind = 0;
             while (val2 >= val1 && ind < 100) {
                 val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
                 val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
                 ind++;
             }
-            if (maxCombVal != null) {
+
+            Integer comb = null;
+            boolean useComb = new Random().nextBoolean();
+            Integer maxCombVal = null;
+            if (op == Operation.SUM && useComb && mathLevel.getSumCombine() != null) {
+                List<Operation> combOps = mathLevel.getAvailableOperations(mathLevel.getSumCombine());
+                Collections.shuffle(combOps);
+                combOp = combOps.get(0);
+                maxCombVal = mathLevel.getSumCombine().getMaxValForOperation(combOp);
+                comb = getCombVal(val2, maxCombVal, combOp);
+            } else if (op == Operation.SUB && useComb && mathLevel.getSubCombine() != null) {
+                List<Operation> combOps = mathLevel.getAvailableOperations(mathLevel.getSubCombine());
+                Collections.shuffle(combOps);
+                combOp = combOps.get(0);
+                maxCombVal = mathLevel.getSubCombine().getMaxValForOperation(combOp);
                 comb = getCombVal(val2, maxCombVal, combOp);
             }
-            expression = createExpression(op, combOp, val1, val2, comb);
+            String expression = createExpression(op, combOp, val1, val2, comb);
+            while (calcExpression(expression) == null) {
+                val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+                val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+                ind = 0;
+                while (val2 >= val1 && ind < 100) {
+                    val1 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+                    val2 = getRandomVal(mathLevel.getMaxValForOperation(op), op);
+                    ind++;
+                }
+                if (maxCombVal != null) {
+                    comb = getCombVal(val2, maxCombVal, combOp);
+                }
+                expression = createExpression(op, combOp, val1, val2, comb);
+            }
+            return expression;
+        } catch (Exception e) {
+            return null;
         }
-        return expression;
     }
 
     private Integer getCombVal(int val2, int maxCombVal, Operation combOp) {
@@ -250,7 +255,11 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
                     return x;
                 }
             }.parse();
-            return (int) parse;
+            if (parse % 1 == 0) {
+                return (int) parse;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
@@ -264,11 +273,11 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         Table table = new Table();
         Integer correctSum = null;
         String expression = "";
-        while (correctSum == null || correctSum < 0) {
+        while (correctSum == null || correctSum < 0 || expression == null) {
             expression = processExpression();
             correctSum = calcExpression(expression);
         }
-       final boolean displayCorrectSum = new Random().nextBoolean();
+        final boolean displayCorrectSum = new Random().nextBoolean();
         if (!displayCorrectSum) {
             int bound = correctSum / 8;
             int varSum = new Random().nextInt(bound == 0 ? 1 : Math.abs(bound)) + 1;
@@ -373,7 +382,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
 
     private Table countdownProcess() {
         Table table = new Table();
-       final MyWrappedLabel countdownAmountMillisLabel = createLabel(2f, "1", FontColor.LIGHT_GREEN.getColor());
+        final MyWrappedLabel countdownAmountMillisLabel = createLabel(2f, "1", FontColor.LIGHT_GREEN.getColor());
         table.add(countdownAmountMillisLabel);
         int seconds = 9;
         countdownAmountMillis = new MutableLong(seconds * 1000);
