@@ -365,10 +365,10 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         float fontScale = 1.1f;
         MyWrappedLabel scoreLabel = createLabel(fontScale, getScoreText(), FontColor.WHITE.getColor());
         scoreLabel.setName(SCORE_LABEL);
-        table.add(scoreLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
         MyWrappedLabel levelLabel = createLabel(fontScale, getLevelText(totalLevel), FontColor.WHITE.getColor());
         levelLabel.setName(LEVEL_LABEL);
         table.add(levelLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
+        table.add(scoreLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
         return table;
     }
 
