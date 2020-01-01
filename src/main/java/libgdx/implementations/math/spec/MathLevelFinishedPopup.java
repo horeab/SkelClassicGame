@@ -62,6 +62,11 @@ public class MathLevelFinishedPopup extends MyPopup<MathGameScreen, AbstractScre
     }
 
     @Override
+    public void hide() {
+        onBackKeyPress();
+    }
+
+    @Override
     protected String getLabelText() {
         if (levelSuccess) {
             return SkelGameLabel.level_finished.getText();
