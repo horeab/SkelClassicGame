@@ -6,9 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+
 import libgdx.campaign.CampaignLevelStatusEnum;
 import libgdx.campaign.CampaignService;
 import libgdx.campaign.CampaignStoreLevel;
+import libgdx.constants.Language;
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
@@ -17,12 +19,14 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.math.MathCampaignLevelEnum;
 import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.skelgame.SkelGameRatingService;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
@@ -56,11 +60,14 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
 
 
     private void addTitle(Table table) {
+        String appName = Game.getInstance().getAppInfoService().getAppName();
+        float mult = appName.length() > 10 ? (appName.length() > 15 ? 1.5f : 2.5f) : 2.5f;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.th.name()) ? mult / 2f : mult;
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                         FontColor.BLACK.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 2.5f),
-                        2f)).setText(Game.getInstance().getAppInfoService().getAppName()).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 3).row();
+                        Math.round(FontConfig.FONT_SIZE * mult),
+                        2f)).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 3).row();
     }
 
 
@@ -71,7 +78,7 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
         float horizontalGeneralMarginDimen = MainDimen.horizontal_general_margin.getDimen();
         for (final MathCampaignLevelEnum campaignLevelEnum : MathCampaignLevelEnum.values()) {
             MyButton levelBtn = new ButtonBuilder()
-                    .setDefaultButton()
+                    .setButtonSkin(SkelClassicButtonSkin.MATH_LEVELBTN)
                     .build();
             levelBtn.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
             float imgDimen = horizontalGeneralMarginDimen * 8;
@@ -82,7 +89,7 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
             if (campaignStoreLevel != null && campaignStoreLevel.getStatus() == CampaignLevelStatusEnum.FINISHED.getStatus()) {
                 levelText = campaignStoreLevel.getScore() + "";
             } else if (campaignStoreLevel != null && campaignStoreLevel.getStatus() == CampaignLevelStatusEnum.IN_PROGRESS.getStatus()) {
-                levelText = "Play";
+                levelText = MainGameLabel.l_play.getText();
                 image = GraphicUtils.getImage(res);
                 image.setWidth(imgDimen);
                 image.setHeight(imgDimen);
@@ -95,11 +102,12 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
             image = image == null ? GraphicUtils.getImage(res) : image;
             image.setWidth(imgDimen);
             image.setHeight(imgDimen);
+            float btnDimen = horizontalGeneralMarginDimen * 15;
             levelBtn.add(image).width(imgDimen).height(imgDimen).padBottom(horizontalGeneralMarginDimen).row();
             levelBtn.add(new MyWrappedLabel(
-                    new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
+                    new MyWrappedLabelConfigBuilder().setWrappedLineLabel(btnDimen).setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                             FontColor.BLACK.getColor(),
-                            Math.round(FontConfig.FONT_SIZE * 1.3f),
+                            Math.round(FontConfig.FONT_SIZE * (Arrays.asList(Language.th.name(), Language.tr.name()).contains(Game.getInstance().getAppInfoService().getLanguage()) ? 0.9f : 1.3f)),
                             2f)).setText(levelText).build()));
             levelBtn.addListener(new ChangeListener() {
                 @Override
@@ -107,7 +115,6 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
                     screenManager.showGameScreen(campaignLevelEnum);
                 }
             });
-            float btnDimen = horizontalGeneralMarginDimen * 15;
             table.add(levelBtn).pad(horizontalGeneralMarginDimen).height(btnDimen).width(btnDimen);
             if (i > 0 && (i + 1) % 2 == 0) {
                 table.row();
@@ -118,7 +125,7 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
         for (CampaignStoreLevel campaignStoreLevel : allCampaignLevelStores) {
             totalScore = totalScore + campaignStoreLevel.getScore();
         }
-        table.add(new MyWrappedLabel("Highscore: " + totalScore)).padTop(horizontalGeneralMarginDimen * 2).colspan(2);
+        table.add(new MyWrappedLabel(MainGameLabel.l_highscore.getText("" + totalScore))).padTop(horizontalGeneralMarginDimen * 2).colspan(2);
         return table;
     }
 

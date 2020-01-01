@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+
 import libgdx.campaign.CampaignService;
 import libgdx.controls.ScreenRunnable;
 import libgdx.controls.animations.ActorAnimation;
@@ -27,10 +28,12 @@ import libgdx.utils.DateUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+
 import org.apache.commons.lang3.mutable.MutableLong;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -187,7 +190,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         Table table = new Table();
         Integer correctSum = null;
         String expression = "";
-        while (correctSum == null) {
+        while (correctSum == null || correctSum < 0) {
             expression = processExpression();
             correctSum = calcExpression(expression);
         }
@@ -276,7 +279,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     private Table headerTable() {
         Table table = new Table();
         int percent = 45;
-        float fontScale = 1.4f;
+        float fontScale = 1.1f;
         MyWrappedLabel scoreLabel = createLabel(fontScale, getScoreText(), FontColor.WHITE.getColor());
         scoreLabel.setName(SCORE_LABEL);
         table.add(scoreLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
