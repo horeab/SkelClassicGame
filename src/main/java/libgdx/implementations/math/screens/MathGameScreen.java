@@ -176,7 +176,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         return expression;
     }
 
-    private Integer calcExpression(String str) {
+    private Integer calcExpression(final String str) {
         try {
             double parse = new Object() {
                 int pos = -1, ch;
