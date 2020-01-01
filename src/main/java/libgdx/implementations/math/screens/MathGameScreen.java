@@ -194,7 +194,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
             expression = processExpression();
             correctSum = calcExpression(expression);
         }
-        boolean displayCorrectSum = new Random().nextBoolean();
+       final boolean displayCorrectSum = new Random().nextBoolean();
         if (!displayCorrectSum) {
             int bound = correctSum / 8;
             int varSum = new Random().nextInt(bound == 0 ? 1 : Math.abs(bound)) + 1;
@@ -299,7 +299,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
 
     private Table countdownProcess() {
         Table table = new Table();
-        MyWrappedLabel countdownAmountMillisLabel = createLabel(2f, "1", FontColor.LIGHT_GREEN.getColor());
+       final MyWrappedLabel countdownAmountMillisLabel = createLabel(2f, "1", FontColor.LIGHT_GREEN.getColor());
         table.add(countdownAmountMillisLabel);
         int seconds = 9;
         countdownAmountMillis = new MutableLong(seconds * 1000);
