@@ -13,7 +13,7 @@ public enum MathLevel {
     _1(20, null, null, null, null, null),
     _2(20, null, 20, null, null, null),
     _3(40, null, 40, null, 10, null),
-    _4(40, COMB_1, 40, COMB_1, 10, 10),
+    _4(40, null, 40, null, 10, 10),
     _5(20, COMB_1, 20, COMB_1, null, null),
     _6(20, COMB_2, 20, COMB_2, null, null),
     _7(40, COMB_2, 40, COMB_2, 15, 15),
