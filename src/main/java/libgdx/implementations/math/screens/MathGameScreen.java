@@ -352,17 +352,12 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         totalScore = totalScore + countdownAmountMillis.getValue();
         if (totalLevel >= LEVEL_GOAL) {
             final MathGameScreen mathGameScreen = this;
-            Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
-                @Override
-                public void run() {
-                    campaignService.levelFinished(totalScore, mathCampaignLevelEnum);
-                    new MathLevelFinishedPopup(mathGameScreen, true).addToPopupManager();
-                    MyWrappedLabel scoreLabel = getRoot().findActor(SCORE_LABEL);
-                    scoreLabel.setText(getScoreText());
-                    MyWrappedLabel levelLabel = getRoot().findActor(LEVEL_LABEL);
-                    levelLabel.setText(getLevelText(totalLevel));
-                }
-            });
+            campaignService.levelFinished(totalScore, mathCampaignLevelEnum);
+            new MathLevelFinishedPopup(mathGameScreen, true).addToPopupManager();
+            MyWrappedLabel scoreLabel = getRoot().findActor(SCORE_LABEL);
+            scoreLabel.setText(getScoreText());
+            MyWrappedLabel levelLabel = getRoot().findActor(LEVEL_LABEL);
+            levelLabel.setText(getLevelText(totalLevel));
         } else {
             allTable.remove();
             createAllTable();

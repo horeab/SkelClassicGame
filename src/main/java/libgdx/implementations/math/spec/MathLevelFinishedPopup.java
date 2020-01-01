@@ -2,7 +2,9 @@ package libgdx.implementations.math.spec;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import libgdx.controls.button.MyButton;
+import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.popup.MyPopup;
 import libgdx.game.Game;
 import libgdx.implementations.math.MathGame;
@@ -28,7 +30,7 @@ public class MathLevelFinishedPopup extends MyPopup<MathGameScreen, AbstractScre
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Game.getInstance().getScreenManager().showMainScreen();
+                    onBackKeyPress();
                 }
             });
             addButton(button);
@@ -58,7 +60,12 @@ public class MathLevelFinishedPopup extends MyPopup<MathGameScreen, AbstractScre
 
     @Override
     public void onBackKeyPress() {
-        Game.getInstance().getScreenManager().showMainScreen();
+        Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+            @Override
+            public void run() {
+                Game.getInstance().getScreenManager().showMainScreen();
+            }
+        });
     }
 
     @Override
