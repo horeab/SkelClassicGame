@@ -1,6 +1,5 @@
-package libgdx.implementations.math.screens;
+package libgdx.implementations.math;
 
-import libgdx.implementations.math.MathCampaignLevelEnum;
 import libgdx.screen.AbstractScreenManager;
 
 public class MathScreenManager extends AbstractScreenManager {

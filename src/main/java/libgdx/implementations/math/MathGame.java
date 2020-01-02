@@ -7,7 +7,6 @@ import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
 import libgdx.game.external.BillingService;
 import libgdx.game.external.FacebookService;
-import libgdx.implementations.math.screens.MathScreenManager;
 import libgdx.screen.AbstractScreen;
 
 public class MathGame extends CampaignGame<AppInfoService,

@@ -18,6 +18,7 @@ import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.math.MathCampaignLevelEnum;
+import libgdx.implementations.math.MathScreenManager;
 import libgdx.implementations.math.spec.MathLevel;
 import libgdx.implementations.math.spec.MathLevelFinishedPopup;
 import libgdx.implementations.math.spec.Operation;
@@ -30,9 +31,6 @@ import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
 import org.apache.commons.lang3.mutable.MutableLong;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 import java.util.Collections;
 import java.util.List;

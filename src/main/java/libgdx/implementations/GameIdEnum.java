@@ -2,10 +2,13 @@ package libgdx.implementations;
 
 import libgdx.campaign.CampaignGameDependencyManager;
 import libgdx.game.GameId;
+import libgdx.implementations.balloon.BalloonDependencyManager;
+import libgdx.implementations.math.MathDependencyManager;
 
 public enum GameIdEnum implements GameId {
 
-    math(libgdx.implementations.math.MathDependencyManager.class),;
+    balloon(BalloonDependencyManager.class),
+    math(MathDependencyManager.class),;
 
     private Class<? extends CampaignGameDependencyManager> dependencyManagerClass;
 

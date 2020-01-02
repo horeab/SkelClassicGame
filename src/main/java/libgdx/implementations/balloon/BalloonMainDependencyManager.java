@@ -1,9 +1,10 @@
-package libgdx.implementations.math;
+package libgdx.implementations.balloon;
 
-import libgdx.implementations.GameIdEnum;
 import libgdx.controls.labelimage.InventoryTableBuilderCreator;
 import libgdx.controls.popup.RatingService;
 import libgdx.game.MainDependencyManager;
+import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.math.MathScreenManager;
 import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.implementations.skelgame.SkelGameRatingService;
 import libgdx.resources.Resource;
@@ -11,7 +12,7 @@ import libgdx.resources.ResourceService;
 import libgdx.screen.AbstractScreen;
 import libgdx.transactions.TransactionsService;
 
-public class MathMainDependencyManager extends MainDependencyManager<MathScreenManager, AbstractScreen, SkelGameLabel, Resource, GameIdEnum> {
+public class BalloonMainDependencyManager extends MainDependencyManager<BalloonScreenManager, AbstractScreen, SkelGameLabel, Resource, GameIdEnum> {
 
     @Override
     public Class<Resource> getMainResourcesClass() {
@@ -25,7 +26,7 @@ public class MathMainDependencyManager extends MainDependencyManager<MathScreenM
 
     @Override
     public ResourceService createResourceService() {
-        return new MathGameResourceService();
+        return new BalloonResourceService();
     }
 
     @Override
@@ -39,8 +40,8 @@ public class MathMainDependencyManager extends MainDependencyManager<MathScreenM
     }
 
     @Override
-    public MathScreenManager createScreenManager() {
-        return new MathScreenManager();
+    public BalloonScreenManager createScreenManager() {
+        return new BalloonScreenManager();
     }
 
     @Override
