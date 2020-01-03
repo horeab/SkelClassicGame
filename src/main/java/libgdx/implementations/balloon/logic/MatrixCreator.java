@@ -64,8 +64,8 @@ public class MatrixCreator {
         return matrix;
     }
 
-    public List<MutablePair> findPlanesInMatrix(int[][] matrix) {
-        List<MutablePair> planes = new ArrayList<MutablePair>();
+    public List<MutablePair<Integer, Integer>> findPlanesInMatrix(int[][] matrix) {
+        List<MutablePair<Integer, Integer>> planes = new ArrayList<MutablePair<Integer, Integer>>();
         for (int i = 0; i < nrOfRows; i++) {
             for (int j = 0; j < nrOfCols; j++) {
                 if (matrix[i][j] == MatrixValue.PLANE.getValue()) {

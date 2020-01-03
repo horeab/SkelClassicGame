@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class CurrentLevel {
 
-	private int[][] leveltMatrix;
+	private int[][] levelMatrix;
 
 	private List<MutablePair<Integer, Integer>> planes = new ArrayList<MutablePair<Integer, Integer>>();
 
@@ -29,12 +29,12 @@ public class CurrentLevel {
 	private boolean player2ComputerMovesRandom = false;
 	private boolean onePlayerLevel = false;
 
-	public int[][] getLeveltMatrix() {
-		return leveltMatrix;
+	public int[][] getLevelMatrix() {
+		return levelMatrix;
 	}
 
-	public void setLeveltMatrix(int[][] leveltMatrix) {
-		this.leveltMatrix = leveltMatrix;
+	public void setLevelMatrix(int[][] levelMatrix) {
+		this.levelMatrix = levelMatrix;
 	}
 
 	public List<MutablePair<Integer, Integer>> getPlanes() {

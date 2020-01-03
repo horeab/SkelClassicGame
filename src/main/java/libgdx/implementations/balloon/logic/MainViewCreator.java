@@ -58,8 +58,8 @@ public class MainViewCreator {
 
 
     public MainViewCreator(CurrentLevel currentLevel, LevelInfo levelInfo, AbstractScreen screen) {
-        this.nrOfRows = currentLevel.getLeveltMatrix().length;
-        this.nrOfCols = currentLevel.getLeveltMatrix()[0].length;
+        this.nrOfRows = currentLevel.getLevelMatrix().length;
+        this.nrOfCols = currentLevel.getLevelMatrix()[0].length;
         this.currentLevel = currentLevel;
         this.levelInfo = levelInfo;
         this.abstractScreen = screen;
@@ -67,12 +67,14 @@ public class MainViewCreator {
         mcu = new MatrixCoordinatesUtils(nrOfCols, nrOfRows);
     }
 
-    public void addGameRows() {
+    public Table createGameRowsContainer() {
         List<Table> gameRows = createGameRows();
         Table container = new Table();
+        container.setFillParent(true);
         for (Table row : gameRows) {
-            container.add(row).growX();
+            container.add(row).growX().row();
         }
+        return container;
     }
 
     private List<Table> createGameRows() {
@@ -128,7 +130,7 @@ public class MainViewCreator {
         int firstRowIndex = mcu.getFirstRowIndex();
         for (int j = 0; j < nrOfCols; j++) {
             if (startPositions.contains(j)) {
-                currentLevel.getLeveltMatrix()[firstRowIndex][j] = value;
+                currentLevel.getLevelMatrix()[firstRowIndex][j] = value;
             }
         }
     }
@@ -169,7 +171,7 @@ public class MainViewCreator {
     private void resetFirstRowFromMatrix() {
         int firstRowIndex = mcu.getFirstRowIndex();
         for (int j = 0; j < nrOfCols; j++) {
-            currentLevel.getLeveltMatrix()[firstRowIndex][j] = MatrixValue.AIR.getValue();
+            currentLevel.getLevelMatrix()[firstRowIndex][j] = MatrixValue.AIR.getValue();
         }
     }
 
@@ -214,7 +216,7 @@ public class MainViewCreator {
             currentLevel.getCurrentMove().setClickedColumn(clickedColumn);
 
             MutablePair<Integer, Integer> currentPosition = new MutablePair<Integer, Integer>(clickedColumn, mcu.getFirstRowIndex());
-            currentLevel.getCurrentMove().setPlayerPosition(mcu.fillCurrentPositionInfo(currentPosition, currentLevel.getLeveltMatrix()));
+            currentLevel.getCurrentMove().setPlayerPosition(mcu.fillCurrentPositionInfo(currentPosition, currentLevel.getLevelMatrix()));
             resetState();
             moveElement();
         }
@@ -227,8 +229,8 @@ public class MainViewCreator {
             movePlaneRight(plane);
         }
         for (MutablePair<Integer, Integer> plane : currentLevel.getPlanes()) {
-            if (currentLevel.getLeveltMatrix()[plane.right][plane.left] == MatrixValue.AIR.getValue()) {
-                currentLevel.getLeveltMatrix()[plane.right][plane.left] = MatrixValue.PLANE.getValue();
+            if (currentLevel.getLevelMatrix()[plane.right][plane.left] == MatrixValue.AIR.getValue()) {
+                currentLevel.getLevelMatrix()[plane.right][plane.left] = MatrixValue.PLANE.getValue();
                 currentLevel.getCurrentMove().getMovementFinishedInfo().addCellToUpdate(plane);
             }
         }
@@ -243,23 +245,23 @@ public class MainViewCreator {
     }
 
     private void processOldPlanePosition(MutablePair<Integer, Integer> plane) {
-        int planePositionValue = currentLevel.getLeveltMatrix()[plane.right][plane.left];
+        int planePositionValue = currentLevel.getLevelMatrix()[plane.right][plane.left];
         if (planePositionValue == MatrixValue.PLANE.getValue()) {
-            currentLevel.getLeveltMatrix()[plane.right][plane.left] = MatrixValue.AIR.getValue();
+            currentLevel.getLevelMatrix()[plane.right][plane.left] = MatrixValue.AIR.getValue();
         }
         currentLevel.getCurrentMove().getMovementFinishedInfo().addCellToUpdate(plane);
     }
 
     private void updatePlaneNeighbours(MutablePair<Integer, Integer> plane) {
-        MatrixWithChangedCells matrixWithChangedCells = mcu.verifyPlaneNeighbours(plane, currentLevel.getLeveltMatrix(), currentLevel.isPlayer1Turn());
+        MatrixWithChangedCells matrixWithChangedCells = mcu.verifyPlaneNeighbours(plane, currentLevel.getLevelMatrix(), currentLevel.isPlayer1Turn());
         currentLevel.getCurrentMove().getMovementFinishedInfo().addCellsToUpdate(matrixWithChangedCells.getCellsToUpdate());
-        currentLevel.setLeveltMatrix(matrixWithChangedCells.getLeveltMatrix());
+        currentLevel.setLevelMatrix(matrixWithChangedCells.getLeveltMatrix());
     }
 
     private void moveElement() {
         int tries = 0;
         while (!simulateMovementAndVerifyIfItsCorrect(tries, currentLevel.getCurrentMove().getPlayerPosition().copy(),
-                MatrixCoordinatesUtils.cloneArray(currentLevel.getLeveltMatrix()))) {
+                MatrixCoordinatesUtils.cloneArray(currentLevel.getLevelMatrix()))) {
             tries++;
         }
         int nrOfMoves = currentLevel.getCurrentMove().getMovementFinishedInfo().getNrOfMoves();
@@ -272,7 +274,7 @@ public class MainViewCreator {
                 public void run() {
                     playSound(indx.intValue());
                     startElemMovement();
-                    refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLeveltMatrix());
+                    refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
                     currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate().clear();
                     indx.setValue(indx.intValue() + 1);
                 }
@@ -286,7 +288,7 @@ public class MainViewCreator {
         currentLevel.getCurrentMove().setMovementStopped(true);
 
         togglePlayer(false);
-        refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLeveltMatrix());
+        refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
 
         if (isLevelFinished()) {
             levelFinished(calculateScore(currentLevel.getFinalPositionPairsForPlayer1().values()), calculateScore(currentLevel
@@ -316,7 +318,7 @@ public class MainViewCreator {
     private void finalPositionUpdate() {
         if (!currentLevel.getCurrentMove().getMovementFinishedInfo().isDestroyed()) {
             MutablePair<Integer, Integer> finalPosition = currentLevel.getCurrentMove().getMovementFinishedInfo().getFinalPosition();
-            currentLevel.getLeveltMatrix()[finalPosition.right][finalPosition.left] = MatrixCoordinatesUtils.getFinalPositionForPlayer(currentLevel.isPlayer1Turn())
+            currentLevel.getLevelMatrix()[finalPosition.right][finalPosition.left] = MatrixCoordinatesUtils.getFinalPositionForPlayer(currentLevel.isPlayer1Turn())
                     .getValue();
             currentLevel.getCurrentMove().getMovementFinishedInfo().addCellToUpdate(finalPosition);
 
@@ -348,10 +350,10 @@ public class MainViewCreator {
             cellsToUpdate.add(currentLevel.getCurrentMove().getPlayerPosition().getCurrentPosition().getPoint());
             cellsToUpdate.add(currentLevel.getCurrentMove().getPlayerPosition().getUpValue().getPoint());
 
-            currentLevel.setLeveltMatrix(mcu.movePlayer(currentLevel.getCurrentMove().getPlayerPosition(), nextPosition, currentLevel.getLeveltMatrix(),
+            currentLevel.setLevelMatrix(mcu.movePlayer(currentLevel.getCurrentMove().getPlayerPosition(), nextPosition, currentLevel.getLevelMatrix(),
                     currentLevel.isPlayer1Turn()));
 
-            currentLevel.getCurrentMove().setPlayerPosition(mcu.fillCurrentPositionInfo(nextPosition, currentLevel.getLeveltMatrix()));
+            currentLevel.getCurrentMove().setPlayerPosition(mcu.fillCurrentPositionInfo(nextPosition, currentLevel.getLevelMatrix()));
         }
         cellsToUpdate.addAll(processDestroyedBalloon());
         currentLevel.getCurrentMove().getMovementFinishedInfo().addCellsToUpdate(cellsToUpdate);
@@ -367,7 +369,7 @@ public class MainViewCreator {
     private Set<MutablePair<Integer, Integer>> processDestroyedBalloon() {
         Set<MutablePair<Integer, Integer>> cellsToUpdate = new HashSet<MutablePair<Integer, Integer>>();
         if (currentLevel.getCurrentMove().getMovementFinishedInfo().isDestroyed()) {
-            currentLevel.getLeveltMatrix()[currentLevel.getCurrentMove().getMovementFinishedInfo().getFinalPosition().right][currentLevel.getCurrentMove()
+            currentLevel.getLevelMatrix()[currentLevel.getCurrentMove().getMovementFinishedInfo().getFinalPosition().right][currentLevel.getCurrentMove()
                     .getMovementFinishedInfo().getFinalPosition().left] = MatrixCoordinatesUtils.getDestroyedPlayer(currentLevel.isPlayer1Turn()).getValue();
             cellsToUpdate.add(currentLevel.getCurrentMove().getMovementFinishedInfo().getFinalPosition());
         }
@@ -431,7 +433,7 @@ public class MainViewCreator {
 
     private int calculateBestColumnForPlayer() {
         Map<Integer, Integer> colsAndScores = new HashMap<Integer, Integer>();
-        int[][] cloneArray = MatrixCoordinatesUtils.cloneArray(currentLevel.getLeveltMatrix());
+        int[][] cloneArray = MatrixCoordinatesUtils.cloneArray(currentLevel.getLevelMatrix());
         resetState();
         for (Integer i : currentLevel.getStartPositionColumnsForPlayer2()) {
             MutablePair<Integer, Integer> currentPosition = new MutablePair<Integer, Integer>(i, mcu.getFirstRowIndex());
@@ -513,7 +515,7 @@ public class MainViewCreator {
 
             nextPos = new MutablePair<>();
             if (currentLevel.getCurrentMove().getCurrentRandomTornadoNextPosition() == null) {
-                currentLevel.getCurrentMove().setCurrentRandomTornadoNextPosition(mcu.getRandomUpPosition(currentPos, currentLevel.getLeveltMatrix()));
+                currentLevel.getCurrentMove().setCurrentRandomTornadoNextPosition(mcu.getRandomUpPosition(currentPos, currentLevel.getLevelMatrix()));
             }
             nextPos.left = currentLevel.getCurrentMove().getCurrentRandomTornadoNextPosition().getLeft();
             nextPos.right = currentLevel.getCurrentMove().getCurrentRandomTornadoNextPosition().getRight();

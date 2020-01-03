@@ -1,36 +1,21 @@
 package libgdx.implementations.balloon.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import java.util.Arrays;
 import java.util.List;
 
-import libgdx.campaign.CampaignLevelStatusEnum;
 import libgdx.campaign.CampaignService;
 import libgdx.campaign.CampaignStoreLevel;
-import libgdx.constants.Language;
-import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.game.Game;
-import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.balloon.BalloonCampaignLevelEnum;
 import libgdx.implementations.balloon.BalloonScreenManager;
-import libgdx.implementations.math.MathCampaignLevelEnum;
-import libgdx.implementations.math.MathScreenManager;
-import libgdx.implementations.math.MathSpecificResource;
-import libgdx.implementations.skelgame.SkelGameRatingService;
-import libgdx.resources.MainResource;
-import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
@@ -50,10 +35,6 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
 
     @Override
     public void buildStage() {
-        if (Game.getInstance().isFirstTimeMainMenuDisplayed()) {
-            new SkelGameRatingService(this).appLaunched();
-        }
-        Game.getInstance().setFirstTimeMainMenuDisplayed(false);
         Table table = new Table();
         table.add(createAllTable());
         table.setFillParent(true);
@@ -95,7 +76,7 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
             levelBtn.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    screenManager.showGameScreen();
+                    screenManager.showGameScreen(campaignLevelEnum);
                 }
             });
             table.add(levelBtn).height(levelBtnHeight).width(levelBtnWidth);

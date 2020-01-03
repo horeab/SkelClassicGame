@@ -6,12 +6,12 @@ public class BalloonScreenManager extends AbstractScreenManager {
 
     @Override
     public void showMainScreen() {
-        showScreen(BalloonScreenTypeEnum.CAMPAIGN_SCREEN);
+        showGameScreen(BalloonCampaignLevelEnum.LEVEL_0_0);
 //        showScreen(BalloonScreenTypeEnum.MAINMENU_SCREEN);
     }
 
-    public void showGameScreen() {
-        showScreen(BalloonScreenTypeEnum.MAINMENU_SCREEN);
+    public void showGameScreen(BalloonCampaignLevelEnum balloonCampaignLevelEnum) {
+        showScreen(BalloonScreenTypeEnum.GAME_SCREEN, balloonCampaignLevelEnum);
     }
 
     public void showCampaignScreen() {
