@@ -8,6 +8,7 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.balloon.model.MatrixValue;
+import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
@@ -29,9 +30,10 @@ public class ImageManager {
         return createImgView(matrixValue);
     }
 
-    public Table getFinalPositionImageWithPoints(int points,  MatrixValue finalPlayerValue) {
+    public Table getFinalPositionImageWithPoints(int points, MatrixValue finalPlayerValue, float cellDimen) {
         Table imageView = createImgView(finalPlayerValue);
-        MyWrappedLabel textView = new MyWrappedLabel(points + "");
+        float fontScale = FontManager.calculateMultiplierStandardFontSize(cellDimen / 40);
+        MyWrappedLabel textView = new MyWrappedLabel(points + "", fontScale);
         FontColor textColor = FontColor.WHITE;
         if (finalPlayerValue == MatrixValue.FINAL_PLAYER_2) {
             textColor = FontColor.BLACK;

@@ -46,7 +46,7 @@ public class MainViewCreator {
 
     public final static int ROW_ID_STARTING_INT_VALUE = 200;
     public final static float BALLOON_PAUSE_INTERVAL = 0.2f;
-    public final static float PLAYER2_PAUSE_INTERVAL = 0.4f;
+    public final static float PLAYER2_PAUSE_INTERVAL = 0.8f;
     public static final String PL_2_CONTAINER_NAME = "PL2CONTAINER";
     public static final String LVLINFO_NAME = "LVLINFO_NAME";
     private int imageViewIdForFinalBalloonPosition = 777;
@@ -56,18 +56,19 @@ public class MainViewCreator {
     private ImageManager imageManager;
 
     private CurrentLevel currentLevel;
+    private LevelInfo levelInfo;
 
     private int nrOfRows;
     private int nrOfCols;
 
-    private LevelInfo levelInfo;
+    private float cellDimen;
 
     private MatrixCoordinatesUtils mcu;
 
     private AbstractScreen abstractScreen;
 
 
-    public MainViewCreator(int nrOfRows, int nrOfCols, CurrentLevel currentLevel, LevelInfo levelInfo, AbstractScreen screen) {
+    public MainViewCreator(int nrOfRows, int nrOfCols, LevelInfo levelInfo, CurrentLevel currentLevel, AbstractScreen screen) {
         this.nrOfRows = nrOfRows;
         this.nrOfCols = nrOfCols;
         this.currentLevel = currentLevel;
@@ -75,12 +76,14 @@ public class MainViewCreator {
         this.abstractScreen = screen;
         imageManager = new ImageManager(nrOfCols, nrOfRows);
         mcu = new MatrixCoordinatesUtils(nrOfCols, nrOfRows);
+        cellDimen = ScreenDimensionsManager.getScreenWidthValue(100 / nrOfCols);
     }
 
     public Table createGameRowsContainer() {
         List<Table> gameRows = createGameRows();
         Table container = new Table();
-        container.add(createHeader()).pad(MainDimen.vertical_general_margin.getDimen()).grow().row();
+        float pad = MainDimen.vertical_general_margin.getDimen();
+        container.add(createHeader()).padBottom(pad / 2).padLeft(pad).padRight(pad).padTop(pad).grow().row();
         container.setFillParent(true);
         for (Table row : gameRows) {
             container.add(row).grow().row();
@@ -90,6 +93,7 @@ public class MainViewCreator {
 
     private Table createHeader() {
         Table header = new Table();
+        header.setBackground(GraphicUtils.getNinePatch(BalloonSpecificResource.light_blue_backgr));
         header.add(createPlContainer(true, BalloonSpecificResource.balloonp1, "20", 1)).growX();
         header.add(createLevelInfo()).growX();
         Table pl2Container = createPlContainer(false, BalloonSpecificResource.balloonp2, "20", 2);
@@ -99,14 +103,22 @@ public class MainViewCreator {
     }
 
     private Table createLevelInfo() {
-        Table table = new Table();
-        MyWrappedLabel lvlInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(20)).setFontConfig(new FontConfig(FontColor.GREEN.getColor(), FontConfig.FONT_SIZE * 3)).setText("1 - 5").build());
-        lvlInfo.setName(LVLINFO_NAME);
-        table.add(lvlInfo);
-        return table;
+        if (!levelInfo.isMultiplayer()) {
+            Table table = new Table();
+            int levelNrToDisplay = levelInfo.getLevelEnum().getLevelNr() + 1;
+            int stageNrToDisplay = levelInfo.getLevelEnum().getStageNr() + 1;
+            MyWrappedLabel lvlInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(20))
+                    .setFontConfig(new FontConfig(FontColor.GREEN.getColor(), FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 3.3f), 4f))
+                    .setText(levelNrToDisplay + " - " + stageNrToDisplay).build());
+            lvlInfo.setName(LVLINFO_NAME);
+            table.add(lvlInfo);
+            return table;
+        }
+        return new Table();
     }
 
-    private Table createPlContainer(boolean displayIconFirst, BalloonSpecificResource plIcon, String score, int playerNr) {
+    private Table createPlContainer(boolean displayIconFirst, BalloonSpecificResource
+            plIcon, String score, int playerNr) {
         Table plContainer = new Table();
         MyWrappedLabel plScore = new MyWrappedLabel(score, FontManager.getBigFontDim() * 1.4f);
         plScore.setName(SCOREPLAYER + playerNr);
@@ -148,22 +160,22 @@ public class MainViewCreator {
     public void createDisplayOfMatrix(int[][] matrix) {
         int row = 0;
         updateMatrixWithStartPositionForPlayer();
-        float dimen = ScreenDimensionsManager.getScreenWidthValue(100 / nrOfCols);
         for (Table viewRow : getCreatedRows()) {
             viewRow.clearChildren();
             for (int col = 0; col < nrOfCols; col++) {
                 Table img = createImgView(matrix[row][col], col, row);
                 img.setBackground(getBackgroundForColumn(col));
-                viewRow.add(img).width(dimen).height(dimen);
+                viewRow.add(img).width(cellDimen).height(cellDimen);
             }
             row++;
         }
     }
 
+
     private NinePatchDrawable getBackgroundForColumn(int col) {
-        Res colColor = BalloonSpecificResource.light_green_backgr;
+        Res colColor = BalloonSpecificResource.air;
         if (col % 2 == 0) {
-            colColor = BalloonSpecificResource.light_blue_backgr;
+            colColor = BalloonSpecificResource.light_green_backgr;
         }
         return GraphicUtils.getNinePatch(colColor);
     }
@@ -181,7 +193,8 @@ public class MainViewCreator {
         }
     }
 
-    private void refreshDisplayOfMatrix(Set<MutablePair<Integer, Integer>> cellsToUpdate, int[][] matrix) {
+    private void refreshDisplayOfMatrix(Set<MutablePair<Integer, Integer>> cellsToUpdate,
+                                        int[][] matrix) {
         updateMatrixWithStartPositionForPlayer();
         for (MutablePair<Integer, Integer> point : cellsToUpdate) {
             Table img = createImgView(matrix[point.right][point.left], point.left, point.right);
@@ -224,11 +237,11 @@ public class MainViewCreator {
         Table image = null;
         if (mtrxVal == MatrixValue.FINAL_PLAYER_1.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer1().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    MatrixValue.FINAL_PLAYER_1);
+                    MatrixValue.FINAL_PLAYER_1, cellDimen);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else if (mtrxVal == MatrixValue.FINAL_PLAYER_2.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer2().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    MatrixValue.FINAL_PLAYER_2);
+                    MatrixValue.FINAL_PLAYER_2, cellDimen);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else {
             image = imageManager.getImage(MatrixValue.getMatrixValue(mtrxVal));
@@ -238,7 +251,7 @@ public class MainViewCreator {
                 new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (!currentLevel.isPlayer2Computer() || (currentLevel.isPlayer2Computer() && currentLevel.isPlayer1Turn())) {
+                        if (currentLevel.getLevelMatrix()[row][selectedColumn] != 0 && (!currentLevel.isPlayer2Computer() || (currentLevel.isPlayer2Computer() && currentLevel.isPlayer1Turn()))) {
                             clickBalloon(selectedColumn, mtrxVal);
                         }
                     }
@@ -257,7 +270,7 @@ public class MainViewCreator {
     }
 
     private void clickBalloon(int clickedColumn, int cellValue) {
-        boolean isPlayerClicked = cellValue == MatrixValue.PLAYER_1.getValue() || cellValue == MatrixValue.PLAYER_2.getValue();
+        boolean isPlayerClicked = isPlayerValue(cellValue);
         if (isPlayerClicked && currentLevel.getCurrentMove().isMovementStopped()) {
             currentLevel.getCurrentMove().setClickedColumn(clickedColumn);
 
@@ -266,6 +279,10 @@ public class MainViewCreator {
             resetState();
             moveElement();
         }
+    }
+
+    private boolean isPlayerValue(int cellValue) {
+        return cellValue == MatrixValue.PLAYER_1.getValue() || cellValue == MatrixValue.PLAYER_2.getValue();
     }
 
     private void movePlanes() {
@@ -432,7 +449,8 @@ public class MainViewCreator {
         return cellsToUpdate;
     }
 
-    private boolean simulateMovementAndVerifyIfItsCorrect(int tries, PlayerPosition playerPositionCopy, int[][] clonedMatrix) {
+    private boolean simulateMovementAndVerifyIfItsCorrect(int tries, PlayerPosition
+            playerPositionCopy, int[][] clonedMatrix) {
         int nrOfMoves = 0;
 
         MutablePair<Integer, Integer> point = playerPositionCopy.getCurrentPosition().getPoint();
@@ -526,13 +544,13 @@ public class MainViewCreator {
             }
             currentLevel.getCurrentMove().setMovementStopped(true);
 
-            pauseMovementForSecondPlayer(bestColumnForPlayer2);
+            pauseMovementForSecondPlayer(bestColumnForPlayer2, isFirstTurn);
         }
     }
 
-    private void pauseMovementForSecondPlayer(int bestColumnForPlayer) {
+    private void pauseMovementForSecondPlayer(int bestColumnForPlayer, boolean isFirstTurn) {
         final int finalBestColumnForPlayer2 = bestColumnForPlayer;
-        abstractScreen.addAction(Actions.sequence(Actions.delay(PLAYER2_PAUSE_INTERVAL), Utils.createRunnableAction(new Runnable() {
+        abstractScreen.addAction(Actions.sequence(Actions.delay(isFirstTurn && !currentLevel.isPlayer1Turn() ? PLAYER2_PAUSE_INTERVAL * 4f : PLAYER2_PAUSE_INTERVAL), Utils.createRunnableAction(new Runnable() {
             @Override
             public void run() {
                 clickBalloon(finalBestColumnForPlayer2, MatrixValue.PLAYER_2.getValue());
@@ -540,7 +558,8 @@ public class MainViewCreator {
         })));
     }
 
-    private void incrementPointsForCurrentMove(int[][] clonedMatrix, MutablePair<Integer, Integer> nextPosition) {
+    private void incrementPointsForCurrentMove(int[][] clonedMatrix, MutablePair<
+            Integer, Integer> nextPosition) {
         if (nextPosition != null) {
             int mtrxValue = clonedMatrix[nextPosition.right][nextPosition.left];
             int score = currentLevel.getCurrentMove().getMovementFinishedInfo().getScore() + mcu.calculatePointsForCurrentMove(mtrxValue);

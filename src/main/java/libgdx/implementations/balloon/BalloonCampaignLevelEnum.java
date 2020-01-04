@@ -15,7 +15,7 @@ public enum BalloonCampaignLevelEnum implements CampaignLevel {
     // nrOfRows/nrOfCols ~ 0.5
 
     //@formatter:off
-    LEVEL_0_0(0, 0, null, null, true, true, null, HardcodedLevels.LEVEL00),
+    LEVEL_0_0(0, 0, null, null, false, true, null, HardcodedLevels.LEVEL00),
     LEVEL_0_1(0, 1, null, null, true, true, null, HardcodedLevels.LEVEL00),
     LEVEL_0_2(0, 2, null, null, true, true, null, HardcodedLevels.LEVEL00),
     LEVEL_0_3(0, 3, null, null, true, true, null, HardcodedLevels.LEVEL00),

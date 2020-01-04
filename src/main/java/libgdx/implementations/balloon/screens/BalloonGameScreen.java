@@ -33,8 +33,8 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
         Integer nrOfRowsForMatrix = 8;
         Integer nrOfColumnsForMatrix = 16;
-//        Integer nrOfRowsForMatrix = 4;
-//        Integer nrOfColumnsForMatrix = 8;
+//        Integer nrOfRowsForMatrix = 5;
+//        Integer nrOfColumnsForMatrix = 10;
 //        Integer nrOfRowsForMatrix = levelInfo.getNrOfRowsForMatrix();
 //        Integer nrOfColumnsForMatrix = levelInfo.getNrOfColumnsForMatrix();
         MatrixCreator matrixCreator = new MatrixCreator(nrOfRowsForMatrix, nrOfColumnsForMatrix);
@@ -50,16 +50,20 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
         currentLevel.setPlayer2ComputerMovesRandom(levelInfo.isEasyLevel());
         currentLevel.setPlayer2Computer(levelInfo.isPlayer2Computer());
 
-        mainViewCreator = new MainViewCreator(nrOfRowsForMatrix, nrOfColumnsForMatrix, currentLevel, levelInfo, getAbstractScreen());
+        mainViewCreator = new MainViewCreator(nrOfRowsForMatrix, nrOfColumnsForMatrix, levelInfo, currentLevel, getAbstractScreen());
     }
 
     @Override
     public void buildStage() {
+        if (currentLevel.isPlayer2Computer()) {
+            addAction(Actions.sequence(Actions.delay(2.8f)));
+        }
         addActor(mainViewCreator.createGameRowsContainer());
         mainViewCreator.createDisplayOfMatrix(currentLevel.getLevelMatrix());
-//        mainViewCreator.refreshScore();
+        mainViewCreator.refreshScore();
         mainViewCreator.isPlayer2First();
-        addAction(Actions.sequence(Actions.delay(1),Utils.createRunnableAction(new Runnable() {
+        decideWhatContainerToBeShown();
+        addAction(Actions.sequence(Actions.delay(.3f), Utils.createRunnableAction(new Runnable() {
             @Override
             public void run() {
                 toastDisplayWhichPlayerStarts();
@@ -80,15 +84,6 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
         return matrix;
     }
 
-    private void displayCurrentStageAndLevel() {
-        if (!levelInfo.isMultiplayer()) {
-            MyWrappedLabel levelInfoLabel = getRoot().findActor(MainViewCreator.LVLINFO_NAME);
-            int levelNrToDisplay = levelInfo.getLevelEnum().getLevelNr() + 1;
-            int stageNrToDisplay = levelInfo.getLevelEnum().getStageNr() + 1;
-            levelInfoLabel.setText(levelNrToDisplay + " - " + stageNrToDisplay);
-        }
-    }
-
     private void decideWhatContainerToBeShown() {
         if (!levelInfo.isMultiplayer() && levelInfo.getLevelEnum().isOnePlayerLevel()) {
             getRoot().findActor(MainViewCreator.PL_2_CONTAINER_NAME).setVisible(false);
@@ -98,14 +93,18 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
     private void toastDisplayWhichPlayerStarts() {
         int playerNr = currentLevel.isPlayer1Turn() ? 1 : 2;
 
-        MyNotificationPopupConfigBuilder myNotificationPopupConfigBuilder = new MyNotificationPopupConfigBuilder().setText(
-                "Player " + playerNr + " starts");
-        myNotificationPopupConfigBuilder.setFontScale(FontManager.getBigFontDim());
-        if (playerNr == 1) {
-            myNotificationPopupConfigBuilder.setTextColor(FontColor.DARK_RED);
-        } else {
-            myNotificationPopupConfigBuilder.setTextColor(FontColor.YELLOW);
+        //TODO
+        String text = "Player " + playerNr + " starts";
+        if (!levelInfo.isMultiplayer()) {
+            text = playerNr == 1 ? "You start" : "Opponent starts";
         }
+        MyNotificationPopupConfigBuilder myNotificationPopupConfigBuilder = new MyNotificationPopupConfigBuilder().setText(
+                text);
+        FontColor fontColor = FontColor.DARK_RED;
+        if (playerNr == 2) {
+            fontColor = FontColor.YELLOW;
+        }
+        myNotificationPopupConfigBuilder.setFontConfig(new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 3, 3f));
         new MyNotificationPopupCreator(myNotificationPopupConfigBuilder.build()).shortNotificationPopup().addToPopupManager();
     }
 
