@@ -1,9 +1,12 @@
 package libgdx.implementations.balloon.logic;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -19,6 +22,7 @@ import java.util.Random;
 import java.util.Set;
 
 import libgdx.controls.label.MyWrappedLabel;
+import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.balloon.model.CurrentLevel;
@@ -26,22 +30,28 @@ import libgdx.implementations.balloon.model.LevelInfo;
 import libgdx.implementations.balloon.model.MatrixValue;
 import libgdx.implementations.balloon.model.MatrixWithChangedCells;
 import libgdx.implementations.balloon.model.PlayerPosition;
+import libgdx.resources.FontManager;
 import libgdx.resources.Res;
+import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
+import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.SoundUtils;
 import libgdx.utils.Utils;
+import libgdx.utils.model.FontColor;
+import libgdx.utils.model.FontConfig;
 
 public class MainViewCreator {
 
     private static final int NR_OF_TRIES_TO_FIND_A_CORRECT_MOVEMENT = 200;
 
     public final static int ROW_ID_STARTING_INT_VALUE = 200;
-    public final static long BALLOON_PAUSE_INTERVAL = 200;
-    public final static long PLAYER2_PAUSE_INTERVAL = 400;
+    public final static float BALLOON_PAUSE_INTERVAL = 0.2f;
+    public final static float PLAYER2_PAUSE_INTERVAL = 0.4f;
+    public static final String PL_2_CONTAINER_NAME = "PL2CONTAINER";
+    public static final String LVLINFO_NAME = "LVLINFO_NAME";
     private int imageViewIdForFinalBalloonPosition = 777;
 
-    private final static String SCOREPLAYER1 = "SCOREPLAYER1";
-    private final static String SCOREPLAYER2 = "SCOREPLAYER2";
+    private final static String SCOREPLAYER = "SCOREPLAYER";
 
     private ImageManager imageManager;
 
@@ -57,24 +67,59 @@ public class MainViewCreator {
     private AbstractScreen abstractScreen;
 
 
-    public MainViewCreator(CurrentLevel currentLevel, LevelInfo levelInfo, AbstractScreen screen) {
-        this.nrOfRows = currentLevel.getLevelMatrix().length;
-        this.nrOfCols = currentLevel.getLevelMatrix()[0].length;
+    public MainViewCreator(int nrOfRows, int nrOfCols, CurrentLevel currentLevel, LevelInfo levelInfo, AbstractScreen screen) {
+        this.nrOfRows = nrOfRows;
+        this.nrOfCols = nrOfCols;
         this.currentLevel = currentLevel;
         this.levelInfo = levelInfo;
         this.abstractScreen = screen;
-        imageManager = new ImageManager();
+        imageManager = new ImageManager(nrOfCols, nrOfRows);
         mcu = new MatrixCoordinatesUtils(nrOfCols, nrOfRows);
     }
 
     public Table createGameRowsContainer() {
         List<Table> gameRows = createGameRows();
         Table container = new Table();
+        container.add(createHeader()).pad(MainDimen.vertical_general_margin.getDimen()).grow().row();
         container.setFillParent(true);
         for (Table row : gameRows) {
-            container.add(row).growX().row();
+            container.add(row).grow().row();
         }
         return container;
+    }
+
+    private Table createHeader() {
+        Table header = new Table();
+        header.add(createPlContainer(true, BalloonSpecificResource.balloonp1, "20", 1)).growX();
+        header.add(createLevelInfo()).growX();
+        Table pl2Container = createPlContainer(false, BalloonSpecificResource.balloonp2, "20", 2);
+        pl2Container.setName(PL_2_CONTAINER_NAME);
+        header.add(pl2Container).growX();
+        return header;
+    }
+
+    private Table createLevelInfo() {
+        Table table = new Table();
+        MyWrappedLabel lvlInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(20)).setFontConfig(new FontConfig(FontColor.GREEN.getColor(), FontConfig.FONT_SIZE * 3)).setText("1 - 5").build());
+        lvlInfo.setName(LVLINFO_NAME);
+        table.add(lvlInfo);
+        return table;
+    }
+
+    private Table createPlContainer(boolean displayIconFirst, BalloonSpecificResource plIcon, String score, int playerNr) {
+        Table plContainer = new Table();
+        MyWrappedLabel plScore = new MyWrappedLabel(score, FontManager.getBigFontDim() * 1.4f);
+        plScore.setName(SCOREPLAYER + playerNr);
+        float dimen = MainDimen.horizontal_general_margin.getDimen();
+        float iconDimen = dimen * 2;
+        if (displayIconFirst) {
+            plContainer.add(GraphicUtils.getImage(plIcon)).width(iconDimen).height(iconDimen);
+        }
+        plContainer.add(plScore).padLeft(dimen).padRight(dimen);
+        if (!displayIconFirst) {
+            plContainer.add(GraphicUtils.getImage(plIcon)).width(iconDimen).height(iconDimen);
+        }
+        return plContainer;
     }
 
     private List<Table> createGameRows() {
@@ -103,12 +148,13 @@ public class MainViewCreator {
     public void createDisplayOfMatrix(int[][] matrix) {
         int row = 0;
         updateMatrixWithStartPositionForPlayer();
+        float dimen = ScreenDimensionsManager.getScreenWidthValue(100 / nrOfCols);
         for (Table viewRow : getCreatedRows()) {
             viewRow.clearChildren();
             for (int col = 0; col < nrOfCols; col++) {
                 Table img = createImgView(matrix[row][col], col, row);
                 img.setBackground(getBackgroundForColumn(col));
-                viewRow.add(img);
+                viewRow.add(img).width(dimen).height(dimen);
             }
             row++;
         }
@@ -139,7 +185,6 @@ public class MainViewCreator {
         updateMatrixWithStartPositionForPlayer();
         for (MutablePair<Integer, Integer> point : cellsToUpdate) {
             Table img = createImgView(matrix[point.right][point.left], point.left, point.right);
-            img.setBackground(getBackgroundForColumn(point.left));
             Table createdRow = getCreatedRow(point.right);
             Table imgTableToUpdate = (Table) createdRow.getChildren().get(point.left);
             imgTableToUpdate.clearChildren();
@@ -148,9 +193,9 @@ public class MainViewCreator {
     }
 
     public void refreshScore() {
-        MyWrappedLabel scorePlayer1 = (MyWrappedLabel) abstractScreen.getRoot().findActor(SCOREPLAYER1);
+        MyWrappedLabel scorePlayer1 = (MyWrappedLabel) abstractScreen.getRoot().findActor(SCOREPLAYER + 1);
         scorePlayer1.setText(calculateScore(currentLevel.getFinalPositionPairsForPlayer1().values()) + "");
-        MyWrappedLabel scorePlayer2 = (MyWrappedLabel) abstractScreen.getRoot().findActor(SCOREPLAYER2);
+        MyWrappedLabel scorePlayer2 = (MyWrappedLabel) abstractScreen.getRoot().findActor(SCOREPLAYER + 2);
         scorePlayer2.setText(calculateScore(currentLevel.getFinalPositionPairsForPlayer2().values()) + "");
     }
 
@@ -179,19 +224,20 @@ public class MainViewCreator {
         Table image = null;
         if (mtrxVal == MatrixValue.FINAL_PLAYER_1.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer1().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    imageViewIdForFinalBalloonPosition, MatrixValue.FINAL_PLAYER_1);
+                    MatrixValue.FINAL_PLAYER_1);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else if (mtrxVal == MatrixValue.FINAL_PLAYER_2.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer2().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    imageViewIdForFinalBalloonPosition, MatrixValue.FINAL_PLAYER_2);
+                    MatrixValue.FINAL_PLAYER_2);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else {
             image = imageManager.getImage(MatrixValue.getMatrixValue(mtrxVal));
         }
+        image.setTouchable(Touchable.enabled);
         image.addListener(
-                new ChangeListener() {
+                new ClickListener() {
                     @Override
-                    public void changed(ChangeEvent event, Actor actor) {
+                    public void clicked(InputEvent event, float x, float y) {
                         if (!currentLevel.isPlayer2Computer() || (currentLevel.isPlayer2Computer() && currentLevel.isPlayer1Turn())) {
                             clickBalloon(selectedColumn, mtrxVal);
                         }
@@ -258,6 +304,7 @@ public class MainViewCreator {
         currentLevel.setLevelMatrix(matrixWithChangedCells.getLeveltMatrix());
     }
 
+
     private void moveElement() {
         int tries = 0;
         while (!simulateMovementAndVerifyIfItsCorrect(tries, currentLevel.getCurrentMove().getPlayerPosition().copy(),
@@ -268,32 +315,41 @@ public class MainViewCreator {
         final MutableInt indx = new MutableInt(0);
         currentLevel.getCurrentMove().getMovementFinishedInfo().setDestroyed(false);
         removePlayerStartPosition(currentLevel.getCurrentMove().getClickedColumn());
-        while (indx.intValue() < nrOfMoves) {
-            abstractScreen.addAction(Actions.sequence(Utils.createRunnableAction(new Runnable() {
-                @Override
-                public void run() {
-                    playSound(indx.intValue());
-                    startElemMovement();
-                    refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
-                    currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate().clear();
-                    indx.setValue(indx.intValue() + 1);
+        Action[] array = new Action[nrOfMoves];
+        for (int i = 0; i < nrOfMoves; i++) {
+            array[i] = Actions.sequence(createMoveRunnable(i), Actions.delay(BALLOON_PAUSE_INTERVAL));
+        }
+        abstractScreen.addAction(Actions.sequence(Actions.sequence(array), Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                movePlanes();
+                finalPositionUpdate();
+
+                addFirstRowToCellUpdate();
+                refreshScore();
+                currentLevel.getCurrentMove().setMovementStopped(true);
+
+                togglePlayer(false);
+
+                if (isLevelFinished()) {
+                    levelFinished(calculateScore(currentLevel.getFinalPositionPairsForPlayer1().values()), calculateScore(currentLevel
+                            .getFinalPositionPairsForPlayer2().values()));
                 }
-            }), Actions.delay(BALLOON_PAUSE_INTERVAL)));
-        }
-        movePlanes();
-        finalPositionUpdate();
+                refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
+            }
+        })));
+    }
 
-        addFirstRowToCellUpdate();
-        refreshScore();
-        currentLevel.getCurrentMove().setMovementStopped(true);
-
-        togglePlayer(false);
-        refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
-
-        if (isLevelFinished()) {
-            levelFinished(calculateScore(currentLevel.getFinalPositionPairsForPlayer1().values()), calculateScore(currentLevel
-                    .getFinalPositionPairsForPlayer2().values()));
-        }
+    private RunnableAction createMoveRunnable(final int indx) {
+        return Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                playSound(indx);
+                startElemMovement();
+                refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
+                currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate().clear();
+            }
+        });
     }
 
     private boolean isLevelFinished() {

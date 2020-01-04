@@ -1,7 +1,13 @@
 package libgdx.implementations.balloon.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import libgdx.controls.label.MyWrappedLabel;
+import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfig;
+import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
+import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
+import libgdx.controls.popup.notificationpopup.ShortNotificationPopup;
 import libgdx.implementations.balloon.BalloonCampaignLevelEnum;
 import libgdx.implementations.balloon.BalloonScreenManager;
 import libgdx.implementations.balloon.logic.MainViewCreator;
@@ -9,12 +15,15 @@ import libgdx.implementations.balloon.logic.MatrixCoordinatesUtils;
 import libgdx.implementations.balloon.logic.MatrixCreator;
 import libgdx.implementations.balloon.model.CurrentLevel;
 import libgdx.implementations.balloon.model.LevelInfo;
+import libgdx.resources.FontManager;
+import libgdx.resources.gamelabel.SpecificPropertiesUtils;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.Utils;
+import libgdx.utils.model.FontColor;
+import libgdx.utils.model.FontConfig;
 
 public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
-    private BalloonCampaignLevelEnum levelEnum;
     private MainViewCreator mainViewCreator;
     private LevelInfo levelInfo;
     private CurrentLevel currentLevel;
@@ -22,7 +31,13 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
     public BalloonGameScreen(BalloonCampaignLevelEnum levelEnum) {
         this.levelInfo = new LevelInfo(false, levelEnum);
 
-        MatrixCreator matrixCreator = new MatrixCreator(levelInfo.getNrOfRowsForMatrix(), levelInfo.getNrOfColumnsForMatrix());
+        Integer nrOfRowsForMatrix = 8;
+        Integer nrOfColumnsForMatrix = 16;
+//        Integer nrOfRowsForMatrix = 4;
+//        Integer nrOfColumnsForMatrix = 8;
+//        Integer nrOfRowsForMatrix = levelInfo.getNrOfRowsForMatrix();
+//        Integer nrOfColumnsForMatrix = levelInfo.getNrOfColumnsForMatrix();
+        MatrixCreator matrixCreator = new MatrixCreator(nrOfRowsForMatrix, nrOfColumnsForMatrix);
         int[][] matrix = getMatrix(matrixCreator);
 
         currentLevel = new CurrentLevel();
@@ -35,16 +50,21 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
         currentLevel.setPlayer2ComputerMovesRandom(levelInfo.isEasyLevel());
         currentLevel.setPlayer2Computer(levelInfo.isPlayer2Computer());
 
-        mainViewCreator = new MainViewCreator(currentLevel, levelInfo, getAbstractScreen());
+        mainViewCreator = new MainViewCreator(nrOfRowsForMatrix, nrOfColumnsForMatrix, currentLevel, levelInfo, getAbstractScreen());
     }
 
     @Override
     public void buildStage() {
-        mainViewCreator = new MainViewCreator(currentLevel, levelInfo, this);
         addActor(mainViewCreator.createGameRowsContainer());
         mainViewCreator.createDisplayOfMatrix(currentLevel.getLevelMatrix());
 //        mainViewCreator.refreshScore();
         mainViewCreator.isPlayer2First();
+        addAction(Actions.sequence(Actions.delay(1),Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                toastDisplayWhichPlayerStarts();
+            }
+        })));
     }
 
     private int[][] getMatrix(MatrixCreator matrixCreator) {
@@ -52,7 +72,7 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
         if (!levelInfo.isMultiplayer()) {
 //            matrix = MatrixCoordinatesUtils.cloneArray(levelInfo.getLevelEnum().getMatrix());
 //            if (matrix == null) {
-                matrix = matrixCreator.getCreatedMatrix();
+            matrix = matrixCreator.getCreatedMatrix();
 //            }
         } else {
             matrix = matrixCreator.getCreatedMatrix();
@@ -62,33 +82,31 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
     private void displayCurrentStageAndLevel() {
         if (!levelInfo.isMultiplayer()) {
-//            TextView currentLevel = (TextView) findViewById(R.id.currentLevel);
-//            int levelNrToDisplay = levelInfo.getLevelEnum().getLevelNr() + 1;
-//            int stageNrToDisplay = levelInfo.getLevelEnum().getStageNr() + 1;
-//            currentLevel.setText(levelNrToDisplay + " - " + stageNrToDisplay);
+            MyWrappedLabel levelInfoLabel = getRoot().findActor(MainViewCreator.LVLINFO_NAME);
+            int levelNrToDisplay = levelInfo.getLevelEnum().getLevelNr() + 1;
+            int stageNrToDisplay = levelInfo.getLevelEnum().getStageNr() + 1;
+            levelInfoLabel.setText(levelNrToDisplay + " - " + stageNrToDisplay);
         }
     }
 
     private void decideWhatContainerToBeShown() {
         if (!levelInfo.isMultiplayer() && levelInfo.getLevelEnum().isOnePlayerLevel()) {
-//            findViewById(R.id.scorePlayer2).setVisibility(View.GONE);
-//            findViewById(R.id.scorePlayer2Img).setVisibility(View.GONE);
+            getRoot().findActor(MainViewCreator.PL_2_CONTAINER_NAME).setVisible(false);
         }
     }
 
     private void toastDisplayWhichPlayerStarts() {
         int playerNr = currentLevel.isPlayer1Turn() ? 1 : 2;
 
-//        Toast toast = Toast.makeText(this, null, Toast.LENGTH_LONG);
-//        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-//
-//        String color = RED;
-//        if (!currentLevel.isPlayer1Turn()) {
-//            color = YELLOW;
-//        }
-//        v.setText(Html.fromHtml(fontString(getResources().getString(R.string.player_label) + " " + playerNr, false, color) + " "
-//                + getResources().getString(R.string.player_start)));
-//        toast.show();
+        MyNotificationPopupConfigBuilder myNotificationPopupConfigBuilder = new MyNotificationPopupConfigBuilder().setText(
+                "Player " + playerNr + " starts");
+        myNotificationPopupConfigBuilder.setFontScale(FontManager.getBigFontDim());
+        if (playerNr == 1) {
+            myNotificationPopupConfigBuilder.setTextColor(FontColor.DARK_RED);
+        } else {
+            myNotificationPopupConfigBuilder.setTextColor(FontColor.YELLOW);
+        }
+        new MyNotificationPopupCreator(myNotificationPopupConfigBuilder.build()).shortNotificationPopup().addToPopupManager();
     }
 
     @Override
