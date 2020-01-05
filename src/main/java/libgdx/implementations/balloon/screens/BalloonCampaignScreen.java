@@ -16,6 +16,7 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.balloon.BalloonCampaignLevelEnum;
 import libgdx.implementations.balloon.BalloonScreenManager;
+import libgdx.implementations.balloon.model.LevelInfo;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
@@ -28,8 +29,10 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
 
     private CampaignService campaignService = new CampaignService();
     private List<CampaignStoreLevel> allCampaignLevelStores;
+    private int stageNr;
 
-    public BalloonCampaignScreen() {
+    public BalloonCampaignScreen(int stageNr) {
+        this.stageNr = stageNr;
         allCampaignLevelStores = campaignService.processAndGetAllLevels();
     }
 
@@ -46,22 +49,23 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
         Table table = new Table();
         int i = 0;
         float horizontalGeneralMarginDimen = MainDimen.horizontal_general_margin.getDimen();
-        int currentStage = 1;
-        SkelClassicButtonSkin btnSkin = SkelClassicButtonSkin.BALLOON_STAGE1;
-        if (currentStage == 2) {
+        SkelClassicButtonSkin btnSkin = SkelClassicButtonSkin.BALLOON_STAGE0;
+        if (stageNr == 1) {
+            btnSkin = SkelClassicButtonSkin.BALLOON_STAGE1;
+        } else if (stageNr == 2) {
             btnSkin = SkelClassicButtonSkin.BALLOON_STAGE2;
-        } else if (currentStage == 3) {
-            btnSkin = SkelClassicButtonSkin.BALLOON_STAGE3;
         }
         float levelBtnWidth = ScreenDimensionsManager.getScreenWidthValue(20);
         float levelBtnHeight = ScreenDimensionsManager.getScreenWidthValue(6);
-        table.add().width(levelBtnWidth);
+        //TODO
+        String text = getStageTitle(stageNr);
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(
                         new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 4))
-                        .setText("Stage " + (i + 1)).build())).padBottom(horizontalGeneralMarginDimen * 3).width(levelBtnWidth);
-        table.add().width(levelBtnWidth).row();
-        for (final BalloonCampaignLevelEnum campaignLevelEnum : BalloonCampaignLevelEnum.values()) {
+                        .setText(text).build())).padBottom(horizontalGeneralMarginDimen * 3).width(levelBtnWidth).row();
+        List<BalloonCampaignLevelEnum> levelsForStage = BalloonCampaignLevelEnum.getLevelsForStage(stageNr);
+        Table btnContainer = new Table();
+        for (final BalloonCampaignLevelEnum campaignLevelEnum : levelsForStage) {
             MyButton levelBtn = new ButtonBuilder()
                     .setButtonSkin(btnSkin)
                     .build();
@@ -69,23 +73,30 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
             if (campaignStoreLevel == null) {
                 levelBtn.setDisabled(true);
             }
+            //TODO
+            String btnText = levelsForStage.size() == 1 ? "Play" : MainGameLabel.l_level.getText("" + (i + 1));
             levelBtn.add(new MyWrappedLabel(
                     new MyWrappedLabelConfigBuilder().setWrappedLineLabel(levelBtnWidth).setFontConfig(
                             new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 2))
-                            .setText(MainGameLabel.l_level.getText("" + (i + 1))).build()));
+                            .setText(btnText).build()));
             levelBtn.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    screenManager.showGameScreen(campaignLevelEnum);
+                    screenManager.showGameScreen(new LevelInfo(false, campaignLevelEnum));
                 }
             });
-            table.add(levelBtn).height(levelBtnHeight).width(levelBtnWidth);
             if (i > 0 && (i + 1) % 3 == 0) {
-                table.row();
+                btnContainer.row();
             }
             i++;
+            btnContainer.add(levelBtn).height(levelBtnHeight).width(levelBtnWidth);
         }
+        table.add(btnContainer);
         return table;
+    }
+
+    public static String getStageTitle(int stageNr) {
+        return stageNr == 0 ? "Tutorial" : "Stage " + (stageNr);
     }
 
     @Override

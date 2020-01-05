@@ -3,20 +3,14 @@ package libgdx.implementations.balloon.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-import libgdx.controls.label.MyWrappedLabel;
-import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfig;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
-import libgdx.controls.popup.notificationpopup.ShortNotificationPopup;
-import libgdx.implementations.balloon.BalloonCampaignLevelEnum;
 import libgdx.implementations.balloon.BalloonScreenManager;
 import libgdx.implementations.balloon.logic.MainViewCreator;
 import libgdx.implementations.balloon.logic.MatrixCoordinatesUtils;
 import libgdx.implementations.balloon.logic.MatrixCreator;
 import libgdx.implementations.balloon.model.CurrentLevel;
 import libgdx.implementations.balloon.model.LevelInfo;
-import libgdx.resources.FontManager;
-import libgdx.resources.gamelabel.SpecificPropertiesUtils;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
@@ -28,15 +22,15 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
     private LevelInfo levelInfo;
     private CurrentLevel currentLevel;
 
-    public BalloonGameScreen(BalloonCampaignLevelEnum levelEnum) {
-        this.levelInfo = new LevelInfo(false, levelEnum);
+    public BalloonGameScreen(LevelInfo levelInfo) {
+        this.levelInfo = levelInfo;
 
-        Integer nrOfRowsForMatrix = 8;
-        Integer nrOfColumnsForMatrix = 16;
-//        Integer nrOfRowsForMatrix = 5;
-//        Integer nrOfColumnsForMatrix = 10;
-//        Integer nrOfRowsForMatrix = levelInfo.getNrOfRowsForMatrix();
-//        Integer nrOfColumnsForMatrix = levelInfo.getNrOfColumnsForMatrix();
+//        Integer nrOfRowsForMatrix = 8;
+//        Integer nrOfColumnsForMatrix = 16;
+//        nrOfRowsForMatrix = 5;
+//        nrOfColumnsForMatrix = 10;
+        Integer nrOfRowsForMatrix = levelInfo.getNrOfRowsForMatrix();
+        Integer nrOfColumnsForMatrix = levelInfo.getNrOfColumnsForMatrix();
         MatrixCreator matrixCreator = new MatrixCreator(nrOfRowsForMatrix, nrOfColumnsForMatrix);
         int[][] matrix = getMatrix(matrixCreator);
 
@@ -61,23 +55,25 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
         addActor(mainViewCreator.createGameRowsContainer());
         mainViewCreator.createDisplayOfMatrix(currentLevel.getLevelMatrix());
         mainViewCreator.refreshScore();
-        mainViewCreator.isPlayer2First();
+        mainViewCreator.processFirstPlayerActions();
         decideWhatContainerToBeShown();
-        addAction(Actions.sequence(Actions.delay(.3f), Utils.createRunnableAction(new Runnable() {
-            @Override
-            public void run() {
-                toastDisplayWhichPlayerStarts();
-            }
-        })));
+        if (!levelInfo.isOnePlayerLevel()) {
+            addAction(Actions.sequence(Actions.delay(.3f), Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                    toastDisplayWhichPlayerStarts();
+                }
+            })));
+        }
     }
 
     private int[][] getMatrix(MatrixCreator matrixCreator) {
         int[][] matrix = null;
         if (!levelInfo.isMultiplayer()) {
-//            matrix = MatrixCoordinatesUtils.cloneArray(levelInfo.getLevelEnum().getMatrix());
-//            if (matrix == null) {
-            matrix = matrixCreator.getCreatedMatrix();
-//            }
+            matrix = MatrixCoordinatesUtils.cloneArray(levelInfo.getLevelEnum().getMatrix());
+            if (matrix == null) {
+                matrix = matrixCreator.getCreatedMatrix();
+            }
         } else {
             matrix = matrixCreator.getCreatedMatrix();
         }
@@ -98,8 +94,9 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
         if (!levelInfo.isMultiplayer()) {
             text = playerNr == 1 ? "You start" : "Opponent starts";
         }
-        MyNotificationPopupConfigBuilder myNotificationPopupConfigBuilder = new MyNotificationPopupConfigBuilder().setText(
-                text);
+        MyNotificationPopupConfigBuilder myNotificationPopupConfigBuilder = new MyNotificationPopupConfigBuilder()
+                .setText(text)
+                .setTransferBetweenScreens(false);
         FontColor fontColor = FontColor.DARK_RED;
         if (playerNr == 2) {
             fontColor = FontColor.YELLOW;
@@ -116,7 +113,7 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
     @Override
     public void onBackKeyPress() {
-        Gdx.app.exit();
+        screenManager.showMainScreen();
     }
 
 }

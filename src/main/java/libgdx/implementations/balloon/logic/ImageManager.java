@@ -12,19 +12,10 @@ import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
+import libgdx.utils.model.FontConfig;
 
 public class ImageManager {
 
-
-    public static final float IMG_SIDE_DIMEN = ScreenDimensionsManager.getScreenWidthValue(4);
-
-    private int nrOfRows;
-    private int nrOfCols;
-
-    public ImageManager(int nrOfRows, int nrOfCols) {
-        this.nrOfRows = nrOfRows;
-        this.nrOfCols = nrOfCols;
-    }
 
     public Table getImage(MatrixValue matrixValue) {
         return createImgView(matrixValue);
@@ -33,12 +24,15 @@ public class ImageManager {
     public Table getFinalPositionImageWithPoints(int points, MatrixValue finalPlayerValue, float cellDimen) {
         Table imageView = createImgView(finalPlayerValue);
         float fontScale = FontManager.calculateMultiplierStandardFontSize(cellDimen / 40);
-        MyWrappedLabel textView = new MyWrappedLabel(points + "", fontScale);
+        String text = points + "";
+        MyWrappedLabel textView = new MyWrappedLabel(text);
+        textView.setFontScale(fontScale);
         FontColor textColor = FontColor.WHITE;
         if (finalPlayerValue == MatrixValue.FINAL_PLAYER_2) {
             textColor = FontColor.BLACK;
         }
         textView.setTextColor(textColor);
+        textView.setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(), FontConfig.FONT_SIZE, 3f));
         Stack stack = new Stack();
         stack.add(imageView);
         stack.add(textView);

@@ -15,25 +15,17 @@ public enum BalloonCampaignLevelEnum implements CampaignLevel {
     // nrOfRows/nrOfCols ~ 0.5
 
     //@formatter:off
-    LEVEL_0_0(0, 0, null, null, false, true, null, HardcodedLevels.LEVEL00),
-    LEVEL_0_1(0, 1, null, null, true, true, null, HardcodedLevels.LEVEL00),
-    LEVEL_0_2(0, 2, null, null, true, true, null, HardcodedLevels.LEVEL00),
-    LEVEL_0_3(0, 3, null, null, true, true, null, HardcodedLevels.LEVEL00),
-    LEVEL_0_4(0, 4, null, null, true, true, null, HardcodedLevels.LEVEL00),
+    LEVEL_0_0(0, 0, null, null, true, true, null, HardcodedLevels.LEVEL00),
 
-    LEVEL_1_5(1, 0, 5, 10, false, true, null, null),
-    LEVEL_1_6(1, 1, 6, 12, false, true, null, null),
-    LEVEL_1_7(1, 2, 7, 14, false, true, null, null),
-    LEVEL_1_8(1, 3, 8, 16, false, true, false, null),
-    LEVEL_1_9(1, 4, 9, 18, false, true, false, null),
+    LEVEL_1_1(1, 0, 5, 10, false, true, null, null),
+    LEVEL_1_2(1, 1, 6, 12, false, true, null, null),
+    LEVEL_1_3(1, 2, 7, 14, false, true, null, null),
+    LEVEL_1_4(1, 3, 8, 16, false, true, false, null),
 
-    LEVEL_2_10(2, 0, 6, 12, false, false, null, null),
-    LEVEL_2_11(2, 1, 7, 14, false, false, null, null),
-    LEVEL_2_12(2, 2, 8, 16, false, false, null, null),
-    LEVEL_2_13(2, 3, 9, 18, false, false, null, null),
-    LEVEL_2_14(2, 4, 10, 20, false, false, null, null),
-    LEVEL_2_15(2, 5, 11, 22, false, false, false, null),
-    LEVEL_2_16(2, 6, 12, 24, false, false, false, null),;
+    LEVEL_2_5(2, 0, 5, 10, false, false, null, null),
+    LEVEL_2_6(2, 1, 6, 12, false, false, null, null),
+    LEVEL_2_7(2, 2, 7, 14, false, false, null, null),
+    LEVEL_2_8(2, 3, 8, 16, false, false, false, null),;
     //@formatter:on
 
     private int stageNr;
@@ -50,7 +42,7 @@ public enum BalloonCampaignLevelEnum implements CampaignLevel {
     private int[][] matrix;
 
     private BalloonCampaignLevelEnum(int stageNr, int levelNr, Integer nrOfRows, Integer nrOfColumns, boolean onePlayerLevel, boolean easyLevel, Boolean player1Starts,
-                  int[][] matrix) {
+                                     int[][] matrix) {
         this.stageNr = stageNr;
         this.levelNr = levelNr;
         this.nrOfRows = nrOfRows;

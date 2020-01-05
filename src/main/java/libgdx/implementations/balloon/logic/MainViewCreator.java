@@ -21,15 +21,20 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import libgdx.campaign.CampaignService;
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.balloon.BalloonGame;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.balloon.model.CurrentLevel;
 import libgdx.implementations.balloon.model.LevelInfo;
 import libgdx.implementations.balloon.model.MatrixValue;
 import libgdx.implementations.balloon.model.MatrixWithChangedCells;
 import libgdx.implementations.balloon.model.PlayerPosition;
+import libgdx.implementations.balloon.screens.BalloonCampaignScreen;
 import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
@@ -67,6 +72,8 @@ public class MainViewCreator {
 
     private AbstractScreen abstractScreen;
 
+    private CampaignService campaignService;
+
 
     public MainViewCreator(int nrOfRows, int nrOfCols, LevelInfo levelInfo, CurrentLevel currentLevel, AbstractScreen screen) {
         this.nrOfRows = nrOfRows;
@@ -74,7 +81,8 @@ public class MainViewCreator {
         this.currentLevel = currentLevel;
         this.levelInfo = levelInfo;
         this.abstractScreen = screen;
-        imageManager = new ImageManager(nrOfCols, nrOfRows);
+        campaignService = new CampaignService();
+        imageManager = new ImageManager();
         mcu = new MatrixCoordinatesUtils(nrOfCols, nrOfRows);
         cellDimen = ScreenDimensionsManager.getScreenWidthValue(100 / nrOfCols);
     }
@@ -106,21 +114,35 @@ public class MainViewCreator {
         if (!levelInfo.isMultiplayer()) {
             Table table = new Table();
             int levelNrToDisplay = levelInfo.getLevelEnum().getLevelNr() + 1;
-            int stageNrToDisplay = levelInfo.getLevelEnum().getStageNr() + 1;
-            MyWrappedLabel lvlInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(20))
-                    .setFontConfig(new FontConfig(FontColor.GREEN.getColor(), FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 3.3f), 4f))
-                    .setText(levelNrToDisplay + " - " + stageNrToDisplay).build());
-            lvlInfo.setName(LVLINFO_NAME);
-            table.add(lvlInfo);
+            Table cont = new Table();
+            //TODO
+            FontColor stageColor = FontColor.GREEN;
+            if (levelInfo.getLevelEnum().getStageNr() == 1) {
+                stageColor = FontColor.LIGHT_BLUE;
+            } else if (levelInfo.getLevelEnum().getStageNr() == 2) {
+                stageColor = FontColor.RED;
+            }
+            cont.add(getLvlInfoLabel(BalloonCampaignScreen.getStageTitle(levelInfo.getLevelEnum().getStageNr()), stageColor)).padRight(MainDimen.horizontal_general_margin.getDimen() * 2);
+            //Is tutorial
+            if (levelInfo.getLevelEnum().getStageNr() != 0) {
+                cont.add(getLvlInfoLabel("Level " + levelNrToDisplay, FontColor.LIGHT_GREEN));
+            }
+            table.add(cont);
             return table;
         }
         return new Table();
     }
 
+    private MyWrappedLabel getLvlInfoLabel(String text, FontColor fontColor) {
+        return new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(20))
+                .setFontConfig(new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 2.5f), 4f))
+                .setText(text).build());
+    }
+
     private Table createPlContainer(boolean displayIconFirst, BalloonSpecificResource
             plIcon, String score, int playerNr) {
         Table plContainer = new Table();
-        MyWrappedLabel plScore = new MyWrappedLabel(score, FontManager.getBigFontDim() * 1.4f);
+        MyWrappedLabel plScore = new MyWrappedLabel(score, FontConfig.FONT_SIZE * 3);
         plScore.setName(SCOREPLAYER + playerNr);
         float dimen = MainDimen.horizontal_general_margin.getDimen();
         float iconDimen = dimen * 2;
@@ -184,6 +206,20 @@ public class MainViewCreator {
         int value = currentLevel.isPlayer1Turn() ? MatrixValue.PLAYER_1.getValue() : MatrixValue.PLAYER_2.getValue();
         Set<Integer> startPositions = currentLevel.isPlayer1Turn() ? currentLevel.getStartPositionColumnsForPlayer1() : currentLevel
                 .getStartPositionColumnsForPlayer2();
+        if (currentLevel.isPlayer1Turn()
+                && currentLevel.getStartPositionColumnsForPlayer1().size() == nrOfCols
+                && levelInfo.getLevelEnum().getStageNr() == 0) {
+            abstractScreen.addAction(Actions.sequence(Actions.delay(1f), Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                    float iconDimenHalf = MainDimen.horizontal_general_margin.getDimen() * 5;
+                    ActorAnimation.pressFinger(
+                            ScreenDimensionsManager.getScreenWidth() / 2 - iconDimenHalf,
+                            -iconDimenHalf);
+                }
+            })));
+
+        }
         resetFirstRowFromMatrix();
         int firstRowIndex = mcu.getFirstRowIndex();
         for (int j = 0; j < nrOfCols; j++) {
@@ -212,7 +248,7 @@ public class MainViewCreator {
         scorePlayer2.setText(calculateScore(currentLevel.getFinalPositionPairsForPlayer2().values()) + "");
     }
 
-    public void isPlayer2First() {
+    public void processFirstPlayerActions() {
         if (!currentLevel.isOnePlayerLevel() && currentLevel.isPlayer2Computer() && !currentLevel.isPlayer1Turn()) {
             togglePlayer(true);
         }
@@ -348,11 +384,12 @@ public class MainViewCreator {
 
                 togglePlayer(false);
 
+                refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
+
                 if (isLevelFinished()) {
                     levelFinished(calculateScore(currentLevel.getFinalPositionPairsForPlayer1().values()), calculateScore(currentLevel
                             .getFinalPositionPairsForPlayer2().values()));
                 }
-                refreshDisplayOfMatrix(currentLevel.getCurrentMove().getMovementFinishedInfo().getCellsToUpdate(), currentLevel.getLevelMatrix());
             }
         })));
     }
@@ -629,7 +666,10 @@ public class MainViewCreator {
     }
 
     private void levelFinished(int player1Score, int player2Score) {
-        //TODO go to levelfinished screen
+        if (player1Score >= player2Score) {
+            campaignService.levelFinished(player1Score, levelInfo.getLevelEnum());
+        }
+        BalloonGame.getInstance().getScreenManager().showLevelFinishedScreen(levelInfo, player1Score, levelInfo.isOnePlayerLevel() ? -1 : player2Score);
     }
 
 }
