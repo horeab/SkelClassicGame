@@ -122,16 +122,6 @@ public enum BalloonCampaignLevelEnum implements CampaignLevel {
         return null;
     }
 
-    private MathLevel mathLevel;
-
-    BalloonCampaignLevelEnum(MathLevel mathLevel) {
-        this.mathLevel = mathLevel;
-    }
-
-    public MathLevel getMathLevel() {
-        return mathLevel;
-    }
-
     @Override
     public int getIndex() {
         return ordinal();

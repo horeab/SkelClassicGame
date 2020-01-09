@@ -33,7 +33,7 @@ public class LevelManager {
         if (BalloonCampaignLevelEnum.getNrOfLevelsForStage(lastStageUnlocked) == getFinishedLevelsForStage(lastStageUnlocked)) {
             lastStageUnlocked++;
         }
-        return lastStageUnlocked;
+        return lastStageUnlocked > BalloonCampaignLevelEnum.getNrOfStages() - 1 ? BalloonCampaignLevelEnum.getNrOfStages() - 1 : lastStageUnlocked;
     }
 
     public boolean isStageUnlocked(int stageNr) {

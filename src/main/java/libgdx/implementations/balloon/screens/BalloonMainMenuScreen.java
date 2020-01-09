@@ -70,7 +70,12 @@ public class BalloonMainMenuScreen extends AbstractScreen<BalloonScreenManager> 
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screenManager.showCampaignScreen(new LevelManager().lastStageUnlocked());
+                int stageNr = new LevelManager().lastStageUnlocked();
+                if (stageNr == 0) {
+                    screenManager.showGameScreen(new LevelInfo(false, BalloonCampaignLevelEnum.LEVEL_0_0));
+                } else {
+                    screenManager.showCampaignScreen(stageNr);
+                }
             }
         });
         return button;

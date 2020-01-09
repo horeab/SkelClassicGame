@@ -2,6 +2,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.gdxVersion = "1.9.8"
+    ext.gdxPayVersion = '0.12.1'
 
     repositories {
         mavenCentral()
@@ -35,6 +36,7 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdxpay:gdx-pay-client:$gdxPayVersion"
 
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'org.json', name: 'json', version: '20090211'
