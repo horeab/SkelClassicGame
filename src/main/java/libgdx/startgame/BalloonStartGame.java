@@ -42,63 +42,63 @@ public class BalloonStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "Matematika";
+                return "Balónkové Puzzle";
             case da:
-                return "Matematik";
+                return "Balloon Puzzle";
             case de:
-                return "Mathematik";
+                return "Ballon Puzzle";
             case el:
-                return "Μαθηματικά";
+                return "Μπαλόνι Παζλ";
             case en:
-                return "Math Test";
+                return "Puzzle Balloon";
             case es:
-                return "Matemáticas";
+                return "Globos Puzzle";
             case fi:
-                return "Matematiikka";
+                return "Ilmapallo Palapeli";
             case fr:
-                return "Mathématiques";
+                return "Puzzle Ballon";
             case hi:
-                return "गणित";
+                return "गुब्बारा पहेली";
             case hr:
-                return "Matematika";
+                return "Balon Puzzle";
             case hu:
-                return "Matematika";
+                return "Léggömb Puzzle";
             case id:
-                return "Matematika";
+                return "Puzzle Balon";
             case it:
-                return "Test di matematica";
+                return "Palloncino Puzzle";
             case ja:
-                return "数学";
+                return "風船パズル";
             case ko:
-                return "수학";
+                return "풍선";
             case ms:
-                return "Matematik";
+                return "Teka-teki Belon";
             case nl:
-                return "Wiskunde";
+                return "Ballon Puzzel";
             case no:
-                return "Matte";
+                return "Ballong Puzzle";
             case pl:
-                return "Matematyka";
+                return "Balonowe Puzzle";
             case pt:
-                return "Matemática";
+                return "Balão Puzzle";
             case ro:
-                return "Matematică";
+                return "Puzzle cu baloane";
             case ru:
-                return "Математика";
+                return "Надувные шарики ";
             case sk:
-                return "Matematika";
+                return "Balónkové Puzzle";
             case sv:
-                return "Matematik";
+                return "Ballongpussel";
             case th:
-                return "คณิตศาสตร์";
+                return "ปริศนาบอลลูน";
             case tr:
-                return "Matematik";
+                return "Balon Bulmaca";
             case uk:
-                return "Математика";
+                return "Повітряні кулі";
             case vi:
-                return "Toán học";
+                return "Bong bóng";
             case zh:
-                return "数学";
+                return "气球难题";
         }
         return null;
     }
