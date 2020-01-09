@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
+import libgdx.resources.gamelabel.MainGameLabel;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -115,7 +116,6 @@ public class MainViewCreator {
             Table table = new Table();
             int levelNrToDisplay = levelInfo.getLevelEnum().getLevelNr() + 1;
             Table cont = new Table();
-            //TODO
             FontColor stageColor = FontColor.GREEN;
             if (levelInfo.getLevelEnum().getStageNr() == 1) {
                 stageColor = FontColor.LIGHT_BLUE;
@@ -125,7 +125,7 @@ public class MainViewCreator {
             cont.add(getLvlInfoLabel(BalloonCampaignScreen.getStageTitle(levelInfo.getLevelEnum().getStageNr()), stageColor)).padRight(MainDimen.horizontal_general_margin.getDimen() * 2);
             //Is tutorial
             if (levelInfo.getLevelEnum().getStageNr() != 0) {
-                cont.add(getLvlInfoLabel("Level " + levelNrToDisplay, FontColor.LIGHT_GREEN));
+                cont.add(getLvlInfoLabel(MainGameLabel.l_level.getText(levelNrToDisplay + ""), FontColor.LIGHT_GREEN));
             }
             table.add(cont);
             return table;

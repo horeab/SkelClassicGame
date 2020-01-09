@@ -4,17 +4,12 @@ import libgdx.constants.Language;
 import libgdx.game.Game;
 import libgdx.implementations.GameIdEnum;
 import libgdx.implementations.balloon.BalloonGame;
-import libgdx.implementations.math.MathGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
-import libgdx.utils.startgame.test.DefaultBillingService;
-import libgdx.utils.startgame.test.DefaultFacebookService;
 
 public class BalloonStartGame {
 
     public static void main(String[] args) {
         BalloonGame game = new BalloonGame(
-                new DefaultFacebookService(),
-                new DefaultBillingService(),
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {

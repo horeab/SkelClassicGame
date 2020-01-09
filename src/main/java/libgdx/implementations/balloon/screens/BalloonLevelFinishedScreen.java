@@ -22,7 +22,9 @@ import libgdx.implementations.balloon.BalloonScreenManager;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.balloon.logic.LevelManager;
 import libgdx.implementations.balloon.model.LevelInfo;
+import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
@@ -69,8 +71,7 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
     private Table createPlayerContainers() {
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
         Table infoContainer = new Table();
-        //TODO
-        infoContainer.add(new MyWrappedLabel(levelManager.isGameFinished() ? "Congratulations!\nGame finished!" : "Level finished!",
+        infoContainer.add(new MyWrappedLabel(levelManager.isGameFinished() ? SkelGameLabel.game_finished.getText() : SkelGameLabel.level_finished.getText(),
                 new FontConfig(FontConfig.FONT_SIZE * 4))).pad(verticalGeneralMarginDimen).row();
         Table plInfoTable = new Table();
         plInfoTable.add(createPlContainer(BalloonSpecificResource.balloonp1)).growX();
@@ -83,12 +84,12 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
         String levelStatusText = "";
         FontColor fontColor = FontColor.BLACK;
         if (player1Score > player2Score) {
-            levelStatusText = levelInfo.isMultiplayer() ? "Player 1 wins!" : "You win!";
+            levelStatusText = levelInfo.isMultiplayer() ? MainGameLabel.l_player_wins.getText(1 + "") : MainGameLabel.l_you_win.getText();
             fontColor = FontColor.DARK_RED;
         } else if (player1Score == player2Score) {
-            levelStatusText = "Game ended in a draw!";
+            levelStatusText = MainGameLabel.l_draw.getText();
         } else {
-            levelStatusText = levelInfo.isMultiplayer() ? "Player 2 wins!" : "Your opponent wins!";
+            levelStatusText = levelInfo.isMultiplayer() ? MainGameLabel.l_player_wins.getText(2 + "") : MainGameLabel.l_opponent_wins.getText();
             fontColor = FontColor.YELLOW;
         }
         infoContainer.add(new MyWrappedLabel(levelStatusText, new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 4, 2f))).pad(verticalGeneralMarginDimen);
@@ -123,11 +124,8 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
         MyButton replayBtn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.BALLOON_STAGE0)
                 .build();
-        //TODO
-        replayBtn.add(createBtnLabel(btnWidth, "Play again!"));
-        if ((!levelInfo.isMultiplayer() && player1Score < player2Score)
-                ||
-                levelInfo.isMultiplayer()) {
+        replayBtn.add(createBtnLabel(btnWidth, SkelGameLabel.play_again.getText()));
+        if (levelInfo.isMultiplayer() || player1Score < player2Score) {
             btnTable.add(replayBtn).height(btnHeight).width(btnWidth);
             replayBtn.addListener(new ClickListener() {
                 @Override
@@ -140,8 +138,7 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
         MyButton goBackBtn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.BALLOON_STAGE0)
                 .build();
-        //TODO
-        goBackBtn.add(createBtnLabel(btnWidth, (!levelInfo.isMultiplayer() && player1Score > player2Score) ? "Continue" : "Go back"));
+        goBackBtn.add(createBtnLabel(btnWidth, (!levelInfo.isMultiplayer() && player1Score > player2Score) ? MainGameLabel.l_continue.getText() : SkelGameLabel.go_back.getText()));
         goBackBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -164,25 +161,11 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
                         .setText(text).build());
     }
 
-    private void decideWhatContainerToBeShown() {
-//        if (!levelInfo.isMultiplayer()) {
-//            BalloonCampaignLevelEnum level = BalloonCampaignLevelEnum.getLevelForStageNrAndLevelNr(levelInfo.getLevelEnum().getStageNr(), levelInfo.getLevelEnum().getLevelNr());
-//            if (level.isOnePlayerLevel()) {
-//                findViewById(R.id.finalScoreInfoForTwoPlayers).setVisibility(View.GONE);
-//                findViewById(R.id.scoreInfo).setVisibility(View.GONE);
-//            } else {
-//                findViewById(R.id.finalScoreInfoForOnePlayer).setVisibility(View.GONE);
-//            }
-//        } else {
-//            findViewById(R.id.finalScoreInfoForOnePlayer).setVisibility(View.GONE);
-//        }
-    }
-
     @Override
     public void onBackKeyPress() {
-        if(levelInfo.isMultiplayer()){
+        if (levelInfo.isMultiplayer()) {
             screenManager.showMainScreen();
-        }else {
+        } else {
             screenManager.showCampaignScreen(levelInfo.getLevelEnum().getStageNr());
         }
     }

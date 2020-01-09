@@ -4,16 +4,12 @@ import libgdx.constants.Language;
 import libgdx.game.Game;
 import libgdx.implementations.GameIdEnum;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
-import libgdx.utils.startgame.test.DefaultBillingService;
-import libgdx.utils.startgame.test.DefaultFacebookService;
 import libgdx.implementations.math.MathGame;
 
 public class MathStartGame {
 
     public static void main(String[] args) {
         MathGame game = new MathGame(
-                new DefaultFacebookService(),
-                new DefaultBillingService(),
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {

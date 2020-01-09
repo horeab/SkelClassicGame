@@ -57,7 +57,6 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
         }
         float levelBtnWidth = ScreenDimensionsManager.getScreenWidthValue(20);
         float levelBtnHeight = ScreenDimensionsManager.getScreenWidthValue(6);
-        //TODO
         String text = getStageTitle(stageNr);
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(
@@ -73,8 +72,7 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
             if (campaignStoreLevel == null) {
                 levelBtn.setDisabled(true);
             }
-            //TODO
-            String btnText = levelsForStage.size() == 1 ? "Play" : MainGameLabel.l_level.getText("" + (i + 1));
+            String btnText = levelsForStage.size() == 1 ? MainGameLabel.l_play.getText() : MainGameLabel.l_level.getText("" + (i + 1));
             levelBtn.add(new MyWrappedLabel(
                     new MyWrappedLabelConfigBuilder().setWrappedLineLabel(levelBtnWidth).setFontConfig(
                             new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 2))
@@ -96,7 +94,7 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
     }
 
     public static String getStageTitle(int stageNr) {
-        return stageNr == 0 ? "Tutorial" : "Stage " + (stageNr);
+        return stageNr == 0 ? MainGameLabel.l_tutorial.getText() : MainGameLabel.l_stage.getText(stageNr + "");
     }
 
     @Override

@@ -11,6 +11,7 @@ import libgdx.implementations.balloon.logic.MatrixCoordinatesUtils;
 import libgdx.implementations.balloon.logic.MatrixCreator;
 import libgdx.implementations.balloon.model.CurrentLevel;
 import libgdx.implementations.balloon.model.LevelInfo;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
@@ -89,10 +90,9 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
     private void toastDisplayWhichPlayerStarts() {
         int playerNr = currentLevel.isPlayer1Turn() ? 1 : 2;
 
-        //TODO
-        String text = "Player " + playerNr + " starts";
+        String text = MainGameLabel.l_player_starts.getText(playerNr + "");
         if (!levelInfo.isMultiplayer()) {
-            text = playerNr == 1 ? "You start" : "Opponent starts";
+            text = playerNr == 1 ? MainGameLabel.l_you_start.getText() : MainGameLabel.l_opponent_starts.getText();
         }
         MyNotificationPopupConfigBuilder myNotificationPopupConfigBuilder = new MyNotificationPopupConfigBuilder()
                 .setText(text)

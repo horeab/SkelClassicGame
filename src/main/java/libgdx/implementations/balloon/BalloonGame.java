@@ -4,8 +4,6 @@ package libgdx.implementations.balloon;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.game.external.BillingService;
-import libgdx.game.external.FacebookService;
 import libgdx.implementations.GameIdEnum;
 import libgdx.screen.AbstractScreen;
 
@@ -17,10 +15,8 @@ public class BalloonGame extends CampaignGame<AppInfoService,
         GameIdEnum
         > {
 
-    public BalloonGame(FacebookService facebookService,
-                       BillingService billingService,
-                       AppInfoService appInfoService) {
-        super(facebookService, billingService, appInfoService, new BalloonMainDependencyManager());
+    public BalloonGame(AppInfoService appInfoService) {
+        super(appInfoService, new BalloonMainDependencyManager());
     }
 
     public BalloonDependencyManager getDependencyManager() {

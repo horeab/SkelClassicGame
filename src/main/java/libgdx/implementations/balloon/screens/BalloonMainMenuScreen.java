@@ -84,10 +84,9 @@ public class BalloonMainMenuScreen extends AbstractScreen<BalloonScreenManager> 
     }
 
     private MyButton createMultiplayerBtn() {
-        //TODO
         MyButton button = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.BALLOON_MENU).build();
-        button.add(createBtnText("Multiplayer"));
+        button.add(createBtnText(MainGameLabel.l_multiplayer.getText()));
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
