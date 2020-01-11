@@ -82,7 +82,7 @@ public class BalloonStartGame {
             case pt:
                 return "Balão Puzzle";
             case ro:
-                return "Puzzle cu baloane";
+                return "Puzzle Baloane";
             case ru:
                 return "Надувные шарики ";
             case sk:
@@ -96,7 +96,7 @@ public class BalloonStartGame {
             case uk:
                 return "Повітряні кулі";
             case vi:
-                return "Bong bóng";
+                return "Bong bóng câu đố";
             case zh:
                 return "气球难题";
         }

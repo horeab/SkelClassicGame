@@ -2,6 +2,7 @@ package libgdx.implementations.balloon.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -13,9 +14,11 @@ import libgdx.controls.button.builders.SoundIconButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
+import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.balloon.BalloonCampaignLevelEnum;
 import libgdx.implementations.balloon.BalloonScreenManager;
+import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.balloon.logic.LevelManager;
 import libgdx.implementations.balloon.model.LevelInfo;
 import libgdx.implementations.skelgame.SkelGameRatingService;
@@ -46,16 +49,29 @@ public class BalloonMainMenuScreen extends AbstractScreen<BalloonScreenManager> 
         float soundBtnSize = verticalGeneralMarginDimen * 5;
         table.add(new SoundIconButtonBuilder().createSoundButton()).right().width(soundBtnSize).height(soundBtnSize).row();
         addTitle(table);
-        float btnHeight = ScreenDimensionsManager.getScreenHeightValue(17);
-        float btnWidth = ScreenDimensionsManager.getScreenWidthValue(40);
+        float btnHeight = ScreenDimensionsManager.getScreenHeightValue(14);
+        float btnWidth = ScreenDimensionsManager.getScreenWidthValue(35);
         table.add(createStartGameBtn()).height(btnHeight).width(btnWidth).padTop(verticalGeneralMarginDimen * 4).row();
         table.add(createMultiplayerBtn()).height(btnHeight).width(btnWidth).padTop(verticalGeneralMarginDimen * 2).row();
         addActor(table);
+        addBackgrImage();
+    }
+
+    private void addBackgrImage() {
+        Image image = GraphicUtils.getImage(BalloonSpecificResource.hot_air_balloon);
+        float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
+        float imgDimen = verticalGeneralMarginDimen * 25;
+        image.setHeight(imgDimen);
+        image.setWidth(imgDimen);
+        image.setX(ScreenDimensionsManager.getScreenWidthValue(5));
+        image.setY(ScreenDimensionsManager.getScreenHeightValue(5));
+        image.toBack();
+        addActor(image);
     }
 
     private void addTitle(Table table) {
         String appName = Game.getInstance().getAppInfoService().getAppName();
-        float mult = 6.5f;
+        float mult = 5f;
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.DARK_RED.getColor(),
                         FontColor.BLACK.getColor(),
@@ -84,7 +100,7 @@ public class BalloonMainMenuScreen extends AbstractScreen<BalloonScreenManager> 
     private MyWrappedLabel createBtnText(String text) {
         return new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(
-                        new FontConfig(FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 3.1f)))
+                        new FontConfig(FontColor.BLACK.getColor(), Math.round(text.length() > 12 ? FontConfig.FONT_SIZE * 2f : FontConfig.FONT_SIZE * 2.5f)))
                         .setText(text).build());
     }
 

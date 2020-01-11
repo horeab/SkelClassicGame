@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 import libgdx.resources.gamelabel.MainGameLabel;
+
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -135,7 +136,7 @@ public class MainViewCreator {
 
     private MyWrappedLabel getLvlInfoLabel(String text, FontColor fontColor) {
         return new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(20))
-                .setFontConfig(new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 2.5f), 4f))
+                .setFontConfig(new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * (text.length() > 7 ? 2f : 2.5f)), 4f))
                 .setText(text).build());
     }
 

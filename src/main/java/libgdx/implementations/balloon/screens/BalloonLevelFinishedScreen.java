@@ -71,7 +71,7 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
     private Table createPlayerContainers() {
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
         Table infoContainer = new Table();
-        infoContainer.add(new MyWrappedLabel(levelManager.isGameFinished() ? SkelGameLabel.game_finished.getText() : SkelGameLabel.level_finished.getText(),
+        infoContainer.add(new MyWrappedLabel(levelManager.isGameFinished() && player1Score > player2Score ? SkelGameLabel.game_finished.getText() : SkelGameLabel.level_finished.getText(),
                 new FontConfig(FontConfig.FONT_SIZE * 4))).pad(verticalGeneralMarginDimen).row();
         Table plInfoTable = new Table();
         plInfoTable.add(createPlContainer(BalloonSpecificResource.balloonp1)).growX();

@@ -46,6 +46,7 @@ public enum BalloonSpecificResource implements SpecificResource {
     tornado("images/tornado.png", Texture.class),
     tornadoballoon1p1("images/tornadoballoon1p1.png", Texture.class),
     tornadoballoon1p2("images/tornadoballoon1p2.png", Texture.class),
+    hot_air_balloon("images/hot_air_balloon.png", Texture.class),
 
     l0("sounds/l0.wav", Sound.class),
     l1("sounds/l1.wav", Sound.class),

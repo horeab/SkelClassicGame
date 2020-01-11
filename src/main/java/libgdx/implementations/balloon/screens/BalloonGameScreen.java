@@ -1,16 +1,26 @@
 package libgdx.implementations.balloon.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import libgdx.controls.MyTextField;
+import libgdx.controls.button.ButtonBuilder;
+import libgdx.controls.button.MyButton;
+import libgdx.controls.popup.MyPopup;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
+import libgdx.controls.textfield.MyTextFieldBuilder;
+import libgdx.game.Game;
 import libgdx.implementations.balloon.BalloonScreenManager;
 import libgdx.implementations.balloon.logic.MainViewCreator;
 import libgdx.implementations.balloon.logic.MatrixCoordinatesUtils;
 import libgdx.implementations.balloon.logic.MatrixCreator;
 import libgdx.implementations.balloon.model.CurrentLevel;
 import libgdx.implementations.balloon.model.LevelInfo;
+import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.Utils;
@@ -109,6 +119,10 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
     public void render(float delta) {
         super.render(delta);
         Utils.createChangeLangPopup();
+
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT)) {
+//            screenManager.showLevelFinishedScreen(levelInfo, 250, 235);
+//        }
     }
 
     @Override

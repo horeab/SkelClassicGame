@@ -75,7 +75,7 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
             String btnText = levelsForStage.size() == 1 ? MainGameLabel.l_play.getText() : MainGameLabel.l_level.getText("" + (i + 1));
             levelBtn.add(new MyWrappedLabel(
                     new MyWrappedLabelConfigBuilder().setWrappedLineLabel(levelBtnWidth).setFontConfig(
-                            new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 2))
+                            new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 2, 4f))
                             .setText(btnText).build()));
             levelBtn.addListener(new ChangeListener() {
                 @Override
@@ -87,7 +87,7 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
                 btnContainer.row();
             }
             i++;
-            btnContainer.add(levelBtn).height(levelBtnHeight).width(levelBtnWidth);
+            btnContainer.add(levelBtn).pad(horizontalGeneralMarginDimen / 2).height(levelBtnHeight).width(levelBtnWidth);
         }
         table.add(btnContainer);
         return table;
