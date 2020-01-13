@@ -238,7 +238,7 @@ public class MainViewCreator {
             Table createdRow = getCreatedRow(point.right);
             Table imgTableToUpdate = (Table) createdRow.getChildren().get(point.left);
             imgTableToUpdate.clearChildren();
-            imgTableToUpdate.add(img);
+            imgTableToUpdate.add(img).grow();
         }
     }
 
@@ -274,11 +274,11 @@ public class MainViewCreator {
         Table image = null;
         if (mtrxVal == MatrixValue.FINAL_PLAYER_1.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer1().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    MatrixValue.FINAL_PLAYER_1, cellDimen);
+                    MatrixValue.FINAL_PLAYER_1, nrOfCols);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else if (mtrxVal == MatrixValue.FINAL_PLAYER_2.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer2().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    MatrixValue.FINAL_PLAYER_2, cellDimen);
+                    MatrixValue.FINAL_PLAYER_2, nrOfCols);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else {
             image = imageManager.getImage(MatrixValue.getMatrixValue(mtrxVal));
