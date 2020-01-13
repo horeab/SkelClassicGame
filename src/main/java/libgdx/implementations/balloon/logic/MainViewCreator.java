@@ -91,7 +91,7 @@ public class MainViewCreator {
         imageManager = new ImageManager();
         mcu = new MatrixCoordinatesUtils(nrOfCols, nrOfRows);
         cellDimen = ScreenDimensionsManager.getScreenWidthValue(100 / nrOfCols);
-        backBtn = new BackButtonBuilder().addHoverBackButton(screen);
+        backBtn = new BackButtonBuilder().addHoverBackButton(screen, MainDimen.horizontal_general_margin.getDimen() / 2);
     }
 
     public Table createGameRowsContainer() {
