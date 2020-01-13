@@ -21,9 +21,9 @@ public class ImageManager {
         return createImgView(matrixValue);
     }
 
-    public Table getFinalPositionImageWithPoints(int points, MatrixValue finalPlayerValue, float cellDimen) {
+    public Table getFinalPositionImageWithPoints(int points, MatrixValue finalPlayerValue, int nrOfCols) {
         Table imageView = createImgView(finalPlayerValue);
-        float fontScale = FontManager.calculateMultiplierStandardFontSize(cellDimen / 40);
+        float fontScale = FontManager.calculateMultiplierStandardFontSize(nrOfCols/4);
         String text = points + "";
         MyWrappedLabel textView = new MyWrappedLabel(text);
         textView.setFontScale(fontScale);
@@ -46,7 +46,7 @@ public class ImageManager {
         Table imageTable = new Table();
         Res resID = BalloonSpecificResource.valueOf(matrixValue.getImageName());
         Image img = GraphicUtils.getImage(resID);
-        imageTable.add(img);
+        imageTable.add(img).grow();
         Table resTable = new Table();
         resTable.add(imageTable).grow();
         return resTable;
