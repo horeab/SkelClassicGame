@@ -128,7 +128,11 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
     @Override
     public void onBackKeyPress() {
-        screenManager.showCampaignScreen(levelInfo.getLevelEnum().getStageNr());
+        if (!levelInfo.isMultiplayer()) {
+            screenManager.showCampaignScreen(levelInfo.getLevelEnum().getStageNr());
+        } else {
+            screenManager.showMainScreen();
+        }
     }
 
 }

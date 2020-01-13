@@ -15,6 +15,7 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
+import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.balloon.BalloonCampaignLevelEnum;
@@ -49,11 +50,24 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
 
     @Override
     public void buildStage() {
+        if ((levelInfo.getLevelEnum().getLevelNr() + 1) % 2 == 0) {
+            Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                @Override
+                public void run() {
+                    createAll();
+                }
+            });
+        } else {
+            createAll();
+        }
+    }
+
+    private void createAll() {
         Table table = new Table();
         table.add(createAllTable());
         table.setFillParent(true);
         addActor(table);
-        new BackButtonBuilder().addHoverBackButton(this);
+        new BackButtonBuilder().addHoverBackButton(getAbstractScreen());
     }
 
     private Table createAllTable() {
