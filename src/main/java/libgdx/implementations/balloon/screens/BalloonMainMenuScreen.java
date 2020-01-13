@@ -44,7 +44,6 @@ public class BalloonMainMenuScreen extends AbstractScreen<BalloonScreenManager> 
     private void addButtons() {
         Table table = new Table();
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
-        new BackButtonBuilder().addHoverBackButton(this);
         table.setFillParent(true);
         float soundBtnSize = verticalGeneralMarginDimen * 5;
         table.add(new SoundIconButtonBuilder().createSoundButton()).right().width(soundBtnSize).height(soundBtnSize).row();
