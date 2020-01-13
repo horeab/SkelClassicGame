@@ -84,7 +84,7 @@ public class BalloonStartGame {
             case ro:
                 return "Puzzle Baloane";
             case ru:
-                return "Надувные шарики ";
+                return "Надувные шарики";
             case sk:
                 return "Balónkové Puzzle";
             case sv:

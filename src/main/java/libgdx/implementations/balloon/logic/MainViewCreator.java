@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
+import libgdx.controls.button.MyButton;
+import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.resources.gamelabel.MainGameLabel;
 
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -76,6 +78,8 @@ public class MainViewCreator {
 
     private CampaignService campaignService;
 
+    private MyButton backBtn;
+
 
     public MainViewCreator(int nrOfRows, int nrOfCols, LevelInfo levelInfo, CurrentLevel currentLevel, AbstractScreen screen) {
         this.nrOfRows = nrOfRows;
@@ -87,6 +91,7 @@ public class MainViewCreator {
         imageManager = new ImageManager();
         mcu = new MatrixCoordinatesUtils(nrOfCols, nrOfRows);
         cellDimen = ScreenDimensionsManager.getScreenWidthValue(100 / nrOfCols);
+        backBtn = new BackButtonBuilder().addHoverBackButton(screen);
     }
 
     public Table createGameRowsContainer() {
@@ -238,7 +243,7 @@ public class MainViewCreator {
             Table createdRow = getCreatedRow(point.right);
             Table imgTableToUpdate = (Table) createdRow.getChildren().get(point.left);
             imgTableToUpdate.clearChildren();
-            imgTableToUpdate.add(img);
+            imgTableToUpdate.add(img).grow();
         }
     }
 
@@ -247,6 +252,7 @@ public class MainViewCreator {
         scorePlayer1.setText(calculateScore(currentLevel.getFinalPositionPairsForPlayer1().values()) + "");
         MyWrappedLabel scorePlayer2 = (MyWrappedLabel) abstractScreen.getRoot().findActor(SCOREPLAYER + 2);
         scorePlayer2.setText(calculateScore(currentLevel.getFinalPositionPairsForPlayer2().values()) + "");
+        backBtn.toFront();
     }
 
     public void processFirstPlayerActions() {
@@ -274,11 +280,11 @@ public class MainViewCreator {
         Table image = null;
         if (mtrxVal == MatrixValue.FINAL_PLAYER_1.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer1().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    MatrixValue.FINAL_PLAYER_1, cellDimen);
+                    MatrixValue.FINAL_PLAYER_1, nrOfCols);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else if (mtrxVal == MatrixValue.FINAL_PLAYER_2.getValue()) {
             image = imageManager.getFinalPositionImageWithPoints(currentLevel.getFinalPositionPairsForPlayer2().get(new MutablePair<Integer, Integer>(selectedColumn, row)),
-                    MatrixValue.FINAL_PLAYER_2, cellDimen);
+                    MatrixValue.FINAL_PLAYER_2, nrOfCols);
             imageViewIdForFinalBalloonPosition = imageViewIdForFinalBalloonPosition + 1;
         } else {
             image = imageManager.getImage(MatrixValue.getMatrixValue(mtrxVal));
