@@ -5,6 +5,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../LibGdxControls/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../../LibGdxControls/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../LibGdxControls/src/test/resources" type="java-test-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -12,9 +13,12 @@
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-backend-headless:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-freetype:1.9.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdxpay:gdx-pay-client:0.12.1" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-platform:natives-desktop:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-box2d-platform:natives-desktop:1.9.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdx:gdx-freetype-platform:natives-desktop:1.9.8" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.7" level="project" />
     <orderEntry type="library" name="Gradle: org.json:json:20090211" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
@@ -22,13 +26,14 @@
     <orderEntry type="library" name="Gradle: org.powermock:powermock-module-junit4-common:1.6.1" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.powermock:powermock-api-mockito:1.6.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.mockito:mockito-all:1.10.8" level="project" />
     <orderEntry type="library" name="Gradle: org.powermock:powermock-module-junit4-rule-agent:1.6.1" level="project" />
     <orderEntry type="library" name="Gradle: org.powermock:powermock-module-junit4-rule:1.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.mockito:mockito-all:1.10.8" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl.lwjgl:lwjgl_util:2.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl.lwjgl:lwjgl:2.9.2" level="project" />
     <orderEntry type="library" name="Gradle: com.badlogicgames.jlayer:jlayer:1.0.1-gdx" level="project" />
     <orderEntry type="library" name="Gradle: org.jcraft:jorbis:0.0.17" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdxpay:gdx-pay:0.12.1" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.powermock:powermock-classloading-base:1.6.1" level="project" />
     <orderEntry type="library" name="Gradle: org.powermock:powermock-api-support:1.6.1" level="project" />
@@ -38,6 +43,7 @@
     <orderEntry type="library" name="Gradle: org.lwjgl.lwjgl:lwjgl-platform:natives-linux:2.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl.lwjgl:lwjgl-platform:natives-osx:2.9.2" level="project" />
     <orderEntry type="library" name="Gradle: net.java.jinput:jinput:2.0.5" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
     <orderEntry type="library" name="Gradle: org.powermock:powermock-reflect:1.6.1" level="project" />
     <orderEntry type="library" name="Gradle: org.javassist:javassist:3.18.2-GA" level="project" />
     <orderEntry type="library" name="Gradle: net.java.jutils:jutils:1.0.0" level="project" />

@@ -53,10 +53,6 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
 
     @Override
     public void buildStage() {
-        new CampaignStoreService().incrementNrOfQuestionsPlayed();
-        if (Game.getInstance().getCurrentUser() != null) {
-            new GameStatsDbApiService().incrementGameStatsQuestionsStarted(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
-        }
         int questionsPlayed = new CampaignStoreService().getNrOfQuestionsPlayed();
         if (questionsPlayed > 0 && questionsPlayed % 3 == 0) {
             Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
@@ -67,6 +63,10 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
             });
         } else {
             createAll();
+        }
+        new CampaignStoreService().incrementNrOfQuestionsPlayed();
+        if (Game.getInstance().getCurrentUser() != null) {
+            new GameStatsDbApiService().incrementGameStatsQuestionsStarted(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
         }
     }
 

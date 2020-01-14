@@ -32,7 +32,9 @@
     <orderEntry type="library" name="Gradle: net.java.jinput:jinput-platform:natives-linux:2.0.5" level="project" />
     <orderEntry type="library" name="Gradle: net.java.jinput:jinput-platform:natives-windows:2.0.5" level="project" />
     <orderEntry type="library" name="Gradle: net.java.jinput:jinput-platform:natives-osx:2.0.5" level="project" />
-    <orderEntry type="module" module-name="SkelGame.Lett.main" />
     <orderEntry type="module" module-name="test.controls.main" />
+    <orderEntry type="module" module-name="workspace.Lett.main" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdxpay:gdx-pay-client:0.12.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.badlogicgames.gdxpay:gdx-pay:0.12.1" level="project" />
   </component>
 </module>
