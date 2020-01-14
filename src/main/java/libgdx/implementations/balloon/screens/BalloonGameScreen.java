@@ -64,10 +64,6 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
     @Override
     public void buildStage() {
-        new CampaignStoreService().incrementNrOfQuestionsPlayed();
-        if (Game.getInstance().getCurrentUser() != null) {
-            new GameStatsDbApiService().incrementGameStatsQuestionsStarted(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
-        }
         if (currentLevel.isPlayer2Computer()) {
             addAction(Actions.sequence(Actions.delay(2.8f)));
         }

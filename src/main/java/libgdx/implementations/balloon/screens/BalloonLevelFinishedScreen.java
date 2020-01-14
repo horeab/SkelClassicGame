@@ -16,6 +16,7 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
+import libgdx.dbapi.GameStatsDbApiService;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSkin;
@@ -28,6 +29,7 @@ import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
+import libgdx.utils.DateUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
@@ -51,7 +53,10 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
 
     @Override
     public void buildStage() {
-
+        new CampaignStoreService().incrementNrOfQuestionsPlayed();
+        if (Game.getInstance().getCurrentUser() != null) {
+            new GameStatsDbApiService().incrementGameStatsQuestionsStarted(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
+        }
         int questionsPlayed = new CampaignStoreService().getNrOfQuestionsPlayed();
         if (questionsPlayed > 0 && questionsPlayed % 3 == 0) {
             Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
