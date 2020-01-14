@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import libgdx.campaign.CampaignStoreService;
 import libgdx.controls.MyTextField;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
@@ -63,8 +64,8 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
     @Override
     public void buildStage() {
+        new CampaignStoreService().incrementNrOfQuestionsPlayed();
         if (Game.getInstance().getCurrentUser() != null) {
-            //record how many times the buy button has been pressed
             new GameStatsDbApiService().incrementGameStatsQuestionsStarted(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
         }
         if (currentLevel.isPlayer2Computer()) {

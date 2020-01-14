@@ -8,6 +8,7 @@ import java.util.List;
 
 import libgdx.campaign.CampaignService;
 import libgdx.campaign.CampaignStoreLevel;
+import libgdx.campaign.CampaignStoreService;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
@@ -50,7 +51,9 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
 
     @Override
     public void buildStage() {
-        if ((levelInfo.getLevelEnum().getLevelNr() + 1) % 2 == 0) {
+
+        int questionsPlayed = new CampaignStoreService().getNrOfQuestionsPlayed();
+        if (questionsPlayed > 0 && questionsPlayed % 3 == 0) {
             Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
                 @Override
                 public void run() {
