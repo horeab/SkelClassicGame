@@ -14,6 +14,7 @@ import libgdx.controls.popup.MyPopup;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
 import libgdx.controls.textfield.MyTextFieldBuilder;
+import libgdx.dbapi.GameStatsDbApiService;
 import libgdx.game.Game;
 import libgdx.implementations.balloon.BalloonScreenManager;
 import libgdx.implementations.balloon.logic.MainViewCreator;
@@ -24,6 +25,7 @@ import libgdx.implementations.balloon.model.LevelInfo;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
+import libgdx.utils.DateUtils;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
@@ -61,6 +63,10 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
     @Override
     public void buildStage() {
+        if (Game.getInstance().getCurrentUser() != null) {
+            //record how many times the buy button has been pressed
+            new GameStatsDbApiService().incrementGameStatsQuestionsStarted(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
+        }
         if (currentLevel.isPlayer2Computer()) {
             addAction(Actions.sequence(Actions.delay(2.8f)));
         }
@@ -128,7 +134,7 @@ public class BalloonGameScreen extends AbstractScreen<BalloonScreenManager> {
 
     @Override
     public void onBackKeyPress() {
-        if (!levelInfo.isMultiplayer()) {
+        if (!levelInfo.isMultiplayer() && levelInfo.getLevelEnum().getStageNr() > 0) {
             screenManager.showCampaignScreen(levelInfo.getLevelEnum().getStageNr());
         } else {
             screenManager.showMainScreen();
