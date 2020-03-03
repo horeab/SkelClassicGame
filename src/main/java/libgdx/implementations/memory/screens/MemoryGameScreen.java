@@ -1,24 +1,30 @@
 package libgdx.implementations.memory.screens;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import libgdx.controls.ScreenRunnable;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.math.MathScreenManager;
+import libgdx.implementations.memory.MemorySpecificResource;
 import libgdx.implementations.memory.spec.*;
 import libgdx.implementations.skelgame.SkelGameRatingService;
-import libgdx.resources.Resource;
 import libgdx.screen.AbstractScreen;
+import libgdx.utils.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
 
 
+    private final String CELL_NAME = "CELL_NAME";
     private List<String> discoveredItems = new ArrayList<>();
     private MatrixElement[][] levelMatrix;
     private CurrentGame currentGame;
@@ -33,15 +39,13 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
         return discoveredItems;
     }
 
-    @Override
-    protected void initFields() {
-        levelMatrix = new GameLogic().generateMatrix(GameLevel._0);
-    }
 
     @Override
     public void buildStage() {
+        levelMatrix = new GameLogic().generateMatrix(GameLevel._0);
         new SkelGameRatingService(this).appLaunched();
         addAllTable();
+        hideAllImageViews();
     }
 
     private void addAllTable() {
@@ -58,15 +62,19 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
                 final MatrixChoice clickedItem = new MatrixChoice(col, row, currentItem.getItem());
                 Table cell = new Table();
                 Image image = getMatrixElementImage(currentItem);
+                cell.setTransform(true);
                 cell.add(image);
-                cells.add(new TableCell(cell, currentItem));
-                image.addListener(new ClickListener() {
+                TableCell tableCell = new TableCell(cell, currentItem);
+                final String name = CELL_NAME + row + "_" + col;
+                cell.setName(name);
+                cells.add(tableCell);
+                cell.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         if (enableImageClick && !clickedItem.equals(currentGame.getFirstChoice()) && !currentItem.isFound()
                                 && !currentItem.isShowed()) {
                             currentItem.setShowed(true);
-                            refreshImageViews();
+                            refreshImageViews(name);
 
                             if (currentGame.getFirstChoice() != null) {
                                 processScore(currentGame, clickedItem);
@@ -81,7 +89,7 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
                             currentGame.setFirstChoice(firstItemClicked);
 
                             if (currentGame.getFirstChoice() == null) {
-                                refreshImageViews();
+                                refreshImageViews(name);
                             }
                         }
                     }
@@ -94,11 +102,44 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
         addActor(table);
     }
 
-    public void refreshImageViews() {
-        for (TableCell tableCell : cells) {
-            tableCell.getCell().clearChildren();
-            if (tableCell.getMatrixElement().isFound() || tableCell.getMatrixElement().isShowed()) {
-                tableCell.getCell().add(getMatrixElementImage(tableCell.getMatrixElement()));
+    private void hideAllImageViews() {
+        RunnableAction action2 = new RunnableAction();
+        action2.setRunnable(new ScreenRunnable(getAbstractScreen()) {
+            @Override
+            public void executeOperations() {
+                for (TableCell tableCell : cells) {
+                    tableCell.getMatrixElement().setShowed(false);
+                    refreshImageViews();
+                    setEnableImageClick(true);
+                }
+            }
+        });
+        addAction(Actions.sequence(Actions.delay(1f), action2));
+    }
+
+    public void refreshImageViews(String... namesToBeRefreshed) {
+        final float duration = 0.1f;
+        for (final TableCell tableCell : cells) {
+            if (namesToBeRefreshed.length == 0 || Arrays.asList(namesToBeRefreshed).contains(tableCell.getCell().getName())) {
+                for (final Actor actor : tableCell.getCell().getChildren()) {
+                    actor.addAction(Actions.sequence(Actions.fadeOut(duration), Utils.createRunnableAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            actor.remove();
+                            final Image matrixElementImage = getMatrixElementImage(tableCell.getMatrixElement());
+                            matrixElementImage.setVisible(false);
+                            matrixElementImage.addAction(Actions.sequence(Actions.delay(duration), Actions.fadeOut(0f), Utils.createRunnableAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    matrixElementImage.setVisible(true);
+                                }
+                            }), Actions.fadeIn(duration)));
+                            if (tableCell.getCell().getChildren().size == 0) {
+                                tableCell.getCell().add(matrixElementImage);
+                            }
+                        }
+                    })));
+                }
             }
         }
     }
@@ -114,7 +155,7 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
     }
 
     private Image getMatrixElementImage(MatrixElement currentItem) {
-        return GraphicUtils.getImage(Resource.valueOf(currentItem.isShowed() ? "item" + currentItem.getItem() : "unknown"));
+        return GraphicUtils.getImage(MemorySpecificResource.valueOf(currentItem.isShowed() ? "item" + currentItem.getItem() : "unknown"));
     }
 
     public boolean isEnableImageClick() {

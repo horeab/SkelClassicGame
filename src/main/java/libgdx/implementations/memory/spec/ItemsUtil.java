@@ -185,7 +185,7 @@ public class ItemsUtil {
             for (int nr = 0; nr < col; nr++) {
                 MatrixElement currentItem = items[i][nr];
                 Image image = getRoot().findActor("" + BUTTON_ID_STARTING_INT_VALUE + position);
-                Res imageIdentifier = MemorySpecificResource.valueOf(currentItem.isShowed() ? "item" + currentItem.getItem() : "unknown");
+                Res imageIdentifier = MemorySpecificResource.valueOf(currentItem.isShowed() ? "items" + currentItem.getItem() : "unknown");
                 image.setDrawable(GraphicUtils.getImage(imageIdentifier).getDrawable());
                 position++;
             }
@@ -195,29 +195,30 @@ public class ItemsUtil {
 
     public List<Level> getLevelsFromResources(List<Item> allItems) {
         List<Level> levels = new ArrayList<Level>();
-//        for (GameLevel gameLevel : GameLevel.values()) {
+        for (GameLevel gameLevel : GameLevel.values()) {
+            List<Item> levelItems = getItemsForRange(0, 4, allItems);
 //            List<Item> levelItems = getItemsForRange(0, Integer.parseInt(levelValues[3]), allItems);
-//            Level level = new Level(gameLevel.ordinal(), gameLevel.getRows(), gameLevel.getCols(), levelItems);
-//            levels.add(level);
-//        }
+            Level level = new Level(gameLevel.ordinal(), gameLevel.getRows(), gameLevel.getCols(), levelItems);
+            levels.add(level);
+        }
         return levels;
     }
 
     public static List<Item> getItemsFromResources() {
         List<Item> items = new ArrayList<Item>();
 //        String[] itemNames = context.getResources().getStringArray(R.array.item_names);
-//        for (int i = 0; i < itemNames.length; i++) {
-//            Item item = new Item();
-//            item.setItemIndex(i);
-//            item.setItemName(itemNames[i]);
-//            String itemValuesArrayId = "item_" + i + "_values";
+        for (int i = 0; i < 4; i++) {
+            Item item = new Item();
+            item.setItemIndex(i);
+//            items.setItemName(itemNames[i]);
+            String itemValuesArrayId = "item_" + i + "_values";
 //            int resID = context.getResources().getIdentifier(itemValuesArrayId, "array", context.getPackageName());
 //            String[] itemValues = context.getResources().getStringArray(resID);
 //            for (int j = 0; j < itemValues.length; j++) {
-//                item.getItemValues().add(itemValues[j]);
+//                items.getItemValues().add(itemValues[j]);
 //            }
-//            items.add(item);
-//        }
+            items.add(item);
+        }
         return items;
     }
 
