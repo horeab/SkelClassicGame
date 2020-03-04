@@ -1,6 +1,6 @@
 package libgdx.implementations.memory;
 
-import libgdx.implementations.memory.spec.CurrentGame;
+import libgdx.implementations.memory.spec.GameLevel;
 import libgdx.screen.AbstractScreenManager;
 
 public class MemoryScreenManager extends AbstractScreenManager {
@@ -8,10 +8,10 @@ public class MemoryScreenManager extends AbstractScreenManager {
     @Override
     public void showMainScreen() {
 //        showScreen(MemoryScreenTypeEnum.CAMPAIGN_SCREEN);
-        showGameScreen();
+        showGameScreen(GameLevel._3);
     }
 
-    public void showGameScreen() {
-        showScreen(MemoryScreenTypeEnum.GAME_SCREEN);
+    public void showGameScreen(GameLevel gameLevel) {
+        showScreen(MemoryScreenTypeEnum.GAME_SCREEN, gameLevel);
     }
 }

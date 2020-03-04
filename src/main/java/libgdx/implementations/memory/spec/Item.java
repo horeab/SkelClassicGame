@@ -6,15 +6,10 @@ import java.util.List;
 
 public class Item implements Serializable {
 
-	private static final long serialVersionUID = 8590472997526741264L;
-
 	private int itemIndex;
 	private String itemName;
 	private List<String> itemValues = new ArrayList<String>();
 
-	public String getItemName() {
-		return itemName;
-	}
 
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
@@ -36,4 +31,7 @@ public class Item implements Serializable {
 		this.itemIndex = itemIndex;
 	}
 
+	public String getItemName() {
+		return itemName;
+	}
 }

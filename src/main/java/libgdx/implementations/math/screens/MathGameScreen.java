@@ -18,9 +18,10 @@ import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.math.MathCampaignLevelEnum;
+import libgdx.implementations.math.MathGame;
 import libgdx.implementations.math.MathScreenManager;
 import libgdx.implementations.math.spec.MathLevel;
-import libgdx.implementations.math.spec.MathLevelFinishedPopup;
+import libgdx.implementations.LevelFinishedPopup;
 import libgdx.implementations.math.spec.Operation;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
@@ -341,7 +342,12 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
 
     private void wrongAnswerPressed() {
         executorService.shutdown();
-        new MathLevelFinishedPopup(this, false).addToPopupManager();
+        new LevelFinishedPopup(this, false, new Runnable() {
+            @Override
+            public void run() {
+                MathGame.getInstance().getScreenManager().showGameScreen(getMathCampaignLevelEnum());
+            }
+        }).addToPopupManager();
     }
 
     private void correctAnswerPressed() {
@@ -351,7 +357,12 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         if (totalLevel >= LEVEL_GOAL) {
             final MathGameScreen mathGameScreen = this;
             campaignService.levelFinished(totalScore, mathCampaignLevelEnum);
-            new MathLevelFinishedPopup(mathGameScreen, true).addToPopupManager();
+            new LevelFinishedPopup(mathGameScreen, true, new Runnable() {
+                @Override
+                public void run() {
+                    MathGame.getInstance().getScreenManager().showGameScreen(getMathCampaignLevelEnum());
+                }
+            }).addToPopupManager();
             MyWrappedLabel scoreLabel = getRoot().findActor(SCORE_LABEL);
             scoreLabel.setText(getScoreText());
             MyWrappedLabel levelLabel = getRoot().findActor(LEVEL_LABEL);

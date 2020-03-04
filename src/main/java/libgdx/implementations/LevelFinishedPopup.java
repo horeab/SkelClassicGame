@@ -1,24 +1,23 @@
-package libgdx.implementations.math.spec;
+package libgdx.implementations;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import libgdx.controls.button.MyButton;
-import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.popup.MyPopup;
 import libgdx.game.Game;
-import libgdx.implementations.math.MathGame;
-import libgdx.implementations.math.screens.MathGameScreen;
 import libgdx.implementations.skelgame.SkelGameLabel;
+import libgdx.screen.AbstractScreen;
 import libgdx.screen.AbstractScreenManager;
 
-public class MathLevelFinishedPopup extends MyPopup<MathGameScreen, AbstractScreenManager> {
+public class LevelFinishedPopup extends MyPopup<AbstractScreen, AbstractScreenManager> {
 
     private boolean levelSuccess;
+    private Runnable showPlayAgainScreen;
 
-    public MathLevelFinishedPopup(MathGameScreen mathGameScreen, boolean levelSuccess) {
-        super(mathGameScreen);
+    public LevelFinishedPopup(AbstractScreen screen, boolean levelSuccess, Runnable showPlayAgainScreen) {
+        super(screen);
         this.levelSuccess = levelSuccess;
+        this.showPlayAgainScreen = showPlayAgainScreen;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class MathLevelFinishedPopup extends MyPopup<MathGameScreen, AbstractScre
             playAgain.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    MathGame.getInstance().getScreenManager().showGameScreen(getScreen().getMathCampaignLevelEnum());
+                    showPlayAgainScreen.run();
                 }
             });
             MyButton goBack = new libgdx.controls.button.ButtonBuilder(SkelGameLabel.go_back.getText())

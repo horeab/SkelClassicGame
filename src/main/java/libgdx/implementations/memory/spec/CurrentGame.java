@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CurrentGame implements Serializable {
 
-    private MatrixElement[][] levelMatrix;
     private MatrixChoice firstChoice;
 
     private List<Item> allItems = new ArrayList<Item>();
@@ -31,10 +30,6 @@ public class CurrentGame implements Serializable {
         this.allLevels = itemsUtil.getLevelsFromResources(allItems);
 
         this.setCurrentLevel(allLevels.get(levelNr));
-
-        GameLogic gameUtil = new GameLogic();
-        //TODO---------------------------------------------------------------
-        this.levelMatrix = gameUtil.generateMatrix(GameLevel._0);
 
         this.firstChoice = null;
 
@@ -71,14 +66,6 @@ public class CurrentGame implements Serializable {
 
     public void setStageScoreAgainst(int stageScoreAgainst) {
         this.stageScoreAgainst = stageScoreAgainst;
-    }
-
-    public MatrixElement[][] getLevelMatrix() {
-        return levelMatrix;
-    }
-
-    public void setLevelMatrix(MatrixElement[][] levelMatrix) {
-        this.levelMatrix = levelMatrix;
     }
 
     public MatrixChoice getFirstChoice() {

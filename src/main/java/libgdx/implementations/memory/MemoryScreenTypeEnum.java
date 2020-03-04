@@ -1,9 +1,11 @@
 package libgdx.implementations.memory;
 
+import libgdx.implementations.balloon.model.LevelInfo;
 import libgdx.implementations.math.screens.MathCampaignScreen;
 import libgdx.implementations.math.screens.MathGameScreen;
 import libgdx.implementations.memory.screens.MemoryGameScreen;
 import libgdx.implementations.memory.spec.CurrentGame;
+import libgdx.implementations.memory.spec.GameLevel;
 import libgdx.screen.AbstractScreen;
 import libgdx.screen.ScreenType;
 
@@ -17,7 +19,7 @@ public enum MemoryScreenTypeEnum implements ScreenType {
 
     GAME_SCREEN {
         public AbstractScreen getScreen(Object... params) {
-            return new MemoryGameScreen();
+            return new MemoryGameScreen((GameLevel) params[0]);
         }
     },
 

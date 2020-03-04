@@ -10,6 +10,8 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.memory.MemorySpecificResource;
 import libgdx.implementations.memory.screens.MemoryGameScreen;
 import libgdx.resources.Res;
+import libgdx.resources.gamelabel.GameLabelUtils;
+import libgdx.resources.gamelabel.SpecificPropertiesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,81 +74,7 @@ public class ItemsUtil {
         }
     }
 
-    public void onClickImageViews(final CurrentGame currentGame) {
-        int position = 0;
-        int i = 0;
-        final int rows = currentGame.getCurrentLevel().getRows();
-        final int col = currentGame.getCurrentLevel().getCols();
-        for (int row = 0; row < rows; row++) {
-            for (int nr = 0; nr < col; nr++) {
-                Image image = getRoot().findActor("" + BUTTON_ID_STARTING_INT_VALUE + position);
-                final int finalI = i;
-                final int finalNr = nr;
-                image.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        final MatrixElement[][] items = currentGame.getLevelMatrix();
-                        MatrixElement currentItem = items[finalI][finalNr];
-                        MatrixChoice clickedItem = new MatrixChoice(finalNr, finalI, currentItem.getItem());
-                        if (context.isEnableImageClick() && !clickedItem.equals(currentGame.getFirstChoice()) && !currentItem.isFound()
-                                && !currentItem.isShowed()) {
-                            currentItem.setShowed(true);
-                            refreshImageViews(rows, col, items, false);
 
-                            if (currentGame.getFirstChoice() != null) {
-                                processScore(currentGame, clickedItem);
-                                if (isLevelFinished(items)) {
-                                    processLevelFinishedPopup(currentGame.getTotalScoreFor(), currentGame.getTotalScoreAgainst(),
-                                            currentGame.getStageScoreFor(), currentGame.getStageScoreAgainst());
-                                }
-                            }
-
-                            MatrixChoice firstItemClicked = currentGame.getFirstChoice() == null ? clickedItem : null;
-                            currentGame.setFirstChoice(firstItemClicked);
-
-                            secondChoiceMadeProcesses(currentGame);
-                        }
-                    }
-
-                    private void processLevelFinishedPopup(int totalScoreFor, int totalScoreAgainst, int stageScoreFor, int stageScoreAgainst) {
-                        boolean levelSucces = isLevelSucces(stageScoreFor, stageScoreAgainst, currentGame.getCurrentLevel().getLevelNr());
-                        int stageScore = getScore(stageScoreFor, stageScoreAgainst);
-                        int totalScore = getScore(totalScoreFor, totalScoreAgainst);
-//                        Dialog levelFinishedPopup = context.levelFinishedPopup(levelSucces, !levelSucces, stageScore, totalScore);
-//                        levelFinishedPopup.show();
-                    }
-                });
-                position++;
-            }
-            i++;
-        }
-    }
-
-    private void processScore(CurrentGame currentGame, MatrixChoice clickedItem) {
-        int scoreForToIncrement = 0;
-        int scoreAgainstToIncrement = 0;
-        String itemValue = null;
-
-        if (gameUtil.doButtonsMatchAndProcess(clickedItem, currentGame.getFirstChoice(), currentGame.getLevelMatrix())) {
-            insertDiscoveredItem(currentGame, clickedItem);
-//            scoreForToIncrement = difficultyUtil.getScoreForToIncrement();
-            scoreForToIncrement = 1;
-            int rows = currentGame.getCurrentLevel().getRows();
-            int col = currentGame.getCurrentLevel().getCols();
-            refreshImageViews(rows, col, currentGame.getLevelMatrix(), false);
-            itemValue = getRandomItemValue(clickedItem.getItem(), currentGame.getAllItems());
-            itemValue = getRandomCommentaryValue(itemValue);
-        } else {
-//            scoreAgainstToIncrement = difficultyUtil.getScoreAgainstToIncrement();
-            scoreAgainstToIncrement = 1;
-        }
-        currentGame.setStageScoreFor(currentGame.getStageScoreFor() + scoreForToIncrement);
-        currentGame.setStageScoreAgainst(currentGame.getStageScoreAgainst() + scoreAgainstToIncrement);
-        currentGame.setTotalScoreFor(currentGame.getTotalScoreFor() + scoreForToIncrement);
-        currentGame.setTotalScoreAgainst(currentGame.getTotalScoreAgainst() + scoreAgainstToIncrement);
-
-        context.refreshTextViews(itemValue);
-    }
 
     private String getRandomCommentaryValue(String itemValue) {
 //        String[] comms = context.getResources().getStringArray(R.array.commentary_values);
@@ -156,11 +84,11 @@ public class ItemsUtil {
     }
 
     private void insertDiscoveredItem(CurrentGame currentGame, MatrixChoice clickedItem) {
-        List<String> discoveredItems = context.getDiscoveredItems();
-        Item item = getItemForIndex(clickedItem.getItem(), currentGame.getAllItems());
-        if (!discoveredItems.contains(item.getItemName())) {
-            context.getDiscoveredItems().add(item.getItemName());
-        }
+//        List<String> discoveredItems = context.getDiscoveredItems();
+//        Item item = getItemForIndex(clickedItem.getItem(), currentGame.getAllItems());
+//        if (!discoveredItems.contains(item.getItemName())) {
+//            context.getDiscoveredItems().add(item.getItemName());
+//        }
     }
 
     private void secondChoiceMadeProcesses(final CurrentGame currentGame) {
@@ -196,7 +124,7 @@ public class ItemsUtil {
     public List<Level> getLevelsFromResources(List<Item> allItems) {
         List<Level> levels = new ArrayList<Level>();
         for (GameLevel gameLevel : GameLevel.values()) {
-            List<Item> levelItems = getItemsForRange(0, 4, allItems);
+            List<Item> levelItems = getItemsForRange(0, gameLevel.getMaxItems(), allItems);
 //            List<Item> levelItems = getItemsForRange(0, Integer.parseInt(levelValues[3]), allItems);
             Level level = new Level(gameLevel.ordinal(), gameLevel.getRows(), gameLevel.getCols(), levelItems);
             levels.add(level);
@@ -206,17 +134,10 @@ public class ItemsUtil {
 
     public static List<Item> getItemsFromResources() {
         List<Item> items = new ArrayList<Item>();
-//        String[] itemNames = context.getResources().getStringArray(R.array.item_names);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 20; i++) {
             Item item = new Item();
             item.setItemIndex(i);
-//            items.setItemName(itemNames[i]);
-            String itemValuesArrayId = "item_" + i + "_values";
-//            int resID = context.getResources().getIdentifier(itemValuesArrayId, "array", context.getPackageName());
-//            String[] itemValues = context.getResources().getStringArray(resID);
-//            for (int j = 0; j < itemValues.length; j++) {
-//                items.getItemValues().add(itemValues[j]);
-//            }
+            item.setItemName(SpecificPropertiesUtils.getText("item"+i));
             items.add(item);
         }
         return items;

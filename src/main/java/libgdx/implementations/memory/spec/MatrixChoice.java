@@ -4,17 +4,21 @@ import java.io.Serializable;
 
 public class MatrixChoice implements Serializable {
 
-	private static final long serialVersionUID = 9208320944223127049L;
-
 	private int x;
 	private int y;
 	private int item;
+	private int index;
 
-	public MatrixChoice(int x, int y, int item) {
+	public MatrixChoice(int x, int y, int item, int index) {
 		super();
 		this.setItem(item);
 		this.x = x;
+		this.index = index;
 		this.y = y;
+	}
+
+	public int getIndex() {
+		return index;
 	}
 
 	public int getX() {
