@@ -1,9 +1,11 @@
 package libgdx.implementations.memory.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -33,6 +35,7 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import libgdx.utils.model.RGBColor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -54,9 +57,18 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
         this.levelNr = levelNr;
     }
 
+    @Override
+    protected void setBackgroundColor(RGBColor backgroundColor) {
+        super.setBackgroundColor(backgroundColor);
+    }
+
+    @Override
+    protected void setBackgroundContainer(Container<Group> backgroundContainer) {
+    }
 
     @Override
     public void buildStage() {
+        setBackgroundColor(new RGBColor(1, 206, 255, 211));
         addAllTable(levelNr);
     }
 
@@ -119,7 +131,19 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                                                 @Override
                                                 public void run() {
                                                     table.remove();
-                                                    addAllTable(levelNr + 1);
+                                                    int nextLevel = levelNr + 1;
+                                                    if (nextLevel == 1) {
+                                                        setBackgroundColor(new RGBColor(1, 234, 234, 234));
+                                                    } else if (nextLevel == 2) {
+                                                        setBackgroundColor(new RGBColor(1, 220, 250, 249));
+                                                    } else if (nextLevel == 3) {
+                                                        setBackgroundColor(new RGBColor(1, 255, 215, 254));
+                                                    } else if (nextLevel == 4) {
+                                                        setBackgroundColor(new RGBColor(1, 255, 251, 215));
+                                                    } else {
+                                                        setBackgroundColor(new RGBColor(1, 251, 219, 220));
+                                                    }
+                                                    addAllTable(nextLevel);
                                                 }
                                             }))));
                                         }

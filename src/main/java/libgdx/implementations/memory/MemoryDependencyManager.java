@@ -55,7 +55,7 @@ public class MemoryDependencyManager extends CampaignGameDependencyManager {
 
     @Override
     public RGBColor getScreenBackgroundColor() {
-        return new RGBColor(1, 230, 242, 255);
+        return new RGBColor(1, 142, 220, 176);
     }
 
 }
