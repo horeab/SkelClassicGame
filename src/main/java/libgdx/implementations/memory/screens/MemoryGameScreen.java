@@ -14,11 +14,13 @@ import libgdx.controls.label.MyWrappedLabelConfig;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
+import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.LevelFinishedPopup;
 import libgdx.implementations.math.MathGame;
 import libgdx.implementations.math.MathScreenManager;
 import libgdx.implementations.memory.MemoryGame;
+import libgdx.implementations.memory.MemoryScreenManager;
 import libgdx.implementations.memory.MemorySpecificResource;
 import libgdx.implementations.memory.spec.*;
 import libgdx.implementations.skelgame.SkelGameRatingService;
@@ -35,33 +37,34 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
-public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
+public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
 
     private final String CELL_NAME = "CELL_NAME";
     private MatrixElement[][] levelMatrix;
     private CurrentGame currentGame;
     private boolean enableImageClick = false;
+    private int levelNr;
     private List<TableCell> cells = new ArrayList<>();
     private GameLevel gameLevel;
     private MyWrappedLabel forScore;
     private MyWrappedLabel againstScore;
     private CampaignStoreService campaignStoreService = new CampaignStoreService();
 
-    public MemoryGameScreen(GameLevel gameLevel) {
-        this.gameLevel = GameLevel._2;
-        this.currentGame = new CurrentGame(this, this.gameLevel.ordinal(), 0);
+    public MemoryGameScreen(int levelNr) {
+        this.levelNr = levelNr;
     }
 
 
     @Override
     public void buildStage() {
-        levelMatrix = new GameLogic().generateMatrix(gameLevel);
-        new SkelGameRatingService(this).appLaunched();
-        addAllTable();
-        hideAllImageViews();
+        addAllTable(levelNr);
     }
 
-    private void addAllTable() {
+    private void addAllTable(int levelNr) {
+        this.gameLevel = GameLevel.values()[levelNr];
+        this.currentGame = new CurrentGame(this, this.gameLevel.ordinal(), 0);
+        levelMatrix = new GameLogic().generateMatrix(gameLevel);
+        hideAllImageViews();
         Table table = new Table();
 
         final int rows = currentGame.getCurrentLevel().getRows();
@@ -108,13 +111,17 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
                                             new LevelFinishedPopup(getAbstractScreen(), false, new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    MemoryGame.getInstance().getScreenManager().showGameScreen(gameLevel);
+                                                    MemoryGame.getInstance().getScreenManager().showGameScreen(levelNr);
                                                 }
                                             }).addToPopupManager();
                                         } else if (isLevelFinished(levelMatrix)) {
-                                            currentGame.setTotalScoreFor(currentGame.getTotalScoreFor() + currentGame.getStageScoreFor());
-                                            processLevelFinishedPopup(currentGame.getTotalScoreFor(), currentGame.getTotalScoreAgainst(),
-                                                    currentGame.getStageScoreFor(), currentGame.getStageScoreAgainst());
+                                            getRoot().addAction(Actions.sequence(Actions.delay(2f, Utils.createRunnableAction(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    table.remove();
+                                                    addAllTable(levelNr + 1);
+                                                }
+                                            }))));
                                         }
                                     }
 
@@ -124,7 +131,7 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
 
                                     if (currentGame.getFirstChoice() == null) {
                                         setEnableImageClick(false);
-                                        getAbstractScreen().getRoot().addAction(Actions.sequence(Actions.delay(1f), Utils.createRunnableAction(new Runnable() {
+                                        getAbstractScreen().getRoot().addAction(Actions.sequence(Actions.delay(0.5f), Utils.createRunnableAction(new Runnable() {
                                             @Override
                                             public void run() {
                                                 refreshImageViews(name, firstChoiceName);
@@ -143,7 +150,13 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
             }
             gameTable.row();
         }
-
+        gameTable.setVisible(false);
+        gameTable.addAction(Actions.sequence(Actions.fadeOut(0f), Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                gameTable.setVisible(true);
+            }
+        }), Actions.fadeIn(0.3f)));
         table.add(gameTable).height(gameTable.getHeight());
         addActor(table);
 
@@ -242,33 +255,17 @@ public class MemoryGameScreen extends AbstractScreen<MathScreenManager> {
         if (!campaignStoreService.isQuestionAlreadyPlayed(itemId)) {
             campaignStoreService.putQuestionPlayed(itemId);
             new MyNotificationPopupCreator(new MyNotificationPopupConfigBuilder().setResource(MemorySpecificResource.valueOf(itemId)).setText(
-                    MainGameLabel.l_item_discovered.getText(SpecificPropertiesUtils.getText("en_" + itemId))).build()).shortNotificationPopup().addToPopupManager();
+                    MainGameLabel.l_item_discovered.getText(SpecificPropertiesUtils.getText(itemId))).build()).
+                    shortNotificationPopup().addToPopupManager();
 
         }
-    }
-
-    private Item getItemForIndex(int index, List<Item> items) {
-        for (Item item : items) {
-            if (item.getItemIndex() == index) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    private void processLevelFinishedPopup(int totalScoreFor, int totalScoreAgainst,
-                                           int stageScoreFor, int stageScoreAgainst) {
     }
 
     private Image getMatrixElementImage(MatrixElement currentItem) {
         return GraphicUtils.getImage(MemorySpecificResource.valueOf(currentItem.isShowed() ? "item" + currentItem.getItem() : "unknown"));
     }
 
-    public boolean isEnableImageClick() {
-        return enableImageClick;
-    }
-
-    public void setEnableImageClick(boolean enableImageClick) {
+    private void setEnableImageClick(boolean enableImageClick) {
         this.enableImageClick = enableImageClick;
     }
 

@@ -33,6 +33,8 @@ public enum MemorySpecificResource implements SpecificResource {
     item18("items/item18.png", Texture.class),
     item19("items/item19.png", Texture.class),
     unknown("items/unknown.png", Texture.class),
+    unknown_menu("items/unknown_menu.png", Texture.class),
+    title_background("title_background.png", Texture.class),
     ;
 
     // @formatter:on

@@ -38,63 +38,63 @@ public class MemoryStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "Matematika";
+                return "xxx";
             case da:
-                return "Matematik";
+                return "xxx";
             case de:
-                return "Mathematik";
+                return "xxx";
             case el:
-                return "Μαθηματικά";
+                return "xxx";
             case en:
-                return "Math Test";
+                return "Memory Sport";
             case es:
-                return "Matemáticas";
+                return "xxx";
             case fi:
-                return "Matematiikka";
+                return "xxx";
             case fr:
-                return "Mathématiques";
+                return "xxx";
             case hi:
-                return "गणित";
+                return "xxx";
             case hr:
-                return "Matematika";
+                return "xxx";
             case hu:
-                return "Matematika";
+                return "xxx";
             case id:
-                return "Matematika";
+                return "xxx";
             case it:
-                return "Test di matematica";
+                return "xxx";
             case ja:
-                return "数学";
+                return "xxx";
             case ko:
-                return "수학";
+                return "xxx";
             case ms:
-                return "Matematik";
+                return "xxx";
             case nl:
-                return "Wiskunde";
+                return "xxx";
             case no:
-                return "Matte";
+                return "xxx";
             case pl:
-                return "Matematyka";
+                return "xxx";
             case pt:
-                return "Matemática";
+                return "xxx";
             case ro:
-                return "Matematică";
+                return "xxx";
             case ru:
-                return "Математика";
+                return "xxx";
             case sk:
-                return "Matematika";
+                return "xxx";
             case sv:
-                return "Matematik";
+                return "xxx";
             case th:
-                return "คณิตศาสตร์";
+                return "xxx";
             case tr:
-                return "Matematik";
+                return "xxx";
             case uk:
-                return "Математика";
+                return "xxx";
             case vi:
-                return "Toán học";
+                return "xxx";
             case zh:
-                return "数学";
+                return "xxx";
         }
         return null;
     }
