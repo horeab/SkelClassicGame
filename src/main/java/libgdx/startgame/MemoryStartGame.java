@@ -29,7 +29,7 @@ public class MemoryStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return "en";
+                        return "vi";
                     }
                 });
         libgdx.utils.startgame.StartGame.main(game, args);
@@ -38,63 +38,63 @@ public class MemoryStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "xxx";
+                return "Test Paměti";
             case da:
-                return "xxx";
+                return "Hukommelsespil";
             case de:
-                return "xxx";
+                return "Memory-Spiel";
             case el:
-                return "xxx";
+                return "Δοκιμή μνήμης";
             case en:
-                return "Memory Sport";
+                return "Memory Exam";
             case es:
-                return "xxx";
+                return "Prueba de Memoria";
             case fi:
-                return "xxx";
+                return "Muistitesti";
             case fr:
-                return "xxx";
+                return "Examen de Mémoire";
             case hi:
-                return "xxx";
+                return "दिमागी परीक्षा";
             case hr:
-                return "xxx";
+                return "Igra Pamćenja";
             case hu:
-                return "xxx";
+                return "Memória Teszt";
             case id:
-                return "xxx";
+                return "Tes Memori";
             case it:
-                return "xxx";
+                return "Test di Memoria";
             case ja:
-                return "xxx";
+                return "記憶テスト";
             case ko:
-                return "xxx";
+                return "메모리 검사";
             case ms:
-                return "xxx";
+                return "Ujian Memori";
             case nl:
-                return "xxx";
+                return "Geheimexamen";
             case no:
-                return "xxx";
+                return "Minnespill";
             case pl:
-                return "xxx";
+                return "Test Pamięci";
             case pt:
-                return "xxx";
+                return "Teste de Memória";
             case ro:
-                return "xxx";
+                return "Joc de Memorie";
             case ru:
-                return "xxx";
+                return "Тест памяти";
             case sk:
-                return "xxx";
+                return "Pamäťová Hra";
             case sv:
-                return "xxx";
+                return "Minnestest";
             case th:
-                return "xxx";
+                return "เกมความจำ";
             case tr:
-                return "xxx";
+                return "Hafıza Sınavı";
             case uk:
-                return "xxx";
+                return "Гра на пам'ять";
             case vi:
-                return "xxx";
+                return "Kiểm tra bộ nhớ";
             case zh:
-                return "xxx";
+                return "记忆考试";
         }
         return null;
     }

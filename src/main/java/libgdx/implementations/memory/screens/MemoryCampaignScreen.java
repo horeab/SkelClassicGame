@@ -90,7 +90,7 @@ public class MemoryCampaignScreen extends AbstractScreen<MemoryScreenManager> {
         mult = mult * 1.2f;
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
-                        FontColor.GRAY.getColor(),
+                        FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE * mult),
                         8f)).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
     }
