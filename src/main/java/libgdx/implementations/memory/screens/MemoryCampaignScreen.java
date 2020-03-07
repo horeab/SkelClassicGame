@@ -44,6 +44,7 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -84,10 +85,8 @@ public class MemoryCampaignScreen extends AbstractScreen<MemoryScreenManager> {
 //                .height(ScreenDimensionsManager.getNewHeightForNewWidth(ScreenDimensionsManager.getScreenWidthValue(90), titleBackr)).row();
 
 
-
         String appName = Game.getInstance().getAppInfoService().getAppName();
-        float mult = appName.length() > 10 ? (appName.length() > 15 ? 1.5f : 2.5f) : 2.5f;
-        mult = mult * 1.2f;
+        float mult = appName.length() > 13 ? 2.0f : 2.7f;
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                         FontColor.GREEN.getColor(),
@@ -110,7 +109,6 @@ public class MemoryCampaignScreen extends AbstractScreen<MemoryScreenManager> {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                new CampaignStoreService().reset();
                 screenManager.showGameScreen(0);
             }
         });
@@ -138,7 +136,7 @@ public class MemoryCampaignScreen extends AbstractScreen<MemoryScreenManager> {
             itemTable.add(GraphicUtils.getImage(res)).width(side).height(side).row();
             MyWrappedLabelConfigBuilder myWrappedLabelConfigBuilder = new MyWrappedLabelConfigBuilder()
                     .setFontConfig(new FontConfig(FontConfig.FONT_SIZE / 1.5f))
-                    .setText(text);
+                    .setText(StringUtils.capitalize(text));
             if (text.contains(" ")) {
                 myWrappedLabelConfigBuilder.setWrappedLineLabel(side);
             }

@@ -279,7 +279,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
         if (!campaignStoreService.isQuestionAlreadyPlayed(itemId)) {
             campaignStoreService.putQuestionPlayed(itemId);
             new MyNotificationPopupCreator(new MyNotificationPopupConfigBuilder().setResource(MemorySpecificResource.valueOf(itemId)).setText(
-                    MainGameLabel.l_item_discovered.getText(SpecificPropertiesUtils.getText(itemId))).build()).
+                    MainGameLabel.l_item_discovered.getText(StringUtils.capitalize(SpecificPropertiesUtils.getText(itemId)))).build()).
                     shortNotificationPopup().addToPopupManager();
 
         }

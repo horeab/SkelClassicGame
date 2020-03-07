@@ -29,7 +29,7 @@ public class MemoryStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return "vi";
+                        return "cs";
                     }
                 });
         libgdx.utils.startgame.StartGame.main(game, args);
@@ -40,9 +40,9 @@ public class MemoryStartGame {
             case cs:
                 return "Test Paměti";
             case da:
-                return "Hukommelsespil";
+                return "Hukommelse spil";
             case de:
-                return "Memory-Spiel";
+                return "Memory Spiel";
             case el:
                 return "Δοκιμή μνήμης";
             case en:
@@ -50,7 +50,7 @@ public class MemoryStartGame {
             case es:
                 return "Prueba de Memoria";
             case fi:
-                return "Muistitesti";
+                return "Muisti testi";
             case fr:
                 return "Examen de Mémoire";
             case hi:
@@ -70,9 +70,9 @@ public class MemoryStartGame {
             case ms:
                 return "Ujian Memori";
             case nl:
-                return "Geheimexamen";
+                return "Geheim examen";
             case no:
-                return "Minnespill";
+                return "Minne spill";
             case pl:
                 return "Test Pamięci";
             case pt:
@@ -84,7 +84,7 @@ public class MemoryStartGame {
             case sk:
                 return "Pamäťová Hra";
             case sv:
-                return "Minnestest";
+                return "Minnes test";
             case th:
                 return "เกมความจำ";
             case tr:
