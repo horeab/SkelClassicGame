@@ -69,22 +69,6 @@ public class MemoryCampaignScreen extends AbstractScreen<MemoryScreenManager> {
 
     private void addTitle(Table table) {
 
-//
-//
-//        MyWrappedLabel titleLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(
-//                FontColor.WHITE.getColor(),
-//                FontColor.BLACK.getColor(),
-//                FontConfig.FONT_SIZE * 2,
-//                4f)).setText(Game.getInstance().getAppInfoService().getAppName()).build());
-//        Stack stack = new Stack();
-//        Image titleBackr = GraphicUtils.getImage(MemorySpecificResource.title_background);
-//        stack.addActor(titleBackr);
-//        stack.addActor(titleLabel);
-//        table.add(stack)
-//                .width(ScreenDimensionsManager.getScreenWidthValue(90))
-//                .height(ScreenDimensionsManager.getNewHeightForNewWidth(ScreenDimensionsManager.getScreenWidthValue(90), titleBackr)).row();
-
-
         String appName = Game.getInstance().getAppInfoService().getAppName();
         float mult = appName.length() > 13 ? 2.0f : 2.7f;
         table.add(new MyWrappedLabel(

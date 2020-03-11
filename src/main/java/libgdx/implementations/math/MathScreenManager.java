@@ -7,7 +7,7 @@ public class MathScreenManager extends AbstractScreenManager {
     @Override
     public void showMainScreen() {
         showScreen(MathScreenTypeEnum.CAMPAIGN_SCREEN);
-//        showGameScreen(MemoryCampaignLevelEnum.LEVEL_0_1);
+//        showGameScreen(ResourceWarsCampaignLevelEnum.LEVEL_0_1);
     }
 
     public void showGameScreen(MathCampaignLevelEnum mathCampaignLevelEnum) {
