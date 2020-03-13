@@ -16,10 +16,13 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.resourcewars.screens.ResourceWarsGameScreen;
+import libgdx.implementations.resourcewars.spec.logic.HealthManager;
+import libgdx.implementations.resourcewars.spec.logic.InGameStoreManager;
 import libgdx.implementations.resourcewars.spec.logic.ResourceTransactionsManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.implementations.resourcewars.spec.model.Inventory;
 import libgdx.implementations.resourcewars.spec.model.Market;
+import libgdx.implementations.resourcewars.spec.model.enums.Location;
 import libgdx.implementations.resourcewars.spec.model.resource.AbstractResource;
 import libgdx.implementations.resourcewars.spec.model.resource.ResourceInventory;
 import libgdx.implementations.resourcewars.spec.model.resource.ResourceMarket;
@@ -27,11 +30,15 @@ import libgdx.resources.FontManager;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContainerManager {
 
@@ -42,19 +49,31 @@ public class ContainerManager {
     public static String BUYSELLBTN_NAME = "BUYSELLBTN_NAME";
     private static String INVENTORYTABLE_NAME = "INVENTORYTABLE_NAME";
     private static String MARKETTABLE_NAME = "MARKETTABLE_NAME";
+    private static String HEADERTABLE_NAME = "HEADERTABLE_NAME";
     private ResourceTransactionsManager resourceTransactionsManager;
+    private HealthManager healthManager;
+    private InGameStoreManager storeManager;
     private static float INV_MARKET_ITEM_HEIGHT = ScreenDimensionsManager.getScreenWidthValue(15);
 
     public ContainerManager(CurrentGame currentGame) {
         this.currentGame = currentGame;
         this.resourceTransactionsManager = new ResourceTransactionsManager(currentGame);
+        healthManager = new HealthManager(currentGame);
+        storeManager = new InGameStoreManager();
     }
 
     public Table createFooter(float tableWidth) {
         Table table = new Table();
         float btnWidth = tableWidth / 3;
         MyButton changeCountryBtn = new ButtonBuilder().setWrappedText("Unites States", btnWidth).build();
-        MyButton passDayBtn = new ButtonBuilder().setWrappedText("Pass day", btnWidth).build();
+        MyButton passDayBtn = new ButtonBuilder().setWrappedText("Next day", btnWidth).build();
+        passDayBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                passDayButStayInSameLocation();
+                resetControls();
+            }
+        });
         MyButton storeBtn = new ButtonBuilder().setWrappedText("Store", btnWidth).build();
         table.add(changeCountryBtn).width(btnWidth);
         table.add(passDayBtn).width(btnWidth);
@@ -62,32 +81,90 @@ public class ContainerManager {
         return table;
     }
 
-    public Table createHeader(float tableWidth) {
-        Table table = new Table();
+    private void resetControls() {
+        createHeader();
+        createInventory();
+        createMarket();
+        updateAmount(0);
+    }
+
+    public void passDayAndMoveLocation(Location newLocation) {
+        if (storeManager.isLocationUnlocked(newLocation)) {
+            spendMoneyOnTravel(newLocation);
+        } else {
+            unlockLocation(newLocation);
+        }
+        processHealthAndThreat(newLocation);
+        increaseDaysPassed();
+        currentGame.getMarket().setCurrentLocation(newLocation, currentGame.getMyInventory().getAvailableResourcesByType());
+    }
+
+    private void spendMoneyOnTravel(Location newLocation) {
+        currentGame.getMyInventory().setBudget(currentGame.getMyInventory().getBudget() - newLocation.getTravelPrice(currentGame.getDaysPassed()));
+    }
+
+    private void increaseThreat(Location location) {
+        currentGame.getPlayerInfo().setThreat(currentGame.getPlayerInfo().getThreat() + location.getThreatIncrease());
+    }
+
+    private void unlockLocation(Location location) {
+        storeManager.unlockLocation(location);
+        currentGame.getMyInventory().setBudget(currentGame.getMyInventory().getBudget() - location.getUnlockPrice());
+    }
+
+    private void increaseDaysPassed() {
+        currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
+    }
+
+    public void passDayButStayInSameLocation() {
+        Location currentLocation = currentGame.getMarket().getCurrentLocation();
+        increaseDaysPassed();
+        healthManager.processHealth();
+        currentGame.getMarket().setCurrentLocation(currentLocation, currentGame.getMyInventory().getAvailableResourcesByType());
+    }
+
+    public void processHealthAndThreat(Location currentLocation) {
+        healthManager.processHealth();
+        increaseThreat(currentLocation);
+    }
+
+
+    public Table createHeader() {
+        float tableWidth = ResourceWarsGameScreen.HEADERWIDTH;
+        Table table = getRoot().findActor(HEADERTABLE_NAME);
+        if (table == null) {
+            table = new Table();
+        }
+        table.setName(HEADERTABLE_NAME);
+        table.clearChildren();
         float infoWidth = tableWidth / 2;
 
         table.setWidth(tableWidth);
         Table tableRow1 = new Table();
         tableRow1.add(createHeaderInfoLabelPair("Budget: ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()))).width(infoWidth);
-        tableRow1.add(createHeaderInfoLabelPair("Health: ", "95/100")).width(infoWidth);
+        tableRow1.add(createHeaderInfoLabelPair("Health: ", currentGame.getPlayerInfo().getHealth() + "/100")).width(infoWidth);
         table.add(tableRow1).width(tableWidth).row();
 
         Table tableRow2 = new Table();
-        tableRow2.add(createHeaderInfoLabelPair("Space filled: ", "22/100")).width(infoWidth);
-        tableRow2.add(createHeaderInfoLabelPair("Reputation: ", "16%")).width(infoWidth);
+        int totalInventory = 100;
+        tableRow2.add(createHeaderInfoLabelPair("Inventory: ", (totalInventory - currentGame.getMyInventory().getContainerSpaceLeft()) + "/" + totalInventory)).width(infoWidth);
+        tableRow2.add(createHeaderInfoLabelPair("Reputation: ", currentGame.getPlayerInfo().getReputation() + "%")).width(infoWidth);
         table.add(tableRow2).width(tableWidth).row();
 
         Table tableRow3 = new Table();
-        tableRow3.add(createHeaderInfoLabelPair("Days passed: ", "31")).width(infoWidth);
-        tableRow3.add(createHeaderInfoLabelPair("Threat: ", "11%")).width(infoWidth);
+        tableRow3.add(createHeaderInfoLabelPair("Days: ", currentGame.getDaysPassed() + "")).width(infoWidth);
+        tableRow3.add(createHeaderInfoLabelPair("Threat: ", currentGame.getPlayerInfo().getReputation() + "%")).width(infoWidth);
         table.add(tableRow3).width(tableWidth);
 
+        table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         return table;
     }
 
     private Table createHeaderInfoLabelPair(String text1, String text2) {
         MyWrappedLabel l1 = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setSingleLineLabel().setFontConfig(new FontConfig(FontConfig.FONT_SIZE / 1.3f))
+                new MyWrappedLabelConfigBuilder()
+                        .setSingleLineLabel()
+                        .setFontConfig(new FontConfig(FontConfig.FONT_SIZE / 1.3f))
                         .setText(text1).build());
         MyWrappedLabel l2 = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setSingleLineLabel()
@@ -116,16 +193,24 @@ public class ContainerManager {
             itemTable.setWidth(tableWidth);
             inventoryTable.add(itemTable).row();
         } else {
-            for (ResourceInventory resourceInventory : inventory.getAvailableResources()) {
+            List<ResourceInventory> availableResources = inventory.getAvailableResources().stream()
+                    .sorted(Comparator.comparingInt(ResourceInventory::getPrice))
+                    .collect(Collectors.toList());
+            for (ResourceInventory resourceInventory : availableResources) {
                 Table itemTable = new Table();
+                String actualSellPrice = getActualSellPrice(resourceInventory, market);
                 MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                        .setFontColor(StringUtils.isNotBlank(actualSellPrice) ? FontColor.GREEN : FontColor.RED)
                         .setText(resourceInventory.getResourceType().toString()).build());
-                MyWrappedLabel actualSellPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(
-                        getActualSellPrice(resourceInventory, market)).build());
-                MyWrappedLabel pastBuyPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(formatNrToCurrencyWithDollar(resourceInventory.getPrice())).build());
+                MyWrappedLabel actualSellPriceLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                        .setText(actualSellPrice != null ? actualSellPrice : "").build());
+                MyWrappedLabel pastBuyPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                        .setFontColor(FontColor.GRAY)
+                        .setFontScale(FontManager.calculateMultiplierStandardFontSize(0.8f))
+                        .setText(formatNrToCurrencyWithDollar(resourceInventory.getPrice())).build());
                 MyWrappedLabel invAmountLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(resourceInventory.getAmount() + "").build());
                 itemTable.add(displayName).width(tableWidth / 2);
-                itemTable.add(actualSellPrice).width(tableWidth / 2);
+                itemTable.add(actualSellPriceLabel).width(tableWidth / 2);
                 itemTable.row();
                 itemTable.add(pastBuyPrice).width(tableWidth / 2);
                 itemTable.add(invAmountLabel).width(tableWidth / 2);
@@ -135,11 +220,11 @@ public class ContainerManager {
                 itemTable.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (!currentGame.getMyInventory().getAvailableResources().isEmpty()) {
+                        if (!currentGame.getMyInventory().getAvailableResources().isEmpty() && StringUtils.isNotBlank(actualSellPrice)) {
                             if (selectedResource != null && selectedResource instanceof ResourceMarket) {
                                 setSelectedResource(null);
                             }
-                            if (selectedResource != null && resourceInventory.equalsResourceType(selectedResource)) {
+                            if (selectedResource != null && resourceInventory.equalsResourceType(selectedResource) && selectedResource instanceof ResourceInventory) {
                                 resetInvMarketItemBackground();
                                 setSelectedResource(null);
                             } else {
@@ -148,11 +233,12 @@ public class ContainerManager {
                                 setSelectedResource(resourceInventory);
                                 MyButton sellBuyButton = getRoot().findActor(BUYSELLBTN_NAME);
                                 sellBuyButton.getCenterRowLabels().get(0).setText("Sell");
-                                if (!ResourceTransactionsManager.isResourceAvailableForSelling(selectedResource.getResourceType(),
-                                        currentGame.getMarket().getAvailableResources())) {
-                                }
                             }
-                            resetAmount();
+                            if (selectedResource != null) {
+                                updateAmount(resourceInventory.getAmount());
+                            } else {
+                                updateAmount(0);
+                            }
                         }
                     }
                 });
@@ -184,9 +270,14 @@ public class ContainerManager {
         }
         table.setName(MARKETTABLE_NAME);
         table.clearChildren();
-        for (ResourceMarket resourceMarket : market.getAvailableResources()) {
+        List<ResourceMarket> availableResources = market.getAvailableResources().stream()
+                .sorted(Comparator.comparingInt(ResourceMarket::getPrice))
+                .collect(Collectors.toList());
+        for (ResourceMarket resourceMarket : availableResources) {
+            int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
             Table itemTable = new Table();
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                    .setFontColor(amountYouAffordAndHaveSpaceFor > 0 ? FontColor.GREEN : FontColor.RED)
                     .setText(resourceMarket.getResourceType().toString()).build());
             MyWrappedLabel marketPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(formatNrToCurrencyWithDollar(resourceMarket.getPrice())).build());
             itemTable.add(displayName).width(tableWidth / 2);
@@ -198,19 +289,22 @@ public class ContainerManager {
             itemTable.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    resetInvMarketItemBackground();
-                    if (selectedResource != null && selectedResource instanceof ResourceInventory) {
-                        setSelectedResource(null);
+                    int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
+                    if (amountYouAffordAndHaveSpaceFor > 0) {
+                        resetInvMarketItemBackground();
+                        if (selectedResource != null && selectedResource instanceof ResourceInventory) {
+                            setSelectedResource(null);
+                        }
+                        if (selectedResource != null && resourceMarket.equalsResourceType(selectedResource) && selectedResource instanceof ResourceMarket) {
+                            setSelectedResource(null);
+                        } else {
+                            setSelectedResource(resourceMarket);
+                            itemTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+                            updateAmount(amountYouAffordAndHaveSpaceFor);
+                        }
+                        MyButton sellBuyButton = getRoot().findActor(BUYSELLBTN_NAME);
+                        sellBuyButton.getCenterRowLabels().get(0).setText("Buy");
                     }
-                    if (selectedResource != null && resourceMarket.equalsResourceType(selectedResource)) {
-                        setSelectedResource(null);
-                    } else {
-                        setSelectedResource(resourceMarket);
-                        itemTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
-                    }
-                    MyButton sellBuyButton = getRoot().findActor(BUYSELLBTN_NAME);
-                    sellBuyButton.getCenterRowLabels().get(0).setText("Buy");
-                    resetAmount();
                 }
             });
             table.add(itemTable).width(tableWidth).height(INV_MARKET_ITEM_HEIGHT).padBottom(MainDimen.vertical_general_margin.getDimen()).row();
@@ -218,9 +312,9 @@ public class ContainerManager {
         return table;
     }
 
-    private void resetAmount() {
-        amount = 0;
-        amountLabel.setText(amount + "");
+    private void updateAmount(int amount) {
+        this.amount = amount;
+        amountLabel.setText(this.amount + "");
     }
 
     public Table createNumberPickerColumn(float numberPickerWidth) {
@@ -258,14 +352,15 @@ public class ContainerManager {
                     resourceTransactionsManager.sellResource(getSelectedResource(), amount);
                 }
                 setSelectedResource(null);
-                resetAmount();
                 createInventory();
+                createHeader();
+                createMarket();
             }
         });
         return buySellBtn;
     }
 
-    private int getAmountYouAfforAndHaveSpaceFor(int amountYouAfford) {
+    private int getAmountYouAffordAndHaveSpaceFor(int amountYouAfford) {
         int amount = amountYouAfford;
 
         if (amountYouAfford > currentGame.getMyInventory().getContainerSpaceLeft()) {
@@ -298,20 +393,34 @@ public class ContainerManager {
                         }
                     }
                     if (amount < 0) {
-                        resetAmount();
+                        updateAmount(0);
                     }
 
-                    int amountYouAffordAndHaveSpaceFor = ResourceTransactionsManager.getResourceAmountYouAfford(
-                            getSelectedResource().getPrice(), currentGame.getMyInventory().getBudget());
-                    amountYouAffordAndHaveSpaceFor = getAmountYouAfforAndHaveSpaceFor(amountYouAffordAndHaveSpaceFor);
-                    if (amount > amountYouAffordAndHaveSpaceFor) {
-                        amount = amountYouAffordAndHaveSpaceFor;
+                    if (selectedResource instanceof ResourceMarket) {
+                        int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(ContainerManager.this.getSelectedResource());
+                        if (amount > amountYouAffordAndHaveSpaceFor) {
+                            amount = amountYouAffordAndHaveSpaceFor;
+                        }
+                    } else if (selectedResource instanceof ResourceInventory) {
+                        if (amount > ((ResourceInventory) selectedResource).getAmount()) {
+                            amount = ((ResourceInventory) selectedResource).getAmount();
+                        }
                     }
                     amountLabel.setText(amount + "");
                 }
             }
         });
         return btn;
+    }
+
+    private int getAmountYouAffordAndHaveSpaceFor(AbstractResource resource) {
+        if (resource != null) {
+            int amountYouAffordAndHaveSpaceFor = ResourceTransactionsManager.getResourceAmountYouAfford(
+                    resource.getPrice(), currentGame.getMyInventory().getBudget());
+            amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(amountYouAffordAndHaveSpaceFor);
+            return amountYouAffordAndHaveSpaceFor;
+        }
+        return 0;
     }
 
     private String getModifyAmountBtnText(int modifAmount, int mult, boolean positive) {
@@ -351,6 +460,7 @@ public class ContainerManager {
 
     public void setSelectedResource(AbstractResource selectedResource) {
         if (selectedResource == null) {
+            updateAmount(0);
             resetInvMarketItemBackground();
         }
         this.selectedResource = selectedResource;

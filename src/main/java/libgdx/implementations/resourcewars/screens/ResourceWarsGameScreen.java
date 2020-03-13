@@ -28,6 +28,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
     private ContainerManager containerManager;
     private CurrentGame currentGame;
     public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(38);
+    public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidth() / 1.1f;
 
     public ResourceWarsGameScreen() {
         this.currentGame = new CurrentGame();
@@ -43,8 +44,8 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
     private void addAllTable() {
         Table table = new Table();
         table.setFillParent(true);
-        float headerWidth = ScreenDimensionsManager.getScreenWidth() / 1.1f;
-        table.add(containerManager.createHeader(headerWidth)).width(headerWidth).row();
+
+        table.add(containerManager.createHeader()).width(HEADERWIDTH).row();
         Table gameTable = new Table();
         float invMarketHeight = ScreenDimensionsManager.getScreenHeightValue(75);
         gameTable.add(containerManager.createScrollTable(containerManager.createInventory(), "Inventory", invMarketHeight)).width(INVMARKETWIDTH);

@@ -71,9 +71,11 @@ public class ResourceTransactionsManager {
 
     private int getMarketPriceForResource(AbstractResource resource) {
         int marketPrice = 0;
-        for (AbstractResource marketResource : currentGame.getMarket().getAvailableResources()) {
-            if (marketResource.getResourceType() == resource.getResourceType()) {
-                marketPrice = marketResource.getPrice();
+        if (resource != null) {
+            for (AbstractResource marketResource : currentGame.getMarket().getAvailableResources()) {
+                if (marketResource.getResourceType() == resource.getResourceType()) {
+                    marketPrice = marketResource.getPrice();
+                }
             }
         }
         return marketPrice;
