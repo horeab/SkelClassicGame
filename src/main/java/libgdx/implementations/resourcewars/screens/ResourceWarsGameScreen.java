@@ -27,8 +27,8 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
 
     private ContainerManager containerManager;
     private CurrentGame currentGame;
-    public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(38);
-    public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidth() / 1.1f;
+    public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(39);
+    public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidth() ;
 
     public ResourceWarsGameScreen() {
         this.currentGame = new CurrentGame();

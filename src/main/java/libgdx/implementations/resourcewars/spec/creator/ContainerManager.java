@@ -16,6 +16,8 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.resourcewars.screens.ResourceWarsGameScreen;
+import libgdx.implementations.resourcewars.spec.LocationPopup;
+import libgdx.implementations.resourcewars.spec.StorePopup;
 import libgdx.implementations.resourcewars.spec.logic.HealthManager;
 import libgdx.implementations.resourcewars.spec.logic.InGameStoreManager;
 import libgdx.implementations.resourcewars.spec.logic.ResourceTransactionsManager;
@@ -23,13 +25,16 @@ import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.implementations.resourcewars.spec.model.Inventory;
 import libgdx.implementations.resourcewars.spec.model.Market;
 import libgdx.implementations.resourcewars.spec.model.enums.Location;
+import libgdx.implementations.resourcewars.spec.model.enums.ResourceType;
 import libgdx.implementations.resourcewars.spec.model.resource.AbstractResource;
 import libgdx.implementations.resourcewars.spec.model.resource.ResourceInventory;
 import libgdx.implementations.resourcewars.spec.model.resource.ResourceMarket;
 import libgdx.resources.FontManager;
 import libgdx.resources.MainResource;
+import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import org.apache.commons.lang3.StringUtils;
@@ -66,6 +71,22 @@ public class ContainerManager {
         Table table = new Table();
         float btnWidth = tableWidth / 3;
         MyButton changeCountryBtn = new ButtonBuilder().setWrappedText("Unites States", btnWidth).build();
+        changeCountryBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                new LocationPopup(currentGame, Game.getInstance().getAbstractScreen()) {
+                    @Override
+                    public void hide() {
+                        super.hide(Utils.createRunnableAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                resetControls();
+                            }
+                        }));
+                    }
+                }.addToPopupManager();
+            }
+        });
         MyButton passDayBtn = new ButtonBuilder().setWrappedText("Next day", btnWidth).build();
         passDayBtn.addListener(new ClickListener() {
             @Override
@@ -78,6 +99,22 @@ public class ContainerManager {
         table.add(changeCountryBtn).width(btnWidth);
         table.add(passDayBtn).width(btnWidth);
         table.add(storeBtn).width(btnWidth);
+        storeBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                new StorePopup(currentGame, Game.getInstance().getAbstractScreen()) {
+                    @Override
+                    public void hide() {
+                        super.hide(Utils.createRunnableAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                resetControls();
+                            }
+                        }));
+                    }
+                }.addToPopupManager();
+            }
+        });
         return table;
     }
 
@@ -153,7 +190,7 @@ public class ContainerManager {
 
         Table tableRow3 = new Table();
         tableRow3.add(createHeaderInfoLabelPair("Days: ", currentGame.getDaysPassed() + "")).width(infoWidth);
-        tableRow3.add(createHeaderInfoLabelPair("Threat: ", currentGame.getPlayerInfo().getReputation() + "%")).width(infoWidth);
+        tableRow3.add(createHeaderInfoLabelPair("Threat: ", currentGame.getPlayerInfo().getThreat() + "%")).width(infoWidth);
         table.add(tableRow3).width(tableWidth);
 
         table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
@@ -200,19 +237,21 @@ public class ContainerManager {
                 Table itemTable = new Table();
                 String actualSellPrice = getActualSellPrice(resourceInventory, market);
                 MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                        .setFontColor(StringUtils.isNotBlank(actualSellPrice) ? FontColor.GREEN : FontColor.RED)
+                        .setFontColor(getDisplayNameColor(resourceInventory.getResourceType()))
                         .setText(resourceInventory.getResourceType().toString()).build());
                 MyWrappedLabel actualSellPriceLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                        .setFontScale(FontManager.getSmallFontDim())
+                        .setFontColor(FontColor.GREEN)
                         .setText(actualSellPrice != null ? actualSellPrice : "").build());
                 MyWrappedLabel pastBuyPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                         .setFontColor(FontColor.GRAY)
-                        .setFontScale(FontManager.calculateMultiplierStandardFontSize(0.8f))
+                        .setFontScale(FontManager.calculateMultiplierStandardFontSize(0.7f))
                         .setText(formatNrToCurrencyWithDollar(resourceInventory.getPrice())).build());
                 MyWrappedLabel invAmountLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(resourceInventory.getAmount() + "").build());
                 itemTable.add(displayName).width(tableWidth / 2);
-                itemTable.add(actualSellPriceLabel).width(tableWidth / 2);
-                itemTable.row();
                 itemTable.add(pastBuyPrice).width(tableWidth / 2);
+                itemTable.row();
+                itemTable.add(actualSellPriceLabel).width(tableWidth / 2);
                 itemTable.add(invAmountLabel).width(tableWidth / 2);
                 itemTable.setBackground(getNotSelectedBackground());
                 itemTable.setTouchable(Touchable.enabled);
@@ -276,13 +315,18 @@ public class ContainerManager {
         for (ResourceMarket resourceMarket : availableResources) {
             int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
             Table itemTable = new Table();
+
+            FontColor displayNameColor = amountYouAffordAndHaveSpaceFor > 0 ? getDisplayNameColor(resourceMarket.getResourceType()) : FontColor.GRAY;
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                    .setFontColor(amountYouAffordAndHaveSpaceFor > 0 ? FontColor.GREEN : FontColor.RED)
+                    .setFontColor(displayNameColor)
                     .setText(resourceMarket.getResourceType().toString()).build());
-            MyWrappedLabel marketPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(formatNrToCurrencyWithDollar(resourceMarket.getPrice())).build());
-            itemTable.add(displayName).width(tableWidth / 2);
+            MyWrappedLabel marketPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                    .setFontColor(amountYouAffordAndHaveSpaceFor > 0 ? FontColor.GREEN : FontColor.GRAY)
+                    .setText(formatNrToCurrencyWithDollar(resourceMarket.getPrice())).build());
+            itemTable.add(displayName).colspan(2).width(tableWidth / 2);
             itemTable.row();
             itemTable.add(marketPrice).width(tableWidth / 2);
+            itemTable.add(GraphicUtils.getImage(getResourceForMarketPrice(resourceMarket), MainDimen.horizontal_general_margin.getDimen() * 2));
             itemTable.setBackground(getNotSelectedBackground());
             itemTable.setTouchable(Touchable.enabled);
             itemTable.setName(resourceMarketName(resourceMarket));
@@ -312,6 +356,25 @@ public class ContainerManager {
         return table;
     }
 
+    private Res getResourceForMarketPrice(ResourceMarket resourceMarket) {
+        if (resourceMarket.getPrice() < resourceMarket.getResourceType().getStandardPrice()) {
+            return MainResource.sound_off;
+        } else if (resourceMarket.getPrice() > resourceMarket.getResourceType().getStandardPrice()) {
+            return MainResource.sound_on;
+        }
+        return MainResource.transparent_background;
+    }
+
+    private FontColor getDisplayNameColor(ResourceType resourceType) {
+        FontColor displayNameColor = FontColor.BLACK;
+        if (currentGame.getMarket().getCurrentLocation().getExpensiveResources().contains(resourceType)) {
+            displayNameColor = FontColor.RED;
+        } else if (currentGame.getMarket().getCurrentLocation().getCheapResources().contains(resourceType)) {
+            displayNameColor = FontColor.BLUE;
+        }
+        return displayNameColor;
+    }
+
     private void updateAmount(int amount) {
         this.amount = amount;
         amountLabel.setText(this.amount + "");
@@ -319,22 +382,22 @@ public class ContainerManager {
 
     public Table createNumberPickerColumn(float numberPickerWidth) {
         Table table = new Table();
-        List<Integer> modifValues = Arrays.asList(1, 10, 500);
+        List<Integer> modifValues = Arrays.asList(500, 10, 1);
+        table.add(createModifyAmountBtn(0, 2, true)).width(numberPickerWidth).row();
         for (Integer val : modifValues) {
             table.add(createModifyAmountBtn(val, -1, true)).row();
         }
-        table.add(createModifyAmountBtn(0, 2, true)).width(numberPickerWidth).row();
         amountLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontConfig.FONT_SIZE * 2))
                 .setText(amount + "").setWidth(numberPickerWidth).build());
         table.add(amountLabel).row();
         MyButton buySellBtn = createBuySellBtn();
         table.add(buySellBtn).width(numberPickerWidth).row();
-        table.add(createModifyAmountBtn(0, 2, false)).row();
         Collections.reverse(modifValues);
         for (Integer val : modifValues) {
             table.add(createModifyAmountBtn(val, -1, false)).row();
         }
+        table.add(createModifyAmountBtn(0, 2, false)).row();
         return table;
     }
 
@@ -472,8 +535,12 @@ public class ContainerManager {
         ScrollPane scrollPane = new ScrollPane(itemTable);
         scrollPane.setScrollingDisabled(true, false);
         Table allTable = new Table();
-        allTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(headerText).setSingleLineLabel().build())).row();
+        MyWrappedLabel headerTextLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontScale(FontManager.getNormalBigFontDim()).setText(headerText).setSingleLineLabel().build());
+        headerTextLabel.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+        allTable.add(headerTextLabel).row();
         allTable.add(scrollPane).expand();
+        allTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         return allTable;
     }
 
