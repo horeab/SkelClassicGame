@@ -486,17 +486,19 @@ public class ContainerManager {
         buySellBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (buySellBtn.getCenterRowLabels().get(0).getText().toString().equals("Buy")) {
-                    if (amount > 0) {
-                        resourceTransactionsManager.buyResource(getSelectedResource(), amount);
+                if (getSelectedResource() != null) {
+                    if (buySellBtn.getCenterRowLabels().get(0).getText().toString().equals("Buy")) {
+                        if (amount > 0) {
+                            resourceTransactionsManager.buyResource(getSelectedResource(), amount);
+                        }
+                    } else if (buySellBtn.getCenterRowLabels().get(0).getText().toString().equals("Sell")) {
+                        resourceTransactionsManager.sellResource(getSelectedResource(), amount);
                     }
-                } else if (buySellBtn.getCenterRowLabels().get(0).getText().toString().equals("Sell")) {
-                    resourceTransactionsManager.sellResource(getSelectedResource(), amount);
+                    setSelectedResource(null);
+                    createInventory();
+                    createHeader();
+                    createMarket();
                 }
-                setSelectedResource(null);
-                createInventory();
-                createHeader();
-                createMarket();
             }
         });
         return buySellBtn;

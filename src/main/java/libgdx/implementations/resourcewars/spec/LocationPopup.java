@@ -45,21 +45,27 @@ public class LocationPopup extends MyPopup<AbstractScreen, AbstractScreenManager
     @Override
     protected void addButtons() {
         for (Location location : Location.values()) {
+            MainButtonSkin buttonSkin = MainButtonSkin.DEFAULT;
             boolean isCurrentLocation = location == currentGame.getMarket().getCurrentLocation();
-            boolean isDisabled = !isCurrentLocation;
+            boolean isDisabled = isCurrentLocation;
             String text = location.toString();
             String info = "";
+            if(isCurrentLocation){
+                buttonSkin = MainButtonSkin.TRANSPARENT;
+            }
             if (!inGameStoreManager.isLocationUnlocked(location)) {
                 info = "Unlock: " + ContainerManager.formatNrToCurrencyWithDollar(location.getUnlockPrice());
-                isDisabled = isDisabled && location.getUnlockPrice() > currentGame.getMyInventory().getBudget();
+                isDisabled = location.getUnlockPrice() > currentGame.getMyInventory().getBudget();
             } else if (!isCurrentLocation) {
                 info = "Travel: " + ContainerManager.formatNrToCurrencyWithDollar(location.getTravelPrice(currentGame.getDaysPassed()));
                 isDisabled = location.getTravelPrice(currentGame.getDaysPassed()) > currentGame.getMyInventory().getBudget();
             }
+            SkelClassicButtonSize resourcewarsLocationBtn = SkelClassicButtonSize.RESOURCEWARS_LOCATION_BTN;
             MyButton myButton = new ButtonBuilder()
-                    .setFixedButtonSize(SkelClassicButtonSize.RESOURCEWARS_LOCATION_BTN)
-                    .setButtonSkin(MainButtonSkin.DEFAULT)
-                    .setDisabled(isDisabled).setWrappedText(text, SkelClassicButtonSize.RESOURCEWARS_LOCATION_BTN.getWidth()).build();
+                    .setFixedButtonSize(resourcewarsLocationBtn)
+                    .setButtonSkin(buttonSkin)
+                    .setDisabled(isDisabled)
+                    .setWrappedText(text, resourcewarsLocationBtn.getWidth()).build();
             MyWrappedLabel locInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(info).build());
             Table locationTable = new Table();
             myButton.addListener(new ClickListener() {
