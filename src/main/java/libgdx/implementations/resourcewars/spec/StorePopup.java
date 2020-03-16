@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.popup.MyPopup;
+import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
 import libgdx.implementations.resourcewars.spec.logic.HealthManager;
 import libgdx.implementations.resourcewars.spec.logic.InGameStoreManager;
 import libgdx.implementations.resourcewars.spec.logic.WeaponTransactionsManager;
@@ -33,7 +34,7 @@ public class StorePopup extends MyPopup<AbstractScreen, AbstractScreenManager> {
             if (currentGame.getMyInventory().getBudget() < currentPrice) {
                 btnIsEnabled = false;
             }
-            String displayName = weaponType.toString() + " (" + currentPrice + ")";
+            String displayName = weaponType.toString() + " (" + ContainerManager.formatNrToCurrencyWithDollar(currentPrice) + ")";
             String description = "Reduces threat with " + weaponType.getThreatReduce() + "%";
             MyButton myButton = new ButtonBuilder().setFontColor(btnIsEnabled ? FontColor.BLACK : FontColor.GRAY)
                     .setDisabled(!btnIsEnabled).setText(displayName + "\n" + description).build();
@@ -48,7 +49,7 @@ public class StorePopup extends MyPopup<AbstractScreen, AbstractScreenManager> {
         }
         for (OtherType otherType : OtherType.values()) {
             int currentPrice = otherType.getCurrentPrice(currentGame.getDaysPassed());
-            String displayName = otherType.toString() + " (" + otherType.getCurrentPrice(currentGame.getDaysPassed()) + ")";
+            String displayName = otherType.toString() + " (" + ContainerManager.formatNrToCurrencyWithDollar(otherType.getCurrentPrice(currentGame.getDaysPassed())) + ")";
 //            String description = otherType.getDescription();
             String description = otherType.toString();
             boolean btnIsEnabled = true;

@@ -53,7 +53,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
         gameTable.add(containerManager.createNumberPickerColumn(numberPickerWidth)).height(invMarketHeight).width(numberPickerWidth);
         gameTable.add(containerManager.createScrollTable(containerManager.createMarket(), "Market", invMarketHeight)).width(INVMARKETWIDTH);
         table.add(gameTable).row();
-        table.add(containerManager.createFooter(ScreenDimensionsManager.getScreenWidth()));
+        table.add(containerManager.createFooter());
         addActor(table);
     }
 

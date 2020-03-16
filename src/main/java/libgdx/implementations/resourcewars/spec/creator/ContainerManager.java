@@ -15,6 +15,7 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.implementations.resourcewars.screens.ResourceWarsGameScreen;
 import libgdx.implementations.resourcewars.spec.LocationPopup;
 import libgdx.implementations.resourcewars.spec.StorePopup;
@@ -55,6 +56,7 @@ public class ContainerManager {
     private static String INVENTORYTABLE_NAME = "INVENTORYTABLE_NAME";
     private static String MARKETTABLE_NAME = "MARKETTABLE_NAME";
     private static String HEADERTABLE_NAME = "HEADERTABLE_NAME";
+    private static String FOOTERTABLE_NAME = "FOOTERTABLE_NAME";
     private ResourceTransactionsManager resourceTransactionsManager;
     private HealthManager healthManager;
     private InGameStoreManager storeManager;
@@ -67,10 +69,15 @@ public class ContainerManager {
         storeManager = new InGameStoreManager();
     }
 
-    public Table createFooter(float tableWidth) {
-        Table table = new Table();
-        float btnWidth = tableWidth / 3;
-        MyButton changeCountryBtn = new ButtonBuilder().setWrappedText("Unites States", btnWidth).build();
+    public Table createFooter() {
+        float btnWidth = ScreenDimensionsManager.getScreenWidth() / 3;
+        Table table = getRoot().findActor(FOOTERTABLE_NAME);
+        if (table == null) {
+            table = new Table();
+        }
+        table.setName(FOOTERTABLE_NAME);
+        table.clearChildren();
+        MyButton changeCountryBtn = new ButtonBuilder().setWrappedText(currentGame.getMarket().getCurrentLocation().toString(), btnWidth).build();
         changeCountryBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -123,6 +130,7 @@ public class ContainerManager {
         createInventory();
         createMarket();
         updateAmount(0);
+        createFooter();
     }
 
     public void passDayAndMoveLocation(Location newLocation) {
@@ -178,26 +186,81 @@ public class ContainerManager {
 
         table.setWidth(tableWidth);
         Table tableRow1 = new Table();
-        tableRow1.add(createHeaderInfoLabelPair("Budget: ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()))).width(infoWidth);
-        tableRow1.add(createHeaderInfoLabelPair("Health: ", currentGame.getPlayerInfo().getHealth() + "/100")).width(infoWidth);
+        tableRow1.add(createHeaderInfoLabelPair("Budget: ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()), getBudgetColor())).width(infoWidth);
+        tableRow1.add(createHeaderInfoLabelPair("Health: ", currentGame.getPlayerInfo().getHealth() + "/100", getHealthColor())).width(infoWidth);
         table.add(tableRow1).width(tableWidth).row();
 
         Table tableRow2 = new Table();
         int totalInventory = 100;
-        tableRow2.add(createHeaderInfoLabelPair("Inventory: ", (totalInventory - currentGame.getMyInventory().getContainerSpaceLeft()) + "/" + totalInventory)).width(infoWidth);
-        tableRow2.add(createHeaderInfoLabelPair("Reputation: ", currentGame.getPlayerInfo().getReputation() + "%")).width(infoWidth);
+        tableRow2.add(createHeaderInfoLabelPair("Inventory: ", (totalInventory - currentGame.getMyInventory().getContainerSpaceLeft()) + "/" + totalInventory, getSpaceLeftColor())).width(infoWidth);
+        tableRow2.add(createHeaderInfoLabelPair("Reputation: ", currentGame.getPlayerInfo().getReputation() + "%", getReputationColor())).width(infoWidth);
         table.add(tableRow2).width(tableWidth).row();
 
         Table tableRow3 = new Table();
-        tableRow3.add(createHeaderInfoLabelPair("Days: ", currentGame.getDaysPassed() + "")).width(infoWidth);
-        tableRow3.add(createHeaderInfoLabelPair("Threat: ", currentGame.getPlayerInfo().getThreat() + "%")).width(infoWidth);
+        tableRow3.add(createHeaderInfoLabelPair("Days: ", currentGame.getDaysPassed() + "", FontColor.BLACK)).width(infoWidth);
+        tableRow3.add(createHeaderInfoLabelPair("Threat: ", currentGame.getPlayerInfo().getThreat() + "%", getThreatColor())).width(infoWidth);
         table.add(tableRow3).width(tableWidth);
 
         table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         return table;
     }
 
-    private Table createHeaderInfoLabelPair(String text1, String text2) {
+    private FontColor getBudgetColor() {
+        FontColor color = FontColor.BLACK;
+        if (currentGame.getMyInventory().getBudget() == 0) {
+            color = FontColor.RED;
+        }
+        return color;
+    }
+
+    private FontColor getReputationColor() {
+        FontColor color = FontColor.BLACK;
+        if (currentGame.getPlayerInfo().getReputation() >= 75) {
+            color = FontColor.GREEN;
+        }
+        return color;
+    }
+
+    private FontColor getSpaceLeftColor() {
+        int valueContainerMax = currentGame.getMyInventory().getContainerMax();
+        int spaceLeft = valueContainerMax - currentGame.getMyInventory().getContainerSpaceLeft();
+        float onePercentOfValueContainerMax = (float) valueContainerMax / 100f;
+        FontColor color = FontColor.BLACK;
+        if (spaceLeft >= onePercentOfValueContainerMax * 80) {
+            color = FontColor.RED;
+        } else if (spaceLeft >= onePercentOfValueContainerMax * 60) {
+            color = FontColor.ORANGE;
+        }
+        return color;
+    }
+
+    private FontColor getHealthColor() {
+        int valueContainerMax = currentGame.getPlayerInfo().getHealthContainerMax();
+        FontColor color = FontColor.BLACK;
+        int health = currentGame.getPlayerInfo().getHealth();
+        if (health <= valueContainerMax / 4) {
+            color = FontColor.RED;
+        } else if (health <= valueContainerMax / 2) {
+            color = FontColor.ORANGE;
+        }
+        return color;
+    }
+
+    private FontColor getThreatColor() {
+        FontColor color = FontColor.BLACK;
+        int threat = currentGame.getPlayerInfo().getThreat();
+        if (threat >= 85) {
+            color = FontColor.RED;
+        } else if (threat >= 75) {
+            color = FontColor.ORANGE;
+        } else if (threat >= 50) {
+            color = FontColor.YELLOW;
+        }
+        return color;
+    }
+
+
+    private Table createHeaderInfoLabelPair(String text1, String text2, FontColor text2Color) {
         MyWrappedLabel l1 = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder()
                         .setSingleLineLabel()
@@ -205,7 +268,7 @@ public class ContainerManager {
                         .setText(text1).build());
         MyWrappedLabel l2 = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setSingleLineLabel()
-                        .setFontConfig(new FontConfig(FontConfig.FONT_SIZE / 1.1f)).setText(text2).build());
+                        .setFontConfig(new FontConfig(text2Color.getColor(), FontConfig.FONT_SIZE / 1.1f)).setText(text2).build());
         Table table = new Table();
         l1.getLabels().get(0).setAlignment(Align.left);
         l2.getLabels().get(0).setAlignment(Align.left);
@@ -316,17 +379,19 @@ public class ContainerManager {
             int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
             Table itemTable = new Table();
 
-            FontColor displayNameColor = amountYouAffordAndHaveSpaceFor > 0 ? getDisplayNameColor(resourceMarket.getResourceType()) : FontColor.GRAY;
+            boolean isEnabled = amountYouAffordAndHaveSpaceFor > 0;
+            FontColor displayNameColor = isEnabled ? getDisplayNameColor(resourceMarket.getResourceType()) : FontColor.GRAY;
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setFontColor(displayNameColor)
                     .setText(resourceMarket.getResourceType().toString()).build());
             MyWrappedLabel marketPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                    .setFontColor(amountYouAffordAndHaveSpaceFor > 0 ? FontColor.GREEN : FontColor.GRAY)
+                    .setFontColor(isEnabled ? FontColor.GREEN : FontColor.GRAY)
                     .setText(formatNrToCurrencyWithDollar(resourceMarket.getPrice())).build());
             itemTable.add(displayName).colspan(2).width(tableWidth / 2);
             itemTable.row();
             itemTable.add(marketPrice).width(tableWidth / 2);
-            itemTable.add(GraphicUtils.getImage(getResourceForMarketPrice(resourceMarket), MainDimen.horizontal_general_margin.getDimen() * 2));
+            float resMarketPriceDimen = MainDimen.horizontal_general_margin.getDimen() * 4;
+            itemTable.add(GraphicUtils.getImage(getResourceForMarketPrice(resourceMarket, !isEnabled && !inventoryItemIsInMarket(resourceMarket)), resMarketPriceDimen)).width(resMarketPriceDimen).height(resMarketPriceDimen);
             itemTable.setBackground(getNotSelectedBackground());
             itemTable.setTouchable(Touchable.enabled);
             itemTable.setName(resourceMarketName(resourceMarket));
@@ -356,13 +421,27 @@ public class ContainerManager {
         return table;
     }
 
-    private Res getResourceForMarketPrice(ResourceMarket resourceMarket) {
-        if (resourceMarket.getPrice() < resourceMarket.getResourceType().getStandardPrice()) {
-            return MainResource.sound_off;
+    private Res getResourceForMarketPrice(ResourceMarket resourceMarket, boolean disabled) {
+        Res res = MainResource.transparent_background;
+        if (resourceMarket.getPrice() < (resourceMarket.getResourceType().getStandardPrice() / 1.6f)) {
+            res = disabled ? ResourceWarsSpecificResource.disableddowndownarrow : ResourceWarsSpecificResource.downdownarrow;
+        } else if (resourceMarket.getPrice() < resourceMarket.getResourceType().getStandardPrice()) {
+            res = disabled ? ResourceWarsSpecificResource.disableddownarrow : ResourceWarsSpecificResource.downarrow;
+        } else if (resourceMarket.getPrice() > (resourceMarket.getResourceType().getStandardPrice() * 1.6f)) {
+            res = disabled ? ResourceWarsSpecificResource.disabledupuparrow : ResourceWarsSpecificResource.upuparrow;
         } else if (resourceMarket.getPrice() > resourceMarket.getResourceType().getStandardPrice()) {
-            return MainResource.sound_on;
+            res = disabled ? ResourceWarsSpecificResource.disableduparrow : ResourceWarsSpecificResource.uparrow;
         }
-        return MainResource.transparent_background;
+        return res;
+    }
+
+    private boolean inventoryItemIsInMarket(ResourceMarket resourceMarket) {
+        for (ResourceInventory resourceInventory : currentGame.getMyInventory().getAvailableResources()) {
+            if (resourceInventory.getResourceType() == resourceMarket.getResourceType()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private FontColor getDisplayNameColor(ResourceType resourceType) {

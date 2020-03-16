@@ -5,6 +5,8 @@ import libgdx.resources.dimen.MainDimen;
 
 public enum SkelClassicButtonSize implements ButtonSize {
 
+    RESOURCEWARS_LOCATION_BTN(MainDimen.horizontal_general_margin.getDimen() * 20f,
+            MainDimen.horizontal_general_margin.getDimen() * 8),
     MATH_CORRECT_WRONG_IMG_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 2f),
     ;
 

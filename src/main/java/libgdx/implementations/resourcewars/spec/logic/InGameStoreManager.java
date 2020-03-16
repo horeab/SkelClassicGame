@@ -15,6 +15,10 @@ public class InGameStoreManager {
 
     private PreferencesService preferencesService = new PreferencesService(SHARED_PREFS_NAME);
 
+    public InGameStoreManager() {
+//        preferencesService.clear();
+    }
+
     public boolean isMaxHealthContainerBought() {
         return preferencesService.getPreferences().getBoolean(MAX_HEALTH_CONTAINER_BOUGHT, false);
     }

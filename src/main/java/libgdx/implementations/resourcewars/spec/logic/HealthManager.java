@@ -37,14 +37,14 @@ public class HealthManager {
 
 	public void processHealth() {
 		int randValue = new Random().nextInt(101);
-		if (randValue < currentGame.getPlayerInfo().getThreat()) {
+//		if (randValue < currentGame.getPlayerInfo().getThreat()) {
 			currentGame.getPlayerInfo().setHealth(currentGame.getPlayerInfo().getHealth() - HEALTH_MINUS);
 //			InfoCreator infoCreator = CreatorsSingleton.getInfoCreatorInstance( currentGame);
 //			infoCreator.animateHealth();
 			if (currentGame.getPlayerInfo().getHealth() <= 0) {
 				GameUtilManager gameUtilManager = new GameUtilManager();
 				gameUtilManager.gameOver();
-			}
+//			}
 		}
 	}
 }
