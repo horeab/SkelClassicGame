@@ -6,10 +6,14 @@ import libgdx.controls.button.ButtonSkin;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.math.MathSpecificResource;
+import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.resources.Res;
 import libgdx.utils.model.FontColor;
 
 public enum SkelClassicButtonSkin implements ButtonSkin {
+
+    //RESOURCEWARS
+    RESOURCEWARS_MENU(ResourceWarsSpecificResource.greenbtn_normal, ResourceWarsSpecificResource.greenbtn_clicked, ResourceWarsSpecificResource.greenbtn_clicked, ResourceWarsSpecificResource.greenbtn_normal, null),
 
     //BALLOON
     BALLOON_MENU(BalloonSpecificResource.greenbtn_normal, BalloonSpecificResource.greenbtn_clicked, BalloonSpecificResource.greenbtn_clicked, BalloonSpecificResource.greenbtn_locked, null),

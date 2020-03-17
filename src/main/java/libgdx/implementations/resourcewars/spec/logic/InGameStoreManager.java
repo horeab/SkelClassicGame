@@ -19,6 +19,10 @@ public class InGameStoreManager {
 //        preferencesService.clear();
     }
 
+    public void reset(){
+        preferencesService.clear();
+    }
+
     public boolean isMaxHealthContainerBought() {
         return preferencesService.getPreferences().getBoolean(MAX_HEALTH_CONTAINER_BOUGHT, false);
     }

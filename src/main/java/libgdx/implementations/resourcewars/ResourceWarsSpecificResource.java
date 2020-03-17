@@ -18,6 +18,8 @@ public enum ResourceWarsSpecificResource implements SpecificResource {
     disableddowndownarrow("disabledupuparrow.png", Texture.class),
     disableduparrow("disableddownarrow.png", Texture.class),
     disabledupuparrow("disableddowndownarrow.png", Texture.class),
+    greenbtn_clicked("buttons/greenbtn_clicked.png", Texture.class),
+    greenbtn_normal("buttons/greenbtn_normal.png", Texture.class),
     ;
 
     // @formatter:on

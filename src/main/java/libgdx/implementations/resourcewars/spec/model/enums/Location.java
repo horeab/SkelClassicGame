@@ -46,6 +46,10 @@ public enum Location {
         return threatIncrease;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
     public Integer getUnlockPrice() {
         return GameUtilManager.getPriceBasedOnStartingBudgetWithPercent(unlockPricePercent);
     }

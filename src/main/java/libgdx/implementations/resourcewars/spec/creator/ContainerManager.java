@@ -1,5 +1,6 @@
 package libgdx.implementations.resourcewars.spec.creator;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -18,9 +19,8 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.implementations.resourcewars.screens.ResourceWarsGameScreen;
 import libgdx.implementations.resourcewars.spec.LocationPopup;
-import libgdx.implementations.resourcewars.spec.StorePopup;
-import libgdx.implementations.resourcewars.spec.logic.HealthManager;
 import libgdx.implementations.resourcewars.spec.logic.InGameStoreManager;
+import libgdx.implementations.resourcewars.spec.logic.LocationMovementManager;
 import libgdx.implementations.resourcewars.spec.logic.ResourceTransactionsManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.implementations.resourcewars.spec.model.Inventory;
@@ -48,24 +48,26 @@ import java.util.stream.Collectors;
 
 public class ContainerManager {
 
+    public static final int LOCATION_UNLOCK_REPUTATION = 15;
+    public static final int FINAL_BUDGET_TO_REACH_REPUTATION = 25;
+    private static final int TOTAL_DAYS = 60;
+    public static final int FINAL_BUDGET_TO_REACH = 1000000;
     private AbstractResource selectedResource;
     private CurrentGame currentGame;
     private int amount;
     private MyWrappedLabel amountLabel;
-    public static String BUYSELLBTN_NAME = "BUYSELLBTN_NAME";
+    private static String BUYSELLBTN_NAME = "BUYSELLBTN_NAME";
     private static String INVENTORYTABLE_NAME = "INVENTORYTABLE_NAME";
     private static String MARKETTABLE_NAME = "MARKETTABLE_NAME";
     private static String HEADERTABLE_NAME = "HEADERTABLE_NAME";
     private static String FOOTERTABLE_NAME = "FOOTERTABLE_NAME";
     private ResourceTransactionsManager resourceTransactionsManager;
-    private HealthManager healthManager;
     private InGameStoreManager storeManager;
     private static float INV_MARKET_ITEM_HEIGHT = ScreenDimensionsManager.getScreenWidthValue(15);
 
     public ContainerManager(CurrentGame currentGame) {
         this.currentGame = currentGame;
         this.resourceTransactionsManager = new ResourceTransactionsManager(currentGame);
-        healthManager = new HealthManager(currentGame);
         storeManager = new InGameStoreManager();
     }
 
@@ -102,26 +104,8 @@ public class ContainerManager {
                 resetControls();
             }
         });
-        MyButton storeBtn = new ButtonBuilder().setWrappedText("Store", btnWidth).build();
         table.add(changeCountryBtn).width(btnWidth);
         table.add(passDayBtn).width(btnWidth);
-        table.add(storeBtn).width(btnWidth);
-        storeBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                new StorePopup(currentGame, Game.getInstance().getAbstractScreen()) {
-                    @Override
-                    public void hide() {
-                        super.hide(Utils.createRunnableAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                resetControls();
-                            }
-                        }));
-                    }
-                }.addToPopupManager();
-            }
-        });
         return table;
     }
 
@@ -133,30 +117,6 @@ public class ContainerManager {
         createFooter();
     }
 
-    public void passDayAndMoveLocation(Location newLocation) {
-        if (storeManager.isLocationUnlocked(newLocation)) {
-            spendMoneyOnTravel(newLocation);
-        } else {
-            unlockLocation(newLocation);
-        }
-        processHealthAndThreat(newLocation);
-        increaseDaysPassed();
-        currentGame.getMarket().setCurrentLocation(newLocation, currentGame.getMyInventory().getAvailableResourcesByType());
-    }
-
-    private void spendMoneyOnTravel(Location newLocation) {
-        currentGame.getMyInventory().setBudget(currentGame.getMyInventory().getBudget() - newLocation.getTravelPrice(currentGame.getDaysPassed()));
-    }
-
-    private void increaseThreat(Location location) {
-        currentGame.getPlayerInfo().setThreat(currentGame.getPlayerInfo().getThreat() + location.getThreatIncrease());
-    }
-
-    private void unlockLocation(Location location) {
-        storeManager.unlockLocation(location);
-        currentGame.getMyInventory().setBudget(currentGame.getMyInventory().getBudget() - location.getUnlockPrice());
-    }
-
     private void increaseDaysPassed() {
         currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
     }
@@ -164,15 +124,8 @@ public class ContainerManager {
     public void passDayButStayInSameLocation() {
         Location currentLocation = currentGame.getMarket().getCurrentLocation();
         increaseDaysPassed();
-        healthManager.processHealth();
         currentGame.getMarket().setCurrentLocation(currentLocation, currentGame.getMyInventory().getAvailableResourcesByType());
     }
-
-    public void processHealthAndThreat(Location currentLocation) {
-        healthManager.processHealth();
-        increaseThreat(currentLocation);
-    }
-
 
     public Table createHeader() {
         float tableWidth = ResourceWarsGameScreen.HEADERWIDTH;
@@ -186,8 +139,8 @@ public class ContainerManager {
 
         table.setWidth(tableWidth);
         Table tableRow1 = new Table();
+        tableRow1.add(createHeaderInfoLabelPair("Remaining Days: ", (TOTAL_DAYS - currentGame.getDaysPassed()) + "", FontColor.BLACK)).width(infoWidth);
         tableRow1.add(createHeaderInfoLabelPair("Budget: ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()), getBudgetColor())).width(infoWidth);
-        tableRow1.add(createHeaderInfoLabelPair("Health: ", currentGame.getPlayerInfo().getHealth() + "/100", getHealthColor())).width(infoWidth);
         table.add(tableRow1).width(tableWidth).row();
 
         Table tableRow2 = new Table();
@@ -197,12 +150,42 @@ public class ContainerManager {
         table.add(tableRow2).width(tableWidth).row();
 
         Table tableRow3 = new Table();
-        tableRow3.add(createHeaderInfoLabelPair("Days: ", currentGame.getDaysPassed() + "", FontColor.BLACK)).width(infoWidth);
-        tableRow3.add(createHeaderInfoLabelPair("Threat: ", currentGame.getPlayerInfo().getThreat() + "%", getThreatColor())).width(infoWidth);
-        table.add(tableRow3).width(tableWidth);
-
+        tableRow3.add(getNextObjectiveTable()).width(tableWidth).colspan(2);
+        table.add(tableRow3).pad(MainDimen.vertical_general_margin.getDimen()).width(tableWidth);
         table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         return table;
+    }
+
+    private Table getNextObjectiveTable() {
+        boolean areAllLocationsUnlocked = new LocationMovementManager(currentGame).areAllLocationsUnlocked();
+        Table table = new Table();
+        float width = ResourceWarsGameScreen.HEADERWIDTH / 1.5f;
+        table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setText(getNextObjectiveText(areAllLocationsUnlocked))
+                .setWrappedLineLabel(width)
+                .build())).width(width);
+        table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontConfig(new FontConfig(Color.ORANGE, FontConfig.FONT_SIZE * 1.4f))
+                .setText(getNextObjectiveReputation(areAllLocationsUnlocked))
+                .build())).width(ResourceWarsGameScreen.HEADERWIDTH - width);
+        return table;
+    }
+
+    private String getNextObjectiveReputation(boolean areAllLocationsUnlocked) {
+        if (!areAllLocationsUnlocked) {
+            return "+" + LOCATION_UNLOCK_REPUTATION + "%";
+        } else {
+            return "+" + FINAL_BUDGET_TO_REACH_REPUTATION + "%";
+        }
+    }
+
+    private String getNextObjectiveText(boolean areAllLocationsUnlocked) {
+        int nextLocationIndex = currentGame.getMarket().getCurrentLocation().getIndex() + 1;
+        if (!areAllLocationsUnlocked) {
+            return "Unlock " + Location.valueOf("LOC" + nextLocationIndex).toString();
+        } else {
+            return "Reach a budget of " + formatNrToCurrencyWithDollar(FINAL_BUDGET_TO_REACH);
+        }
     }
 
     private FontColor getBudgetColor() {
@@ -233,32 +216,6 @@ public class ContainerManager {
         }
         return color;
     }
-
-    private FontColor getHealthColor() {
-        int valueContainerMax = currentGame.getPlayerInfo().getHealthContainerMax();
-        FontColor color = FontColor.BLACK;
-        int health = currentGame.getPlayerInfo().getHealth();
-        if (health <= valueContainerMax / 4) {
-            color = FontColor.RED;
-        } else if (health <= valueContainerMax / 2) {
-            color = FontColor.ORANGE;
-        }
-        return color;
-    }
-
-    private FontColor getThreatColor() {
-        FontColor color = FontColor.BLACK;
-        int threat = currentGame.getPlayerInfo().getThreat();
-        if (threat >= 85) {
-            color = FontColor.RED;
-        } else if (threat >= 75) {
-            color = FontColor.ORANGE;
-        } else if (threat >= 50) {
-            color = FontColor.YELLOW;
-        }
-        return color;
-    }
-
 
     private Table createHeaderInfoLabelPair(String text1, String text2, FontColor text2Color) {
         MyWrappedLabel l1 = new MyWrappedLabel(
@@ -380,16 +337,22 @@ public class ContainerManager {
             Table itemTable = new Table();
 
             boolean isEnabled = amountYouAffordAndHaveSpaceFor > 0;
+            float nameWidth = tableWidth / 1.7f;
             FontColor displayNameColor = isEnabled ? getDisplayNameColor(resourceMarket.getResourceType()) : FontColor.GRAY;
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setFontColor(displayNameColor)
+                    .setWrappedLineLabel(nameWidth)
                     .setText(resourceMarket.getResourceType().toString()).build());
             MyWrappedLabel marketPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setFontColor(isEnabled ? FontColor.GREEN : FontColor.GRAY)
                     .setText(formatNrToCurrencyWithDollar(resourceMarket.getPrice())).build());
-            itemTable.add(displayName).colspan(2).width(tableWidth / 2);
+            itemTable.add(displayName).width(nameWidth);
+            itemTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                    .setText(formatNrToCurrencyWithDollar(resourceMarket.getResourceType().getStandardPrice()))
+                    .setFontConfig(new FontConfig(FontColor.GRAY.getColor(), FontConfig.FONT_SIZE * 0.7f)).build()))
+                    .width(tableWidth - nameWidth);
             itemTable.row();
-            itemTable.add(marketPrice).width(tableWidth / 2);
+            itemTable.add(marketPrice).width(nameWidth);
             float resMarketPriceDimen = MainDimen.horizontal_general_margin.getDimen() * 4;
             itemTable.add(GraphicUtils.getImage(getResourceForMarketPrice(resourceMarket, !isEnabled && !inventoryItemIsInMarket(resourceMarket)), resMarketPriceDimen)).width(resMarketPriceDimen).height(resMarketPriceDimen);
             itemTable.setBackground(getNotSelectedBackground());
@@ -616,6 +579,8 @@ public class ContainerManager {
         ScrollPane scrollPane = new ScrollPane(itemTable);
         scrollPane.setScrollingDisabled(true, false);
         Table allTable = new Table();
+
+        //TODO don't add the header text to the scrollpane
         MyWrappedLabel headerTextLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontScale(FontManager.getNormalBigFontDim()).setText(headerText).setSingleLineLabel().build());
         headerTextLabel.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));

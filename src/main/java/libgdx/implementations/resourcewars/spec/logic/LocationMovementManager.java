@@ -7,24 +7,10 @@ public class LocationMovementManager {
 
 	private CurrentGame currentGame;
 	private InGameStoreManager storeManager;
-	private HealthManager healthManager;
 
 	public LocationMovementManager(CurrentGame currentGame) {
 		this.currentGame = currentGame;
 		storeManager = new InGameStoreManager();
-		healthManager = new HealthManager(currentGame);
-	}
-
-	public void passDayButStayInSameLocation() {
-		Location currentLocation = currentGame.getMarket().getCurrentLocation();
-		increaseDaysPassed();
-		healthManager.processHealth();
-		currentGame.getMarket().setCurrentLocation(currentLocation, currentGame.getMyInventory().getAvailableResourcesByType());
-	}
-
-	public void processHealthAndThreat(Location currentLocation) {
-		healthManager.processHealth();
-		increaseThreat(currentLocation);
 	}
 
 	public void passDayAndMoveLocation(Location newLocation) {
@@ -33,7 +19,7 @@ public class LocationMovementManager {
 		} else {
 			unlockLocation(newLocation);
 		}
-		processHealthAndThreat(newLocation);
+		new ResourceTransactionsManager(currentGame).calculateReputation();
 		increaseDaysPassed();
 		currentGame.getMarket().setCurrentLocation(newLocation, currentGame.getMyInventory().getAvailableResourcesByType());
 	}
@@ -42,11 +28,23 @@ public class LocationMovementManager {
 		currentGame.getMyInventory().setBudget(currentGame.getMyInventory().getBudget() - newLocation.getTravelPrice(currentGame.getDaysPassed()));
 	}
 
-	private void increaseThreat(Location location) {
-		currentGame.getPlayerInfo().setThreat(currentGame.getPlayerInfo().getThreat() + location.getThreatIncrease());
+	public boolean areAllLocationsUnlocked(){
+        return nrOfLocationsUnlocked()==Location.values().length;
+    }
+
+	public int nrOfLocationsUnlocked(){
+		int nrOfLocationsUnlocked = 0;
+		InGameStoreManager inGameStoreManager = new InGameStoreManager();
+		for (Location location : Location.values()) {
+			if (inGameStoreManager.isLocationUnlocked(location)) {
+				nrOfLocationsUnlocked++;
+			}
+		}
+		return nrOfLocationsUnlocked;
 	}
 
 	private void increaseDaysPassed() {
+		new InGameStoreManager().saveGame(currentGame);
 		currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
 	}
 

@@ -2,13 +2,10 @@ package libgdx.implementations.resourcewars.spec.model;
 
 import libgdx.implementations.resourcewars.spec.logic.GameUtilManager;
 import libgdx.implementations.resourcewars.spec.model.enums.Location;
-import libgdx.implementations.resourcewars.spec.model.enums.ResourceType;
 import libgdx.implementations.resourcewars.spec.model.resource.ResourceInventory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CurrentGame {
 
@@ -20,11 +17,6 @@ public class CurrentGame {
 
 	private int daysPassed;
 
-	private Map<ResourceType, Integer> nrOfBoughtResources = new HashMap<ResourceType, Integer>();
-
-	private Map<ResourceType, Integer> moneySpentOnBuyingResources = new HashMap<ResourceType, Integer>();
-	private Map<ResourceType, Integer> moneyWonOnSellingResources = new HashMap<ResourceType, Integer>();
-
 	public CurrentGame() {
 		myInventory = new Inventory();
 		myInventory.setBudget(GameUtilManager.STARTING_BUDGET);
@@ -34,26 +26,6 @@ public class CurrentGame {
 		market.setCurrentLocation(Location.LOC1, myInventory.getAvailableResourcesByType());
 		daysPassed = 0;
 		playerInfo = new PlayerInfo();
-	}
-
-	public Map<ResourceType, Integer> getNrOfBoughtResources() {
-		return nrOfBoughtResources;
-	}
-
-	public Integer getNrOfSoldResources(ResourceType resource) {
-		Integer nrOfBoughtResource = nrOfBoughtResources.get(resource);
-		if (nrOfBoughtResource != null) {
-			nrOfBoughtResource = nrOfBoughtResource - myInventory.getByResourceType(resource).getAmount();
-		}
-		return nrOfBoughtResource;
-	}
-
-	public Map<ResourceType, Integer> getMoneySpentOnBuyingResources() {
-		return moneySpentOnBuyingResources;
-	}
-
-	public Map<ResourceType, Integer> getMoneyWonOnSellingResources() {
-		return moneyWonOnSellingResources;
 	}
 
 	public Inventory getMyInventory() {
