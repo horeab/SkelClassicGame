@@ -14,7 +14,7 @@ public class RandomResourceGenerator {
 			if (resourcesInInventory.contains(resource)) {
 				range = 75;
 			}
-			if (randomNr < range) {
+			if (randomNr < range && !availableResources.contains(resource)) {
 				availableResources.add(resource);
 			}
 			if (availableResources.size() > 5) {

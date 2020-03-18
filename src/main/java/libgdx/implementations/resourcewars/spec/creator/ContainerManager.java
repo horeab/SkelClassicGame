@@ -19,7 +19,6 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.implementations.resourcewars.screens.ResourceWarsGameScreen;
 import libgdx.implementations.resourcewars.spec.LocationPopup;
-import libgdx.implementations.resourcewars.spec.logic.InGameStoreManager;
 import libgdx.implementations.resourcewars.spec.logic.LocationMovementManager;
 import libgdx.implementations.resourcewars.spec.logic.ResourceTransactionsManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
@@ -57,22 +56,17 @@ public class ContainerManager {
     private int amount;
     private MyWrappedLabel amountLabel;
     private static String BUYSELLBTN_NAME = "BUYSELLBTN_NAME";
-    private static String INVENTORYTABLE_NAME = "INVENTORYTABLE_NAME";
-    private static String MARKETTABLE_NAME = "MARKETTABLE_NAME";
-    private static String HEADERTABLE_NAME = "HEADERTABLE_NAME";
-    private static String FOOTERTABLE_NAME = "FOOTERTABLE_NAME";
     private ResourceTransactionsManager resourceTransactionsManager;
-    private InGameStoreManager storeManager;
     private static float INV_MARKET_ITEM_HEIGHT = ScreenDimensionsManager.getScreenWidthValue(15);
 
     public ContainerManager(CurrentGame currentGame) {
         this.currentGame = currentGame;
         this.resourceTransactionsManager = new ResourceTransactionsManager(currentGame);
-        storeManager = new InGameStoreManager();
     }
 
     public Table createFooter() {
         float btnWidth = ScreenDimensionsManager.getScreenWidth() / 3;
+        String FOOTERTABLE_NAME = "FOOTERTABLE_NAME";
         Table table = getRoot().findActor(FOOTERTABLE_NAME);
         if (table == null) {
             table = new Table();
@@ -129,6 +123,7 @@ public class ContainerManager {
 
     public Table createHeader() {
         float tableWidth = ResourceWarsGameScreen.HEADERWIDTH;
+        String HEADERTABLE_NAME = "HEADERTABLE_NAME";
         Table table = getRoot().findActor(HEADERTABLE_NAME);
         if (table == null) {
             table = new Table();
@@ -144,8 +139,7 @@ public class ContainerManager {
         table.add(tableRow1).width(tableWidth).row();
 
         Table tableRow2 = new Table();
-        int totalInventory = 100;
-        tableRow2.add(createHeaderInfoLabelPair("Inventory: ", (totalInventory - currentGame.getMyInventory().getContainerSpaceLeft()) + "/" + totalInventory, getSpaceLeftColor())).width(infoWidth);
+        tableRow2.add(createHeaderInfoLabelPair("Inventory: ", (Inventory.STARTING_MAX_CONTAINER - currentGame.getMyInventory().getContainerSpaceLeft()) + "/" + Inventory.STARTING_MAX_CONTAINER, getSpaceLeftColor())).width(infoWidth);
         tableRow2.add(createHeaderInfoLabelPair("Reputation: ", currentGame.getPlayerInfo().getReputation() + "%", getReputationColor())).width(infoWidth);
         table.add(tableRow2).width(tableWidth).row();
 
@@ -205,9 +199,8 @@ public class ContainerManager {
     }
 
     private FontColor getSpaceLeftColor() {
-        int valueContainerMax = currentGame.getMyInventory().getContainerMax();
-        int spaceLeft = valueContainerMax - currentGame.getMyInventory().getContainerSpaceLeft();
-        float onePercentOfValueContainerMax = (float) valueContainerMax / 100f;
+        int spaceLeft = Inventory.STARTING_MAX_CONTAINER - currentGame.getMyInventory().getContainerSpaceLeft();
+        float onePercentOfValueContainerMax = (float) Inventory.STARTING_MAX_CONTAINER / 100f;
         FontColor color = FontColor.BLACK;
         if (spaceLeft >= onePercentOfValueContainerMax * 80) {
             color = FontColor.RED;
@@ -236,12 +229,8 @@ public class ContainerManager {
 
     public Table createInventory() {
         float tableWidth = ResourceWarsGameScreen.INVMARKETWIDTH;
-        Table inventoryTable = getRoot().findActor(INVENTORYTABLE_NAME);
-        if (inventoryTable == null) {
-            inventoryTable = new Table();
-        }
-        inventoryTable.setName(INVENTORYTABLE_NAME);
-        inventoryTable.clearChildren();
+        String INVENTORYTABLE_NAME = "INVENTORYTABLE_NAME";
+        Table inventoryTable = initInvMarketTable(INVENTORYTABLE_NAME, isMaxInventoryItems() ? GraphicUtils.getNinePatch(MainResource.transparent_background) : GraphicUtils.getNinePatch(MainResource.popup_background));
         Inventory inventory = currentGame.getMyInventory();
         Market market = currentGame.getMarket();
         if (inventory.getAvailableResources().isEmpty()) {
@@ -257,17 +246,19 @@ public class ContainerManager {
                 Table itemTable = new Table();
                 String actualSellPrice = getActualSellPrice(resourceInventory, market);
                 MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                        .setFontColor(getDisplayNameColor(resourceInventory.getResourceType()))
+                        .setFontColor(StringUtils.isNotBlank(actualSellPrice) ? getDisplayNameColor(resourceInventory.getResourceType()) : FontColor.GRAY)
                         .setText(resourceInventory.getResourceType().toString()).build());
                 MyWrappedLabel actualSellPriceLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                         .setFontScale(FontManager.getSmallFontDim())
-                        .setFontColor(FontColor.GREEN)
+                        .setFontColor(StringUtils.isNotBlank(actualSellPrice) ? FontColor.GREEN : FontColor.GRAY)
                         .setText(actualSellPrice != null ? actualSellPrice : "").build());
                 MyWrappedLabel pastBuyPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                         .setFontColor(FontColor.GRAY)
                         .setFontScale(FontManager.calculateMultiplierStandardFontSize(0.7f))
                         .setText(formatNrToCurrencyWithDollar(resourceInventory.getPrice())).build());
-                MyWrappedLabel invAmountLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(resourceInventory.getAmount() + "").build());
+                MyWrappedLabel invAmountLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                        .setFontColor(StringUtils.isNotBlank(actualSellPrice) ? FontColor.GREEN : FontColor.GRAY)
+                        .setText(resourceInventory.getAmount() + "").build());
                 itemTable.add(displayName).width(tableWidth / 2);
                 itemTable.add(pastBuyPrice).width(tableWidth / 2);
                 itemTable.row();
@@ -301,10 +292,21 @@ public class ContainerManager {
                         }
                     }
                 });
-                inventoryTable.add(itemTable).width(tableWidth).height(INV_MARKET_ITEM_HEIGHT).pad(MainDimen.vertical_general_margin.getDimen()).row();
+                addInvMarketItemToTable(tableWidth, inventoryTable, itemTable);
             }
         }
         return inventoryTable;
+    }
+
+    private Table initInvMarketTable(String tableName, NinePatchDrawable background) {
+        Table table = getRoot().findActor(tableName);
+        if (table == null) {
+            table = new Table();
+        }
+        table.setBackground(background);
+        table.setName(tableName);
+        table.clearChildren();
+        return table;
     }
 
     private Group getRoot() {
@@ -323,12 +325,8 @@ public class ContainerManager {
     public Table createMarket() {
         float tableWidth = ResourceWarsGameScreen.INVMARKETWIDTH;
         Market market = currentGame.getMarket();
-        Table table = getRoot().findActor(MARKETTABLE_NAME);
-        if (table == null) {
-            table = new Table();
-        }
-        table.setName(MARKETTABLE_NAME);
-        table.clearChildren();
+        String MARKETTABLE_NAME = "MARKETTABLE_NAME";
+        Table table = initInvMarketTable(MARKETTABLE_NAME, GraphicUtils.getNinePatch(MainResource.popup_background));
         List<ResourceMarket> availableResources = market.getAvailableResources().stream()
                 .sorted(Comparator.comparingInt(ResourceMarket::getPrice))
                 .collect(Collectors.toList());
@@ -336,7 +334,7 @@ public class ContainerManager {
             int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
             Table itemTable = new Table();
 
-            boolean isEnabled = amountYouAffordAndHaveSpaceFor > 0;
+            boolean isEnabled = amountYouAffordAndHaveSpaceFor > 0 && !isMaxInventoryItems();
             float nameWidth = tableWidth / 1.7f;
             FontColor displayNameColor = isEnabled ? getDisplayNameColor(resourceMarket.getResourceType()) : FontColor.GRAY;
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
@@ -362,7 +360,7 @@ public class ContainerManager {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
-                    if (amountYouAffordAndHaveSpaceFor > 0) {
+                    if (amountYouAffordAndHaveSpaceFor > 0 && !isMaxInventoryItems()) {
                         resetInvMarketItemBackground();
                         if (selectedResource != null && selectedResource instanceof ResourceInventory) {
                             setSelectedResource(null);
@@ -379,9 +377,20 @@ public class ContainerManager {
                     }
                 }
             });
-            table.add(itemTable).width(tableWidth).height(INV_MARKET_ITEM_HEIGHT).padBottom(MainDimen.vertical_general_margin.getDimen()).row();
+            addInvMarketItemToTable(tableWidth, table, itemTable);
         }
         return table;
+    }
+
+    private void addInvMarketItemToTable(float tableWidth, Table table, Table itemTable) {
+        table.add(itemTable).width(tableWidth)
+                .height(INV_MARKET_ITEM_HEIGHT)
+                .padTop(MainDimen.vertical_general_margin.getDimen() / 2)
+                .padBottom(MainDimen.vertical_general_margin.getDimen() / 2).row();
+    }
+
+    private boolean isMaxInventoryItems() {
+        return currentGame.getMyInventory().getAvailableResources().size() >= Inventory.MAX_ITEMS_IN_INVENTORY;
     }
 
     private Res getResourceForMarketPrice(ResourceMarket resourceMarket, boolean disabled) {
@@ -573,20 +582,14 @@ public class ContainerManager {
         this.selectedResource = selectedResource;
     }
 
-    public Table createScrollTable(Table tableToAdd, String headerText, float invMarketHeight) {
+    public Table createScrollTable(Table tableToAdd, float invMarketHeight) {
         Table itemTable = new Table();
         itemTable.add(tableToAdd).height(invMarketHeight / 1.1f);
         ScrollPane scrollPane = new ScrollPane(itemTable);
-        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFillParent(true);
+        scrollPane.setScrollingDisabled(true, true);
         Table allTable = new Table();
-
-        //TODO don't add the header text to the scrollpane
-        MyWrappedLabel headerTextLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontScale(FontManager.getNormalBigFontDim()).setText(headerText).setSingleLineLabel().build());
-        headerTextLabel.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
-        allTable.add(headerTextLabel).row();
-        allTable.add(scrollPane).expand();
-        allTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+        allTable.add(scrollPane);
         return allTable;
     }
 

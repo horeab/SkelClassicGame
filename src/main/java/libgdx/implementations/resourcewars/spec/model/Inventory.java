@@ -8,13 +8,12 @@ import java.util.List;
 
 public class Inventory {
 
-    private static final int STARTING_MAX_CONTAINER = 100;
+    public static final int STARTING_MAX_CONTAINER = 99;
+    public static final int MAX_ITEMS_IN_INVENTORY = 6;
 
     private List<ResourceInventory> availableResources;
 
     private int budget;
-
-    private int containerMax = STARTING_MAX_CONTAINER;
 
     public Inventory() {
     }
@@ -43,15 +42,6 @@ public class Inventory {
         this.budget = budget;
     }
 
-    public ResourceInventory getByResourceType(ResourceType resourceType) {
-        for (ResourceInventory resourceInventory : availableResources) {
-            if (resourceInventory.getResourceType() == resourceType) {
-                return resourceInventory;
-            }
-        }
-        return null;
-    }
-
     private int getTotalAmountOfResources() {
         int total = 0;
         for (ResourceInventory resource : availableResources) {
@@ -61,15 +51,8 @@ public class Inventory {
     }
 
     public int getContainerSpaceLeft() {
-        return containerMax - getTotalAmountOfResources();
+        return STARTING_MAX_CONTAINER - getTotalAmountOfResources();
     }
 
-    public int getContainerMax() {
-        return containerMax;
-    }
-
-    public void setContainerMax(int containerMax) {
-        this.containerMax = containerMax;
-    }
 
 }
