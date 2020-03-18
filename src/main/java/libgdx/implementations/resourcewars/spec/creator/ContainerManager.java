@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -58,6 +59,9 @@ public class ContainerManager {
     private static String BUYSELLBTN_NAME = "BUYSELLBTN_NAME";
     private ResourceTransactionsManager resourceTransactionsManager;
     private static float INV_MARKET_ITEM_HEIGHT = ScreenDimensionsManager.getScreenWidthValue(15);
+    private Integer increaseAmountButtonPressedSeconds = null;
+    private Integer decreaseAmountButtonPressedSeconds = null;
+
 
     public ContainerManager(CurrentGame currentGame) {
         this.currentGame = currentGame;
@@ -119,6 +123,18 @@ public class ContainerManager {
         Location currentLocation = currentGame.getMarket().getCurrentLocation();
         increaseDaysPassed();
         currentGame.getMarket().setCurrentLocation(currentLocation, currentGame.getMyInventory().getAvailableResourcesByType());
+    }
+
+    public void setAmount(int amount) {
+        if (amount < 0) {
+            this.amount = 0;
+        } else {
+            this.amount = amount;
+        }
+    }
+
+    public MyWrappedLabel getAmountLabel() {
+        return amountLabel;
     }
 
     public Table createHeader() {
@@ -431,7 +447,7 @@ public class ContainerManager {
         amountLabel.setText(this.amount + "");
     }
 
-    public Table createNumberPickerColumn(float numberPickerWidth) {
+    public Table createNumberPickerColumn2(float numberPickerWidth) {
         Table table = new Table();
         List<Integer> modifValues = Arrays.asList(500, 10, 1);
         table.add(createModifyAmountBtn(0, 2, true)).width(numberPickerWidth).row();
@@ -527,6 +543,69 @@ public class ContainerManager {
             }
         });
         return btn;
+    }
+
+
+    public Table createNumberPickerColumn(float numberPickerWidth) {
+        Table table = new Table();
+        MyButton increaseBtn = new ButtonBuilder().setText("+").build();
+        increaseBtn.addListener(new ClickListener() {
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                increaseAmountButtonPressedSeconds = null;
+                super.touchUp(event, x, y, pointer, button);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                increaseAmountButtonPressedSeconds = 0;
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        table.add(increaseBtn).width(numberPickerWidth).row();
+        amountLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontConfig(new FontConfig(FontConfig.FONT_SIZE * 2))
+                .setText(amount + "").setWidth(numberPickerWidth).build());
+        table.add(amountLabel).row();
+        MyButton decreaseBtn = new ButtonBuilder().setText("-").build();
+        decreaseBtn.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                decreaseAmountButtonPressedSeconds = null;
+                super.touchUp(event, x, y, pointer, button);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                decreaseAmountButtonPressedSeconds = 0;
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+        table.add(decreaseBtn).width(numberPickerWidth).row();
+        MyButton buySellBtn = createBuySellBtn();
+        table.add(buySellBtn).width(numberPickerWidth).row();
+        return table;
+    }
+
+    public Integer getIncreaseAmountButtonPressedSeconds() {
+        return increaseAmountButtonPressedSeconds;
+    }
+
+    public void setIncreaseAmountButtonPressedSeconds(Integer increaseAmountButtonPressedSeconds) {
+        this.increaseAmountButtonPressedSeconds = increaseAmountButtonPressedSeconds;
+    }
+
+    public Integer getDecreaseAmountButtonPressedSeconds() {
+        return decreaseAmountButtonPressedSeconds;
+    }
+
+    public void setDecreaseAmountButtonPressedSeconds(Integer decreaseAmountButtonPressedSeconds) {
+        this.decreaseAmountButtonPressedSeconds = decreaseAmountButtonPressedSeconds;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 
     private int getAmountYouAffordAndHaveSpaceFor(AbstractResource resource) {

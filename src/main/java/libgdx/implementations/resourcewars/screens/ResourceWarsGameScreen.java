@@ -1,5 +1,6 @@
 package libgdx.implementations.resourcewars.screens;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
@@ -12,12 +13,14 @@ import libgdx.resources.FontManager;
 import libgdx.resources.MainResource;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.RGBColor;
 
 public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenManager> {
 
 
-    public static final float INV_MARKET_HEIGHT = ScreenDimensionsManager.getScreenHeightValue(68);
+    boolean incrDecrIsBeingMade = false;
+    private static final float INV_MARKET_HEIGHT = ScreenDimensionsManager.getScreenHeightValue(68);
     private ContainerManager containerManager;
     private CurrentGame currentGame;
     public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(43);
@@ -61,6 +64,59 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
         return table;
     }
 
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        if (containerManager.getIncreaseAmountButtonPressedSeconds() != null && !incrDecrIsBeingMade) {
+            final Integer increaseAmountButtonPressedSeconds = containerManager.getIncreaseAmountButtonPressedSeconds();
+            processIncrDecr(new Runnable() {
+                @Override
+                public void run() {
+                    containerManager.setAmount(containerManager.getAmount()
+                            + getAmountToIncrDecr(increaseAmountButtonPressedSeconds));
+                    containerManager.getAmountLabel().setText(containerManager.getAmount() + "");
+                    containerManager.setIncreaseAmountButtonPressedSeconds(containerManager.getIncreaseAmountButtonPressedSeconds() != null
+                            ? increaseAmountButtonPressedSeconds + 1 : null);
+                    incrDecrIsBeingMade = false;
+                }
+            });
+        }
+        if (containerManager.getDecreaseAmountButtonPressedSeconds() != null && !incrDecrIsBeingMade) {
+            final Integer decreaseAmountButtonPressedSeconds = containerManager.getDecreaseAmountButtonPressedSeconds();
+            processIncrDecr(new Runnable() {
+                @Override
+                public void run() {
+                    containerManager.setAmount(containerManager.getAmount()
+                            - getAmountToIncrDecr(decreaseAmountButtonPressedSeconds));
+                    containerManager.getAmountLabel().setText(containerManager.getAmount() + "");
+                    containerManager.setDecreaseAmountButtonPressedSeconds(containerManager.getDecreaseAmountButtonPressedSeconds() != null
+                            ? decreaseAmountButtonPressedSeconds + 1 : null);
+                    incrDecrIsBeingMade = false;
+                }
+            });
+        }
+    }
+
+    private void processIncrDecr(Runnable runnable) {
+        addAction(Actions.sequence(
+                Utils.createRunnableAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        incrDecrIsBeingMade = true;
+                    }
+                }),
+                Actions.delay(0.1f),
+                Utils.createRunnableAction(runnable)));
+    }
+
+    private int getAmountToIncrDecr(Integer amount) {
+        if (amount != null) {
+            int res = Math.round(amount / 1.4f);
+            return res < 1 ? 1 : res;
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     public void onBackKeyPress() {
