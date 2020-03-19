@@ -56,7 +56,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
 
     private Table getInvMarket(String headerText, Table scrollTable) {
         MyWrappedLabel headerTextLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontScale(FontManager.getNormalBigFontDim()).setText(headerText).setSingleLineLabel().build());
+                .setFontScale(FontManager.getSmallFontDim()).setText(headerText).setSingleLineLabel().build());
         headerTextLabel.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         Table table = new Table();
         table.add(headerTextLabel).row();
@@ -74,8 +74,8 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
                 public void run() {
                     containerManager.setAmount(containerManager.getAmount()
                             + getAmountToIncrDecr(increaseAmountButtonPressedSeconds));
-                    containerManager.getAmountLabel().setText(containerManager.getAmount() + "");
-                    containerManager.setIncreaseAmountButtonPressedSeconds(containerManager.getIncreaseAmountButtonPressedSeconds() != null
+                    containerManager.setIncreaseAmountButtonPressedSeconds(
+                            containerManager.getIncreaseAmountButtonPressedSeconds() != null
                             ? increaseAmountButtonPressedSeconds + 1 : null);
                     incrDecrIsBeingMade = false;
                 }
@@ -88,7 +88,6 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
                 public void run() {
                     containerManager.setAmount(containerManager.getAmount()
                             - getAmountToIncrDecr(decreaseAmountButtonPressedSeconds));
-                    containerManager.getAmountLabel().setText(containerManager.getAmount() + "");
                     containerManager.setDecreaseAmountButtonPressedSeconds(containerManager.getDecreaseAmountButtonPressedSeconds() != null
                             ? decreaseAmountButtonPressedSeconds + 1 : null);
                     incrDecrIsBeingMade = false;
