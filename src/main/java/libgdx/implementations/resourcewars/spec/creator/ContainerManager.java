@@ -13,10 +13,10 @@ import com.badlogic.gdx.utils.Align;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
-import libgdx.controls.label.MyWrappedLabelConfig;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.implementations.resourcewars.screens.ResourceWarsGameScreen;
 import libgdx.implementations.resourcewars.spec.LocationPopup;
@@ -38,10 +38,7 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
-import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +49,7 @@ public class ContainerManager {
     public static final int FINAL_BUDGET_TO_REACH_REPUTATION = 25;
     private static final int TOTAL_DAYS = 60;
     public static final int FINAL_BUDGET_TO_REACH = 1000000;
+    private static float SELECTEDRESOURCEMONEYCHANGEFONTSIZE = FontConfig.FONT_SIZE * 1.3f;
     private AbstractResource selectedResource;
     private CurrentGame currentGame;
     private int amount;
@@ -113,6 +111,7 @@ public class ContainerManager {
         createHeader();
         createInventory();
         createMarket();
+        createNumberPickerColumn();
         setAmount(0);
         createFooter();
     }
@@ -236,7 +235,7 @@ public class ContainerManager {
     public Table createInventory() {
         float tableWidth = ResourceWarsGameScreen.INVMARKETWIDTH;
         String INVENTORYTABLE_NAME = "INVENTORYTABLE_NAME";
-        Table inventoryTable = initInvMarketTable(INVENTORYTABLE_NAME, isMaxInventoryItems() ? GraphicUtils.getNinePatch(MainResource.transparent_background) : GraphicUtils.getNinePatch(MainResource.popup_background));
+        Table inventoryTable = initInvMarketTable(INVENTORYTABLE_NAME);
         Inventory inventory = currentGame.getMyInventory();
         Market market = currentGame.getMarket();
         int remainingSlotsToAdd = Inventory.MAX_ITEMS_IN_INVENTORY;
@@ -280,10 +279,8 @@ public class ContainerManager {
                             setSelectedResource(null);
                         } else {
                             resetInvMarketItemBackground();
-                            itemTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+                            itemTable.setBackground(GraphicUtils.getNinePatch(ResourceWarsSpecificResource.invmarket_itemselected));
                             setSelectedResource(resourceInventory);
-                            MyButton sellBuyButton = getRoot().findActor(BUYSELLBTN_NAME);
-                            sellBuyButton.getCenterRowLabels().get(0).setText("Sell");
                         }
                         if (selectedResource != null) {
                             setAmount(resourceInventory.getAmount());
@@ -299,18 +296,17 @@ public class ContainerManager {
         for (int i = 0; i < remainingSlotsToAdd; i++) {
             Table itemTable = new Table();
             itemTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText("Empty").build()));
-            itemTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+            itemTable.setBackground(GraphicUtils.getNinePatch(ResourceWarsSpecificResource.invmarket_itemnotselected));
             addInvMarketItemToTable(tableWidth, inventoryTable, itemTable);
         }
         return inventoryTable;
     }
 
-    private Table initInvMarketTable(String tableName, NinePatchDrawable background) {
+    private Table initInvMarketTable(String tableName) {
         Table table = getRoot().findActor(tableName);
         if (table == null) {
             table = new Table();
         }
-//        table.setBackground(background);
         table.setName(tableName);
         table.clearChildren();
         return table;
@@ -333,7 +329,7 @@ public class ContainerManager {
         float tableWidth = ResourceWarsGameScreen.INVMARKETWIDTH;
         Market market = currentGame.getMarket();
         String MARKETTABLE_NAME = "MARKETTABLE_NAME";
-        Table table = initInvMarketTable(MARKETTABLE_NAME, GraphicUtils.getNinePatch(MainResource.popup_background));
+        Table table = initInvMarketTable(MARKETTABLE_NAME);
         List<ResourceMarket> availableResources = market.getAvailableResources().stream()
                 .sorted(Comparator.comparingInt(ResourceMarket::getPrice))
                 .collect(Collectors.toList());
@@ -363,7 +359,6 @@ public class ContainerManager {
             itemTable.setBackground(getNotSelectedBackground());
             itemTable.setTouchable(Touchable.enabled);
             itemTable.setName(resourceMarketName(resourceMarket));
-            itemTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
             itemTable.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -377,11 +372,9 @@ public class ContainerManager {
                             setSelectedResource(null);
                         } else {
                             setSelectedResource(resourceMarket);
-                            itemTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+                            itemTable.setBackground(GraphicUtils.getNinePatch(ResourceWarsSpecificResource.invmarket_itemselected));
                             setAmount(amountYouAffordAndHaveSpaceFor);
                         }
-                        MyButton sellBuyButton = getRoot().findActor(BUYSELLBTN_NAME);
-                        sellBuyButton.getCenterRowLabels().get(0).setText("Buy");
                     }
                 }
             });
@@ -391,6 +384,7 @@ public class ContainerManager {
     }
 
     private void addInvMarketItemToTable(float tableWidth, Table table, Table itemTable) {
+        itemTable.setBackground(GraphicUtils.getNinePatch(ResourceWarsSpecificResource.invmarket_itemnotselected));
         table.add(itemTable).width(tableWidth)
                 .height(INV_MARKET_ITEM_HEIGHT)
                 .padTop(MainDimen.vertical_general_margin.getDimen() / 2)
@@ -442,12 +436,15 @@ public class ContainerManager {
                 this.amount = amount;
             }
             String prefix = "+";
-            int moneyChange = this.amount * selectedResource.getPrice();
+            FontColor selectedResourceMoneyLabelFontColor = FontColor.GREEN;
+            int moneyChange = 0;
             if (selectedResource instanceof ResourceMarket) {
                 int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(ContainerManager.this.getSelectedResource());
                 if (amount > amountYouAffordAndHaveSpaceFor) {
                     this.amount = amountYouAffordAndHaveSpaceFor;
                 }
+                moneyChange = this.amount * selectedResource.getPrice();
+                selectedResourceMoneyLabelFontColor = FontColor.RED;
                 prefix = "-";
             } else if (selectedResource instanceof ResourceInventory) {
                 if (amount > ((ResourceInventory) selectedResource).getAmount()) {
@@ -462,6 +459,8 @@ public class ContainerManager {
             }
             amountLabel.setText(this.amount + "");
             prefix = this.amount == 0 ? "" : prefix;
+            selectedResourceMoneyLabel.setFontConfig(new FontConfig(selectedResourceMoneyLabelFontColor.getColor(),
+                    SELECTEDRESOURCEMONEYCHANGEFONTSIZE));
             selectedResourceMoneyLabel.setText(prefix + formatNrToCurrencyWithDollar(moneyChange));
         } else {
             selectedResourceMoneyLabel.setText("");
@@ -469,17 +468,17 @@ public class ContainerManager {
     }
 
     private MyButton createBuySellBtn() {
-        MyButton buySellBtn = new ButtonBuilder().setButtonName(BUYSELLBTN_NAME)
-                .setSingleLineText("Buy", FontManager.getNormalBigFontDim()).build();
+        MyButton buySellBtn = new ButtonBuilder().setDisabled(getSelectedResource() == null)
+                .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_AMOUNT_BUYSELL).setButtonName(BUYSELLBTN_NAME).build();
         buySellBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (getSelectedResource() != null) {
-                    if (buySellBtn.getCenterRowLabels().get(0).getText().toString().equals("Buy")) {
+                    if (getSelectedResource() instanceof ResourceMarket) {
                         if (amount > 0) {
                             resourceTransactionsManager.buyResource(getSelectedResource(), amount);
                         }
-                    } else if (buySellBtn.getCenterRowLabels().get(0).getText().toString().equals("Sell")) {
+                    } else if (getSelectedResource() instanceof ResourceInventory) {
                         resourceTransactionsManager.sellResource(getSelectedResource(), amount);
                     }
                     setSelectedResource(null);
@@ -502,16 +501,27 @@ public class ContainerManager {
         return amount;
     }
 
-    public Table createNumberPickerColumn(float numberPickerWidth) {
-        Table table = new Table();
-        MyButton delBtn = new ButtonBuilder().setText("DEL").build();
+    public Table createNumberPickerColumn() {
+        float numberPickerWidth = ResourceWarsGameScreen.NUMBERPICKERWIDTH;
+        String tableName = "NUMBERPICKERCOLUMN";
+        Table table = getRoot().findActor(tableName);
+        if (table == null) {
+            table = new Table();
+        }
+        table.setName(tableName);
+        table.clearChildren();
+        MyButton delBtn = new ButtonBuilder().setText("").setDisabled(getSelectedResource() == null)
+                .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_AMOUNT_DELETE)
+                .build();
         delBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 setAmount(0);
             }
         });
-        MyButton increaseBtn = new ButtonBuilder().setText("+").build();
+        MyButton increaseBtn = new ButtonBuilder().setText("")
+                .setDisabled(getSelectedResource() == null)
+                .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_AMOUNT_PLUS).build();
         increaseBtn.addListener(new ClickListener() {
 
             @Override
@@ -529,7 +539,8 @@ public class ContainerManager {
         amountLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontConfig.FONT_SIZE * 2))
                 .setText(amount + "").setWidth(numberPickerWidth).build());
-        MyButton decreaseBtn = new ButtonBuilder().setText("-").build();
+        MyButton decreaseBtn = new ButtonBuilder().setText("").setDisabled(getSelectedResource() == null)
+                .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_AMOUNT_MINUS).build();
         decreaseBtn.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -544,16 +555,16 @@ public class ContainerManager {
             }
         });
         MyButton buySellBtn = createBuySellBtn();
-        selectedResourceMoneyLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText("").setSingleLineLabel().build());
+        selectedResourceMoneyLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(SELECTEDRESOURCEMONEYCHANGEFONTSIZE)).setText("").setSingleLineLabel().build());
         table.add(selectedResourceMoneyLabel).width(numberPickerWidth).row();
         table.add().growY().row();
-        table.add(buySellBtn).width(numberPickerWidth).row();
-        table.add(increaseBtn).width(numberPickerWidth).row();
-        table.add(amountLabel).row();
-        table.add(decreaseBtn).width(numberPickerWidth).row();
-        table.add(delBtn).width(numberPickerWidth).row();
+        float dimen = MainDimen.vertical_general_margin.getDimen();
+        table.add(buySellBtn).width(numberPickerWidth).padBottom(dimen).row();
+        table.add(increaseBtn).width(numberPickerWidth).padBottom(dimen).row();
+        table.add(amountLabel).padBottom(dimen).row();
+        table.add(decreaseBtn).width(numberPickerWidth).padBottom(dimen).row();
+        table.add(delBtn).width(numberPickerWidth).padBottom(dimen).row();
         table.add().growY().row();
-        table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         return table;
     }
 
@@ -587,12 +598,8 @@ public class ContainerManager {
         return 0;
     }
 
-    private String getModifyAmountBtnText(int modifAmount, int mult, boolean positive) {
-        return mult == -1 ? ((positive ? "+" : "-") + modifAmount) : ((positive ? "*" : "/") + mult);
-    }
-
     private NinePatchDrawable getNotSelectedBackground() {
-        return GraphicUtils.getNinePatch(MainResource.transparent_background);
+        return GraphicUtils.getNinePatch(ResourceWarsSpecificResource.invmarket_itemnotselected);
     }
 
     public void resetInvMarketItemBackground() {
@@ -628,6 +635,7 @@ public class ContainerManager {
             setAmount(0);
         }
         this.selectedResource = selectedResource;
+        createNumberPickerColumn();
         if (selectedResource == null) {
             setAmount(0);
         }

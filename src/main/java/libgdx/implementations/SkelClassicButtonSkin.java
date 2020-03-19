@@ -13,6 +13,10 @@ import libgdx.utils.model.FontColor;
 public enum SkelClassicButtonSkin implements ButtonSkin {
 
     //RESOURCEWARS
+    RESOURCEWARS_AMOUNT_BUYSELL(ResourceWarsSpecificResource.amount_buysell, ResourceWarsSpecificResource.amount_buysell_clicked, ResourceWarsSpecificResource.amount_buysell, ResourceWarsSpecificResource.amount_buysell_disabled, null),
+    RESOURCEWARS_AMOUNT_DELETE(ResourceWarsSpecificResource.amount_delete, ResourceWarsSpecificResource.amount_delete_clicked, ResourceWarsSpecificResource.amount_delete, ResourceWarsSpecificResource.amount_delete_disabled, null),
+    RESOURCEWARS_AMOUNT_PLUS(ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_clicked, ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_disabled, null),
+    RESOURCEWARS_AMOUNT_MINUS(ResourceWarsSpecificResource.amount_minus, ResourceWarsSpecificResource.amount_minus_clicked, ResourceWarsSpecificResource.amount_minus, ResourceWarsSpecificResource.amount_minus_disabled, null),
     RESOURCEWARS_MENU(ResourceWarsSpecificResource.greenbtn_normal, ResourceWarsSpecificResource.greenbtn_clicked, ResourceWarsSpecificResource.greenbtn_clicked, ResourceWarsSpecificResource.greenbtn_normal, null),
 
     //BALLOON

@@ -11,6 +11,7 @@ import libgdx.implementations.resourcewars.spec.logic.InGameStoreManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.resources.FontManager;
 import libgdx.resources.MainResource;
+import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
@@ -21,9 +22,10 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
 
     boolean incrDecrIsBeingMade = false;
     private static final float INV_MARKET_HEIGHT = ScreenDimensionsManager.getScreenHeightValue(68);
+    public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(43);
+    public static float NUMBERPICKERWIDTH = ScreenDimensionsManager.getScreenWidth() - INVMARKETWIDTH * 2;
     private ContainerManager containerManager;
     private CurrentGame currentGame;
-    public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(43);
     public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidth();
 
     public ResourceWarsGameScreen(CurrentGame currentGame) {
@@ -45,8 +47,10 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
         Table gameTable = new Table();
         gameTable.add(getInvMarket("Inventory",
                 containerManager.createScrollTable(containerManager.createInventory(), INV_MARKET_HEIGHT))).height(INV_MARKET_HEIGHT).width(INVMARKETWIDTH);
-        float numberPickerWidth = ScreenDimensionsManager.getScreenWidth() - INVMARKETWIDTH * 2;
-        gameTable.add(containerManager.createNumberPickerColumn(numberPickerWidth)).height(INV_MARKET_HEIGHT).height(INV_MARKET_HEIGHT).width(numberPickerWidth);
+        gameTable.add(containerManager.createNumberPickerColumn())
+                .padLeft(MainDimen.horizontal_general_margin.getDimen())
+                .padRight(MainDimen.horizontal_general_margin.getDimen())
+                .height(INV_MARKET_HEIGHT).width(NUMBERPICKERWIDTH);
         gameTable.add(getInvMarket("Market",
                 containerManager.createScrollTable(containerManager.createMarket(), INV_MARKET_HEIGHT))).height(INV_MARKET_HEIGHT).width(INVMARKETWIDTH);
         table.add(gameTable).row();
@@ -57,7 +61,6 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
     private Table getInvMarket(String headerText, Table scrollTable) {
         MyWrappedLabel headerTextLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontScale(FontManager.getSmallFontDim()).setText(headerText).setSingleLineLabel().build());
-        headerTextLabel.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         Table table = new Table();
         table.add(headerTextLabel).row();
         table.add(scrollTable);
@@ -76,7 +79,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
                             + getAmountToIncrDecr(increaseAmountButtonPressedSeconds));
                     containerManager.setIncreaseAmountButtonPressedSeconds(
                             containerManager.getIncreaseAmountButtonPressedSeconds() != null
-                            ? increaseAmountButtonPressedSeconds + 1 : null);
+                                    ? increaseAmountButtonPressedSeconds + 1 : null);
                     incrDecrIsBeingMade = false;
                 }
             });
