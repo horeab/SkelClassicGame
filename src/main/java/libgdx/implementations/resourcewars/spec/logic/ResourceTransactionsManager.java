@@ -10,11 +10,9 @@ public class ResourceTransactionsManager {
 
     private CurrentGame currentGame;
     private Inventory inventory;
-    private LocationMovementManager locationMovementManager;
 
     public ResourceTransactionsManager(CurrentGame currentGame) {
         this.currentGame = currentGame;
-        this.locationMovementManager = new LocationMovementManager(currentGame);
         this.inventory = currentGame.getMyInventory();
     }
 

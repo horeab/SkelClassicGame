@@ -13,11 +13,16 @@ import libgdx.utils.model.FontColor;
 public enum SkelClassicButtonSkin implements ButtonSkin {
 
     //RESOURCEWARS
-    RESOURCEWARS_AMOUNT_BUYSELL(ResourceWarsSpecificResource.amount_buysell, ResourceWarsSpecificResource.amount_buysell_clicked, ResourceWarsSpecificResource.amount_buysell, ResourceWarsSpecificResource.amount_buysell_disabled, null),
+    RESOURCEWARS_AMOUNT_BUY(ResourceWarsSpecificResource.amount_buy, ResourceWarsSpecificResource.amount_buysell_clicked, ResourceWarsSpecificResource.amount_buy, ResourceWarsSpecificResource.amount_buysell_disabled, null),
+    RESOURCEWARS_AMOUNT_SELL(ResourceWarsSpecificResource.amount_sell, ResourceWarsSpecificResource.amount_buysell_clicked, ResourceWarsSpecificResource.amount_sell, ResourceWarsSpecificResource.amount_buysell_disabled, null),
     RESOURCEWARS_AMOUNT_DELETE(ResourceWarsSpecificResource.amount_delete, ResourceWarsSpecificResource.amount_delete_clicked, ResourceWarsSpecificResource.amount_delete, ResourceWarsSpecificResource.amount_delete_disabled, null),
     RESOURCEWARS_AMOUNT_PLUS(ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_clicked, ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_disabled, null),
     RESOURCEWARS_AMOUNT_MINUS(ResourceWarsSpecificResource.amount_minus, ResourceWarsSpecificResource.amount_minus_clicked, ResourceWarsSpecificResource.amount_minus, ResourceWarsSpecificResource.amount_minus_disabled, null),
-    RESOURCEWARS_MENU(ResourceWarsSpecificResource.greenbtn_normal, ResourceWarsSpecificResource.greenbtn_clicked, ResourceWarsSpecificResource.greenbtn_clicked, ResourceWarsSpecificResource.greenbtn_normal, null),
+    RESOURCEWARS_LOCATION(ResourceWarsSpecificResource.location, ResourceWarsSpecificResource.location_clicked, ResourceWarsSpecificResource.location, ResourceWarsSpecificResource.location, null),
+    RESOURCEWARS_LOCATION_LOCKED(ResourceWarsSpecificResource.location_locked, ResourceWarsSpecificResource.location_locked_clicked, ResourceWarsSpecificResource.location_locked, ResourceWarsSpecificResource.btn_disabled, null),
+    RESOURCEWARS_LOCATION_TRAVELTO(ResourceWarsSpecificResource.location_travelto, ResourceWarsSpecificResource.location_travelto_clicked, ResourceWarsSpecificResource.location_travelto, ResourceWarsSpecificResource.btn_disabled, null),
+    RESOURCEWARS_LOCATION_NEXTDAY(ResourceWarsSpecificResource.next_day, ResourceWarsSpecificResource.next_day_clicked, ResourceWarsSpecificResource.next_day, ResourceWarsSpecificResource.btn_disabled, null),
+    RESOURCEWARS_MENU(ResourceWarsSpecificResource.menu, ResourceWarsSpecificResource.menu_clicked, ResourceWarsSpecificResource.menu, ResourceWarsSpecificResource.btn_disabled, null),
 
     //BALLOON
     BALLOON_MENU(BalloonSpecificResource.greenbtn_normal, BalloonSpecificResource.greenbtn_clicked, BalloonSpecificResource.greenbtn_clicked, BalloonSpecificResource.greenbtn_locked, null),

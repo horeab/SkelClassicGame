@@ -5,30 +5,22 @@ import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.implementations.resourcewars.spec.model.enums.Location;
 import libgdx.preferences.PreferencesService;
 
-public class InGameStoreManager {
+public class GamePreferencesManager {
 
     private static String LOCATION_UNLOCK = "LOCATION_UNLOCK";
     private static String MAX_HEALTH_CONTAINER_BOUGHT = "MAX_HEALTH_CONTAINER_BOUGHT";
     private static String SAVED_GAME = "SAVED_GAME";
-    private static String SHARED_PREFS_NAME = "InGameStoreManager";
+    private static String SHARED_PREFS_NAME = "GamePreferencesManager";
 
 
     private PreferencesService preferencesService = new PreferencesService(SHARED_PREFS_NAME);
 
-    public InGameStoreManager() {
+    public GamePreferencesManager() {
 //        preferencesService.clear();
     }
 
     public void reset(){
         preferencesService.clear();
-    }
-
-    public boolean isMaxHealthContainerBought() {
-        return preferencesService.getPreferences().getBoolean(MAX_HEALTH_CONTAINER_BOUGHT, false);
-    }
-
-    public void maxHealthContainerBought() {
-        preferencesService.putBoolean(MAX_HEALTH_CONTAINER_BOUGHT, true);
     }
 
     public boolean isLocationUnlocked(Location location) {

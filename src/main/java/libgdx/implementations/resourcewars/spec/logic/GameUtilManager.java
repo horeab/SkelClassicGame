@@ -1,11 +1,11 @@
 package libgdx.implementations.resourcewars.spec.logic;
 
+import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
+import libgdx.implementations.resourcewars.spec.model.CurrentGame;
+
 public class GameUtilManager {
 
     public static final int DAYS_TO_CHANGE = 5;
-
-    public static final int DAYS_TO_PASS_FOR_PRICE_PERCENT_TO_INCREASE = DAYS_TO_CHANGE;
-    public static final int DAYS_TO_PASS_FOR_THREAT_FOR_WAPONS_TO_REDUCE = DAYS_TO_CHANGE;
 
     public final static int STARTING_BUDGET = 5000;
 
@@ -27,12 +27,6 @@ public class GameUtilManager {
         int priceToIncrease = (int) ((float) budget * ((float) percentToChange / 100));
 
         return price + priceToIncrease;
-    }
-
-    public void gameOver() {
-    }
-
-    public void gameFinishedSuccessFully(int daysPassed) {
     }
 
 }

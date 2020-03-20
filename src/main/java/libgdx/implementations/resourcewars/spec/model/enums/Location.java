@@ -10,12 +10,12 @@ import java.util.List;
 public enum Location {
 
     //@formatter:off
-    LOC1(1, Arrays.asList(ResourceType.RES5, ResourceType.RES6), Arrays.asList(ResourceType.RES3), 2, null, 3),
-    LOC2(2, Arrays.asList(ResourceType.RES12, ResourceType.RES11), Arrays.asList(ResourceType.RES1, ResourceType.RES2, ResourceType.RES3), 2, 75, 3),
+    LOC1(1, Arrays.asList(ResourceType.RES5, ResourceType.RES6), Arrays.asList(ResourceType.RES1), 2, null, 3),
+    LOC2(2, Arrays.asList(ResourceType.RES12, ResourceType.RES10), Arrays.asList(ResourceType.RES1, ResourceType.RES2, ResourceType.RES3), 2, 75, 3),
     LOC3(3, Arrays.asList(ResourceType.RES9), Arrays.asList(ResourceType.RES7, ResourceType.RES8, ResourceType.RES10), 2, 150, 3),
     LOC4(4, Arrays.asList(ResourceType.RES7, ResourceType.RES9, ResourceType.RES10), Arrays.asList(ResourceType.RES12, ResourceType.RES11), 2, 250, 3),
-    LOC5(5, Arrays.asList(ResourceType.RES1, ResourceType.RES4), Arrays.asList(ResourceType.RES10, ResourceType.RES8), 2, 350, 3),
-    LOC6(6, Arrays.asList(ResourceType.RES1, ResourceType.RES2, ResourceType.RES3), Arrays.asList(ResourceType.RES11, ResourceType.RES12), 2, 800, 3),
+    LOC5(5, Arrays.asList(ResourceType.RES2, ResourceType.RES11), Arrays.asList(ResourceType.RES10, ResourceType.RES8), 2, 350, 3),
+    LOC6(6, Arrays.asList(ResourceType.RES1, ResourceType.RES5, ResourceType.RES10), Arrays.asList(ResourceType.RES11, ResourceType.RES12), 2, 800, 3),
     ;
     //@formatter:on
 
@@ -69,7 +69,7 @@ public enum Location {
     }
 
     public String getDisplayName() {
-        return SpecificPropertiesUtils.getText("location" + index);
+        return SpecificPropertiesUtils.getText("loc" + index);
     }
 
     public boolean isResourceCheapInThisLocation(ResourceType resourceType) {

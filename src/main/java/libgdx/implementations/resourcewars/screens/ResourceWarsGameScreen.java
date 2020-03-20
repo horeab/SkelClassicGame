@@ -4,13 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
 import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
-import libgdx.implementations.resourcewars.spec.logic.InGameStoreManager;
+import libgdx.implementations.resourcewars.spec.logic.GamePreferencesManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
+import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.resources.FontManager;
-import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
@@ -20,7 +19,7 @@ import libgdx.utils.model.RGBColor;
 public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenManager> {
 
 
-    boolean incrDecrIsBeingMade = false;
+    private boolean incrDecrIsBeingMade = false;
     private static final float INV_MARKET_HEIGHT = ScreenDimensionsManager.getScreenHeightValue(68);
     public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(43);
     public static float NUMBERPICKERWIDTH = ScreenDimensionsManager.getScreenWidth() - INVMARKETWIDTH * 2;
@@ -45,13 +44,13 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
 
         table.add(containerManager.createHeader()).width(HEADERWIDTH).row();
         Table gameTable = new Table();
-        gameTable.add(getInvMarket("Inventory",
+        gameTable.add(getInvMarket(SkelGameLabel.l_inventory.getText(),
                 containerManager.createScrollTable(containerManager.createInventory(), INV_MARKET_HEIGHT))).height(INV_MARKET_HEIGHT).width(INVMARKETWIDTH);
         gameTable.add(containerManager.createNumberPickerColumn())
                 .padLeft(MainDimen.horizontal_general_margin.getDimen())
                 .padRight(MainDimen.horizontal_general_margin.getDimen())
                 .height(INV_MARKET_HEIGHT).width(NUMBERPICKERWIDTH);
-        gameTable.add(getInvMarket("Market",
+        gameTable.add(getInvMarket(SkelGameLabel.l_market.getText(),
                 containerManager.createScrollTable(containerManager.createMarket(), INV_MARKET_HEIGHT))).height(INV_MARKET_HEIGHT).width(INVMARKETWIDTH);
         table.add(gameTable).row();
         table.add(containerManager.createFooter());
@@ -122,7 +121,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
 
     @Override
     public void onBackKeyPress() {
-        new InGameStoreManager().saveGame(currentGame);
+        new GamePreferencesManager().saveGame(currentGame);
         screenManager.showMainScreen();
     }
 }
