@@ -106,7 +106,8 @@ public class ContainerManager {
         });
         MyButton passDayBtn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_LOCATION_NEXTDAY)
-                .setFixedButtonSize(SkelClassicButtonSize.RESOURCEWARS_LOCATION_BTN).setWrappedText(SkelGameLabel.l_next_day.getText(), btnWidth).build();
+                .setFixedButtonSize(SkelClassicButtonSize.RESOURCEWARS_LOCATION_BTN)
+                .setWrappedText(SkelGameLabel.l_next_day.getText(), btnWidth).build();
         passDayBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -116,7 +117,7 @@ public class ContainerManager {
         });
         table.add(changeCountryBtn).width(changeCountryBtn.getWidth()).height(changeCountryBtn.getHeight())
                 .padRight(MainDimen.horizontal_general_margin.getDimen() * 7);
-        table.add(passDayBtn).width(btnWidth);
+        table.add(passDayBtn).width(passDayBtn.getWidth()).height(passDayBtn.getHeight());
         return table;
     }
 

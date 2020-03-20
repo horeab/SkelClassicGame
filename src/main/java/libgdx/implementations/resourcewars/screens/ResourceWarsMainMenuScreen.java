@@ -8,6 +8,7 @@ import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
 import libgdx.implementations.resourcewars.spec.logic.GamePreferencesManager;
@@ -35,8 +36,6 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
         Table table = new Table();
         table.setFillParent(true);
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
-        float btnHeight = ScreenDimensionsManager.getScreenHeightValue(14);
-        float btnWidth = ScreenDimensionsManager.getScreenWidthValue(35);
 
         MyWrappedLabel highScoreLabel = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(
@@ -50,17 +49,26 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
                         new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.3f))
                         .setText(text).build());
 
-        table.add(createStartGameBtn()).height(btnHeight).width(btnWidth).padTop(verticalGeneralMarginDimen * 4).row();
-        table.add(createContinueGameBtn()).height(btnHeight).width(btnWidth).padTop(verticalGeneralMarginDimen * 2).row();
+        table.add(createStartGameBtn())
+                .width(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN.getWidth())
+                .height(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN.getHeight())
+                .padTop(verticalGeneralMarginDimen * 4).row();
+        if (new GamePreferencesManager().getSavedGame() != null) {
+            table.add(createContinueGameBtn())
+                    .width(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN.getWidth())
+                    .height(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN.getHeight())
+                    .padTop(verticalGeneralMarginDimen * 2).row();
+        }
         if (new HighScorePreferencesManager().getMaxDays() < HighScorePreferencesManager.MAX_DAYS_DEF) {
-            table.add(highScoreLabel).width(btnWidth).padTop(verticalGeneralMarginDimen * 2).row();
-            table.add(highScoreText).width(btnWidth).padTop(verticalGeneralMarginDimen * 1).row();
+            table.add(highScoreLabel).padTop(verticalGeneralMarginDimen * 2).row();
+            table.add(highScoreText).padTop(verticalGeneralMarginDimen * 1).row();
         }
         addActor(table);
     }
 
     private MyButton createStartGameBtn() {
         MyButton button = new ButtonBuilder()
+                .setFixedButtonSize(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN)
                 .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_MENU).build();
         button.add(createBtnText(MainGameLabel.l_new_game.getText() + "!"));
         button.addListener(new ClickListener() {
@@ -75,6 +83,7 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
 
     private MyButton createContinueGameBtn() {
         MyButton button = new ButtonBuilder()
+                .setFixedButtonSize(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN)
                 .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_MENU).build();
         button.add(createBtnText(MainGameLabel.l_continue.getText()));
         button.addListener(new ClickListener() {
@@ -89,7 +98,7 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
     private MyWrappedLabel createBtnText(String text) {
         return new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(
-                        new FontConfig(FontColor.BLACK.getColor(), Math.round(text.length() > 12 ? FontConfig.FONT_SIZE * 2f : FontConfig.FONT_SIZE * 2.5f)))
+                        new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.6f))
                         .setText(text).build());
     }
 

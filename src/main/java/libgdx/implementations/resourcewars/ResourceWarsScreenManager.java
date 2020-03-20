@@ -7,8 +7,8 @@ public class ResourceWarsScreenManager extends AbstractScreenManager {
 
     @Override
     public void showMainScreen() {
-//        showScreen(ResourceWarsScreenTypeEnum.MAINMENU_SCREEN);
-        showScreen(ResourceWarsScreenTypeEnum.GAME_SCREEN, new CurrentGame());
+        showScreen(ResourceWarsScreenTypeEnum.MAINMENU_SCREEN);
+//        showScreen(ResourceWarsScreenTypeEnum.GAME_SCREEN, new CurrentGame());
     }
 
     public void showGameScreen(CurrentGame currentGame) {
