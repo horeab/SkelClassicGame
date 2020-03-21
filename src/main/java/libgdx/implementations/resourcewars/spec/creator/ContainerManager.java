@@ -8,20 +8,22 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSkin;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.controls.popup.MyPopup;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
+import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.implementations.resourcewars.screens.ResourceWarsGameScreen;
 import libgdx.implementations.resourcewars.spec.LocationPopup;
+import libgdx.implementations.resourcewars.spec.logic.GamePreferencesManager;
 import libgdx.implementations.resourcewars.spec.logic.HighScorePreferencesManager;
 import libgdx.implementations.resourcewars.spec.logic.LocationMovementManager;
 import libgdx.implementations.resourcewars.spec.logic.ResourceTransactionsManager;
@@ -38,10 +40,13 @@ import libgdx.resources.FontManager;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
+import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.Comparator;
 import java.util.List;
@@ -51,7 +56,7 @@ public class ContainerManager {
 
     public static final int LOCATION_UNLOCK_REPUTATION = 15;
     public static final int FINAL_BUDGET_TO_REACH_REPUTATION = 25;
-    public static final int TOTAL_DAYS = 60;
+    public static final int TOTAL_DAYS = 2;
     public static final int FINAL_BUDGET_TO_REACH = 1000000;
     private static float SELECTEDRESOURCEMONEYCHANGEFONTSIZE = FontConfig.FONT_SIZE * 1.3f;
     private AbstractResource selectedResource;
@@ -123,7 +128,7 @@ public class ContainerManager {
 
     private void resetControls() {
         setSelectedResource(null);
-        createHeader();
+        createHeader(getBudgetColor());
         createInventory();
         createMarket();
         createNumberPickerColumn();
@@ -131,17 +136,13 @@ public class ContainerManager {
         createFooter();
     }
 
-    private void increaseDaysPassed() {
-        currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
-    }
-
     public void passDayButStayInSameLocation() {
         Location currentLocation = currentGame.getMarket().getCurrentLocation();
-        increaseDaysPassed();
+        locationMovementManager.increaseDaysPassed();
         currentGame.getMarket().setCurrentLocation(currentLocation, currentGame.getMyInventory().getAvailableResourcesByType());
     }
 
-    public Table createHeader() {
+    public Table createHeader(FontColor budgetColor) {
         float tableWidth = ResourceWarsGameScreen.HEADERWIDTH;
         String HEADERTABLE_NAME = "HEADERTABLE_NAME";
         Table table = getRoot().findActor(HEADERTABLE_NAME);
@@ -155,7 +156,7 @@ public class ContainerManager {
         table.setWidth(tableWidth);
         Table tableRow1 = new Table();
         tableRow1.add(createHeaderInfoLabelPair(SkelGameLabel.l_remaining_days.getText() + ": ", (TOTAL_DAYS - currentGame.getDaysPassed()) + "", FontColor.BLACK)).width(infoWidth);
-        tableRow1.add(createHeaderInfoLabelPair(SkelGameLabel.l_budget.getText() + ": ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()), getBudgetColor())).width(infoWidth);
+        tableRow1.add(createHeaderInfoLabelPair(SkelGameLabel.l_budget.getText() + ": ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()), budgetColor)).width(infoWidth);
         table.add(tableRow1).width(tableWidth).row();
 
         Table tableRow2 = new Table();
@@ -203,12 +204,20 @@ public class ContainerManager {
         }
     }
 
-    private FontColor getBudgetColor() {
-        FontColor color = FontColor.BLACK;
+    public FontColor getBudgetColor() {
+        FontColor color = getEnoughBudgetColor();
         if (currentGame.getMyInventory().getBudget() == 0) {
-            color = FontColor.RED;
+            color = getNotEnoughBudgetColor();
         }
         return color;
+    }
+
+    private FontColor getEnoughBudgetColor() {
+        return FontColor.BLACK;
+    }
+
+    private FontColor getNotEnoughBudgetColor() {
+        return FontColor.RED;
     }
 
     private FontColor getReputationColor() {
@@ -239,7 +248,7 @@ public class ContainerManager {
                         .setText(text1).build());
         MyWrappedLabel l2 = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setSingleLineLabel()
-                        .setFontConfig(new FontConfig(text2Color.getColor(), FontConfig.FONT_SIZE / 1.1f)).setText(text2).build());
+                        .setFontConfig(new FontConfig(text2Color.getColor(), FontConfig.FONT_SIZE * 1.1f)).setText(text2).build());
         Table table = new Table();
         l1.getLabels().get(0).setAlignment(Align.left);
         l2.getLabels().get(0).setAlignment(Align.left);
@@ -471,6 +480,9 @@ public class ContainerManager {
                 int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(ContainerManager.this.getSelectedResource());
                 if (amount > amountYouAffordAndHaveSpaceFor) {
                     this.amount = amountYouAffordAndHaveSpaceFor;
+                    createHeader(getNotEnoughBudgetColor());
+                } else {
+                    createHeader(getBudgetColor());
                 }
                 moneyChange = this.amount * selectedResource.getPrice();
                 selectedResourceMoneyLabelFontColor = FontColor.RED;
@@ -516,7 +528,7 @@ public class ContainerManager {
                     }
                     setSelectedResource(null);
                     createInventory();
-                    createHeader();
+                    createHeader(getBudgetColor());
                     createMarket();
                 }
             }
@@ -716,23 +728,52 @@ public class ContainerManager {
         return result;
     }
 
-    public boolean gameOver(CurrentGame currentGame) {
+    public static void gameOver(CurrentGame currentGame) {
         int currentRep = currentGame.getPlayerInfo().getReputation();
         int currentDaysPassed = currentGame.getDaysPassed();
+        final HighScorePreferencesManager highScorePreferencesManager = new HighScorePreferencesManager();
         int maxRep = highScorePreferencesManager.getMaxReputation();
         int maxDaysPassed = highScorePreferencesManager.getMaxDays();
-        if (currentDaysPassed >= ContainerManager.TOTAL_DAYS
+        MutableBoolean newHighScore = new MutableBoolean(false);
+        if (currentDaysPassed > ContainerManager.TOTAL_DAYS
                 ||
                 currentRep >= 100) {
-            if (currentRep > maxRep) {
+            new GamePreferencesManager().reset();
+            AbstractScreen abstractScreen = Game.getInstance().getAbstractScreen();
+            ((Table) abstractScreen.getRoot().findActor(ResourceWarsGameScreen.ALLTABLE_NAME)).clearChildren();
+            if (currentRep > maxRep || (currentRep == maxRep && currentDaysPassed < maxDaysPassed)) {
                 highScorePreferencesManager.putMaxDays(currentDaysPassed);
                 highScorePreferencesManager.putMaxReputation(currentRep);
-            } else if (currentDaysPassed < maxDaysPassed) {
-                highScorePreferencesManager.putMaxDays(currentDaysPassed);
-                highScorePreferencesManager.putMaxReputation(currentRep);
+                newHighScore.setTrue();
             }
-            return true;
+            new MyPopup<AbstractScreen, ResourceWarsScreenManager>(abstractScreen) {
+                @Override
+                protected String getLabelText() {
+                    String text = "";
+                    if (newHighScore.booleanValue()) {
+                        text = MainGameLabel.l_congratulations.getText();
+                        text = text + "\n";
+                        text = text + MainGameLabel.l_highscore_record.getText();
+                        text = text + "\n";
+                        text = text + "\n";
+                    }
+                    text = text + SkelGameLabel.l_highscorebudget.getText(
+                            currentRep, currentDaysPassed
+                    );
+                    return text;
+                }
+
+                @Override
+                protected void addButtons() {
+
+                }
+
+                @Override
+                public void hide() {
+                    super.hide();
+                    screenManager.showMainScreen();
+                }
+            }.addToPopupManager();
         }
-        return false;
     }
 }

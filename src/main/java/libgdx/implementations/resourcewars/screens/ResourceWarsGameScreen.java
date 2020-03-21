@@ -26,6 +26,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
     private ContainerManager containerManager;
     private CurrentGame currentGame;
     public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidth();
+    public static String ALLTABLE_NAME = "ALLTABLE_NAME";
 
     public ResourceWarsGameScreen(CurrentGame currentGame) {
         this.currentGame = currentGame;
@@ -40,9 +41,10 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
 
     private void addAllTable() {
         Table table = new Table();
+        table.setName(ALLTABLE_NAME);
         table.setFillParent(true);
 
-        table.add(containerManager.createHeader()).width(HEADERWIDTH).row();
+        table.add(containerManager.createHeader(containerManager.getBudgetColor())).width(HEADERWIDTH).row();
         Table gameTable = new Table();
         gameTable.add(getInvMarket(SkelGameLabel.l_inventory.getText(),
                 containerManager.createScrollTable(containerManager.createInventory(), INV_MARKET_HEIGHT))).height(INV_MARKET_HEIGHT).width(INVMARKETWIDTH);

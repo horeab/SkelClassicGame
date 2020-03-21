@@ -1,11 +1,8 @@
 package libgdx.implementations.resourcewars.spec.logic;
 
-import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
-import libgdx.implementations.resourcewars.spec.model.CurrentGame;
-
 public class GameUtilManager {
 
-    public static final int DAYS_TO_CHANGE = 5;
+    public static final int DAYS_TO_CHANGE = 2;
 
     public final static int STARTING_BUDGET = 5000;
 

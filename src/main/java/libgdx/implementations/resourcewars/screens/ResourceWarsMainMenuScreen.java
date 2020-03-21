@@ -5,9 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.button.ButtonBuilder;
+import libgdx.controls.button.MainButtonSize;
 import libgdx.controls.button.MyButton;
+import libgdx.controls.button.builders.ButtonWithIconBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.controls.popup.MyPopup;
+import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
@@ -15,8 +19,10 @@ import libgdx.implementations.resourcewars.spec.logic.GamePreferencesManager;
 import libgdx.implementations.resourcewars.spec.logic.HighScorePreferencesManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.implementations.skelgame.SkelGameLabel;
+import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
+import libgdx.resources.gamelabel.SpecificPropertiesUtils;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
@@ -32,23 +38,46 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
         addAllTable();
     }
 
+
+    private void addTitle(Table table) {
+
+        String appName = Game.getInstance().getAppInfoService().getAppName();
+        float mult = appName.length() > 13 ? 2.0f : 2.7f;
+        table.add(new MyWrappedLabel(
+                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
+                        FontColor.GREEN.getColor(),
+                        Math.round(FontConfig.FONT_SIZE * mult * 1.2f),
+                        8f)).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
+    }
+
     private void addAllTable() {
         Table table = new Table();
         table.setFillParent(true);
+        addTitle(table);
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
 
-        MyWrappedLabel highScoreLabel = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setFontConfig(
-                        new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.3f))
-                        .setText(MainGameLabel.l_highscore.getText().replace(": {0}", "")).build());
+        MyButton infoBtn = new ButtonWithIconBuilder("", MainResource.question)
+                .setFixedButtonSize(MainButtonSize.BACK_BUTTON).build();
+        infoBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                new MyPopup<AbstractScreen, ResourceWarsScreenManager>(getAbstractScreen()) {
+                    @Override
+                    protected String getLabelText() {
+                        return SpecificPropertiesUtils.getText("info");
+                    }
 
-        HighScorePreferencesManager highScorePreferencesManager = new HighScorePreferencesManager();
-        String text = SkelGameLabel.l_highscorebudget.getText(highScorePreferencesManager.getMaxReputation(), highScorePreferencesManager.getMaxDays());
-        MyWrappedLabel highScoreText = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setFontConfig(
-                        new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.3f))
-                        .setText(text).build());
+                    @Override
+                    protected void addButtons() {
 
+                    }
+                }.addToPopupManager();
+            }
+        });
+        float horizontalGeneralMarginDimen = MainDimen.horizontal_general_margin.getDimen();
+        infoBtn.setX(ScreenDimensionsManager.getScreenWidth() - MainButtonSize.BACK_BUTTON.getWidth() - horizontalGeneralMarginDimen);
+        infoBtn.setY(ScreenDimensionsManager.getScreenHeight() - MainButtonSize.BACK_BUTTON.getHeight() - horizontalGeneralMarginDimen);
+        addActor(infoBtn);
         table.add(createStartGameBtn())
                 .width(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN.getWidth())
                 .height(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN.getHeight())
@@ -60,6 +89,17 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
                     .padTop(verticalGeneralMarginDimen * 2).row();
         }
         if (new HighScorePreferencesManager().getMaxDays() < HighScorePreferencesManager.MAX_DAYS_DEF) {
+            MyWrappedLabel highScoreLabel = new MyWrappedLabel(
+                    new MyWrappedLabelConfigBuilder().setFontConfig(
+                            new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.5f))
+                            .setText(MainGameLabel.l_highscore.getText().replace(": {0}", "")).build());
+
+            HighScorePreferencesManager highScorePreferencesManager = new HighScorePreferencesManager();
+            String text = SkelGameLabel.l_highscorebudget.getText(highScorePreferencesManager.getMaxReputation(), highScorePreferencesManager.getMaxDays());
+            MyWrappedLabel highScoreText = new MyWrappedLabel(
+                    new MyWrappedLabelConfigBuilder().setFontConfig(
+                            new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.3f))
+                            .setText(text).build());
             table.add(highScoreLabel).padTop(verticalGeneralMarginDimen * 2).row();
             table.add(highScoreText).padTop(verticalGeneralMarginDimen * 1).row();
         }

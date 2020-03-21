@@ -43,63 +43,63 @@ public class ResourceWarsStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "xxx";
+                return "Obchodní Hra";
             case da:
-                return "xxx";
+                return "Forretningsspil";
             case de:
-                return "xxx";
+                return "Geschäftsspiel";
             case el:
-                return "xxx";
+                return "Επιχειρηματικό παιχνίδι";
             case en:
-                return "xxx";
+                return "Business Game";
             case es:
-                return "xxx";
+                return "Juego de Negocios";
             case fi:
-                return "xxx";
+                return "Liiketoimintapeli";
             case fr:
-                return "xxx";
+                return "Jeu d'affaires";
             case hi:
-                return "xxx";
+                return "बिजनेस गेम";
             case hr:
-                return "xxx";
+                return "Poslovna Igra";
             case hu:
-                return "xxx";
+                return "Üzleti Játék";
             case id:
-                return "xxx";
+                return "Game Bisnis";
             case it:
-                return "xxx";
+                return "Gioco Aziendale";
             case ja:
-                return "xxx";
+                return "ビジネスゲーム";
             case ko:
-                return "xxx";
+                return "비즈니스 게임";
             case ms:
-                return "xxx";
+                return "Permainan Perniagaan";
             case nl:
-                return "xxx";
+                return "Zakelijk Spel";
             case no:
-                return "xxx";
+                return "Forretningsspill";
             case pl:
-                return "xxx";
+                return "Gra Biznesowa";
             case pt:
-                return "xxx";
+                return "Jogo de Negócios";
             case ro:
-                return "xxx";
+                return "Joc de Afaceri";
             case ru:
-                return "xxx";
+                return "Деловая игра";
             case sk:
-                return "xxx";
+                return "Obchodná Hra";
             case sv:
-                return "xxx";
+                return "Affärsspel";
             case th:
-                return "xxx";
+                return "เกมธุรกิจ";
             case tr:
-                return "xxx";
+                return "İş Oyunu";
             case uk:
-                return "xxx";
+                return "Ділова гра";
             case vi:
-                return "xxx";
+                return "Trò chơi kinh doanh";
             case zh:
-                return "xxx";
+                return "商业游戏";
         }
         return null;
     }

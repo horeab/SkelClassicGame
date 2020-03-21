@@ -1,5 +1,6 @@
 package libgdx.implementations.resourcewars.spec.logic;
 
+import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.implementations.resourcewars.spec.model.enums.Location;
 
@@ -54,9 +55,10 @@ public class LocationMovementManager {
         return locationToUnlock;
     }
 
-    private void increaseDaysPassed() {
+    public void increaseDaysPassed() {
         new GamePreferencesManager().saveGame(currentGame);
         currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
+        ContainerManager.gameOver(currentGame);
     }
 
     private void unlockLocation(Location location) {

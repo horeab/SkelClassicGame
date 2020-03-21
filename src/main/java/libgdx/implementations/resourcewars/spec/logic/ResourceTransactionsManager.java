@@ -93,6 +93,7 @@ public class ResourceTransactionsManager {
             reputation = reputation + ContainerManager.FINAL_BUDGET_TO_REACH_REPUTATION;
         }
         currentGame.getPlayerInfo().setReputation(reputation);
+        ContainerManager.gameOver(currentGame);
     }
 
 }
