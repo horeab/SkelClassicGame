@@ -2,6 +2,7 @@ package libgdx.implementations.resourcewars.spec.model.enums;
 
 import libgdx.implementations.resourcewars.spec.logic.GameUtilManager;
 import libgdx.resources.gamelabel.SpecificPropertiesUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,7 +83,7 @@ public enum Location {
     }
 
     public String getDisplayName() {
-        return SpecificPropertiesUtils.getText("loc" + index);
+        return StringUtils.capitalize(SpecificPropertiesUtils.getText("loc" + index));
     }
 
     public boolean isResourceCheapInThisLocation(ResourceType resourceType) {

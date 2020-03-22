@@ -2,8 +2,10 @@ package libgdx.implementations.resourcewars.screens;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import libgdx.constants.Language;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.game.Game;
 import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
 import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
 import libgdx.implementations.resourcewars.spec.logic.GamePreferencesManager;
@@ -25,7 +27,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
     public static float NUMBERPICKERWIDTH = ScreenDimensionsManager.getScreenWidth() - INVMARKETWIDTH * 2;
     private ContainerManager containerManager;
     private CurrentGame currentGame;
-    public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidth();
+    public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidthValue(97);
     public static String ALLTABLE_NAME = "ALLTABLE_NAME";
 
     public ResourceWarsGameScreen(CurrentGame currentGame) {
@@ -98,6 +100,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
                 }
             });
         }
+        Utils.createChangeLangPopup();
     }
 
     private void processIncrDecr(Runnable runnable) {

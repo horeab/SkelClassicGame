@@ -69,6 +69,7 @@ public class LocationPopup extends MyPopup<AbstractScreen, AbstractScreenManager
                     .setWrappedText(text, resourcewarsLocationBtn.getWidth()).build();
             MyWrappedLabel locInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(
                     FontConfig.FONT_SIZE * 0.7f))
+                    .setSingleLineLabel()
                     .setText(info).build());
             Table locationTable = new Table();
             myButton.addListener(new ClickListener() {
@@ -78,7 +79,7 @@ public class LocationPopup extends MyPopup<AbstractScreen, AbstractScreenManager
                     hide();
                 }
             });
-            float locationWidth = getPrefWidth() / 2.5f;
+            float locationWidth = getPrefWidth() / 2.3f;
             float cheapExpResourcesWidth = (getPrefWidth() - locationWidth) / 2;
             Table locInfoTable = new Table();
             locInfoTable.add(myButton).width(myButton.getWidth()).height(myButton.getHeight()).row();
@@ -100,10 +101,9 @@ public class LocationPopup extends MyPopup<AbstractScreen, AbstractScreenManager
             float unitSize = MainDimen.horizontal_general_margin.getDimen() * 3;
             float textWidth = unitSize * 3;
             MyWrappedLabel resLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                    .setWidth(textWidth)
                     .setFontScale(FontManager.calculateMultiplierStandardFontSize(0.7f))
-                    .setWrappedLineLabel(textWidth)
-                    .setText(resourceType.getDisplayName()).build());
-            resLabel.fitToContainer();
+                    .setText(resourceType.getDisplayName()).build()).fitToContainer();
             table.add(resLabel).width(textWidth);
             table.add(cheap ? downArrow : upArrow).width(unitSize).height(unitSize);
             table.row();

@@ -34,7 +34,7 @@ public class ResourceWarsStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return "en";
+                        return "el";
                     }
                 });
         libgdx.utils.startgame.StartGame.main(game, args);
@@ -45,17 +45,17 @@ public class ResourceWarsStartGame {
             case cs:
                 return "Obchodní Hra";
             case da:
-                return "Forretningsspil";
+                return "Forretnings spil";
             case de:
-                return "Geschäftsspiel";
+                return "Geschäfts spiel";
             case el:
-                return "Επιχειρηματικό παιχνίδι";
+                return "Επιχείρηση παιχνίδι";
             case en:
                 return "Business Game";
             case es:
                 return "Juego de Negocios";
             case fi:
-                return "Liiketoimintapeli";
+                return "Liiketoiminta peli";
             case fr:
                 return "Jeu d'affaires";
             case hi:
@@ -77,7 +77,7 @@ public class ResourceWarsStartGame {
             case nl:
                 return "Zakelijk Spel";
             case no:
-                return "Forretningsspill";
+                return "Forretnings spill";
             case pl:
                 return "Gra Biznesowa";
             case pt:
@@ -89,7 +89,7 @@ public class ResourceWarsStartGame {
             case sk:
                 return "Obchodná Hra";
             case sv:
-                return "Affärsspel";
+                return " Affärs spel ";
             case th:
                 return "เกมธุรกิจ";
             case tr:

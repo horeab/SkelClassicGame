@@ -56,7 +56,7 @@ public class ContainerManager {
 
     public static final int LOCATION_UNLOCK_REPUTATION = 15;
     public static final int FINAL_BUDGET_TO_REACH_REPUTATION = 25;
-    public static final int TOTAL_DAYS = 2;
+    public static final int TOTAL_DAYS = 60;
     public static final int FINAL_BUDGET_TO_REACH = 1000000;
     private static float SELECTEDRESOURCEMONEYCHANGEFONTSIZE = FontConfig.FONT_SIZE * 1.3f;
     private AbstractResource selectedResource;
@@ -112,7 +112,7 @@ public class ContainerManager {
         MyButton passDayBtn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.RESOURCEWARS_LOCATION_NEXTDAY)
                 .setFixedButtonSize(SkelClassicButtonSize.RESOURCEWARS_LOCATION_BTN)
-                .setWrappedText(SkelGameLabel.l_next_day.getText(), btnWidth).build();
+                .setWrappedText(SkelGameLabel.l_next_day.getText(), SkelClassicButtonSize.RESOURCEWARS_LOCATION_BTN.getWidth()).build();
         passDayBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -156,11 +156,11 @@ public class ContainerManager {
         table.setWidth(tableWidth);
         Table tableRow1 = new Table();
         tableRow1.add(createHeaderInfoLabelPair(SkelGameLabel.l_remaining_days.getText() + ": ", (TOTAL_DAYS - currentGame.getDaysPassed()) + "", FontColor.BLACK)).width(infoWidth);
-        tableRow1.add(createHeaderInfoLabelPair(SkelGameLabel.l_budget.getText() + ": ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()), budgetColor)).width(infoWidth);
+        tableRow1.add(createHeaderInfoLabelPair(SkelGameLabel.l_inventory.getText() + ": ", (Inventory.STARTING_MAX_CONTAINER - currentGame.getMyInventory().getContainerSpaceLeft()) + " / " + Inventory.STARTING_MAX_CONTAINER, getSpaceLeftColor())).width(infoWidth);
         table.add(tableRow1).width(tableWidth).row();
 
         Table tableRow2 = new Table();
-        tableRow2.add(createHeaderInfoLabelPair(SkelGameLabel.l_inventory.getText() + ": ", (Inventory.STARTING_MAX_CONTAINER - currentGame.getMyInventory().getContainerSpaceLeft()) + " / " + Inventory.STARTING_MAX_CONTAINER, getSpaceLeftColor())).width(infoWidth);
+        tableRow2.add(createHeaderInfoLabelPair(SkelGameLabel.l_budget.getText() + ": ", formatNrToCurrencyWithDollar(currentGame.getMyInventory().getBudget()), budgetColor)).width(infoWidth);
         tableRow2.add(createHeaderInfoLabelPair(SkelGameLabel.l_reputation.getText() + ": ", currentGame.getPlayerInfo().getReputation() + "%", getReputationColor())).width(infoWidth);
         table.add(tableRow2).width(tableWidth).row();
 
@@ -178,12 +178,12 @@ public class ContainerManager {
         table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setText(getNextObjectiveText(areAllLocationsUnlocked))
                 .setWrappedLineLabel(width / 2)
-                .build())).width(width / 2);
+                .build()).fitToContainer()).width(width / 2);
         table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(Color.ORANGE, FontConfig.FONT_SIZE * 1.2f))
                 .setWrappedLineLabel(width / 2)
                 .setText(getNextObjectiveReputation(areAllLocationsUnlocked))
-                .build())).width(width / 2);
+                .build()).fitToContainer()).width(width / 2);
         return table;
     }
 
@@ -272,8 +272,10 @@ public class ContainerManager {
             Integer actualSellPrice = getActualSellPrice(resourceInventory, market);
             final boolean isEnabled = isInventoryItemEnabled(resourceInventory);
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                    .setWidth(tableWidth / 2)
                     .setFontColor(isEnabled ? getDisplayNameColor(resourceInventory.getResourceType()) : FontColor.GRAY)
-                    .setText(resourceInventory.getResourceType().getDisplayName()).build());
+                    .setText(resourceInventory.getResourceType().getDisplayName()).build())
+                    .fitToContainer();
             MyWrappedLabel actualSellPriceLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setFontScale(FontManager.getSmallFontDim())
                     .setFontColor(isEnabled ? FontColor.GREEN : FontColor.GRAY)
@@ -372,15 +374,16 @@ public class ContainerManager {
             FontColor displayNameColor = isEnabled ? getDisplayNameColor(resourceMarket.getResourceType()) : FontColor.GRAY;
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setFontColor(displayNameColor)
-                    .setWrappedLineLabel(nameWidth)
-                    .setText(resourceMarket.getResourceType().getDisplayName()).build());
+                    .setWidth(nameWidth)
+                    .setText(resourceMarket.getResourceType().getDisplayName()).build()).fitToContainer();
             MyWrappedLabel marketPrice = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setFontColor(isEnabled ? FontColor.GREEN : FontColor.GRAY)
                     .setText(formatNrToCurrencyWithDollar(resourceMarket.getPrice())).build());
             itemTable.add(displayName).width(nameWidth);
             itemTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setText(formatNrToCurrencyWithDollar(resourceMarket.getResourceType().getStandardPrice()))
-                    .setFontConfig(new FontConfig(FontColor.GRAY.getColor(), FontConfig.FONT_SIZE * 0.7f)).build()))
+                    .setFontConfig(new FontConfig(FontColor.GRAY.getColor(), FontConfig.FONT_SIZE * 0.7f)).build())
+                    .fitToContainer())
                     .width(tableWidth - nameWidth);
             itemTable.row();
             itemTable.add(marketPrice).width(nameWidth);

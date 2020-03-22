@@ -25,6 +25,7 @@ import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.resources.gamelabel.SpecificPropertiesUtils;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
@@ -42,7 +43,8 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
     private void addTitle(Table table) {
 
         String appName = Game.getInstance().getAppInfoService().getAppName();
-        float mult = appName.length() > 13 ? 2.0f : 2.7f;
+        float mult = appName.length() > 10 ? 2.1f : 2.5f;
+        mult = appName.length() > 16 ? 1.8f : mult;
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                         FontColor.GREEN.getColor(),
@@ -139,7 +141,14 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
         return new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(
                         new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.6f))
-                        .setText(text).build());
+                        .setText(text)
+                        .setWrappedLineLabel(SkelClassicButtonSize.RESOURCEWARS_MENU_BTN.getWidth()).build());
+    }
+
+    @Override
+    public void render(float dt) {
+        super.render(dt);
+        Utils.createChangeLangPopup();
     }
 
     @Override

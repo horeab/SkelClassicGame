@@ -2,6 +2,7 @@ package libgdx.implementations.resourcewars.spec.model.enums;
 
 import libgdx.implementations.resourcewars.spec.logic.GameUtilManager;
 import libgdx.resources.gamelabel.SpecificPropertiesUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public enum ResourceType {
 
@@ -31,7 +32,7 @@ public enum ResourceType {
     }
 
     public String getDisplayName() {
-        return SpecificPropertiesUtils.getText("resource" + index);
+        return StringUtils.capitalize(SpecificPropertiesUtils.getText("resource" + index));
     }
 
     public int getStandardPrice() {

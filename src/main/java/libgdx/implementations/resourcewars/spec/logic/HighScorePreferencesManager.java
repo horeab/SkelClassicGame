@@ -13,7 +13,7 @@ public class HighScorePreferencesManager {
     private PreferencesService preferencesService = new PreferencesService(SHARED_PREFS_NAME);
 
     public HighScorePreferencesManager() {
-//        preferencesService.clear();
+        preferencesService.clear();
     }
 
     public int getMaxReputation() {
