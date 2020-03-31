@@ -65,9 +65,6 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
             createAll();
         }
         new CampaignStoreService().incrementNrOfQuestionsPlayed();
-        if (Game.getInstance().getCurrentUser() != null) {
-            new GameStatsDbApiService().incrementGameStatsQuestionsStarted(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
-        }
     }
 
     private void createAll() {

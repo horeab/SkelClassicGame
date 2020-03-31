@@ -15,6 +15,7 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
+import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.LevelFinishedPopup;
 import libgdx.implementations.memory.MemoryGame;
@@ -136,7 +137,19 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                                                     } else {
                                                         setBackgroundColor(new RGBColor(1, 251, 219, 220));
                                                     }
-                                                    addAllTable(nextLevel);
+
+                                                    int questionsPlayed = new CampaignStoreService().getNrOfQuestionsPlayed();
+                                                    if (questionsPlayed > 0 && questionsPlayed % 3 == 0) {
+                                                        Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                addAllTable(nextLevel);
+                                                            }
+                                                        });
+                                                    } else {
+                                                        addAllTable(nextLevel);
+                                                    }
+                                                    new CampaignStoreService().incrementNrOfQuestionsPlayed();
                                                 }
                                             }))));
                                         }
