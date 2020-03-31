@@ -12,21 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.campaign.CampaignStoreService;
 import libgdx.controls.ScreenRunnable;
 import libgdx.controls.label.MyWrappedLabel;
-import libgdx.controls.label.MyWrappedLabelConfig;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
-import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.LevelFinishedPopup;
-import libgdx.implementations.math.MathGame;
-import libgdx.implementations.math.MathScreenManager;
 import libgdx.implementations.memory.MemoryGame;
 import libgdx.implementations.memory.MemoryScreenManager;
 import libgdx.implementations.memory.MemorySpecificResource;
 import libgdx.implementations.memory.spec.*;
-import libgdx.implementations.skelgame.SkelGameRatingService;
-import libgdx.resources.FontManager;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.resources.gamelabel.SpecificPropertiesUtils;
@@ -84,17 +78,13 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
 
         table.setFillParent(true);
         Table headerTable = createHeaderTable();
-        table.add(headerTable).width(ScreenDimensionsManager.getScreenWidth()).height(headerTable.getHeight()).padBottom(ScreenDimensionsManager.getExternalDeviceHeightValue(5)).row();
+        float headerHeight = getHeaderHeight();
+        table.add(headerTable).width(ScreenDimensionsManager.getScreenWidth()).height(headerHeight).row();
         Table gameTable = new Table();
-        headerTable.setHeight(ScreenDimensionsManager.getScreenHeightValue(15));
-        gameTable.setHeight(ScreenDimensionsManager.getScreenHeightValue(80));
-        float imagePadding = MainDimen.horizontal_general_margin.getDimen() * 2;
-        if (gameLevel == GameLevel._6) {
-            imagePadding = imagePadding / 4;
-        } else if (gameLevel == GameLevel._5) {
-            imagePadding = imagePadding / 2;
-        }
-        int imageSideDimen = (int) ((ScreenDimensionsManager.getScreenWidth() / columns) - (imagePadding * (columns / 2)));
+        headerTable.setHeight(headerHeight);
+        boolean horiz = !isVerticalGreater();
+        float imagePadding = getImagePadding(horiz);
+        int imageSideDimen = getImageSideDimen();
         int index = 0;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
@@ -103,11 +93,14 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                 index++;
                 Table cell = new Table();
                 Image image = getMatrixElementImage(currentItem);
+                image.setWidth(imageSideDimen);
+                image.setHeight(imageSideDimen);
                 cell.setTransform(true);
-                cell.add(image);
+                cell.add(image).grow();
                 TableCell tableCell = new TableCell(cell, currentItem);
                 final String name = getCellName(col, row);
                 cell.setName(name);
+//                cell.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
                 cells.add(tableCell);
                 cell.addListener(new ClickListener() {
                     @Override
@@ -181,9 +174,51 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                 gameTable.setVisible(true);
             }
         }), Actions.fadeIn(0.3f)));
-        table.add(gameTable).height(gameTable.getHeight());
+        table.add(gameTable);
         addActor(table);
 
+    }
+
+    private float getHeaderHeight() {
+        return ScreenDimensionsManager.getScreenHeightValue(10);
+    }
+
+    private int getImageSideDimen() {
+        final int rows = currentGame.getCurrentLevel().getRows();
+        int side = calcHorizSide();
+        if (isVerticalGreater()) {
+            side = (int) ((ScreenDimensionsManager.getScreenHeight() / rows) - (getImagePadding(false) * rows));
+        }
+        return side;
+    }
+
+    private int calcHorizSide() {
+        double columns = currentGame.getCurrentLevel().getCols();
+        return (int) ((ScreenDimensionsManager.getScreenWidth() / columns) - (getImagePadding(true) * (columns / 2)));
+    }
+
+    private boolean isVerticalGreater() {
+        int side = calcHorizSide();
+        final int rows = currentGame.getCurrentLevel().getRows();
+        return side * rows + ((getImagePadding(true) * rows)) > ScreenDimensionsManager.getScreenHeight() - (getImagePadding(true) * rows) - getHeaderHeight();
+    }
+
+    private float getImagePadding(boolean horiz) {
+        float imagePadding = (horiz ? MainDimen.horizontal_general_margin.getDimen() * 2 : MainDimen.vertical_general_margin.getDimen() * 2);
+        if (gameLevel == GameLevel._6) {
+            imagePadding = imagePadding / 3;
+        } else if (gameLevel == GameLevel._5) {
+            imagePadding = imagePadding / 2;
+        } else if (gameLevel == GameLevel._4) {
+            imagePadding = imagePadding / 2;
+        } else if (gameLevel == GameLevel._3) {
+            imagePadding = imagePadding / 2;
+        } else if (gameLevel == GameLevel._2) {
+            imagePadding = imagePadding / 2;
+        } else if (gameLevel == GameLevel._0) {
+            imagePadding = imagePadding * 2;
+        }
+        return imagePadding;
     }
 
     private Table createHeaderTable() {
@@ -230,6 +265,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
 
     public void refreshImageViews(final Runnable afterRefresh, String... namesToBeRefreshed) {
         final float duration = 0.1f;
+        int imageSideDimen = getImageSideDimen();
         for (final TableCell tableCell : cells) {
             if (namesToBeRefreshed.length == 0 || Arrays.asList(namesToBeRefreshed).contains(tableCell.getCell().getName())) {
                 for (final Actor actor : tableCell.getCell().getChildren()) {
@@ -238,6 +274,8 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                         public void run() {
                             actor.remove();
                             final Image matrixElementImage = getMatrixElementImage(tableCell.getMatrixElement());
+                            matrixElementImage.setWidth(imageSideDimen);
+                            matrixElementImage.setHeight(imageSideDimen);
                             matrixElementImage.setVisible(false);
                             matrixElementImage.addAction(Actions.sequence(Actions.delay(duration), Actions.fadeOut(0f), Utils.createRunnableAction(new Runnable() {
                                 @Override
@@ -245,8 +283,9 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                                     matrixElementImage.setVisible(true);
                                 }
                             }), Actions.fadeIn(duration), Utils.createRunnableAction(afterRefresh)));
+                            tableCell.getCell().clearChildren();
                             if (tableCell.getCell().getChildren().size == 0) {
-                                tableCell.getCell().add(matrixElementImage);
+                                tableCell.getCell().add(matrixElementImage).grow();
                             }
                         }
                     })));
