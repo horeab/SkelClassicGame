@@ -174,7 +174,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                 gameTable.setVisible(true);
             }
         }), Actions.fadeIn(0.3f)));
-        table.add(gameTable);
+        table.add(gameTable).width(ScreenDimensionsManager.getScreenWidthValue(95));
         addActor(table);
 
     }
