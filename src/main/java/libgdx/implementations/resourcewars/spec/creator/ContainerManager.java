@@ -607,11 +607,11 @@ public class ContainerManager {
         table.add(selectedResourceMoneyLabel).width(numberPickerWidth).row();
         table.add().growY().row();
         float dimen = MainDimen.vertical_general_margin.getDimen();
-        table.add(buySellBtn).width(numberPickerWidth).padBottom(dimen).row();
-        table.add(increaseBtn).width(numberPickerWidth).padBottom(dimen).row();
+        table.add(buySellBtn).width(numberPickerWidth).height(numberPickerWidth).padBottom(dimen).row();
+        table.add(increaseBtn).width(numberPickerWidth).height(numberPickerWidth).padBottom(dimen).row();
         table.add(amountLabel).padBottom(dimen).row();
-        table.add(decreaseBtn).width(numberPickerWidth).padBottom(dimen).row();
-        table.add(delBtn).width(numberPickerWidth).padBottom(dimen).row();
+        table.add(decreaseBtn).width(numberPickerWidth).height(numberPickerWidth).padBottom(dimen).row();
+        table.add(delBtn).width(numberPickerWidth).height(numberPickerWidth).padBottom(dimen).row();
         table.add().growY().row();
         return table;
     }

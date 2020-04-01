@@ -34,7 +34,7 @@ public class ResourceWarsStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return "el";
+                        return "en";
                     }
                 });
         libgdx.utils.startgame.StartGame.main(game, args);
