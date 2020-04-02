@@ -38,63 +38,63 @@ public class MemoryStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "Test Paměti";
+                return "Objevte pár!";
             case da:
-                return "Hukommelse spil";
+                return "Oplev parret!";
             case de:
-                return "Memory Spiel";
+                return "Entdecke das Paar!";
             case el:
-                return "Δοκιμή μνήμης";
+                return "Ανακαλύψτε το ζευγάρι!";
             case en:
-                return "Memory Exam";
+                return "Discover the pair!";
             case es:
-                return "Prueba de Memoria";
+                return "¡Descubre la pareja!";
             case fi:
-                return "Muisti testi";
+                return "Löydä pari!";
             case fr:
-                return "Examen de Mémoire";
+                return "Découvrez la paire!";
             case hi:
-                return "दिमागी परीक्षा";
+                return "जोड़ी की खोज!";
             case hr:
-                return "Igra Pamćenja";
+                return "Otkrijte par!";
             case hu:
-                return "Memória Teszt";
+                return "Fedezze fel a párot!";
             case id:
-                return "Tes Memori";
+                return "Temukan pasangan!";
             case it:
-                return "Test di Memoria";
+                return "Scopri la coppia!";
             case ja:
-                return "記憶テスト";
+                return "ペアを発見！";
             case ko:
-                return "메모리 검사";
+                return "쌍을 발견하십시오!";
             case ms:
-                return "Ujian Memori";
+                return "Temui pasangan itu!";
             case nl:
-                return "Geheim examen";
+                return "Ontdek het paar!";
             case no:
-                return "Minne spill";
+                return "Oppdag paret!";
             case pl:
-                return "Test Pamięci";
+                return "Odkryj parę!";
             case pt:
-                return "Teste de Memória";
+                return "Descubra o par!";
             case ro:
-                return "Joc de Memorie";
+                return "Descoperă perechea!";
             case ru:
-                return "Тест памяти";
+                return "Откройте для себя пару!";
             case sk:
-                return "Pamäťová Hra";
+                return "Objavte pár!";
             case sv:
-                return "Minnes test";
+                return "Upptäck paret!";
             case th:
-                return "เกมความจำ";
+                return "ค้นพบคู่!";
             case tr:
-                return "Hafıza Sınavı";
+                return "Çifti keşfedin!";
             case uk:
-                return "Гра на пам'ять";
+                return "Відкрийте для себе пару!";
             case vi:
-                return "Kiểm tra bộ nhớ";
+                return "Khám phá cặp!";
             case zh:
-                return "记忆考试";
+                return "发现一对！";
         }
         return null;
     }

@@ -70,7 +70,9 @@ public class MemoryCampaignScreen extends AbstractScreen<MemoryScreenManager> {
     private void addTitle(Table table) {
 
         String appName = Game.getInstance().getAppInfoService().getAppName();
-        float mult = appName.length() > 13 ? 2.0f : 2.7f;
+        float mult = appName.length() > 13 || Arrays.asList(Language.hi.name(),
+                Language.ko.name(),
+                Language.ja.name()).contains(Game.getInstance().getAppInfoService().getLanguage()) ? 2.0f : 2.7f;
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                         FontColor.GREEN.getColor(),
