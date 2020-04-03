@@ -7,7 +7,7 @@ public class MemoryScreenManager extends AbstractScreenManager {
     @Override
     public void showMainScreen() {
         showScreen(MemoryScreenTypeEnum.CAMPAIGN_SCREEN);
-//        showGameScreen(0);
+//        showGameScreen(4);
     }
 
     public void showGameScreen(int gameLevel) {

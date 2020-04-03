@@ -8,9 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.campaign.CampaignStoreService;
 import libgdx.controls.ScreenRunnable;
+import libgdx.controls.button.MainButtonSize;
+import libgdx.controls.button.MyButton;
+import libgdx.controls.button.builders.BackButtonBuilder;
+import libgdx.controls.button.builders.RefreshButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
@@ -47,6 +52,8 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     private MyWrappedLabel forScore;
     private MyWrappedLabel againstScore;
     private CampaignStoreService campaignStoreService = new CampaignStoreService();
+    private MyButton backButton;
+    private MyButton refreshButton;
 
     public MemoryGameScreen(int levelNr) {
         this.levelNr = levelNr;
@@ -64,10 +71,24 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     @Override
     public void buildStage() {
         setBackgroundColor(new RGBColor(1, 206, 255, 211));
+        backButton = new BackButtonBuilder().addHoverBackButton(this);
+        addActor(backButton);
+        refreshButton = new RefreshButtonBuilder().addHoverRefreshButton(this, createRefreshChangeListener(), ScreenDimensionsManager.getScreenWidth() - MainDimen.horizontal_general_margin.getDimen() * 2 - MainButtonSize.BACK_BUTTON.getWidth());
+        addActor(refreshButton);
         addAllTable(levelNr);
     }
 
+    private ChangeListener createRefreshChangeListener() {
+        return new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                MemoryGame.getInstance().getScreenManager().showGameScreen(levelNr);
+            }
+        };
+    }
+
     private void addAllTable(int levelNr) {
+        this.levelNr = levelNr;
         this.gameLevel = GameLevel.values()[levelNr];
         this.currentGame = new CurrentGame(this, this.gameLevel.ordinal(), 0);
         levelMatrix = new GameLogic().generateMatrix(gameLevel);
@@ -189,7 +210,8 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
         }), Actions.fadeIn(0.3f)));
         table.add(gameTable).width(ScreenDimensionsManager.getScreenWidthValue(95));
         addActor(table);
-
+        backButton.toFront();
+        refreshButton.toFront();
     }
 
     private float getHeaderHeight() {
