@@ -48,6 +48,8 @@ import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -264,9 +266,15 @@ public class ContainerManager {
         Inventory inventory = currentGame.getMyInventory();
         Market market = currentGame.getMarket();
         int remainingSlotsToAdd = Inventory.MAX_ITEMS_IN_INVENTORY;
-        List<ResourceInventory> availableResources = inventory.getAvailableResources().stream()
-                .sorted(Comparator.comparingInt(ResourceInventory::getPrice))
-                .collect(Collectors.toList());
+
+        List<ResourceInventory> availableResources = new ArrayList<>(inventory.getAvailableResources());
+        Collections.sort(availableResources, new Comparator<ResourceInventory>() {
+            @Override
+            public int compare(ResourceInventory r1, ResourceInventory r2) {
+                return Integer.compare(r1.getPrice(), r2.getPrice());
+            }
+        });
+
         for (ResourceInventory resourceInventory : availableResources) {
             Table itemTable = new Table();
             Integer actualSellPrice = getActualSellPrice(resourceInventory, market);
@@ -362,9 +370,13 @@ public class ContainerManager {
         Market market = currentGame.getMarket();
         String MARKETTABLE_NAME = "MARKETTABLE_NAME";
         Table table = initInvMarketTable(MARKETTABLE_NAME);
-        List<ResourceMarket> availableResources = market.getAvailableResources().stream()
-                .sorted(Comparator.comparingInt(ResourceMarket::getPrice))
-                .collect(Collectors.toList());
+        List<ResourceMarket> availableResources = new ArrayList<>(market.getAvailableResources());
+        Collections.sort(availableResources, new Comparator<ResourceMarket>() {
+            @Override
+            public int compare(ResourceMarket r1, ResourceMarket r2) {
+                return Integer.compare(r1.getPrice(), r2.getPrice());
+            }
+        });
         for (ResourceMarket resourceMarket : availableResources) {
             int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
             Table itemTable = new Table();
