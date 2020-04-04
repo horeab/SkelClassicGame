@@ -1,5 +1,6 @@
 package libgdx.implementations.resourcewars.spec.logic;
 
+import libgdx.game.Game;
 import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
 import libgdx.implementations.resourcewars.spec.model.CurrentGame;
 import libgdx.implementations.resourcewars.spec.model.enums.Location;
@@ -8,7 +9,7 @@ public class LocationMovementManager {
 
     private CurrentGame currentGame;
     private GamePreferencesManager storeManager;
-    private  GamePreferencesManager gamePreferencesManager = new GamePreferencesManager();
+    private GamePreferencesManager gamePreferencesManager = new GamePreferencesManager();
 
     public LocationMovementManager(CurrentGame currentGame) {
         this.currentGame = currentGame;
@@ -57,8 +58,22 @@ public class LocationMovementManager {
 
     public void increaseDaysPassed() {
         new GamePreferencesManager().saveGame(currentGame);
-        currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
-        ContainerManager.gameOver(currentGame);
+        if (currentGame.getDaysPassed() == 10
+                || currentGame.getDaysPassed() == 25
+                || currentGame.getDaysPassed() == 40
+                || currentGame.getDaysPassed() == 58
+        ) {
+            Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                @Override
+                public void run() {
+                    currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
+                    ContainerManager.gameOver(currentGame);
+                }
+            });
+        } else {
+            currentGame.setDaysPassed(currentGame.getDaysPassed() + 1);
+            ContainerManager.gameOver(currentGame);
+        }
     }
 
     private void unlockLocation(Location location) {
