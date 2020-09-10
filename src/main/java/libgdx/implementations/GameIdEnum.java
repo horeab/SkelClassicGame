@@ -2,6 +2,7 @@ package libgdx.implementations;
 
 import libgdx.campaign.CampaignGameDependencyManager;
 import libgdx.game.GameId;
+import libgdx.implementations.applepie.ApplePieDependencyManager;
 import libgdx.implementations.balloon.BalloonDependencyManager;
 import libgdx.implementations.math.MathDependencyManager;
 import libgdx.implementations.memory.MemoryDependencyManager;
@@ -11,6 +12,7 @@ public enum GameIdEnum implements GameId {
 
     balloon(BalloonDependencyManager.class),
     math(MathDependencyManager.class),
+    applepie(ApplePieDependencyManager.class),
     memory(MemoryDependencyManager.class),
     resourcewars(ResourceWarsDependencyManager.class),;
 

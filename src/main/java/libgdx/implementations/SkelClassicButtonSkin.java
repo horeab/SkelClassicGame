@@ -33,7 +33,11 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     //MATH
     MATH_LEVELBTN(MathSpecificResource.btn_level_up, MathSpecificResource.btn_level_down, MathSpecificResource.btn_level_down, MathSpecificResource.btn_level_up, null),
     MATH_CORRECT(MathSpecificResource.ok, MathSpecificResource.ok_pressed, MathSpecificResource.ok_pressed, MathSpecificResource.ok, null),
-    MATH_WRONG(MathSpecificResource.wrong, MathSpecificResource.wrong_pressed, MathSpecificResource.wrong_pressed, MathSpecificResource.wrong, null),;
+    MATH_WRONG(MathSpecificResource.wrong, MathSpecificResource.wrong_pressed, MathSpecificResource.wrong_pressed, MathSpecificResource.wrong, null),
+
+    //APPLEPIE
+    APPLEPIE_PRESS_BTN(ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_clicked, ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_disabled, null),
+    ;
 
     private Res imgUp;
     private Res imgDown;
