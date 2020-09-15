@@ -11,6 +11,8 @@ public enum SkelClassicButtonSize implements ButtonSize {
     MATH_CORRECT_WRONG_IMG_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 2f),
 
     APPLEPIE_PRESS_BTN(MainDimen.side_btn_image.getDimen() * 3f, MainDimen.side_btn_image.getDimen() * 3f),
+
+    BUYLOW_SELLBUY_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 1.5f),
     ;
 
     private float width;
