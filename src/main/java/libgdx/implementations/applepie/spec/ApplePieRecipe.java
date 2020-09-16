@@ -8,8 +8,11 @@ import java.util.List;
 public enum ApplePieRecipe {
 
     APPLE_PIE(Arrays.asList(
-            new MutablePair<>(ApplePieIngredient.APPLE, 1f),
-            new MutablePair<>(ApplePieIngredient.BUTTER, 3f)));
+            new MutablePair<>(ApplePieIngredient.APPLE, 1f)
+//            ,
+//            new MutablePair<>(ApplePieIngredient.BUTTER, 3f)
+    )
+    );
 
     private List<MutablePair<ApplePieIngredient, Float>> applePieIngredients;
 
