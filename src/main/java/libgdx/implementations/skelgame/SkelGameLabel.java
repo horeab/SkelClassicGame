@@ -8,6 +8,7 @@ public enum SkelGameLabel implements libgdx.resources.gamelabel.GameLabel {
     level_finished,
     level_failed,
     game_finished,
+    l_game_finished,
     go_back,
     next_level,
     play_again,

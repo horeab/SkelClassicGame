@@ -4,7 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import libgdx.controls.button.ButtonSkin;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.applepie.ApplePieSpecificResource;
 import libgdx.implementations.balloon.BalloonSpecificResource;
+import libgdx.implementations.buylow.BuyLowSpecificResource;
 import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.resources.Res;
@@ -36,7 +38,14 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     MATH_WRONG(MathSpecificResource.wrong, MathSpecificResource.wrong_pressed, MathSpecificResource.wrong_pressed, MathSpecificResource.wrong, null),
 
     //APPLEPIE
-    APPLEPIE_PRESS_BTN(ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_clicked, ResourceWarsSpecificResource.amount_plus, ResourceWarsSpecificResource.amount_plus_disabled, null),
+    APPLEPIE_PRESS_BTN(ApplePieSpecificResource.amount_plus, ApplePieSpecificResource.amount_plus_clicked, ApplePieSpecificResource.amount_plus, ApplePieSpecificResource.amount_plus_disabled, null),
+
+    //BUYLOW
+    BUYLOW_MENU(ResourceWarsSpecificResource.menu, ResourceWarsSpecificResource.menu_clicked, ResourceWarsSpecificResource.menu, ResourceWarsSpecificResource.btn_disabled, null),
+    BUYLOW_SELLBUY0_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
+    BUYLOW_SELLBUY1_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
+    BUYLOW_SELLBUY2_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
+    BUYLOW_SELLBUY3_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
     ;
 
     private Res imgUp;
