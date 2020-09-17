@@ -3,9 +3,9 @@ package libgdx.implementations.buylow.spec;
 public enum BuyLowResource {
 
     WOOD(10),
-    IRON(50),
+    IRON(100),
     GOLD(500),
-    DIAMOND(1000),
+    DIAMOND(10000),
     ;
 
     private int price;

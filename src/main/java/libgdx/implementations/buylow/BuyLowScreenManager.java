@@ -7,6 +7,7 @@ public class BuyLowScreenManager extends AbstractScreenManager {
     @Override
     public void showMainScreen() {
         showScreen(BuyLowScreenTypeEnum.MAIN_SCREEN);
+        showGameScreen();
     }
 
     public void showGameScreen() {

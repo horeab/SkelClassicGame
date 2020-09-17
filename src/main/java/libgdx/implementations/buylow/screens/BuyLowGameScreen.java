@@ -1,6 +1,8 @@
 package libgdx.implementations.buylow.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
@@ -9,43 +11,40 @@ import org.apache.commons.lang3.mutable.MutableLong;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import libgdx.controls.ScreenRunnable;
 import libgdx.controls.button.ButtonBuilder;
-import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
-import libgdx.implementations.LevelFinishedPopup;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
-import libgdx.implementations.buylow.BuyLowGame;
 import libgdx.implementations.buylow.BuyLowScreenManager;
 import libgdx.implementations.buylow.spec.BuyLowHighScorePreferencesManager;
 import libgdx.implementations.buylow.spec.BuyLowLevelFinishedPopup;
 import libgdx.implementations.buylow.spec.BuyLowResource;
-import libgdx.implementations.math.MathGame;
-import libgdx.implementations.resourcewars.spec.model.resource.AbstractResource;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
 public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
 
-    private static final int START_BUDGET = 100;
+    private static final int START_BUDGET = 1000;
     private static final int MAX_DAYS = 200;
     private static final int MAX_INVENTORY = 100;
 
     private int budget = START_BUDGET;
-    private int days = MAX_DAYS;
-    private MutableLong countdownAmountMillis;
+    private MutableLong countdownAmountMillis = new MutableLong(MAX_DAYS * 1000);
     private ScheduledExecutorService executorService;
     private boolean countdownFinished = false;
     private Map<BuyLowResource, Integer> resAmount = new LinkedHashMap<>();
@@ -64,7 +63,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
             resAmount.put(res, 0);
             resCurrentPrice.put(res, res.getPrice());
         }
-
+        executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @Override
@@ -77,12 +76,17 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
     private void createAllTable() {
         allTable = new Table();
         allTable.setFillParent(true);
-        allTable.setBackground(GraphicUtils.getNinePatch(MainResource.btn_menu_up));
         addActor(allTable);
         if (hoverBackButton != null) {
             hoverBackButton.toFront();
         }
         refreshAllTable();
+        addAction(Actions.sequence(Actions.delay(1f), Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                countdownProcess();
+            }
+        })));
     }
 
     private void refreshAllTable() {
@@ -102,7 +106,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
                         Math.round(FontConfig.FONT_SIZE * 1.2f))).setText("Budget: " + formatNrToCurrencyWithDollar(budget)).build());
         MyWrappedLabel daysLabel = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setWidth(headerContainerWidth).setFontConfig(new FontConfig(FontColor.RED.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 1.2f))).setText("Days: " + days + "").build());
+                        Math.round(FontConfig.FONT_SIZE * 1.2f))).setText("Days: " + (countdownAmountMillis.getValue() / 1000) + "").build());
         MyWrappedLabel invSpace = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue).setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
                         Math.round(FontConfig.FONT_SIZE))).setText("Inventory space: " + getTotalInv() + "/" + MAX_INVENTORY).build());
@@ -151,7 +155,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
     private void createAllRes() {
         int i = 0;
         for (Map.Entry<BuyLowResource, Integer> e : resAmount.entrySet()) {
-            allTable.add(createResTable(i, e.getKey(), e.getKey().getPrice()))
+            allTable.add(createResTable(i, e.getKey(), resCurrentPrice.get(e.getKey())))
                     .width(ScreenDimensionsManager.getScreenWidthValue(100))
                     .height(itemHeight()).row();
             i++;
@@ -187,7 +191,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         Table priceAmount = new Table();
         MyWrappedLabel price = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 1.1f))).setText(formatNrToCurrencyWithDollar(currentPrice) + "").build());
+                        Math.round(FontConfig.FONT_SIZE * 1.5f))).setText(formatNrToCurrencyWithDollar(currentPrice) + "").build());
         MyWrappedLabel amountAfford = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
                         Math.round(FontConfig.FONT_SIZE))).setText(getAmountYouAffordAndHaveSpaceFor(currentPrice) + "").build());
@@ -224,7 +228,18 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         buySell.add(sellBtn).height(sellBtn.getHeight()).width(sellBtn.getWidth());
         table.add(item).width(itemWidth);
         table.add(buySell).width(ScreenDimensionsManager.getScreenWidth() - itemWidth).height(itemHeight);
+        table.setBackground(GraphicUtils.getNinePatch(getResBackgr(res, currentPrice)));
         return table;
+    }
+
+    private MainResource getResBackgr(BuyLowResource res, int currentPrice) {
+        MainResource backr = MainResource.btn_lowcolor_up;
+        if (currentPrice > res.getPrice()) {
+            backr = MainResource.btn_menu_down;
+        } else if (currentPrice < res.getPrice()) {
+            backr = MainResource.btn_menu_up;
+        }
+        return backr;
     }
 
     private int getAmountYouAffordAndHaveSpaceFor(int resPrice) {
@@ -260,25 +275,48 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         return budget / resourcePrice;
     }
 
+    private void changeResPrice() {
+        for (Map.Entry<BuyLowResource, Integer> e : resCurrentPrice.entrySet()) {
+            int valToChange = e.getKey().getPrice() / 10;
+            int rand = new Random().nextInt(3);
+            int priceToSet = e.getValue();
+            if (rand == 0) {
+                priceToSet = priceToSet - valToChange;
+            } else if (rand == 1) {
+                priceToSet = priceToSet + valToChange;
+            }
+            if (priceToSet == 0) {
+                priceToSet = priceToSet + valToChange;
+            }
+            e.setValue(priceToSet);
+        }
+    }
+
     private void countdownProcess() {
-        int seconds = 9;
-        countdownAmountMillis = new MutableLong(seconds * 1000);
-        final int period = 100;
+        final int period = 1000;
         executorService.scheduleAtFixedRate(new ScreenRunnable(getAbstractScreen()) {
             @Override
             public void executeOperations() {
-                if (countdownAmountMillis.getValue() <= 0) {
-                    BuyLowHighScorePreferencesManager preferencesManager = new BuyLowHighScorePreferencesManager();
-                    boolean isHighScore = false;
-                    if (preferencesManager.getMaxScore() < budget) {
-                        preferencesManager.putMaxScore(budget);
-                        isHighScore = true;
+
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (countdownAmountMillis.getValue() <= 0) {
+                            BuyLowHighScorePreferencesManager preferencesManager = new BuyLowHighScorePreferencesManager();
+                            boolean isHighScore = false;
+                            if (preferencesManager.getMaxScore() < budget) {
+                                preferencesManager.putMaxScore(budget);
+                                isHighScore = true;
+                            }
+                            countdownFinished = true;
+                            executorService.shutdown();
+                            new BuyLowLevelFinishedPopup(getAbstractScreen(), isHighScore, budget).addToPopupManager();
+                        }
+                        countdownAmountMillis.subtract(period);
+                        changeResPrice();
+                        refreshAllTable();
                     }
-                    countdownFinished = true;
-                    executorService.shutdown();
-                    new BuyLowLevelFinishedPopup(getAbstractScreen(), isHighScore, budget).addToPopupManager();
-                }
-                countdownAmountMillis.subtract(period);
+                });
             }
 
             @Override
