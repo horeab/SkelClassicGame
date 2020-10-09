@@ -1,8 +1,6 @@
 package libgdx.implementations.imagesplit.screens;
 
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -12,14 +10,20 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeSet;
 
+import libgdx.implementations.imagesplit.ImageSplitCampaignLevelEnum;
 import libgdx.implementations.imagesplit.spec.ImageMoveConfig;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
 
 public class ImagePushGameScreen extends ImageSplitGameScreen {
 
+    public ImagePushGameScreen(ImageSplitCampaignLevelEnum campaignLevelEnum) {
+        super(campaignLevelEnum);
+    }
 
-    public ImagePushGameScreen() {
-        super();
+    @Override
+    void init() {
+        super.init();
+        setRandomImgInvisible();
     }
 
     @Override
@@ -61,30 +65,25 @@ public class ImagePushGameScreen extends ImageSplitGameScreen {
         imageParts.put(pressedCoord, neighbImg);
         imageParts.put(neighb, pressedImg);
         if (correctImageParts.equals(imageParts)) {
-            imgTable.addAction(Actions.fadeOut(1f));
+            fadeOutImageParts(0.25f);
         }
     }
 
-    @Override
-    Table createImageTable() {
-        int i = 0;
+    private void setRandomImgInvisible() {
         int randomEmptyCell = new Random().nextInt(totalCols * totalRows);
+        int i = 0;
         for (Map.Entry<Pair<Integer, Integer>, Image> part : imageParts.entrySet()) {
-            if (i != 0 && i % totalCols == 0) {
-                imgTable.row();
-            }
-            Image image = part.getValue();
-            imgTable.add(image).pad(getPartPad()).width(image.getWidth()).height(image.getHeight());
             if (i == randomEmptyCell) {
-                image.setVisible(false);
+                part.getValue().setVisible(false);
             }
             i++;
         }
-        return imgTable;
     }
 
     @Override
-    void processClonedImages(List<ImageMoveConfig> imageMoveConfigs, Pair<Integer, Integer> coord, float duration, SwipeDirection swipeDirection) {
+    void processClonedImages
+            (List<ImageMoveConfig> imageMoveConfigs, Pair<Integer, Integer> coord,
+             float duration, SwipeDirection swipeDirection) {
     }
 
 }

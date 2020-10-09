@@ -1,8 +1,6 @@
 package libgdx.implementations.imagesplit.screens;
 
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -12,14 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import libgdx.implementations.imagesplit.ImageSplitCampaignLevelEnum;
 import libgdx.implementations.imagesplit.spec.ImageMoveConfig;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
 
 public class ImageSlideGameScreen extends ImageSplitGameScreen {
 
-
-    public ImageSlideGameScreen() {
-        super();
+    public ImageSlideGameScreen(ImageSplitCampaignLevelEnum campaignLevelEnum) {
+        super(campaignLevelEnum);
     }
 
     @Override
@@ -30,7 +28,7 @@ public class ImageSlideGameScreen extends ImageSplitGameScreen {
             Image copyImg = new Image(finishImg.getImage().getDrawable());
             SwipeDirection copyImgDirection = finishImg.getDirection();
             float initCopyImgPos = upDownSwipe(swipeDirection) ? getPartHeight() : getPartWidth();
-            initCopyImgPos = initCopyImgPos + getPartPad() * 2;
+            initCopyImgPos = initCopyImgPos + getPartPad();
             initCopyImgPos = swipeDirection == SwipeDirection.UP || swipeDirection == SwipeDirection.RIGHT ? -initCopyImgPos : initCopyImgPos;
             copyImg.setX(startImg.getImage().getX() + (leftRightSwipe(swipeDirection) ? initCopyImgPos : 0));
             copyImg.setY(startImg.getImage().getY() + (upDownSwipe(swipeDirection) ? initCopyImgPos : 0));
@@ -44,7 +42,7 @@ public class ImageSlideGameScreen extends ImageSplitGameScreen {
                     copyImg.setVisible(false);
                     changeImgCoords(pressedCoord, copyImgDirection);
                     if (correctImageParts.equals(imageParts)) {
-                        imgTable.addAction(Actions.fadeOut(1f));
+                        fadeOutImageParts(0.25f);
                     }
                 }
             });
@@ -113,17 +111,4 @@ public class ImageSlideGameScreen extends ImageSplitGameScreen {
         return res;
     }
 
-    @Override
-    Table createImageTable() {
-        int r = 0;
-        for (Map.Entry<Pair<Integer, Integer>, Image> part : imageParts.entrySet()) {
-            if (r != 0 && r % totalCols == 0) {
-                imgTable.row();
-            }
-            Image image = part.getValue();
-            imgTable.add(image).pad(getPartPad()).width(image.getWidth()).height(image.getHeight());
-            r++;
-        }
-        return imgTable;
-    }
 }

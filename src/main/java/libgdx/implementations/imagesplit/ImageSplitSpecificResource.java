@@ -19,6 +19,7 @@ public enum ImageSplitSpecificResource implements SpecificResource {
     menu_clicked("buttons/menu_clicked.png", Texture.class),
 
     i0("images/i0.jpg", Texture.class),
+    i1("images/i1.jpg", Texture.class),
     ;
 
     // @formatter:on
