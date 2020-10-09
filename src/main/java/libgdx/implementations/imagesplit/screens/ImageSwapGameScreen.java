@@ -9,16 +9,15 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeSet;
 
 import libgdx.implementations.imagesplit.spec.ImageMoveConfig;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
 
-public class ImagePushGameScreen extends ImageSplitGameScreen {
+public class ImageSwapGameScreen extends ImageSplitGameScreen {
 
 
-    public ImagePushGameScreen() {
+    public ImageSwapGameScreen() {
         super();
     }
 
@@ -42,11 +41,13 @@ public class ImagePushGameScreen extends ImageSplitGameScreen {
         return getImagesToProcessSwipe(coord, getDirectionNeighb(coord, direction), direction);
     }
 
+
     private List<ImageMoveConfig> getImagesToProcessSwipe(Pair<Integer, Integer> pressedCoord, Pair<Integer, Integer> neighbCoord, SwipeDirection direction) {
         List<ImageMoveConfig> res = new ArrayList<>();
         for (Pair<Integer, Integer> key : new TreeSet<Pair<Integer, Integer>>(imageParts.keySet())) {
-            if (pressedCoord.equals(key) && imageParts.containsKey(neighbCoord) && !imageParts.get(neighbCoord).isVisible()) {
+            if (pressedCoord.equals(key) && imageParts.containsKey(neighbCoord)) {
                 res.add(new ImageMoveConfig(imageParts.get(key), direction));
+                res.add(new ImageMoveConfig(imageParts.get(neighbCoord), getOppositeDirection(direction)));
                 break;
             }
         }
@@ -68,16 +69,12 @@ public class ImagePushGameScreen extends ImageSplitGameScreen {
     @Override
     Table createImageTable() {
         int i = 0;
-        int randomEmptyCell = new Random().nextInt(totalCols * totalRows);
         for (Map.Entry<Pair<Integer, Integer>, Image> part : imageParts.entrySet()) {
             if (i != 0 && i % totalCols == 0) {
                 imgTable.row();
             }
             Image image = part.getValue();
             imgTable.add(image).pad(getPartPad()).width(image.getWidth()).height(image.getHeight());
-            if (i == randomEmptyCell) {
-                image.setVisible(false);
-            }
             i++;
         }
         return imgTable;
@@ -85,6 +82,7 @@ public class ImagePushGameScreen extends ImageSplitGameScreen {
 
     @Override
     void processClonedImages(List<ImageMoveConfig> imageMoveConfigs, Pair<Integer, Integer> coord, float duration, SwipeDirection swipeDirection) {
+
     }
 
 }
