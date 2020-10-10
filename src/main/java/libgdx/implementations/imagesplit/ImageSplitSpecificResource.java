@@ -12,11 +12,22 @@ public enum ImageSplitSpecificResource implements SpecificResource {
 
     specific_labels("labels/labels", I18NBundle.class),
 
-    btn0("buttons/btn0.png", Texture.class),
-    btn0_clicked("buttons/btn0_clicked.png", Texture.class),
-    btn_disabled("buttons/btn_disabled.png", Texture.class),
-    menu("buttons/menu.png", Texture.class),
-    menu_clicked("buttons/menu_clicked.png", Texture.class),
+    gametype_swap("buttons/gametype_swap.png", Texture.class),
+    gametype_swap_clicked("buttons/gametype_swap_clicked.png", Texture.class),
+    gametype_swap_disabled("buttons/gametype_swap_disabled.png", Texture.class),
+    gametype_push("buttons/gametype_push.png", Texture.class),
+    gametype_push_clicked("buttons/gametype_push_clicked.png", Texture.class),
+    gametype_push_disabled("buttons/gametype_push_disabled.png", Texture.class),
+    gametype_slide("buttons/gametype_slide.png", Texture.class),
+    gametype_slide_clicked("buttons/gametype_slide_clicked.png", Texture.class),
+    gametype_slide_disabled("buttons/gametype_slide_disabled.png", Texture.class),
+    viewimg("buttons/viewimg.png", Texture.class),
+    tutorial_swipe_finger("tutorial_swipe_finger.png", Texture.class),
+    seconds_icon("seconds_icon.png", Texture.class),
+    moves_icon("moves_icon.png", Texture.class),
+
+    leftarrow("buttons/leftarrow.png", Texture.class),
+    rightarrow("buttons/rightarrow.png", Texture.class),
 
     i0("images/i0.jpg", Texture.class),
     i1("images/i1.jpg", Texture.class),

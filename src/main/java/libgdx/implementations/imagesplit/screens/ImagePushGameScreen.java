@@ -1,23 +1,27 @@
 package libgdx.implementations.imagesplit.screens;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeSet;
 
 import libgdx.implementations.imagesplit.ImageSplitCampaignLevelEnum;
 import libgdx.implementations.imagesplit.spec.ImageMoveConfig;
+import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
 
 public class ImagePushGameScreen extends ImageSplitGameScreen {
 
+    private Pair<Integer, Integer> startingEmptyPartCoord;
+
     public ImagePushGameScreen(ImageSplitCampaignLevelEnum campaignLevelEnum) {
-        super(campaignLevelEnum);
+        super(campaignLevelEnum, ImageSplitGameType.PUSH);
     }
 
     @Override
@@ -65,19 +69,33 @@ public class ImagePushGameScreen extends ImageSplitGameScreen {
         imageParts.put(pressedCoord, neighbImg);
         imageParts.put(neighb, pressedImg);
         if (correctImageParts.equals(imageParts)) {
-            fadeOutImageParts(0.25f);
+            levelFinished();
         }
     }
 
     private void setRandomImgInvisible() {
-        int randomEmptyCell = new Random().nextInt(totalCols * totalRows);
+        int t = totalCols * totalRows;
+        int randomEmptyCell = t % 2 == 0 ? t / 2 - totalCols / 2 : t / 2;
+//        int randomEmptyCell = new Random().nextInt(totalCols * totalRows);
         int i = 0;
         for (Map.Entry<Pair<Integer, Integer>, Image> part : imageParts.entrySet()) {
             if (i == randomEmptyCell) {
+                startingEmptyPartCoord = part.getKey();
                 part.getValue().setVisible(false);
             }
             i++;
         }
+    }
+
+    @Override
+    void simulateMoveStep() {
+        Pair<Integer, Integer> coord1 = Pair.of(startingEmptyPartCoord.getLeft(), startingEmptyPartCoord.getRight() - 1);
+        addAction(Actions.sequence(
+                Actions.delay(TUTORIAL_INITIAL_DELAY),
+                simulateStep(SwipeDirection.DOWN, coord1),
+                Actions.delay(TUTORIAL_WAIT_BETWEEN_STEPS * 2),
+                simulateStep(SwipeDirection.UP, Pair.of(startingEmptyPartCoord.getLeft(), startingEmptyPartCoord.getRight()))));
+        simulateMoveFinger(coord1, Arrays.asList(SwipeDirection.DOWN, SwipeDirection.UP), 0);
     }
 
     @Override

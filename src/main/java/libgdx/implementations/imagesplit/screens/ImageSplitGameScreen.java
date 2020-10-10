@@ -1,9 +1,12 @@
 package libgdx.implementations.imagesplit.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import org.apache.commons.lang3.mutable.MutableLong;
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,18 +32,21 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.MyPopup;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.imagesplit.ImageSplitCampaignLevelEnum;
 import libgdx.implementations.imagesplit.ImageSplitScreenManager;
 import libgdx.implementations.imagesplit.ImageSplitSpecificResource;
 import libgdx.implementations.imagesplit.spec.ImageMoveConfig;
+import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
+import libgdx.implementations.imagesplit.spec.ImageSplitPreferencesManager;
 import libgdx.implementations.imagesplit.spec.ImageSplitService;
 import libgdx.implementations.imagesplit.spec.SimpleDirectionGestureDetector;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
-import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
+import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
-import libgdx.resources.gamelabel.SpecificPropertiesUtils;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
@@ -50,6 +56,9 @@ import libgdx.utils.model.FontConfig;
 public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScreenManager> {
 
 
+    static final float MOVE_IMG_PART_DURATION = 0.15f;
+    static final float TUTORIAL_WAIT_BETWEEN_STEPS = MOVE_IMG_PART_DURATION * 3f;
+    static final float TUTORIAL_INITIAL_DELAY = 0.4f;
     private MutableLong totalSeconds;
     private MyWrappedLabel totalSecondsLabel;
     private int totalMoves;
@@ -58,23 +67,31 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
     private MyButton vieImgBtn;
     private ScheduledExecutorService executorService;
     private Table allTable;
-    Res imgRes;
+    private Res imgRes;
     private MyButton hoverBackButton;
-    ImageSplitService imageSplitService = new ImageSplitService();
-    float totalImgWidth;
-    float totalImgHeight;
+    private ImageSplitPreferencesManager imageSplitPreferencesManager = new ImageSplitPreferencesManager();
+    private ImageSplitService imageSplitService = new ImageSplitService();
+    private float totalImgWidth;
+    private float totalImgHeight;
     int totalCols;
     int totalRows;
     Map<Pair<Integer, Integer>, Image> correctImageParts;
     Map<Pair<Integer, Integer>, Image> imageParts;
-    ImageSplitCampaignLevelEnum campaignLevelEnum;
+    private ImageSplitCampaignLevelEnum campaignLevelEnum;
+    private ImageSplitGameType gameType;
+    private boolean popupDisplayed;
+    private MyPopup<AbstractScreen, ImageSplitScreenManager> viewImgPopup;
+    private boolean tutorialRunning;
 
-    ImageSplitGameScreen(ImageSplitCampaignLevelEnum campaignLevelEnum) {
+    ImageSplitGameScreen(ImageSplitCampaignLevelEnum campaignLevelEnum, ImageSplitGameType gameType) {
         this.campaignLevelEnum = campaignLevelEnum;
+        this.gameType = gameType;
         init();
     }
 
     abstract void processClonedImages(List<ImageMoveConfig> imageMoveConfigs, Pair<Integer, Integer> coord, float duration, SwipeDirection swipeDirection);
+
+    abstract void simulateMoveStep();
 
     abstract List<ImageMoveConfig> getImagesToProcessSwipeUp(Pair<Integer, Integer> coord, SwipeDirection direction);
 
@@ -85,6 +102,7 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
     abstract List<ImageMoveConfig> getImagesToProcessSwipeRight(Pair<Integer, Integer> coord, SwipeDirection direction);
 
     void init() {
+        popupDisplayed = false;
         totalMoves = 0;
         totalSeconds = new MutableLong(0);
         correctImageParts = new LinkedHashMap<>();
@@ -97,24 +115,26 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         totalCols = campaignLevelEnum.getCols();
         totalRows = campaignLevelEnum.getRows();
         initImageParts();
-        initTotalSecondsLabel();
-        initTotalMovessLabel();
+        initTotalSecondsTable();
+        initTotalMovesLabel();
         initButtons();
         countdownProcess();
     }
 
-    private void processImageSwipe(List<ImageMoveConfig> imageMoveConfigs, Pair<Integer, Integer> pressedCoord, SwipeDirection swipeDirection) {
-        float duration = 0.15f;
+    void processImageSwipe(List<ImageMoveConfig> imageMoveConfigs, Pair<Integer, Integer> pressedCoord, SwipeDirection swipeDirection) {
+        float duration = MOVE_IMG_PART_DURATION;
         boolean afterOneMoveExecuted = false;
         for (ImageMoveConfig imageMoveConfig : imageMoveConfigs) {
-            moveImg(imageMoveConfig, duration, new Runnable() {
+            moveImgConfig(imageMoveConfig, duration, new Runnable() {
                 @Override
                 public void run() {
                 }
             });
             if (!afterOneMoveExecuted) {
-                totalMoves++;
-                totalMovesLabel.setText(totalMoves + "");
+                if (!tutorialRunning) {
+                    totalMoves++;
+                    totalMovesLabel.setText(totalMoves + "");
+                }
                 afterOneMoveExecuted = true;
                 processAfterMoveImg(pressedCoord, imageMoveConfig.getDirection());
             }
@@ -129,11 +149,15 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         return amount;
     }
 
-    void moveImg(ImageMoveConfig imageMoveConfig, float duration, Runnable afterMoveBy) {
+    void moveImgConfig(ImageMoveConfig imageMoveConfig, float duration, Runnable afterMoveBy) {
         SwipeDirection direction = imageMoveConfig.getDirection();
         Image image = imageMoveConfig.getImage();
-        image.addAction(Actions.sequence(Actions.moveTo(leftRightSwipe(direction) ? image.getX() + getMoveDirectionAmount(direction) : image.getX(),
-                upDownSwipe(direction) ? image.getY() + getMoveDirectionAmount(direction) : image.getY(), duration), Utils.createRunnableAction(afterMoveBy)));
+        moveImg(duration, afterMoveBy, direction, image, getMoveDirectionAmount(direction));
+    }
+
+    void moveImg(float duration, Runnable afterMoveBy, SwipeDirection direction, Image image, float moveAmount) {
+        image.addAction(Actions.sequence(Actions.moveTo(leftRightSwipe(direction) ? image.getX() + moveAmount : image.getX(),
+                upDownSwipe(direction) ? image.getY() + moveAmount : image.getY(), duration), Utils.createRunnableAction(afterMoveBy)));
     }
 
     void processAfterMoveImg(Pair<Integer, Integer> pressedCoord, SwipeDirection direction) {
@@ -149,28 +173,36 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             public void onUp() {
                 Pair<Integer, Integer> coord = getCoordForXY(pressedX, pressedY);
                 SwipeDirection direction = SwipeDirection.UP;
-                processImageSwipe(getImagesToProcessSwipeUp(coord, direction), coord, direction);
+                if (!tutorialRunning) {
+                    processImageSwipe(getImagesToProcessSwipeUp(coord, direction), coord, direction);
+                }
             }
 
             @Override
             public void onDown() {
                 Pair<Integer, Integer> coord = getCoordForXY(pressedX, pressedY);
                 SwipeDirection direction = SwipeDirection.DOWN;
-                processImageSwipe(getImagesToProcessSwipeDown(coord, direction), coord, direction);
+                if (!tutorialRunning) {
+                    processImageSwipe(getImagesToProcessSwipeDown(coord, direction), coord, direction);
+                }
             }
 
             @Override
             public void onRight() {
                 Pair<Integer, Integer> coord = getCoordForXY(pressedX, pressedY);
                 SwipeDirection direction = SwipeDirection.RIGHT;
-                processImageSwipe(getImagesToProcessSwipeRight(coord, direction), coord, direction);
+                if (!tutorialRunning) {
+                    processImageSwipe(getImagesToProcessSwipeRight(coord, direction), coord, direction);
+                }
             }
 
             @Override
             public void onLeft() {
                 Pair<Integer, Integer> coord = getCoordForXY(pressedX, pressedY);
                 SwipeDirection direction = SwipeDirection.LEFT;
-                processImageSwipe(getImagesToProcessSwipeLeft(coord, direction), coord, direction);
+                if (!tutorialRunning) {
+                    processImageSwipe(getImagesToProcessSwipeLeft(coord, direction), coord, direction);
+                }
             }
 
             @Override
@@ -187,6 +219,9 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         createAllTable();
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         controlsToFront();
+        if (campaignLevelEnum == ImageSplitCampaignLevelEnum.LEVEL_0_0) {
+            simulateMoveStep();
+        }
     }
 
     private void createAllTable() {
@@ -211,6 +246,23 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             return Pair.of(coord.getLeft() + 1, coord.getRight());
         }
         return null;
+    }
+
+    RunnableAction simulateStep(final SwipeDirection direction, final Pair<Integer, Integer> coord) {
+        return Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                if (direction == SwipeDirection.UP) {
+                    processImageSwipe(getImagesToProcessSwipeUp(coord, direction), coord, direction);
+                } else if (direction == SwipeDirection.DOWN) {
+                    processImageSwipe(getImagesToProcessSwipeDown(coord, direction), coord, direction);
+                } else if (direction == SwipeDirection.LEFT) {
+                    processImageSwipe(getImagesToProcessSwipeLeft(coord, direction), coord, direction);
+                } else if (direction == SwipeDirection.RIGHT) {
+                    processImageSwipe(getImagesToProcessSwipeRight(coord, direction), coord, direction);
+                }
+            }
+        });
     }
 
     SwipeDirection getOppositeDirection(SwipeDirection direction) {
@@ -319,20 +371,20 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         return totalImgWidth / totalCols;
     }
 
-    private void initTotalSecondsLabel() {
+    private void initTotalSecondsTable() {
         totalSecondsLabel = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
-                        FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 2), 4f)).setText(totalSeconds.intValue() + "").build());
+                        FontColor.GREEN.getColor(), Math.round(FontConfig.FONT_SIZE * 2), 4f)).setText(totalSeconds.intValue() + "").build());
         totalSecondsLabel.setX(ScreenDimensionsManager.getScreenWidth() - getHeaderSideMargin());
         totalSecondsLabel.setY(getHeaderY());
         totalSecondsLabel.toFront();
         addActor(totalSecondsLabel);
     }
 
-    private void initTotalMovessLabel() {
+    private void initTotalMovesLabel() {
         totalMovesLabel = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
-                        FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 2), 4f)).setText(totalMoves + "").build());
+                        FontColor.LIGHT_BLUE.getColor(), Math.round(FontConfig.FONT_SIZE * 2), 4f)).setText(totalMoves + "").build());
         totalMovesLabel.setX(getHeaderSideMargin());
         totalMovesLabel.setY(getHeaderY());
         totalMovesLabel.toFront();
@@ -344,11 +396,11 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         replayBtn = new ImageButtonBuilder(MainButtonSkin.REFRESH, Game.getInstance().getAbstractScreen())
                 .setFixedButtonSize(btnSize)
                 .build();
-        vieImgBtn = new ImageButtonBuilder(MainButtonSkin.REFRESH, Game.getInstance().getAbstractScreen())
+        vieImgBtn = new ImageButtonBuilder(SkelClassicButtonSkin.IMAGE_SPLIT_VIEW_IMG, Game.getInstance().getAbstractScreen())
                 .setFixedButtonSize(btnSize)
                 .build();
         float btnStartX = getBtnStartX();
-        for (MyButton btn : Arrays.asList(vieImgBtn, replayBtn)) {
+        for (MyButton btn : Arrays.asList(replayBtn, vieImgBtn)) {
             btn.setX(btnStartX);
             btn.setY(getBtnStartY());
             btn.toFront();
@@ -378,8 +430,14 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         float btnStartY = getBtnStartY();
         y = ScreenDimensionsManager.getExternalDeviceHeight() - y - (ScreenDimensionsManager.getExternalDeviceHeight() - ScreenDimensionsManager.getScreenHeight()) / 2;
         x = x - (ScreenDimensionsManager.getExternalDeviceWidth() - ScreenDimensionsManager.getScreenWidth()) / 2;
-        replayBtnPressed(x, y, btnStartX, btnStartY);
-        viewImgBtnPressed(x, y, btnStartX + getNextBtnStartX(1), btnStartY);
+        if (!popupDisplayed) {
+            replayBtnPressed(x, y, btnStartX, btnStartY);
+            viewImgBtnPressed(x, y, btnStartX + getNextBtnStartX(1), btnStartY);
+        } else {
+            if (viewImgPopup != null) {
+                viewImgPopup.hide();
+            }
+        }
     }
 
     private void viewImgBtnPressed(float x, float y, float btnStartX, float btnStartY) {
@@ -390,7 +448,8 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             Image origImg = GraphicUtils.getImage(imgRes);
             origImg.setWidth(totalImgWidth);
             origImg.setHeight(totalImgHeight);
-            MyPopup<AbstractScreen, ImageSplitScreenManager> myPopup = new MyPopup<AbstractScreen, ImageSplitScreenManager>(getAbstractScreen()) {
+            popupDisplayed = true;
+            viewImgPopup = new MyPopup<AbstractScreen, ImageSplitScreenManager>(getAbstractScreen()) {
                 @Override
                 protected String getLabelText() {
                     return "";
@@ -404,9 +463,15 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
                 @Override
                 protected void addButtons() {
                 }
+
+                @Override
+                public void hide() {
+                    super.hide();
+                    popupDisplayed = false;
+                }
             };
-            myPopup.getContentTable().add(origImg).width(origImg.getWidth()).height(origImg.getHeight());
-            myPopup.addToPopupManager();
+            viewImgPopup.getContentTable().add(origImg).width(origImg.getWidth()).height(origImg.getHeight());
+            viewImgPopup.addToPopupManager();
         }
     }
 
@@ -414,7 +479,6 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         MainButtonSize buttonSize = getBtnSize();
         if (x > btnStartX && x < btnStartX + buttonSize.getWidth()
                 && y > btnStartY && y < btnStartY + buttonSize.getHeight()) {
-            executorService.shutdown();
             float duration = 0.25f;
             totalSecondsLabel.addAction(Actions.fadeOut(duration));
             totalMovesLabel.addAction(Actions.fadeOut(duration));
@@ -422,12 +486,73 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             addAction(Actions.sequence(Actions.delay(duration), Utils.createRunnableAction(new Runnable() {
                 @Override
                 public void run() {
-                    init();
-                    createAllTable();
-                    controlsToFront();
+                    screenManager.showGameScreen(gameType, campaignLevelEnum);
                 }
             })));
         }
+    }
+
+    void levelFinished() {
+        boolean secondsRecord = false;
+        boolean movesRecord = false;
+        executorService.shutdown();
+        int maxSeconds = imageSplitPreferencesManager.getMaxSeconds(gameType, campaignLevelEnum);
+        if (maxSeconds == 0 || totalSeconds.intValue() < maxSeconds) {
+            secondsRecord = true;
+            imageSplitPreferencesManager.putMaxSeconds(gameType, campaignLevelEnum, totalSeconds.intValue());
+        }
+        int maxMoves = imageSplitPreferencesManager.getMaxMoves(gameType, campaignLevelEnum);
+        if (maxMoves == 0 || totalMoves < maxMoves) {
+            movesRecord = true;
+            imageSplitPreferencesManager.putMaxMoves(gameType, campaignLevelEnum, totalMoves);
+        }
+        popupDisplayed = true;
+        addLevelFinishedPopup(secondsRecord, movesRecord);
+    }
+
+    private void addLevelFinishedPopup(boolean secondsRecord, boolean movesRecord) {
+        Gdx.input.setInputProcessor(getStage());
+        MyPopup levelFinishedPopup = new MyPopup<AbstractScreen, ImageSplitScreenManager>(getAbstractScreen()) {
+            @Override
+            protected String getLabelText() {
+                return "";
+            }
+
+            @Override
+            protected void addButtons() {
+                MyButton playAgain = new libgdx.controls.button.ButtonBuilder(SkelGameLabel.play_again.getText())
+                        .setDefaultButton()
+                        .build();
+                playAgain.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        screenManager.showGameScreen(gameType, campaignLevelEnum);
+                    }
+                });
+                MyButton goBack = new libgdx.controls.button.ButtonBuilder(SkelGameLabel.go_back.getText())
+                        .setDefaultButton()
+                        .build();
+                goBack.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Game.getInstance().getScreenManager().showMainScreen();
+                    }
+                });
+                addButton(playAgain);
+                addButton(goBack);
+            }
+
+            @Override
+            public void hide() {
+                Game.getInstance().getScreenManager().showMainScreen();
+            }
+        };
+        levelFinishedPopup.getContentTable().add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(
+                new FontConfig(FontColor.BLACK.getColor(), FontConfig.FONT_SIZE * 1.6f))
+                .setText(secondsRecord || movesRecord ? MainGameLabel.l_highscore_record.getText() : "").build())).row();
+        levelFinishedPopup.getContentTable().add(ImageSplitMainMenuScreen.createScoresTable(totalSeconds.intValue(), totalMoves, secondsRecord, movesRecord))
+                .pad(MainDimen.vertical_general_margin.getDimen() * 2);
+        levelFinishedPopup.addToPopupManager();
     }
 
     void fadeOutImageParts(float duration) {
@@ -457,8 +582,10 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         executorService.scheduleAtFixedRate(new ScreenRunnable(getAbstractScreen()) {
             @Override
             public void executeOperations() {
-                totalSeconds.add(period);
-                totalSecondsLabel.setText(totalSeconds.intValue() + "");
+                if (!tutorialRunning) {
+                    totalSeconds.add(period);
+                    totalSecondsLabel.setText(totalSeconds.intValue() + "");
+                }
             }
 
             @Override
@@ -485,6 +612,36 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             image.toBack();
             imgX = imgX + getPartWidth() + getPartPad();
             i++;
+        }
+    }
+
+    void simulateMoveFinger(Pair<Integer, Integer> coord, List<SwipeDirection> directions, int directionIndex) {
+        if (directionIndex < directions.size()) {
+            tutorialRunning = true;
+            SwipeDirection direction = directions.get(directionIndex);
+            Image pressFinger = GraphicUtils.getImage(ImageSplitSpecificResource.tutorial_swipe_finger);
+            float imgDim = MainDimen.horizontal_general_margin.getDimen() * 10;
+            pressFinger.setWidth(imgDim);
+            pressFinger.setHeight(imgDim);
+            pressFinger.setX(imageParts.get(coord).getX() + getPartWidth() / 4);
+            pressFinger.setY(imageParts.get(coord).getY() + getPartHeight() / 4);
+            addAction(Actions.sequence(
+                    Actions.delay(directionIndex == 0 ? TUTORIAL_INITIAL_DELAY : TUTORIAL_WAIT_BETWEEN_STEPS),
+                    Utils.createRunnableAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            moveImg(TUTORIAL_WAIT_BETWEEN_STEPS, new Runnable() {
+                                @Override
+                                public void run() {
+                                    simulateMoveFinger(coord, directions, directionIndex + 1);
+                                }
+                            }, direction, pressFinger, getMoveDirectionAmount(direction) / 2);
+                            pressFinger.addAction(Actions.fadeOut(MOVE_IMG_PART_DURATION * 3.5f));
+                        }
+                    })));
+            addActor(pressFinger);
+        } else {
+            tutorialRunning = false;
         }
     }
 

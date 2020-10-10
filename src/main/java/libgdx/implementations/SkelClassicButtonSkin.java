@@ -7,6 +7,7 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.applepie.ApplePieSpecificResource;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.buylow.BuyLowSpecificResource;
+import libgdx.implementations.imagesplit.ImageSplitSpecificResource;
 import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.resources.Res;
@@ -46,6 +47,13 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     BUYLOW_SELLBUY1_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
     BUYLOW_SELLBUY2_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
     BUYLOW_SELLBUY3_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
+
+    IMAGE_SPLIT_GAME_TYPE_SLIDE(ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_clicked, ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_disabled, null),
+    IMAGE_SPLIT_GAME_TYPE_PUSH(ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_clicked, ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_disabled, null),
+    IMAGE_SPLIT_GAME_TYPE_SWAP(ImageSplitSpecificResource.gametype_swap, ImageSplitSpecificResource.gametype_swap_clicked, ImageSplitSpecificResource.gametype_swap, ImageSplitSpecificResource.gametype_swap_disabled, null),
+    IMAGE_SPLIT_NAVIG_LEFT(ImageSplitSpecificResource.leftarrow, ImageSplitSpecificResource.leftarrow, ImageSplitSpecificResource.leftarrow, ImageSplitSpecificResource.leftarrow, null),
+    IMAGE_SPLIT_NAVIG_RIGHT(ImageSplitSpecificResource.rightarrow, ImageSplitSpecificResource.rightarrow, ImageSplitSpecificResource.rightarrow, ImageSplitSpecificResource.rightarrow, null),
+    IMAGE_SPLIT_VIEW_IMG(ImageSplitSpecificResource.viewimg, ImageSplitSpecificResource.viewimg, ImageSplitSpecificResource.viewimg, ImageSplitSpecificResource.viewimg, null),
     ;
 
     private Res imgUp;

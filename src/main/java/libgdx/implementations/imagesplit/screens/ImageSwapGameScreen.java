@@ -6,17 +6,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
 
 import libgdx.implementations.imagesplit.ImageSplitCampaignLevelEnum;
 import libgdx.implementations.imagesplit.spec.ImageMoveConfig;
+import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
 
 public class ImageSwapGameScreen extends ImageSplitGameScreen {
 
     public ImageSwapGameScreen(ImageSplitCampaignLevelEnum campaignLevelEnum) {
-        super(campaignLevelEnum);
+        super(campaignLevelEnum, ImageSplitGameType.SWAP);
     }
 
     @Override
@@ -60,8 +62,18 @@ public class ImageSwapGameScreen extends ImageSplitGameScreen {
         imageParts.put(pressedCoord, neighbImg);
         imageParts.put(neighb, pressedImg);
         if (correctImageParts.equals(imageParts)) {
-            fadeOutImageParts(0.25f);
+            levelFinished();
         }
+    }
+
+    void simulateMoveStep() {
+        Pair<Integer, Integer> coord = Pair.of(totalCols / 2, totalRows / 2);
+        addAction(Actions.sequence(
+                Actions.delay(TUTORIAL_INITIAL_DELAY),
+                simulateStep(SwipeDirection.DOWN, coord),
+                Actions.delay(TUTORIAL_WAIT_BETWEEN_STEPS * 2),
+                simulateStep(SwipeDirection.LEFT, coord)));
+        simulateMoveFinger(coord, Arrays.asList(SwipeDirection.DOWN, SwipeDirection.LEFT), 0);
     }
 
     @Override

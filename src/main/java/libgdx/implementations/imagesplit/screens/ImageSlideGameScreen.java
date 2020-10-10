@@ -1,10 +1,12 @@
 package libgdx.implementations.imagesplit.screens;
 
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +14,13 @@ import java.util.TreeSet;
 
 import libgdx.implementations.imagesplit.ImageSplitCampaignLevelEnum;
 import libgdx.implementations.imagesplit.spec.ImageMoveConfig;
+import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
 
 public class ImageSlideGameScreen extends ImageSplitGameScreen {
 
     public ImageSlideGameScreen(ImageSplitCampaignLevelEnum campaignLevelEnum) {
-        super(campaignLevelEnum);
+        super(campaignLevelEnum, ImageSplitGameType.SLIDE);
     }
 
     @Override
@@ -34,7 +37,7 @@ public class ImageSlideGameScreen extends ImageSplitGameScreen {
             copyImg.setY(startImg.getImage().getY() + (upDownSwipe(swipeDirection) ? initCopyImgPos : 0));
             addActor(copyImg);
             copyImg.toBack();
-            moveImg(new ImageMoveConfig(copyImg, copyImgDirection), duration, new Runnable() {
+            moveImgConfig(new ImageMoveConfig(copyImg, copyImgDirection), duration, new Runnable() {
                 @Override
                 public void run() {
                     finishImg.getImage().setX(copyImg.getX());
@@ -42,11 +45,22 @@ public class ImageSlideGameScreen extends ImageSplitGameScreen {
                     copyImg.setVisible(false);
                     changeImgCoords(pressedCoord, copyImgDirection);
                     if (correctImageParts.equals(imageParts)) {
-                        fadeOutImageParts(0.25f);
+                        levelFinished();
                     }
                 }
             });
         }
+    }
+
+    @Override
+    void simulateMoveStep() {
+        Pair<Integer, Integer> coord = Pair.of(totalCols / 2, totalRows / 2);
+        addAction(Actions.sequence(
+                Actions.delay(TUTORIAL_INITIAL_DELAY),
+                simulateStep(SwipeDirection.DOWN, coord),
+                Actions.delay(TUTORIAL_WAIT_BETWEEN_STEPS * 2),
+                simulateStep(SwipeDirection.RIGHT, coord)));
+        simulateMoveFinger(coord, Arrays.asList(SwipeDirection.DOWN, SwipeDirection.RIGHT), 0);
     }
 
     @Override

@@ -8,7 +8,7 @@ public class ImageSplitScreenManager extends AbstractScreenManager {
     @Override
     public void showMainScreen() {
         showScreen(ImageSplitScreenTypeEnum.MAIN_SCREEN);
-//        showGameScreen(ImageSplitGameType.SWAP);
+//        showGameScreen(ImageSplitGameType.SLIDE, ImageSplitCampaignLevelEnum.LEVEL_0_0);
     }
 
     public void showGameScreen(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum) {
