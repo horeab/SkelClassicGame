@@ -77,9 +77,9 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         imgLevelTable.add(imgNavigTable).row();
 
         Table btnTable = new Table();
-        btnTable.add(createStartGameBtnTable(ImageSplitGameType.SWAP, campaignLevelEnum));
-        btnTable.add(createStartGameBtnTable(ImageSplitGameType.PUSH, campaignLevelEnum));
-        btnTable.add(createStartGameBtnTable(ImageSplitGameType.SLIDE, campaignLevelEnum));
+        for (ImageSplitGameType gameType : campaignLevelEnum.getGameTypes()) {
+            btnTable.add(createStartGameBtnTable(gameType, campaignLevelEnum));
+        }
         imgLevelTable.add(btnTable);
         return imgLevelTable;
     }
@@ -87,10 +87,14 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
     private void addNavigBtnToTable(Table imgNavigTable, ImageSplitCampaignLevelEnum campaignLevelEnum, SwipeDirection direction) {
         MyButton btn = createNavigationBtn(direction, campaignLevelEnum);
         if (direction == SwipeDirection.LEFT && campaignLevelEnum == ImageSplitCampaignLevelEnum.LEVEL_0_0
-                || direction == SwipeDirection.RIGHT && campaignLevelEnum == ImageSplitCampaignLevelEnum.LEVEL_0_4) {
+                || direction == SwipeDirection.RIGHT && campaignLevelEnum == getLastCampaignLevel()) {
             btn.setVisible(false);
         }
         imgNavigTable.add(btn).height(btn.getHeight()).width(btn.getWidth()).pad(MainDimen.horizontal_general_margin.getDimen());
+    }
+
+    private ImageSplitCampaignLevelEnum getLastCampaignLevel() {
+        return ImageSplitCampaignLevelEnum.values()[ImageSplitCampaignLevelEnum.values().length - 1];
     }
 
     private MyButton createNavigationBtn(SwipeDirection direction, ImageSplitCampaignLevelEnum campaignLevelEnum) {
@@ -166,13 +170,13 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
 
     private ImageSplitCampaignLevelEnum getFirstNotFinishedLevel() {
         for (ImageSplitCampaignLevelEnum campaignLevelEnum : ImageSplitCampaignLevelEnum.values()) {
-            for (ImageSplitGameType gameType : ImageSplitGameType.values()) {
+            for (ImageSplitGameType gameType : campaignLevelEnum.getGameTypes()) {
                 if (imageSplitPreferencesManager.getMaxSeconds(gameType, campaignLevelEnum) == 0) {
                     return campaignLevelEnum;
                 }
             }
         }
-        return ImageSplitCampaignLevelEnum.LEVEL_0_4;
+        return getLastCampaignLevel();
     }
 
     @Override

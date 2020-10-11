@@ -30,6 +30,18 @@ public class ImageSplitPreferencesManager {
         preferencesService.putInteger(getMovesKey(gameType, campaignLevelEnum), moves);
     }
 
+    public void putTutorialPlayed(ImageSplitGameType gameType) {
+        preferencesService.putBoolean(getTutorialKey(gameType), true);
+    }
+
+    public boolean isTutorialPlayed(ImageSplitGameType gameType) {
+        return preferencesService.getPreferences().getBoolean(getTutorialKey(gameType), false);
+    }
+
+    private String getTutorialKey(ImageSplitGameType gameType) {
+        return gameType.name() + "_TUTORIAL";
+    }
+
     private String getSecondsKey(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum) {
         return getLevelKey(gameType, campaignLevelEnum) + "_SECONDS";
     }

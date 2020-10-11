@@ -3,7 +3,6 @@ package libgdx.implementations.imagesplit.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -219,7 +218,8 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         createAllTable();
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         controlsToFront();
-        if (campaignLevelEnum == ImageSplitCampaignLevelEnum.LEVEL_0_0) {
+        if (!imageSplitPreferencesManager.isTutorialPlayed(gameType)) {
+            imageSplitPreferencesManager.putTutorialPlayed(gameType);
             simulateMoveStep();
         }
     }
@@ -246,23 +246,6 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             return Pair.of(coord.getLeft() + 1, coord.getRight());
         }
         return null;
-    }
-
-    RunnableAction simulateStep(final SwipeDirection direction, final Pair<Integer, Integer> coord) {
-        return Utils.createRunnableAction(new Runnable() {
-            @Override
-            public void run() {
-                if (direction == SwipeDirection.UP) {
-                    processImageSwipe(getImagesToProcessSwipeUp(coord, direction), coord, direction);
-                } else if (direction == SwipeDirection.DOWN) {
-                    processImageSwipe(getImagesToProcessSwipeDown(coord, direction), coord, direction);
-                } else if (direction == SwipeDirection.LEFT) {
-                    processImageSwipe(getImagesToProcessSwipeLeft(coord, direction), coord, direction);
-                } else if (direction == SwipeDirection.RIGHT) {
-                    processImageSwipe(getImagesToProcessSwipeRight(coord, direction), coord, direction);
-                }
-            }
-        });
     }
 
     SwipeDirection getOppositeDirection(SwipeDirection direction) {
@@ -615,10 +598,11 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         }
     }
 
-    void simulateMoveFinger(Pair<Integer, Integer> coord, List<SwipeDirection> directions, int directionIndex) {
+    void simulateMoveFinger(List<Pair<Integer, Integer>> coords, List<SwipeDirection> directions, int directionIndex) {
         if (directionIndex < directions.size()) {
             tutorialRunning = true;
             SwipeDirection direction = directions.get(directionIndex);
+            Pair<Integer, Integer> coord = coords.get(directionIndex);
             Image pressFinger = GraphicUtils.getImage(ImageSplitSpecificResource.tutorial_swipe_finger);
             float imgDim = MainDimen.horizontal_general_margin.getDimen() * 10;
             pressFinger.setWidth(imgDim);
@@ -633,7 +617,7 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
                             moveImg(TUTORIAL_WAIT_BETWEEN_STEPS, new Runnable() {
                                 @Override
                                 public void run() {
-                                    simulateMoveFinger(coord, directions, directionIndex + 1);
+                                    simulateMoveFinger(coords, directions, directionIndex + 1);
                                 }
                             }, direction, pressFinger, getMoveDirectionAmount(direction) / 2);
                             pressFinger.addAction(Actions.fadeOut(MOVE_IMG_PART_DURATION * 3.5f));

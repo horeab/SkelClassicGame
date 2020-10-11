@@ -90,12 +90,8 @@ public class ImagePushGameScreen extends ImageSplitGameScreen {
     @Override
     void simulateMoveStep() {
         Pair<Integer, Integer> coord1 = Pair.of(startingEmptyPartCoord.getLeft(), startingEmptyPartCoord.getRight() - 1);
-        addAction(Actions.sequence(
-                Actions.delay(TUTORIAL_INITIAL_DELAY),
-                simulateStep(SwipeDirection.DOWN, coord1),
-                Actions.delay(TUTORIAL_WAIT_BETWEEN_STEPS * 2),
-                simulateStep(SwipeDirection.UP, Pair.of(startingEmptyPartCoord.getLeft(), startingEmptyPartCoord.getRight()))));
-        simulateMoveFinger(coord1, Arrays.asList(SwipeDirection.DOWN, SwipeDirection.UP), 0);
+        Pair<Integer, Integer> coord2 = Pair.of(startingEmptyPartCoord.getLeft() + 1, startingEmptyPartCoord.getRight());
+        simulateMoveFinger(Arrays.asList(coord1, coord2), Arrays.asList(SwipeDirection.DOWN, SwipeDirection.LEFT), 0);
     }
 
     @Override

@@ -67,13 +67,8 @@ public class ImageSwapGameScreen extends ImageSplitGameScreen {
     }
 
     void simulateMoveStep() {
-        Pair<Integer, Integer> coord = Pair.of(totalCols / 2, totalRows / 2);
-        addAction(Actions.sequence(
-                Actions.delay(TUTORIAL_INITIAL_DELAY),
-                simulateStep(SwipeDirection.DOWN, coord),
-                Actions.delay(TUTORIAL_WAIT_BETWEEN_STEPS * 2),
-                simulateStep(SwipeDirection.LEFT, coord)));
-        simulateMoveFinger(coord, Arrays.asList(SwipeDirection.DOWN, SwipeDirection.LEFT), 0);
+        Pair<Integer, Integer> coord = Pair.of(1, 0);
+        simulateMoveFinger(Arrays.asList(coord, coord), Arrays.asList(SwipeDirection.DOWN, SwipeDirection.LEFT), 0);
     }
 
     @Override
