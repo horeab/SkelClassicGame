@@ -6,6 +6,7 @@ import libgdx.implementations.applepie.ApplePieDependencyManager;
 import libgdx.implementations.balloon.BalloonDependencyManager;
 import libgdx.implementations.buylow.BuyLowDependencyManager;
 import libgdx.implementations.imagesplit.ImageSplitDependencyManager;
+import libgdx.implementations.kidlearn.KidLearnDependencyManager;
 import libgdx.implementations.math.MathDependencyManager;
 import libgdx.implementations.memory.MemoryDependencyManager;
 import libgdx.implementations.resourcewars.ResourceWarsDependencyManager;
@@ -16,6 +17,7 @@ public enum GameIdEnum implements GameId {
     math(MathDependencyManager.class),
     buylow(BuyLowDependencyManager.class),
     imagesplit(ImageSplitDependencyManager.class),
+    kidlearn(KidLearnDependencyManager.class),
     applepie(ApplePieDependencyManager.class),
     memory(MemoryDependencyManager.class),
     resourcewars(ResourceWarsDependencyManager.class),;
