@@ -6,25 +6,67 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import libgdx.implementations.kidlearn.spec.cater.seq.KidLearnMathCaterSeqLevel;
+
 public class KidLearnMathCaterService {
 
-    public List<Float> generateCorrectNumbers(KidLearnMathCaterOrdLevel level) {
+    private static final int SEQ_LEVEL_TOTAL_NR_OF_NUMBERS = 6;
+
+    public List<Float> generateCorrectNumbers(Enum level) {
         List<Float> res = new ArrayList<>();
-        while (res.size() < level.totalNrOfNumbers) {
-            float val = getRandomVal(level);
-            while (res.contains(val)) {
-                val = getRandomVal(level);
-            }
-            res.add(val);
+        if (level instanceof KidLearnMathCaterOrdLevel) {
+            res.addAll(generateOrdCorrectNumbers((KidLearnMathCaterOrdLevel) level));
+        } else if (level instanceof KidLearnMathCaterSeqLevel) {
+            res.addAll(generateSeqCorrectNumbers((KidLearnMathCaterSeqLevel) level));
+        }
+        return res;
+    }
+
+    private List<Float> generateSeqCorrectNumbers(KidLearnMathCaterSeqLevel level) {
+        List<Float> res = new ArrayList<>();
+        KidLearnMathCaterSeqLevel inst = level;
+        Float interval = inst.interval;
+        if (inst.interval == null) {
+            float minInterval = (float) Math.floor(inst.upTo / 3);
+            interval = new Random().nextInt(Math.round((inst.upTo + 1) - minInterval)) + minInterval;
+        }
+        float firstVal = getFirstSeqRandomVal(inst, interval);
+        while (res.size() < SEQ_LEVEL_TOTAL_NR_OF_NUMBERS) {
+            res.add(firstVal);
+            firstVal = firstVal + interval;
         }
         Collections.sort(res);
-        if (!level.asc) {
+        if (!inst.asc) {
             Collections.reverse(res);
         }
         return res;
     }
 
-    private float getRandomVal(KidLearnMathCaterOrdLevel level) {
+    private float getFirstSeqRandomVal(KidLearnMathCaterSeqLevel level, float interval) {
+        float val = new Random().nextInt((level.max + 1) - level.min) + level.min;
+        while (val + interval * SEQ_LEVEL_TOTAL_NR_OF_NUMBERS > level.max) {
+            val = new Random().nextInt((level.max + 1) - level.min) + level.min;
+        }
+        return val;
+    }
+
+    private List<Float> generateOrdCorrectNumbers(KidLearnMathCaterOrdLevel inst) {
+        List<Float> res = new ArrayList<>();
+        while (res.size() < inst.totalNrOfNumbers) {
+            float val = getOrdRandomVal(inst);
+            while (res.contains(val)) {
+                val = getOrdRandomVal(inst);
+            }
+            res.add(val);
+        }
+        Collections.sort(res);
+        if (!inst.asc) {
+            Collections.reverse(res);
+        }
+        return res;
+    }
+
+    private float getOrdRandomVal(KidLearnMathCaterOrdLevel level) {
         float val = new Random().nextInt((level.max + 1) - level.min) + level.min;
         if (level.interval % 1 != 0) {
             float f = new Random().nextFloat();
@@ -35,10 +77,19 @@ public class KidLearnMathCaterService {
         return val;
     }
 
-    public List<Integer> generateWrongNumbers(KidLearnMathCaterOrdLevel level) {
-        List<Integer> res = new ArrayList<>();
-        while (res.size() < level.totalNrOfNumbers) {
-            res.add(new Random().nextInt(level.max - level.min) + level.min);
+    public List<Float> generateWrongNumbers(Enum level, List<Float> correctNumbers) {
+        List<Float> res = new ArrayList<>();
+        if (level instanceof KidLearnMathCaterSeqLevel) {
+            KidLearnMathCaterSeqLevel inst = (KidLearnMathCaterSeqLevel) level;
+            float max = inst.max;
+            float min = inst.min;
+            while (res.size() < 3) {
+                float val = new Random().nextInt(Math.round(max - min)) + min;
+                while (correctNumbers.contains(val)) {
+                    val = new Random().nextInt(Math.round(max - min)) + min;
+                }
+                res.add(val);
+            }
         }
         return res;
     }

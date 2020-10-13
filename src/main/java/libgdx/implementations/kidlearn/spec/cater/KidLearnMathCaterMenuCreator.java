@@ -11,9 +11,8 @@ import libgdx.controls.button.MainButtonSize;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.game.Game;
-import libgdx.implementations.kidlearn.spec.cater.ord.KidLearnMathCaterOrdLevel;
 import libgdx.implementations.kidlearn.spec.cater.ord.KidLearnMathCaterService;
+import libgdx.implementations.kidlearn.spec.cater.seq.KidLearnMathCaterSeqLevel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
@@ -46,8 +45,13 @@ public class KidLearnMathCaterMenuCreator {
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE), 8f)).setText("Order").build());
         table.add(title).row();
-        for (KidLearnMathCaterOrdLevel level : KidLearnMathCaterOrdLevel.values()) {
-            MyButton optionBtn = createOptionBtn(level);
+//        for (KidLearnMathCaterOrdLevel level : KidLearnMathCaterOrdLevel.values()) {
+//            MyButton optionBtn = createOptionBtn(level, level.max, level.min, level.asc, level.interval,ORD_NROFCORRECTUNKNOWNNUMBERS);
+//            table.add(optionBtn).width(optionBtn.getWidth()).height(optionBtn.getHeight()).row();
+//        }
+        for (KidLearnMathCaterSeqLevel level : KidLearnMathCaterSeqLevel.values()) {
+            MyButton optionBtn = createOptionBtn(level, level.max, level.min, level.asc,
+                    level.interval != null ? level.interval : level.upTo, SEQ_NROFCORRECTUNKNOWNNUMBERS);
             table.add(optionBtn).width(optionBtn.getWidth()).height(optionBtn.getHeight()).row();
         }
         return table;
@@ -57,11 +61,11 @@ public class KidLearnMathCaterMenuCreator {
         return ScreenDimensionsManager.getScreenWidthValue(30);
     }
 
-    private MyButton createOptionBtn(KidLearnMathCaterOrdLevel level) {
-        int min = level.asc ? level.min : level.max;
-        int max = level.asc ? level.max : level.min;
+    private MyButton createOptionBtn(Enum level, int levelMax, int levelMin, final boolean asc, float interval, final int nrOfCorrectUnknownNumbers) {
+        int min = asc ? levelMin : levelMax;
+        int max = asc ? levelMax : levelMin;
         MyButton btn = new ButtonBuilder(min + " to " + max + " in "
-                + getInterval(level.interval))
+                + getInterval(interval))
                 .setDefaultButton()
                 .setFixedButtonSize(MainButtonSize.ONE_ROW_BUTTON_SIZE)
                 .build();
@@ -69,10 +73,10 @@ public class KidLearnMathCaterMenuCreator {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 KidLearnMathCaterConfig config = new KidLearnMathCaterConfig();
-                config.nrOfCorrectUnknownNumbers = ORD_NROFCORRECTUNKNOWNNUMBERS;
-                config.asc = level.asc;
+                config.nrOfCorrectUnknownNumbers = nrOfCorrectUnknownNumbers;
+                config.asc = asc;
                 config.allCorrectNumbers = kidLearnMathCaterService.generateCorrectNumbers(level);
-                config.wrongNumbers = new ArrayList<>();
+                config.wrongNumbers = kidLearnMathCaterService.generateWrongNumbers(level, config.allCorrectNumbers);
                 allTable.clear();
                 new KidLearnMathCaterCreator(config).create();
             }
