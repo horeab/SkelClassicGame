@@ -6,13 +6,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
 import libgdx.implementations.kidlearn.spec.cater.seq.KidLearnMathCaterSeqLevel;
 
 public class KidLearnMathCaterService {
 
     private static final int SEQ_LEVEL_TOTAL_NR_OF_NUMBERS = 6;
 
-    public List<Float> generateCorrectNumbers(Enum level) {
+    public <T extends Enum & KidLearnMathCaterLevel> List<Float> generateCorrectNumbers(T level) {
         List<Float> res = new ArrayList<>();
         if (level instanceof KidLearnMathCaterOrdLevel) {
             res.addAll(generateOrdCorrectNumbers((KidLearnMathCaterOrdLevel) level));
@@ -22,13 +23,15 @@ public class KidLearnMathCaterService {
         return res;
     }
 
-    private List<Float> generateSeqCorrectNumbers(KidLearnMathCaterSeqLevel level) {
+    private List<Float> generateSeqCorrectNumbers(KidLearnMathCaterSeqLevel inst) {
         List<Float> res = new ArrayList<>();
-        KidLearnMathCaterSeqLevel inst = level;
         Float interval = inst.interval;
         if (inst.interval == null) {
             float minInterval = (float) Math.floor(inst.upTo / 3);
             interval = new Random().nextInt(Math.round((inst.upTo + 1) - minInterval)) + minInterval;
+            while (inst.evenNr && interval % 2 != 0) {
+                interval = new Random().nextInt(Math.round((inst.upTo + 1) - minInterval)) + minInterval;
+            }
         }
         float firstVal = getFirstSeqRandomVal(inst, interval);
         while (res.size() < SEQ_LEVEL_TOTAL_NR_OF_NUMBERS) {
@@ -44,7 +47,8 @@ public class KidLearnMathCaterService {
 
     private float getFirstSeqRandomVal(KidLearnMathCaterSeqLevel level, float interval) {
         float val = new Random().nextInt((level.max + 1) - level.min) + level.min;
-        while (val + interval * SEQ_LEVEL_TOTAL_NR_OF_NUMBERS > level.max) {
+        while (val + interval * SEQ_LEVEL_TOTAL_NR_OF_NUMBERS > level.max
+                || level.evenNr && val % 2 != 0) {
             val = new Random().nextInt((level.max + 1) - level.min) + level.min;
         }
         return val;
@@ -77,7 +81,7 @@ public class KidLearnMathCaterService {
         return val;
     }
 
-    public List<Float> generateWrongNumbers(Enum level, List<Float> correctNumbers) {
+    public <T extends Enum & KidLearnMathCaterLevel> List<Float> generateWrongNumbers(T level, List<Float> correctNumbers) {
         List<Float> res = new ArrayList<>();
         if (level instanceof KidLearnMathCaterSeqLevel) {
             KidLearnMathCaterSeqLevel inst = (KidLearnMathCaterSeqLevel) level;
@@ -85,7 +89,7 @@ public class KidLearnMathCaterService {
             float min = inst.min;
             while (res.size() < 3) {
                 float val = new Random().nextInt(Math.round(max - min)) + min;
-                while (correctNumbers.contains(val)) {
+                while (correctNumbers.contains(val) || inst.evenNr && val % 2 == 0) {
                     val = new Random().nextInt(Math.round(max - min)) + min;
                 }
                 res.add(val);

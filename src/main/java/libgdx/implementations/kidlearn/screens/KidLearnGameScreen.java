@@ -1,31 +1,50 @@
 package libgdx.implementations.kidlearn.screens;
 
+import java.util.List;
+
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
-import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterMenuCreator;
+import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterConfig;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterGameCreator;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
+import libgdx.implementations.kidlearn.spec.cater.ord.KidLearnMathCaterService;
 import libgdx.screen.AbstractScreen;
 
-public class KidLearnGameScreen extends AbstractScreen<KidLearnScreenManager> {
+public class KidLearnGameScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
 
     private MyButton hoverBackButton;
+    KidLearnMathCaterConfig config;
+    KidLearnGameContext<T> gameContext;
 
-    private KidLearnMathCaterMenuCreator mathMenuCreator;
 
-    public KidLearnGameScreen() {
-        mathMenuCreator = new KidLearnMathCaterMenuCreator(this);
+    public KidLearnGameScreen(KidLearnGameContext<T> gameContext) {
+        this.gameContext = gameContext;
+        config = createConfig();
+    }
+
+    private KidLearnMathCaterConfig createConfig() {
+        KidLearnMathCaterService kidLearnMathCaterService = new KidLearnMathCaterService();
+        List<Float> allCorrectNumbers = kidLearnMathCaterService.generateCorrectNumbers(gameContext.level);
+        return new KidLearnMathCaterConfig<T>(
+                (Class<T>) gameContext.level.getClass(),
+                allCorrectNumbers,
+                kidLearnMathCaterService.generateWrongNumbers(gameContext.level, allCorrectNumbers),
+                gameContext.level.nrOfCorrectUnknownNumbers(),
+                gameContext.level.asc());
     }
 
     @Override
     public void buildStage() {
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         hoverBackButton.toFront();
-        mathMenuCreator.create();
+        new KidLearnMathCaterGameCreator(gameContext, config).create();
     }
 
     @Override
     public void onBackKeyPress() {
-        screenManager.showMainScreen();
+        screenManager.showLevelScreen(config.gameType);
     }
 
 }

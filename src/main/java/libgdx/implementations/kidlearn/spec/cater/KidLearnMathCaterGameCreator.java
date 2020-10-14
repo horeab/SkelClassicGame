@@ -1,8 +1,11 @@
 package libgdx.implementations.kidlearn.spec.cater;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
@@ -13,22 +16,30 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import libgdx.controls.ScreenRunnable;
 import libgdx.controls.button.ButtonBuilder;
-import libgdx.controls.button.MainButtonSize;
+import libgdx.controls.button.ButtonSize;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.SkelClassicButtonSize;
+import libgdx.implementations.kidlearn.KidLearnScreenManager;
+import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
-public class KidLearnMathCaterCreator {
+public class KidLearnMathCaterGameCreator {
+
+    public static final int TOTAL_QUESTIONS = 5;
 
     static final float OPT_MOVE_DURATION = 0.2f;
     static final float UNK_FADE_DURATION = 0.1f;
@@ -41,24 +52,73 @@ public class KidLearnMathCaterCreator {
     List<KidLearnImgInfo> alreadyMovedOptionImg = new ArrayList<>();
     AbstractScreen screen;
     boolean asc;
+    MyWrappedLabel scoreLabel;
+    KidLearnMathCaterConfig config;
+    KidLearnGameContext gameContext;
+    MyButton verifyBtn;
 
-    public KidLearnMathCaterCreator(KidLearnMathCaterConfig config) {
+    public KidLearnMathCaterGameCreator(KidLearnGameContext gameContext, KidLearnMathCaterConfig config) {
         this.allCorrectNumbers = config.allCorrectNumbers;
         this.wrongNumbers = config.wrongNumbers;
         this.nrOfCorrectUnknownNumbers = config.nrOfCorrectUnknownNumbers;
         this.asc = config.asc;
         this.screen = Game.getInstance().getAbstractScreen();
+        this.config = config;
+        this.gameContext = gameContext;
     }
 
     public void create() {
         createAllNrRow();
         createUnknownNr();
         createResetBtn();
-        createVerifyBtn();
+        createTitle();
+        createScoreLabel();
+    }
+
+    private void createTitle() {
+        MyWrappedLabel title = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                        Math.round(FontConfig.FONT_SIZE), 8f)).setText("1 to 10 in 10").build());
+        title.setY(getHeaderY());
+        title.setX(ScreenDimensionsManager.getScreenWidth() / 2);
+        screen.addActor(title);
+    }
+
+    private void createScoreLabel() {
+        scoreLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(getScoreLabelText()).build());
+        scoreLabel.setY(getHeaderY());
+        scoreLabel.setX(ScreenDimensionsManager.getScreenWidth() - MainDimen.horizontal_general_margin.getDimen() * 5);
+        screen.addActor(scoreLabel);
+    }
+
+    private String getScoreLabelText() {
+        return gameContext.score + "/" + TOTAL_QUESTIONS;
+    }
+
+    private Table createCorrectAnswerPopup() {
+        Table table = new Table();
+        float popupWidth = ScreenDimensionsManager.getScreenWidthValue(60);
+        table.setWidth(popupWidth);
+        table.setHeight(ScreenDimensionsManager.getScreenHeightValue(30));
+        table.setX(ScreenDimensionsManager.getScreenWidth() / 2 - popupWidth / 2);
+        table.setY(ScreenDimensionsManager.getScreenHeight() / 2 - table.getHeight() / 2);
+        table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+        MyWrappedLabel msg = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setWidth(popupWidth / 1.1f)
+                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                        Math.round(FontConfig.FONT_SIZE), 8f)).setText("That's correct, well done!").build());
+        table.add(msg);
+        return table;
+    }
+
+    private float getHeaderY() {
+        return getNumberRowY() + ScreenDimensionsManager.getScreenHeightValue(10) + getNumberImgSideDimen();
     }
 
     private void createResetBtn() {
-        MainButtonSize btnSize = MainButtonSize.ONE_ROW_BUTTON_SIZE;
+        ButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_MATH_CATER_RESET;
         MyButton btn = new ButtonBuilder("Reset")
                 .setDefaultButton()
                 .setFixedButtonSize(btnSize)
@@ -75,6 +135,9 @@ public class KidLearnMathCaterCreator {
     }
 
     private void executeReset() {
+        if (verifyBtn != null) {
+            verifyBtn.setVisible(false);
+        }
         alreadyFilledUnknownNumberImg.clear();
         alreadyMovedOptionImg.clear();
         for (KidLearnImgInfo unkInfo : correctUnknownNumberImg) {
@@ -88,30 +151,67 @@ public class KidLearnMathCaterCreator {
 
 
     private void createVerifyBtn() {
-        MainButtonSize btnSize = MainButtonSize.ONE_ROW_BUTTON_SIZE;
-        MyButton btn = new ButtonBuilder("Verify")
-                .setDefaultButton()
-                .setFixedButtonSize(btnSize)
-                .build();
-        btn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                int startPos = getStartUnknownNrPos();
-                boolean isCorrect = true;
-                for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
-                    if (allCorrectNumbers.get(startPos + i) != alreadyMovedOptionImg.get(i).nr) {
-                        isCorrect = false;
-                        break;
+        if (verifyBtn == null) {
+            ButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_MATH_CATER_VERIFY;
+            verifyBtn = new ButtonBuilder("Verify")
+                    .setDefaultButton()
+                    .setFixedButtonSize(btnSize)
+                    .build();
+            verifyBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    int startPos = getStartUnknownNrPos();
+                    boolean isCorrect = true;
+                    for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
+                        if (allCorrectNumbers.get(startPos + i) != alreadyMovedOptionImg.get(i).nr) {
+                            isCorrect = false;
+                            break;
+                        }
+                    }
+                    if (!isCorrect) {
+                        executeReset();
+                    } else {
+                        verifyBtn.setTouchable(Touchable.disabled);
+                        verifyBtn.addAction(Actions.fadeOut(0.2f));
+                        gameContext.score = gameContext.score + 1;
+                        scoreLabel.setText(getScoreLabelText());
+                        new KidLearnPreferencesManager().putLevelScore(gameContext.level, gameContext.score);
+                        Table correctPopup = createCorrectAnswerPopup();
+                        correctPopup.setVisible(false);
+                        screen.addActor(correctPopup);
+                        float duration = 0.2f;
+                        AlphaAction fadeOut = Actions.fadeOut(duration);
+                        fadeOut.setAlpha(0f);
+                        correctPopup.addAction(Actions.sequence(fadeOut, Utils.createRunnableAction(new ScreenRunnable(screen) {
+                            @Override
+                            public void executeOperations() {
+                                correctPopup.setVisible(true);
+                            }
+                        }), Actions.fadeIn(duration), Actions.delay(1.5f), Utils.createRunnableAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                KidLearnScreenManager screenManager = (KidLearnScreenManager) screen.getScreenManager();
+                                if (gameContext.score == TOTAL_QUESTIONS) {
+                                    screenManager.showLevelScreen((Class<? extends KidLearnMathCaterLevel>) gameContext.level.getClass());
+                                } else {
+                                    screen.addAction(Actions.sequence(Actions.fadeOut(0.5f), Utils.createRunnableAction(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            screenManager.showGameScreen(gameContext);
+                                        }
+                                    })));
+                                }
+                            }
+                        })));
                     }
                 }
-                if (!isCorrect) {
-                    executeReset();
-                }
-            }
-        });
-        btn.setX(MainDimen.horizontal_general_margin.getDimen());
-        btn.setY(MainDimen.vertical_general_margin.getDimen());
-        screen.addActor(btn);
+            });
+            verifyBtn.setX(ScreenDimensionsManager.getScreenWidth() / 2 - verifyBtn.getWidth() / 2);
+            verifyBtn.setY(getUnknownNumberY());
+            screen.addActor(verifyBtn);
+        } else {
+            verifyBtn.setVisible(true);
+        }
     }
 
     private void createAllNrRow() {
@@ -193,6 +293,8 @@ public class KidLearnMathCaterCreator {
                     }
                     if (noMatch) {
                         img.addAction(Actions.moveTo(coord.getLeft(), coord.getRight(), OPT_MOVE_DURATION));
+                    } else if (alreadyMovedOptionImg.size() == nrOfCorrectUnknownNumbers) {
+                        createVerifyBtn();
                     }
                 }
             });
