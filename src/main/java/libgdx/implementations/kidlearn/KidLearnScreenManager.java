@@ -2,8 +2,7 @@ package libgdx.implementations.kidlearn;
 
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
-import libgdx.implementations.kidlearn.spec.cater.ord.KidLearnMathCaterOrdLevel;
-import libgdx.implementations.kidlearn.spec.cater.seq.KidLearnMathCaterSeqLevel;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterSeqLevel;
 import libgdx.screen.AbstractScreenManager;
 
 public class KidLearnScreenManager extends AbstractScreenManager {
@@ -22,7 +21,7 @@ public class KidLearnScreenManager extends AbstractScreenManager {
         showScreen(KidLearnScreenTypeEnum.CHOOSE_LEVEL_SCREEN);
     }
 
-    public void showLevelScreen(Class<? extends KidLearnMathCaterLevel> levelType) {
+    public void showLevelScreen(Class<? extends Enum> levelType) {
         showScreen(KidLearnScreenTypeEnum.LEVEL_SCREEN, levelType);
     }
 }

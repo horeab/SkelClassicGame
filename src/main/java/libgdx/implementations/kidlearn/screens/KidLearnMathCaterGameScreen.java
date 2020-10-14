@@ -9,17 +9,17 @@ import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterConfig;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterGameCreator;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
-import libgdx.implementations.kidlearn.spec.cater.ord.KidLearnMathCaterService;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterService;
 import libgdx.screen.AbstractScreen;
 
-public class KidLearnGameScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
+public class KidLearnMathCaterGameScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
 
     private MyButton hoverBackButton;
     KidLearnMathCaterConfig config;
     KidLearnGameContext<T> gameContext;
 
 
-    public KidLearnGameScreen(KidLearnGameContext<T> gameContext) {
+    public KidLearnMathCaterGameScreen(KidLearnGameContext<T> gameContext) {
         this.gameContext = gameContext;
         config = createConfig();
     }

@@ -20,8 +20,6 @@ import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
-import libgdx.implementations.kidlearn.spec.cater.ord.KidLearnMathCaterOrdLevel;
-import libgdx.implementations.kidlearn.spec.cater.seq.KidLearnMathCaterSeqLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;

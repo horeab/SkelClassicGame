@@ -1,4 +1,4 @@
-package libgdx.implementations.kidlearn.spec.cater.seq;
+package libgdx.implementations.kidlearn.spec.cater;
 
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
 

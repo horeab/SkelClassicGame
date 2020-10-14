@@ -1,13 +1,10 @@
-package libgdx.implementations.kidlearn.spec.cater.ord;
+package libgdx.implementations.kidlearn.spec.cater;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
-import libgdx.implementations.kidlearn.spec.cater.seq.KidLearnMathCaterSeqLevel;
 
 public class KidLearnMathCaterService {
 
