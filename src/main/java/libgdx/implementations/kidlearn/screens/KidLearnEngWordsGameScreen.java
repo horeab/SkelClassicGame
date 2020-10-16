@@ -1,5 +1,7 @@
 package libgdx.implementations.kidlearn.screens;
 
+import java.util.Arrays;
+
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
@@ -7,6 +9,8 @@ import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsWordConfig;
+import libgdx.resources.MainResource;
 import libgdx.screen.AbstractScreen;
 
 public class KidLearnEngWordsGameScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
@@ -22,7 +26,12 @@ public class KidLearnEngWordsGameScreen<T extends Enum & KidLearnMathCaterLevel>
     }
 
     private KidLearnEngWordsConfig createConfig() {
-        return new KidLearnEngWordsConfig();
+        return new KidLearnEngWordsConfig(Arrays.asList(
+                new KidLearnEngWordsWordConfig("Dog", MainResource.sound_on),
+                new KidLearnEngWordsWordConfig("Cat", MainResource.sound_off),
+                new KidLearnEngWordsWordConfig("Cow", MainResource.remove),
+                new KidLearnEngWordsWordConfig("Horse", MainResource.refresh_down),
+                new KidLearnEngWordsWordConfig("Lion", MainResource.heart_full)));
     }
 
     @Override
@@ -34,7 +43,7 @@ public class KidLearnEngWordsGameScreen<T extends Enum & KidLearnMathCaterLevel>
 
     @Override
     public void onBackKeyPress() {
-//        screenManager.showLevelScreen(config.gameType);
+        screenManager.showLevelScreen(gameContext.level.getClass());
     }
 
 }

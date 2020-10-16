@@ -45,6 +45,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnDragDropCreator {
     protected boolean isResponseCorrect() {
         int startPos = getStartUnknownNrPos();
         boolean isCorrect = true;
+        List<KidLearnImgInfo> alreadyMovedOptionImg = getAlreadyMovedOptionImg();
         for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
             if (!allCorrectNumbers.get(startPos + i).equals(Float.valueOf(alreadyMovedOptionImg.get(i).val))) {
                 isCorrect = false;

@@ -4,6 +4,9 @@ import java.util.List;
 
 public class KidLearnEngWordsConfig {
 
-    public List<String> words;
+    public List<KidLearnEngWordsWordConfig> words;
 
+    public KidLearnEngWordsConfig(List<KidLearnEngWordsWordConfig> words) {
+        this.words = words;
+    }
 }

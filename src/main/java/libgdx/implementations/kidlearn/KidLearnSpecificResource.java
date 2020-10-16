@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import libgdx.game.Game;
@@ -8,6 +9,14 @@ import libgdx.resources.SpecificResource;
 public enum KidLearnSpecificResource implements SpecificResource {
 
     // @formatter:off
+
+
+    diff_btn_0_down("buttons/diff_btn_0_down.png", Texture.class),
+    diff_btn_0_up("buttons/diff_btn_0_up.png", Texture.class),
+    diff_btn_1_down("buttons/diff_btn_1_down.png", Texture.class),
+    diff_btn_1_up("buttons/diff_btn_1_up.png", Texture.class),
+    diff_btn_2_down("buttons/diff_btn_2_down.png", Texture.class),
+    diff_btn_2_up("buttons/diff_btn_2_up.png", Texture.class),
 
     specific_labels("labels/labels", I18NBundle.class),
     ;

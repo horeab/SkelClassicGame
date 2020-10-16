@@ -4,16 +4,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import libgdx.implementations.kidlearn.spec.KidLearnDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
-import libgdx.resources.MainResource;
 import libgdx.resources.Res;
+import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnEngWordsGameCreator extends KidLearnDragDropCreator {
 
+    public static final int TOTAL_QUESTIONS = 2;
     KidLearnEngWordsConfig config;
 
     public KidLearnEngWordsGameCreator(KidLearnGameContext gameContext, KidLearnEngWordsConfig config) {
@@ -28,14 +30,15 @@ public class KidLearnEngWordsGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected int getTotalQuestions() {
-        return 1;
+        return TOTAL_QUESTIONS;
     }
 
     @Override
     protected boolean isResponseCorrect() {
         boolean isCorrect = true;
+        List<KidLearnImgInfo> alreadyMovedOptionImg = getAlreadyMovedOptionImg();
         for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
-            if (!config.words.get(i).equals(alreadyMovedOptionImg.get(i).val)) {
+            if (!config.words.get(i).word.equals(alreadyMovedOptionImg.get(i).val)) {
                 isCorrect = false;
                 break;
             }
@@ -47,11 +50,22 @@ public class KidLearnEngWordsGameCreator extends KidLearnDragDropCreator {
     protected void createAllItemsRow() {
         for (int i = 0; i < config.words.size(); i++) {
             Pair<Float, Float> coord = getCoordsForNumberRow(i);
-            Res res = MainResource.heart_full;
-            String word = config.words.get(i);
+            KidLearnEngWordsWordConfig config = this.config.words.get(i);
+            Res res = config.img;
+            String word = config.word;
             Stack imgStack = addImg(coord, res, word);
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, word));
         }
+    }
+
+    @Override
+    protected float getAcceptedDistanceForDrop() {
+        return getImgSideDimen() / 3;
+    }
+
+    @Override
+    protected float getAvailableScreenWidth() {
+        return ScreenDimensionsManager.getScreenWidthValue(90);
     }
 
     @Override
@@ -66,7 +80,11 @@ public class KidLearnEngWordsGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected List<String> getAllOptions() {
-        return config.words;
+        List<String> opt = new ArrayList<>();
+        for (KidLearnEngWordsWordConfig word : config.words) {
+            opt.add(word.word);
+        }
+        return opt;
     }
 
 

@@ -18,12 +18,11 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
 
     @Override
     public void buildStage() {
-        addAllTable();
+        setUpAllTable();
+        addTitle(getAllTable());
     }
 
-
     private void addTitle(Table table) {
-
         String appName = Game.getInstance().getAppInfoService().getAppName();
         float mult = appName.length() > 10 ? 2.1f : 2.5f;
         mult = appName.length() > 16 ? 1.8f : mult;
@@ -32,13 +31,6 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
                         FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE * mult * 1.2f),
                         8f)).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
-    }
-
-    private void addAllTable() {
-        Table table = new Table();
-        table.setFillParent(true);
-        addTitle(table);
-        addActor(table);
     }
 
     @Override

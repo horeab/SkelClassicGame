@@ -1,9 +1,11 @@
 package libgdx.implementations.kidlearn;
 
-import libgdx.implementations.kidlearn.screens.KidLearnChooseLevelScreen;
-import libgdx.implementations.kidlearn.screens.KidLearnMathCaterGameScreen;
-import libgdx.implementations.kidlearn.screens.KidLearnLevelScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnEngWordsGameScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnEngWordsLevelScreen;
 import libgdx.implementations.kidlearn.screens.KidLearnMainMenuScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnMathCaterChooseLevelScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnMathCaterGameScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnMathCaterLevelScreen;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
 import libgdx.screen.AbstractScreen;
@@ -18,17 +20,27 @@ public enum KidLearnScreenTypeEnum implements ScreenType {
     },
     GAME_SCREEN {
         public AbstractScreen getScreen(Object... params) {
-            return new KidLearnMathCaterGameScreen((KidLearnGameContext) params[0]);
+            KidLearnGameContext param = (KidLearnGameContext) params[0];
+            if (KidLearnMathCaterLevel.class.isAssignableFrom(param.level.getClass())) {
+                return new KidLearnMathCaterGameScreen(param);
+            } else {
+                return new KidLearnEngWordsGameScreen(param);
+            }
         }
     },
     LEVEL_SCREEN {
         public AbstractScreen getScreen(Object... params) {
-            return new KidLearnLevelScreen((Class<? extends KidLearnMathCaterLevel>) params[0]);
+            Object param = params[0];
+            if (param instanceof Class && KidLearnMathCaterLevel.class.isAssignableFrom((Class<?>) param)) {
+                return new KidLearnMathCaterLevelScreen((Class<? extends KidLearnMathCaterLevel>) param);
+            } else {
+                return new KidLearnEngWordsLevelScreen();
+            }
         }
     },
     CHOOSE_LEVEL_SCREEN {
         public AbstractScreen getScreen(Object... params) {
-            return new KidLearnChooseLevelScreen();
+            return new KidLearnMathCaterChooseLevelScreen();
         }
     },
 

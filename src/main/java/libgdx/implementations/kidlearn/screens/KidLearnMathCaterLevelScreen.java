@@ -1,25 +1,27 @@
-package libgdx.implementations.kidlearn.spec.cater;
+package libgdx.implementations.kidlearn.screens;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import libgdx.controls.animations.ActorAnimation;
+import java.util.ArrayList;
+import java.util.List;
+
 import libgdx.controls.button.ButtonBuilder;
-import libgdx.controls.button.ButtonSize;
-import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
-import libgdx.controls.button.builders.ImageButtonBuilder;
+import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
+import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterGameCreator;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterOrdLevel;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterSeqLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
@@ -29,90 +31,56 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
-public class KidLearnMathCaterMenuCreator {
+public class KidLearnMathCaterLevelScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
 
-    private Table allTable;
-    private AbstractScreen screen;
+    private MyButton hoverBackButton;
+    private Class<T> levelType;
     private KidLearnPreferencesManager kidLearnPreferencesManager = new KidLearnPreferencesManager();
+    private KidLearnDifficultyService kidLearnDifficultyService = new KidLearnDifficultyService();
 
-    public KidLearnMathCaterMenuCreator(AbstractScreen screen) {
-        this.screen = screen;
+    public KidLearnMathCaterLevelScreen(Class<T> levelType) {
+        this.levelType = levelType;
     }
 
-    public void createChooseLevelMenu() {
+    @Override
+    public void buildStage() {
         setUpAllTable();
+        hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
+        hoverBackButton.toFront();
+        createLevelMenu(levelType, "Order");
+    }
+
+    private <L extends Enum & KidLearnMathCaterLevel> void createLevelMenu(Class<L> mathCaterLevelClass, String titleText) {
         Table table = new Table();
-        ButtonSize btnSize = getChooseLevelBtnSize();
-        Table btnTable = new Table();
-        float btnTableHeight = ScreenDimensionsManager.getScreenHeightValue(80);
-        float padSide = MainDimen.horizontal_general_margin.getDimen() * 5;
-        btnTable.add(createChooseLevelBtn("Number order", KidLearnMathCaterOrdLevel.class)).padBottom(padSide).width(btnSize.getWidth()).height(btnSize.getHeight());
-        btnTable.add().padLeft(padSide).padRight(padSide).height(btnTableHeight);
-        btnTable.add(createChooseLevelBtn("Number sequence", KidLearnMathCaterSeqLevel.class)).padBottom(padSide).width(btnSize.getWidth()).height(btnSize.getHeight());
-        table.add(createGameTitle()).height(ScreenDimensionsManager.getScreenHeightValue(20)).row();
-        table.add(btnTable).height(btnTableHeight);
-        new ActorAnimation(table, screen).animateFastFadeIn();
-        allTable.add(table).grow();
-    }
-
-    private Table createGameTitle() {
-        return new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        FontConfig.FONT_SIZE * 2f, 8f)).setText("Caterpillar ordering").build());
-    }
-
-    private <T extends Enum & KidLearnMathCaterLevel> MyButton createChooseLevelBtn(String text, Class<T> mathCaterLevelClass) {
-        MyButton btn = new ImageButtonBuilder(MainButtonSkin.REFRESH, Game.getInstance().getAbstractScreen())
-                .setFixedButtonSize(getChooseLevelBtnSize())
-                .setFontConfig(new FontConfig(FontConfig.FONT_SIZE * 2.5f))
-                .setText(text)
-                .build();
-        btn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                createLevelMenu(mathCaterLevelClass, text);
-            }
-        });
-        return btn;
-    }
-
-    private ButtonSize getChooseLevelBtnSize() {
-        return SkelClassicButtonSize.KIDLEARN_CHOOSE_LEVEL;
-    }
-
-    private void setUpAllTable() {
-        if (allTable != null) {
-            allTable.clear();
-        }
-        allTable = new Table();
-        allTable.setFillParent(true);
-        screen.addActor(allTable);
-    }
-
-    public <T extends Enum & KidLearnMathCaterLevel> void createLevelMenu(Class<T> mathCaterLevelClass, String titleText) {
-        setUpAllTable();
-        Table table = new Table();
+        Table headerTable = new Table();
+        float screenWidth = ScreenDimensionsManager.getScreenWidthValue(90);
         MyWrappedLabel title = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE), 8f)).setText(titleText).build());
-        table.add(title).pad(MainDimen.horizontal_general_margin.getDimen()).row();
-        T[] allLevelValues = EnumUtils.getValues(mathCaterLevelClass);
+        headerTable.add(title).pad(MainDimen.horizontal_general_margin.getDimen()).width(screenWidth / 2);
+        headerTable.add(kidLearnDifficultyService.createDifficultyButtonsTable(levelType, false)).width(screenWidth / 2);
+        float headerHeight = ScreenDimensionsManager.getScreenHeightValue(20);
+        table.add(headerTable).height(headerHeight).width(screenWidth).row();
+        List<L> allLevels = new ArrayList<>();
+        for (L val : EnumUtils.getValues(mathCaterLevelClass)) {
+            if (val.difficulty() == kidLearnPreferencesManager.getDifficultyLevel(levelType)) {
+                allLevels.add(val);
+            }
+        }
         Table levelsContainer = new Table();
-        float screenWidth = ScreenDimensionsManager.getScreenWidthValue(90);
-        levelsContainer.add(createLevelContainer(allLevelValues, "Forwards", true)).width(screenWidth / 2);
-        levelsContainer.add(createLevelContainer(allLevelValues, "Backwards", false)).width(screenWidth / 2);
-        table.add(levelsContainer);
-        new ActorAnimation(table, screen).animateFastFadeIn();
-        allTable.add(table).grow();
+        levelsContainer.add(createLevelContainer(allLevels, "Forwards", true)).width(screenWidth / 2);
+        levelsContainer.add(createLevelContainer(allLevels, "Backwards", false)).width(screenWidth / 2);
+        table.add(levelsContainer).height(ScreenDimensionsManager.getScreenHeight() - headerHeight);
+        getAllTable().add(table).grow();
     }
 
-    private <T extends Enum & KidLearnMathCaterLevel> Table createLevelContainer(T[] levelValues, String text, boolean ascLevels) {
+    private <L extends Enum & KidLearnMathCaterLevel> Table createLevelContainer(List<L> levelValues, String text, boolean ascLevels) {
         Table table = new Table();
         MyWrappedLabel title = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE), 8f)).setText(text).build());
         table.add(title).pad(MainDimen.horizontal_general_margin.getDimen()).row();
-        for (T level : levelValues) {
+        for (L level : levelValues) {
             if (ascLevels == level.asc()) {
                 int levelMax;
                 int levelMin;
@@ -138,7 +106,7 @@ public class KidLearnMathCaterMenuCreator {
         return table;
     }
 
-    private <T extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(T level, int levelMax, int levelMin, final boolean asc, float interval) {
+    private <L extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(L level, int levelMax, int levelMin, final boolean asc, float interval) {
         Table table = new Table();
         MyButton btn = new ButtonBuilder(getLevelText(level, levelMax, levelMin, asc, interval))
                 .setDefaultButton()
@@ -147,9 +115,7 @@ public class KidLearnMathCaterMenuCreator {
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                KidLearnGameContext gameContext = new KidLearnGameContext();
-                gameContext.level = level;
-                ((KidLearnScreenManager) screen.getScreenManager()).showGameScreen(gameContext);
+                ((KidLearnScreenManager) getScreenManager()).showGameScreen(new KidLearnGameContext(level));
             }
         });
         table.add(btn).width(btn.getWidth()).height(btn.getHeight());
@@ -159,7 +125,7 @@ public class KidLearnMathCaterMenuCreator {
         return table;
     }
 
-    private <T extends Enum & KidLearnMathCaterLevel> String getLevelText(T level, int levelMax, int levelMin, final boolean asc, float interval) {
+    private <L extends Enum & KidLearnMathCaterLevel> String getLevelText(L level, int levelMax, int levelMin, final boolean asc, float interval) {
         String text = "";
         int min = asc ? levelMin : levelMax;
         int max = asc ? levelMax : levelMin;
@@ -178,4 +144,10 @@ public class KidLearnMathCaterMenuCreator {
     private String getInterval(float interval) {
         return interval % 1 == 0 ? String.valueOf(Math.round(interval)) : String.valueOf(interval);
     }
+
+    @Override
+    public void onBackKeyPress() {
+        getScreenManager().showChooseLevelScreen();
+    }
+
 }

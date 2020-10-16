@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn.spec;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -13,10 +14,12 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 import libgdx.controls.ScreenRunnable;
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSize;
 import libgdx.controls.button.MyButton;
@@ -46,7 +49,7 @@ public abstract class KidLearnDragDropCreator {
     protected List<KidLearnImgInfo> unknownImg = new ArrayList<>();
     private List<KidLearnImgInfo> optionsImg = new ArrayList<>();
     private List<KidLearnImgInfo> alreadyFilledUnknownImg = new ArrayList<>();
-    protected List<KidLearnImgInfo> alreadyMovedOptionImg = new ArrayList<>();
+    private List<KidLearnImgInfo> alreadyMovedOptionImg = new ArrayList<>();
 
 
     public KidLearnDragDropCreator(KidLearnGameContext gameContext) {
@@ -82,7 +85,7 @@ public abstract class KidLearnDragDropCreator {
                         Math.round(FontConfig.FONT_SIZE), 8f)).setText("1 to 10 in 10").build());
         title.setY(getHeaderY());
         title.setX(ScreenDimensionsManager.getScreenWidth() / 2);
-        screen.addActor(title);
+        addActorToScreen(title);
     }
 
     private void createScoreLabel() {
@@ -91,7 +94,7 @@ public abstract class KidLearnDragDropCreator {
                         Math.round(FontConfig.FONT_SIZE), 8f)).setText(getScoreLabelText()).build());
         scoreLabel.setY(getHeaderY());
         scoreLabel.setX(ScreenDimensionsManager.getScreenWidth() - MainDimen.horizontal_general_margin.getDimen() * 5);
-        screen.addActor(scoreLabel);
+        addActorToScreen(scoreLabel);
     }
 
     protected Stack addImg(Pair<Float, Float> coord, Res res, String text) {
@@ -100,7 +103,7 @@ public abstract class KidLearnDragDropCreator {
         img.setY(coord.getRight());
         img.setWidth(getImgSideDimen());
         img.setHeight(getImgSideDimen());
-        screen.addActor(img);
+        addActorToScreen(img);
         return img;
     }
 
@@ -118,7 +121,12 @@ public abstract class KidLearnDragDropCreator {
         });
         btn.setX(ScreenDimensionsManager.getScreenWidth() - btnSize.getWidth() - MainDimen.horizontal_general_margin.getDimen());
         btn.setY(MainDimen.vertical_general_margin.getDimen());
-        screen.addActor(btn);
+        addActorToScreen(btn);
+    }
+
+    private void addActorToScreen(Actor actor) {
+        new ActorAnimation(actor, screen).animateFastFadeIn();
+        screen.addActor(actor);
     }
 
     private void executeReset() {
@@ -176,7 +184,7 @@ public abstract class KidLearnDragDropCreator {
                         new KidLearnPreferencesManager().putLevelScore(gameContext.level, gameContext.score);
                         Table correctPopup = createCorrectAnswerPopup();
                         correctPopup.setVisible(false);
-                        screen.addActor(correctPopup);
+                        addActorToScreen(correctPopup);
                         float duration = 0.2f;
                         AlphaAction fadeOut = Actions.fadeOut(duration);
                         fadeOut.setAlpha(0f);
@@ -206,7 +214,7 @@ public abstract class KidLearnDragDropCreator {
             });
             verifyBtn.setX(ScreenDimensionsManager.getScreenWidth() / 2 - verifyBtn.getWidth() / 2);
             verifyBtn.setY(getOptionsRowY());
-            screen.addActor(verifyBtn);
+            addActorToScreen(verifyBtn);
         } else {
             verifyBtn.setVisible(true);
         }
@@ -225,13 +233,17 @@ public abstract class KidLearnDragDropCreator {
 
     private Pair<Float, Float> createImgCoord(int index, int totalNr, float y) {
         int screenWidth = ScreenDimensionsManager.getScreenWidth();
-        float availableScreenWidth = screenWidth / 1.5f;
+        float availableScreenWidth = getAvailableScreenWidth();
         float partWidth = availableScreenWidth / totalNr;
         float x = (screenWidth - availableScreenWidth) / 2
                 + partWidth / 2
                 - getImgSideDimen() / 2
                 + partWidth * index;
         return Pair.of(x, y);
+    }
+
+    protected float getAvailableScreenWidth() {
+        return ScreenDimensionsManager.getScreenWidth() / 1.5f;
     }
 
     private Stack createImgTextStack(String text, Res res) {
@@ -248,7 +260,7 @@ public abstract class KidLearnDragDropCreator {
         return getResponsesRowY() + ScreenDimensionsManager.getScreenHeightValue(10) + getImgSideDimen();
     }
 
-    private float getImgSideDimen() {
+    protected float getImgSideDimen() {
         return ScreenDimensionsManager.getScreenWidthValue(12);
     }
 
@@ -265,7 +277,7 @@ public abstract class KidLearnDragDropCreator {
     }
 
     private void createOptionsRow() {
-        List<String> allOptions = getAllOptions();
+        List<String> allOptions = new ArrayList<>(getAllOptions());
         Collections.shuffle(allOptions);
         for (String option : allOptions) {
             Pair<Float, Float> coord = getCoordsForOption(optionsImg.size());
@@ -283,7 +295,7 @@ public abstract class KidLearnDragDropCreator {
                 @Override
                 public void dragStop(InputEvent event, float x, float y, int pointer) {
                     float numberImgSideDimen = getImgSideDimen();
-                    float acceptedDist = numberImgSideDimen / 4;
+                    float acceptedDist = getAcceptedDistanceForDrop();
                     boolean noMatch = true;
                     for (KidLearnImgInfo unkInfo : unknownImg) {
                         Stack unk = unkInfo.img;
@@ -306,6 +318,22 @@ public abstract class KidLearnDragDropCreator {
                     }
                 }
             });
+        }
+    }
+
+    protected float getAcceptedDistanceForDrop() {
+        return getImgSideDimen() / 4;
+    }
+
+    public List<KidLearnImgInfo> getAlreadyMovedOptionImg() {
+        alreadyMovedOptionImg.sort(new CustomComparator());
+        return alreadyMovedOptionImg;
+    }
+
+    private static class CustomComparator implements Comparator<KidLearnImgInfo> {
+        @Override
+        public int compare(KidLearnImgInfo o1, KidLearnImgInfo o2) {
+            return Float.compare(o1.img.getX(), o2.img.getX());
         }
     }
 }
