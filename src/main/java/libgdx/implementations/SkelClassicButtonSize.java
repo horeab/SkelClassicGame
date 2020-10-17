@@ -17,8 +17,15 @@ public enum SkelClassicButtonSize implements ButtonSize {
 
     IMAGE_SPLIT_START_GAME_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 2f),
     IMAGE_SPLIT_NAVIG_BTN(MainDimen.side_btn_image.getDimen() * 1.2f, MainDimen.side_btn_image.getDimen() * 1.2f),
-    ;
 
+    KIDLEARN_CHOOSE_LEVEL(MainDimen.side_btn_image.getDimen() * 5f, MainDimen.side_btn_image.getDimen() * 5f),
+    KIDLEARN_ENG_WORDS_LEVEL(MainDimen.side_btn_image.getDimen() * 3f, MainDimen.side_btn_image.getDimen() * 3f),
+    KIDLEARN_MATH_CATER_LEVEL(MainDimen.side_btn_image.getDimen() * 7f, MainDimen.side_btn_image.getDimen() * 1.3f),
+    KIDLEARN_RESET(MainDimen.side_btn_image.getDimen() * 5f, MainDimen.side_btn_image.getDimen() * 1.5f),
+    KIDLEARN_VERIFY(MainDimen.side_btn_image.getDimen() * 6f, MainDimen.side_btn_image.getDimen() * 1.7f),
+    KIDLEARN_DIFFICULTY(MainDimen.side_btn_image.getDimen() * 1.5f, MainDimen.side_btn_image.getDimen() * 1.5f),
+
+    ;
     private float width;
     private float height;
 

@@ -7,13 +7,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import libgdx.implementations.kidlearn.spec.KidLearnDragDropCreator;
+import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 
-public class KidLearnMathCaterGameCreator extends KidLearnDragDropCreator {
+public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCreator {
 
     public static final int TOTAL_QUESTIONS = 5;
     int nrOfCorrectUnknownNumbers;
@@ -23,7 +23,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnDragDropCreator {
     KidLearnMathCaterConfig config;
 
     public KidLearnMathCaterGameCreator(KidLearnGameContext gameContext, KidLearnMathCaterConfig config) {
-        super(gameContext);
+        super(gameContext, false,false);
         this.allCorrectNumbers = config.allCorrectNumbers;
         this.wrongNumbers = config.wrongNumbers;
         this.nrOfCorrectUnknownNumbers = config.nrOfCorrectUnknownNumbers;
@@ -56,9 +56,9 @@ public class KidLearnMathCaterGameCreator extends KidLearnDragDropCreator {
     }
 
     @Override
-    protected void createAllItemsRow() {
+    protected void createAllItemsContainer() {
         for (int i = 0; i < allCorrectNumbers.size(); i++) {
-            Pair<Float, Float> coord = getCoordsForNumberRow(i);
+            Pair<Float, Float> coord = getCoordsForResponseRow(i);
             Res res = MainResource.heart_full;
             Float nr = allCorrectNumbers.get(i);
             if (i >= getStartUnknownNrPos() && unknownImg.size() < nrOfCorrectUnknownNumbers) {
@@ -108,11 +108,11 @@ public class KidLearnMathCaterGameCreator extends KidLearnDragDropCreator {
     }
 
     private void addHead() {
-        addImg(getCoordsForNumberRow(-1), MainResource.error, "");
+        addImg(getCoordsForResponseRow(-1), MainResource.error, "");
     }
 
     private void addTail() {
-        addImg(getCoordsForNumberRow(allCorrectNumbers.size()), MainResource.error, "");
+        addImg(getCoordsForResponseRow(allCorrectNumbers.size()), MainResource.error, "");
     }
 
     private String getNr(Float val) {

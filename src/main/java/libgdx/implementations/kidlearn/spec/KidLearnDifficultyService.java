@@ -29,7 +29,7 @@ public class KidLearnDifficultyService {
             MyButton difficultyButton = createDifficultyButton(levelType, difficultyLevel);
             table.add(difficultyButton).width(difficultyButton.getWidth()).pad(marginDimen * 2).height(difficultyButton.getHeight());
             if (vertical) {
-                table.padBottom(marginDimen * 4).row();
+                table.padBottom(marginDimen * 6).row();
             }
         }
         return table;
@@ -50,14 +50,15 @@ public class KidLearnDifficultyService {
         }
         int index = difficultyLevel.getIndex();
         AbstractScreen abstractScreen = Game.getInstance().getAbstractScreen();
+        SkelClassicButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_DIFFICULTY;
         MyButton btn = new ImageButtonBuilder(SkelClassicButtonSkin.valueOf("KIDLEARN_DIFF_LEVEL_" + index), abstractScreen)
                 .setFontConfig(new FontConfig(
                         index == kidLearnPreferencesManager.getDifficultyLevel(levelType).getIndex() ? fontColor.getColor() : FontColor.WHITE.getColor(),
                         FontColor.BLACK.getColor(),
                         FontConfig.FONT_SIZE * 1f,
                         3f))
-                .setFixedButtonSize(SkelClassicButtonSize.KIDLEARN_DIFFICULTY)
-                .setWrappedText(labelText, ScreenDimensionsManager.getScreenWidthValue(SkelClassicButtonSize.KIDLEARN_DIFFICULTY.getWidth()))
+                .setFixedButtonSize(btnSize)
+                .setWrappedText(labelText, ScreenDimensionsManager.getScreenWidthValue(20))
                 .build();
         btn.addListener(new ClickListener() {
             @Override

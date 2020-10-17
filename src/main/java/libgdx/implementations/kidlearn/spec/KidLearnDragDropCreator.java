@@ -14,9 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import libgdx.controls.ScreenRunnable;
 import libgdx.controls.animations.ActorAnimation;
@@ -45,16 +43,21 @@ public abstract class KidLearnDragDropCreator {
     public AbstractScreen screen;
     private MyWrappedLabel scoreLabel;
     private KidLearnGameContext gameContext;
+    private boolean responseFixedEndPosition;
+    private boolean allowMultipleItemsPerResponse;
     private MyButton verifyBtn;
     protected List<KidLearnImgInfo> unknownImg = new ArrayList<>();
-    private List<KidLearnImgInfo> optionsImg = new ArrayList<>();
-    private List<KidLearnImgInfo> alreadyFilledUnknownImg = new ArrayList<>();
-    private List<KidLearnImgInfo> alreadyMovedOptionImg = new ArrayList<>();
+    protected List<KidLearnImgInfo> optionsImg = new ArrayList<>();
+    protected List<KidLearnImgInfo> alreadyFilledUnknownImg = new ArrayList<>();
+    protected List<KidLearnImgInfo> alreadyMovedOptionImg = new ArrayList<>();
 
 
-    public KidLearnDragDropCreator(KidLearnGameContext gameContext) {
+    public KidLearnDragDropCreator(KidLearnGameContext gameContext, boolean responseFixedEndPosition,
+                                   boolean allowMultipleItemsPerResponse) {
         this.screen = Game.getInstance().getAbstractScreen();
         this.gameContext = gameContext;
+        this.responseFixedEndPosition = responseFixedEndPosition;
+        this.allowMultipleItemsPerResponse = allowMultipleItemsPerResponse;
     }
 
     protected abstract int getTotalQuestions();
@@ -69,12 +72,18 @@ public abstract class KidLearnDragDropCreator {
 
     protected abstract double getNumberOfCorrectUnknownItems();
 
-    protected abstract void createAllItemsRow();
+    protected abstract void createAllItemsContainer();
+
+    protected abstract void sortAlreadyMoverOptionImg();
+
+    protected abstract Pair<Float, Float> getCoordsForOptionRow(int index);
+
+    protected abstract Pair<Float, Float> getCoordsForResponseRow(int index);
 
     public void create() {
-        createAllItemsRow();
+        createAllItemsContainer();
         createResetBtn();
-        createOptionsRow();
+        createOptionsContainer();
         createTitle();
         createScoreLabel();
     }
@@ -101,8 +110,8 @@ public abstract class KidLearnDragDropCreator {
         Stack img = createImgTextStack(text, res);
         img.setX(coord.getLeft());
         img.setY(coord.getRight());
-        img.setWidth(getImgSideDimen());
-        img.setHeight(getImgSideDimen());
+        img.setWidth(getImgWidth());
+        img.setHeight(getImgHeight());
         addActorToScreen(img);
         return img;
     }
@@ -161,7 +170,65 @@ public abstract class KidLearnDragDropCreator {
         return table;
     }
 
-    private void createVerifyBtn() {
+    private void createOptionsContainer() {
+        List<String> allOptions = new ArrayList<>(getAllOptions());
+        Collections.shuffle(allOptions);
+        for (String option : allOptions) {
+            int itemsAlreadyAdded = optionsImg.size();
+            Pair<Float, Float> coord = getCoordsForOptionRow(itemsAlreadyAdded);
+            Stack img = addImg(coord, MainResource.heart_full, option);
+            KidLearnImgInfo opt = new KidLearnImgInfo(coord, img, String.valueOf(option));
+            optionsImg.add(opt);
+            img.addListener(new DragListener() {
+                @Override
+                public void drag(InputEvent event, float x, float y, int pointer) {
+                    if (!alreadyMovedOptionImg.contains(opt)) {
+                        img.moveBy(x - img.getWidth() / 2, y - img.getHeight() / 2);
+                    }
+                }
+
+                @Override
+                public void dragStop(InputEvent event, float x, float y, int pointer) {
+                    float imgSideDimenWidth = getImgWidth();
+                    float imgSideDimenHeight = getImgHeight();
+                    float acceptedDistWidth = getAcceptedDistanceForDropWidth();
+                    float acceptedDistHeight = getAcceptedDistanceForDropHeight();
+                    boolean noMatch = true;
+                    for (KidLearnImgInfo unkInfo : unknownImg) {
+                        Stack unk = unkInfo.img;
+                        if ((unk.getX() - acceptedDistWidth < img.getX() && unk.getX() + imgSideDimenWidth + acceptedDistWidth > (img.getX() + imgSideDimenWidth))
+                                &&
+                                (unk.getY() - acceptedDistHeight < img.getY() && unk.getY() + imgSideDimenHeight + acceptedDistHeight > (img.getY() + imgSideDimenHeight))
+                        ) {
+                            if (!allowMultipleItemsPerResponse && alreadyFilledUnknownImg.contains(unkInfo)) {
+                                break;
+                            }
+                            if (responseFixedEndPosition || allowMultipleItemsPerResponse) {
+                                opt.img.addAction(Actions.moveTo(unk.getX(), unk.getY(), 0.3f));
+                            }
+                            if (allowMultipleItemsPerResponse && !alreadyMovedOptionImg.isEmpty()) {
+                                Stack lastAddedImg = alreadyMovedOptionImg.get(alreadyMovedOptionImg.size() - 1).img;
+                                opt.img.addAction(Actions.moveTo(lastAddedImg.getX(),
+                                        lastAddedImg.getY() - imgSideDimenHeight * 1.05f, 0.3f));
+                            }
+                            noMatch = false;
+                            unk.addAction(Actions.fadeOut(UNK_FADE_DURATION));
+                            opt.img.setTouchable(Touchable.disabled);
+                            alreadyMovedOptionImg.add(opt);
+                            alreadyFilledUnknownImg.add(unkInfo);
+                        }
+                    }
+                    if (noMatch) {
+                        img.addAction(Actions.moveTo(coord.getLeft(), coord.getRight(), OPT_MOVE_DURATION));
+                    } else if (alreadyMovedOptionImg.size() == getNumberOfCorrectUnknownItems()) {
+                        createVerifyBtn();
+                    }
+                }
+            });
+        }
+    }
+
+    void createVerifyBtn() {
         for (KidLearnImgInfo learnImgInfo : optionsImg) {
             learnImgInfo.img.setTouchable(Touchable.disabled);
         }
@@ -213,43 +280,17 @@ public abstract class KidLearnDragDropCreator {
                 }
             });
             verifyBtn.setX(ScreenDimensionsManager.getScreenWidth() / 2 - verifyBtn.getWidth() / 2);
-            verifyBtn.setY(getOptionsRowY());
+            verifyBtn.setY(getVerifyBtnY());
             addActorToScreen(verifyBtn);
         } else {
             verifyBtn.setVisible(true);
         }
     }
 
-    protected Pair<Float, Float> getCoordsForNumberRow(int index) {
-        float variableY = ScreenDimensionsManager.getScreenHeightValue(new Random().nextInt(5));
-        variableY = new Random().nextBoolean() ? variableY : -variableY;
-        float y = getResponsesRowY() + variableY;
-        return createImgCoord(index, getTotalItems(), y);
-    }
-
-    private Pair<Float, Float> getCoordsForOption(int index) {
-        return createImgCoord(index, getTotalOptions(), getOptionsRowY());
-    }
-
-    private Pair<Float, Float> createImgCoord(int index, int totalNr, float y) {
-        int screenWidth = ScreenDimensionsManager.getScreenWidth();
-        float availableScreenWidth = getAvailableScreenWidth();
-        float partWidth = availableScreenWidth / totalNr;
-        float x = (screenWidth - availableScreenWidth) / 2
-                + partWidth / 2
-                - getImgSideDimen() / 2
-                + partWidth * index;
-        return Pair.of(x, y);
-    }
-
-    protected float getAvailableScreenWidth() {
-        return ScreenDimensionsManager.getScreenWidth() / 1.5f;
-    }
-
     private Stack createImgTextStack(String text, Res res) {
         Stack stack = new Stack();
         stack.add(GraphicUtils.getImage(res));
-        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(getImgSideDimen())
+        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(getImgWidth())
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE), 8f)).setText(text).build());
         stack.add(textLabel);
@@ -257,83 +298,38 @@ public abstract class KidLearnDragDropCreator {
     }
 
     private float getHeaderY() {
-        return getResponsesRowY() + ScreenDimensionsManager.getScreenHeightValue(10) + getImgSideDimen();
+        return ScreenDimensionsManager.getScreenHeightValue(93);
     }
 
-    protected float getImgSideDimen() {
+    private float getVerifyBtnY() {
+        return ScreenDimensionsManager.getScreenHeightValue(25);
+    }
+
+    protected float getImgWidth() {
         return ScreenDimensionsManager.getScreenWidthValue(12);
     }
 
-    private float getResponsesRowY() {
-        return ScreenDimensionsManager.getExternalDeviceHeightValue(60);
-    }
-
-    private float getOptionsRowY() {
-        return ScreenDimensionsManager.getExternalDeviceHeightValue(20);
+    protected float getImgHeight() {
+        return ScreenDimensionsManager.getScreenWidthValue(12);
     }
 
     private String getScoreLabelText() {
         return gameContext.score + "/" + getTotalQuestions();
     }
 
-    private void createOptionsRow() {
-        List<String> allOptions = new ArrayList<>(getAllOptions());
-        Collections.shuffle(allOptions);
-        for (String option : allOptions) {
-            Pair<Float, Float> coord = getCoordsForOption(optionsImg.size());
-            Stack img = addImg(coord, MainResource.heart_full, option);
-            KidLearnImgInfo opt = new KidLearnImgInfo(coord, img, String.valueOf(option));
-            optionsImg.add(opt);
-            img.addListener(new DragListener() {
-                @Override
-                public void drag(InputEvent event, float x, float y, int pointer) {
-                    if (!alreadyMovedOptionImg.contains(opt)) {
-                        img.moveBy(x - img.getWidth() / 2, y - img.getHeight() / 2);
-                    }
-                }
 
-                @Override
-                public void dragStop(InputEvent event, float x, float y, int pointer) {
-                    float numberImgSideDimen = getImgSideDimen();
-                    float acceptedDist = getAcceptedDistanceForDrop();
-                    boolean noMatch = true;
-                    for (KidLearnImgInfo unkInfo : unknownImg) {
-                        Stack unk = unkInfo.img;
-                        if ((unk.getX() - acceptedDist < img.getX() && unk.getX() + numberImgSideDimen + acceptedDist > (img.getX() + numberImgSideDimen))
-                                &&
-                                (unk.getY() - acceptedDist < img.getY() && unk.getY() + numberImgSideDimen + acceptedDist > (img.getY() + numberImgSideDimen))
-                                &&
-                                !alreadyFilledUnknownImg.contains(unkInfo)) {
-                            noMatch = false;
-                            unk.addAction(Actions.fadeOut(UNK_FADE_DURATION));
-                            opt.img.setTouchable(Touchable.disabled);
-                            alreadyMovedOptionImg.add(opt);
-                            alreadyFilledUnknownImg.add(unkInfo);
-                        }
-                    }
-                    if (noMatch) {
-                        img.addAction(Actions.moveTo(coord.getLeft(), coord.getRight(), OPT_MOVE_DURATION));
-                    } else if (alreadyMovedOptionImg.size() == getNumberOfCorrectUnknownItems()) {
-                        createVerifyBtn();
-                    }
-                }
-            });
-        }
+    protected float getAcceptedDistanceForDropWidth() {
+        return getImgWidth() / 4;
     }
 
-    protected float getAcceptedDistanceForDrop() {
-        return getImgSideDimen() / 4;
+    protected float getAcceptedDistanceForDropHeight() {
+        return getImgHeight() / 4;
     }
+
 
     public List<KidLearnImgInfo> getAlreadyMovedOptionImg() {
-        alreadyMovedOptionImg.sort(new CustomComparator());
+        sortAlreadyMoverOptionImg();
         return alreadyMovedOptionImg;
     }
 
-    private static class CustomComparator implements Comparator<KidLearnImgInfo> {
-        @Override
-        public int compare(KidLearnImgInfo o1, KidLearnImgInfo o2) {
-            return Float.compare(o1.img.getX(), o2.img.getX());
-        }
-    }
 }

@@ -7,19 +7,19 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import libgdx.implementations.kidlearn.spec.KidLearnDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 
-public class KidLearnEngWordsGameCreator extends KidLearnDragDropCreator {
+public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreator {
 
     public static final int TOTAL_QUESTIONS = 2;
     KidLearnEngWordsConfig config;
 
     public KidLearnEngWordsGameCreator(KidLearnGameContext gameContext, KidLearnEngWordsConfig config) {
-        super(gameContext);
+        super(gameContext, false, true);
         this.config = config;
     }
 
@@ -47,9 +47,9 @@ public class KidLearnEngWordsGameCreator extends KidLearnDragDropCreator {
     }
 
     @Override
-    protected void createAllItemsRow() {
+    protected void createAllItemsContainer() {
         for (int i = 0; i < config.words.size(); i++) {
-            Pair<Float, Float> coord = getCoordsForNumberRow(i);
+            Pair<Float, Float> coord = getCoordsForResponseRow(i);
             KidLearnEngWordsWordConfig config = this.config.words.get(i);
             Res res = config.img;
             String word = config.word;
@@ -58,9 +58,15 @@ public class KidLearnEngWordsGameCreator extends KidLearnDragDropCreator {
         }
     }
 
+
     @Override
-    protected float getAcceptedDistanceForDrop() {
-        return getImgSideDimen() / 3;
+    protected float getAcceptedDistanceForDropWidth() {
+        return getImgWidth() / 3;
+    }
+
+    @Override
+    protected float getAcceptedDistanceForDropHeight() {
+        return getImgHeight() / 3;
     }
 
     @Override

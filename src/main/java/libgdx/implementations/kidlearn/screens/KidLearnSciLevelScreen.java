@@ -32,7 +32,7 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
-public class KidLearnEngWordsLevelScreen extends AbstractScreen<KidLearnScreenManager> {
+public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager> {
 
     private MyButton hoverBackButton;
     private KidLearnPreferencesManager kidLearnPreferencesManager = new KidLearnPreferencesManager();

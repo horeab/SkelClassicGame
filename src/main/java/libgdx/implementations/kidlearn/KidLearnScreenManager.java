@@ -4,6 +4,7 @@ import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterOrdLevel;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterSeqLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciLevel;
 import libgdx.screen.AbstractScreenManager;
 
 public class KidLearnScreenManager extends AbstractScreenManager {
@@ -13,6 +14,9 @@ public class KidLearnScreenManager extends AbstractScreenManager {
         showScreen(KidLearnScreenTypeEnum.MAIN_SCREEN);
         showLevelScreen(KidLearnEngWordsLevel.class);
 //        showLevelScreen(KidLearnMathCaterSeqLevel.class);
+        showLevelScreen(KidLearnSciLevel.class);
+//        showGameScreen(new KidLearnGameContext(KidLearnEngWordsLevel.L0));
+        showGameScreen(new KidLearnGameContext(KidLearnSciLevel.L0));
     }
 
     public void showGameScreen(KidLearnGameContext gameContext) {

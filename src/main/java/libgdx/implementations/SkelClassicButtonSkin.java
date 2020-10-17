@@ -8,6 +8,7 @@ import libgdx.implementations.applepie.ApplePieSpecificResource;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.buylow.BuyLowSpecificResource;
 import libgdx.implementations.imagesplit.ImageSplitSpecificResource;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.resources.Res;
@@ -54,6 +55,18 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     IMAGE_SPLIT_NAVIG_LEFT(ImageSplitSpecificResource.leftarrow, ImageSplitSpecificResource.leftarrow, ImageSplitSpecificResource.leftarrow, ImageSplitSpecificResource.leftarrow, null),
     IMAGE_SPLIT_NAVIG_RIGHT(ImageSplitSpecificResource.rightarrow, ImageSplitSpecificResource.rightarrow, ImageSplitSpecificResource.rightarrow, ImageSplitSpecificResource.rightarrow, null),
     IMAGE_SPLIT_VIEW_IMG(ImageSplitSpecificResource.viewimg, ImageSplitSpecificResource.viewimg, ImageSplitSpecificResource.viewimg, ImageSplitSpecificResource.viewimg, null),
+
+    KIDLEARN_DIFF_LEVEL_0(KidLearnSpecificResource.diff_btn_0_up, KidLearnSpecificResource.diff_btn_0_down, KidLearnSpecificResource.diff_btn_0_up, KidLearnSpecificResource.diff_btn_0_up, null),
+    KIDLEARN_DIFF_LEVEL_1(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_1_down, KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_1_up, null),
+    KIDLEARN_DIFF_LEVEL_2(KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_0(KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_1(KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_2(KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_3(KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_FIN_0(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_FIN_1(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_FIN_2(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_ENGWORDS_FIN_3(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
     ;
 
     private Res imgUp;
