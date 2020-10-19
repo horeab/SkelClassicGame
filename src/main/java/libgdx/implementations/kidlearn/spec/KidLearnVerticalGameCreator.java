@@ -1,4 +1,4 @@
-package libgdx.implementations.kidlearn.spec.sci;
+package libgdx.implementations.kidlearn.spec;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
@@ -7,18 +7,17 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import libgdx.implementations.kidlearn.spec.KidLearnDragDropCreator;
-import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
-import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciConfig;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciPreDefConfig;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 
-public class KidLearnSciVerticalGameCreator extends KidLearnDragDropCreator {
+public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     public static final int TOTAL_QUESTIONS = 2;
     KidLearnSciConfig config;
 
-    public KidLearnSciVerticalGameCreator(KidLearnGameContext gameContext, KidLearnSciConfig config) {
+    public KidLearnVerticalGameCreator(KidLearnGameContext gameContext, KidLearnSciConfig config) {
         super(gameContext, true, false);
         this.config = config;
     }
@@ -74,7 +73,7 @@ public class KidLearnSciVerticalGameCreator extends KidLearnDragDropCreator {
         float partHeight = availableScreenHeight / totalNr;
         float y = (screenHeight - availableScreenHeight) / 2
                 + partHeight / 2
-                - getImgHeight() / 2
+                - getOptionHeight() / 2
                 + partHeight * index;
         return Pair.of(x, y);
     }
@@ -86,7 +85,7 @@ public class KidLearnSciVerticalGameCreator extends KidLearnDragDropCreator {
             KidLearnSciPreDefConfig config = this.config.parts.get(i);
             Res res = config.img;
             String word = config.word;
-            Stack imgStack = addImg(coord, res, word);
+            Stack imgStack = addResponseImg(coord, res, word);
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, word));
         }
     }
@@ -98,7 +97,7 @@ public class KidLearnSciVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected float getAcceptedDistanceForDropHeight() {
-        return getImgHeight();
+        return getOptionHeight();
     }
 
     private float getResponsesRowX() {
@@ -125,12 +124,12 @@ public class KidLearnSciVerticalGameCreator extends KidLearnDragDropCreator {
     }
 
     @Override
-    protected float getImgWidth() {
+    protected float getOptionWidth() {
         return ScreenDimensionsManager.getScreenWidthValue(20);
     }
 
     @Override
-    protected float getImgHeight() {
+    protected float getOptionHeight() {
         return ScreenDimensionsManager.getScreenHeightValue(5);
     }
 }

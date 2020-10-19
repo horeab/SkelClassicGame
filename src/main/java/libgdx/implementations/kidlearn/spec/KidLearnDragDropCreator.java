@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn.spec;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -40,6 +41,9 @@ public abstract class KidLearnDragDropCreator {
 
     private static final float OPT_MOVE_DURATION = 0.2f;
     private static final float UNK_FADE_DURATION = 0.1f;
+    public static final float SCALE = 0.3f;
+    public static final float SCALE_DURATION = 0.3f;
+    public static final String SCALED_MARKER = "scaled";
     public AbstractScreen screen;
     private MyWrappedLabel scoreLabel;
     private KidLearnGameContext gameContext;
@@ -106,12 +110,24 @@ public abstract class KidLearnDragDropCreator {
         addActorToScreen(scoreLabel);
     }
 
-    protected Stack addImg(Pair<Float, Float> coord, Res res, String text) {
-        Stack img = createImgTextStack(text, res);
+    protected Stack addOptionImg(Pair<Float, Float> coord, Res res, String text) {
+        Stack img = addImg(coord, res, getOptionWidth(), text);
+        img.setWidth(getOptionWidth());
+        img.setHeight(getOptionHeight());
+        return img;
+    }
+
+    protected Stack addResponseImg(Pair<Float, Float> coord, Res res, String text) {
+        Stack img = addImg(coord, res, getResponseWidth(), text);
+        img.setWidth(getResponseWidth());
+        img.setHeight(getResponseHeight());
+        return img;
+    }
+
+    private Stack addImg(Pair<Float, Float> coord, Res res, float labelWidth, String text) {
+        Stack img = createImgTextStack(text, labelWidth, res);
         img.setX(coord.getLeft());
         img.setY(coord.getRight());
-        img.setWidth(getImgWidth());
-        img.setHeight(getImgHeight());
         addActorToScreen(img);
         return img;
     }
@@ -151,6 +167,10 @@ public abstract class KidLearnDragDropCreator {
             Pair<Float, Float> initialCoord = learnImgInfo.initialCoord;
             learnImgInfo.img.addAction(Actions.moveTo(initialCoord.getLeft(), initialCoord.getRight(), OPT_MOVE_DURATION));
             learnImgInfo.img.setTouchable(Touchable.enabled);
+            if (SCALED_MARKER.equals(learnImgInfo.img.getUserObject())) {
+                learnImgInfo.img.addAction(Actions.scaleBy(SCALE, SCALE, SCALE_DURATION));
+                learnImgInfo.img.setUserObject(null);
+            }
         }
     }
 
@@ -176,46 +196,64 @@ public abstract class KidLearnDragDropCreator {
         for (String option : allOptions) {
             int itemsAlreadyAdded = optionsImg.size();
             Pair<Float, Float> coord = getCoordsForOptionRow(itemsAlreadyAdded);
-            Stack img = addImg(coord, MainResource.heart_full, option);
+            Stack img = addOptionImg(coord, MainResource.heart_full, option);
             KidLearnImgInfo opt = new KidLearnImgInfo(coord, img, String.valueOf(option));
             optionsImg.add(opt);
             img.addListener(new DragListener() {
                 @Override
                 public void drag(InputEvent event, float x, float y, int pointer) {
                     if (!alreadyMovedOptionImg.contains(opt)) {
+                        img.toFront();
                         img.moveBy(x - img.getWidth() / 2, y - img.getHeight() / 2);
                     }
                 }
 
                 @Override
                 public void dragStop(InputEvent event, float x, float y, int pointer) {
-                    float imgSideDimenWidth = getImgWidth();
-                    float imgSideDimenHeight = getImgHeight();
+                    float responseSideDimenWidth = getResponseWidth();
+                    float responseSideDimenHeight = getResponseHeight();
+                    float optionWidth = getOptionWidth();
+                    float optionHeight = getOptionHeight();
                     float acceptedDistWidth = getAcceptedDistanceForDropWidth();
                     float acceptedDistHeight = getAcceptedDistanceForDropHeight();
                     boolean noMatch = true;
                     for (KidLearnImgInfo unkInfo : unknownImg) {
                         Stack unk = unkInfo.img;
-                        if ((unk.getX() - acceptedDistWidth < img.getX() && unk.getX() + imgSideDimenWidth + acceptedDistWidth > (img.getX() + imgSideDimenWidth))
+                        if ((unk.getX() - acceptedDistWidth < img.getX() && unk.getX() + responseSideDimenWidth + acceptedDistWidth > (img.getX() + optionWidth))
                                 &&
-                                (unk.getY() - acceptedDistHeight < img.getY() && unk.getY() + imgSideDimenHeight + acceptedDistHeight > (img.getY() + imgSideDimenHeight))
+                                (unk.getY() - acceptedDistHeight < img.getY() && unk.getY() + responseSideDimenHeight + acceptedDistHeight > (img.getY() + optionHeight))
                         ) {
                             if (!allowMultipleItemsPerResponse && alreadyFilledUnknownImg.contains(unkInfo)) {
                                 break;
                             }
                             if (responseFixedEndPosition || allowMultipleItemsPerResponse) {
-                                opt.img.addAction(Actions.moveTo(unk.getX(), unk.getY(), 0.3f));
+                                float moveToY = allowMultipleItemsPerResponse ? unk.getY() + unk.getHeight() / 3
+                                        : unk.getY();
+                                opt.img.addAction(Actions.moveTo(unk.getX(), moveToY, 0.3f));
                             }
                             if (allowMultipleItemsPerResponse && !alreadyMovedOptionImg.isEmpty()) {
-                                Stack lastAddedImg = alreadyMovedOptionImg.get(alreadyMovedOptionImg.size() - 1).img;
-                                opt.img.addAction(Actions.moveTo(lastAddedImg.getX(),
-                                        lastAddedImg.getY() - imgSideDimenHeight * 1.05f, 0.3f));
+                                Stack lastAddedImg = getLastAddedImgInContainer(unk.getX());
+                                if (lastAddedImg != null) {
+                                    opt.img.addAction(Actions.moveTo(lastAddedImg.getX(),
+                                            lastAddedImg.getY() - lastAddedImg.getHeight() / 2, 0.3f));
+                                }
                             }
                             noMatch = false;
-                            unk.addAction(Actions.fadeOut(UNK_FADE_DURATION));
+                            unk.addAction(Actions.sequence(getActionsToExecuteForResponseAfterCorrect()));
                             opt.img.setTouchable(Touchable.disabled);
                             alreadyMovedOptionImg.add(opt);
                             alreadyFilledUnknownImg.add(unkInfo);
+
+                            if (allowMultipleItemsPerResponse && !alreadyMovedOptionImg.isEmpty()) {
+                                for (KidLearnImgInfo info : alreadyMovedOptionImg) {
+                                    Stack stack = info.img;
+                                    if (!SCALED_MARKER.equals(stack.getUserObject())) {
+                                        stack.setTransform(true);
+                                        stack.addAction(Actions.scaleBy(-SCALE, -SCALE, SCALE_DURATION));
+                                        stack.setUserObject(SCALED_MARKER);
+                                    }
+                                }
+                            }
                         }
                     }
                     if (noMatch) {
@@ -226,6 +264,20 @@ public abstract class KidLearnDragDropCreator {
                 }
             });
         }
+    }
+
+    protected Action[] getActionsToExecuteForResponseAfterCorrect() {
+        return new AlphaAction[]{Actions.fadeOut(UNK_FADE_DURATION)};
+    }
+
+    private Stack getLastAddedImgInContainer(float containerX) {
+        Stack res = null;
+        for (KidLearnImgInfo info : alreadyMovedOptionImg) {
+            if (info.img.getX() == containerX) {
+                res = info.img;
+            }
+        }
+        return res;
     }
 
     void createVerifyBtn() {
@@ -285,12 +337,13 @@ public abstract class KidLearnDragDropCreator {
         } else {
             verifyBtn.setVisible(true);
         }
+        verifyBtn.toFront();
     }
 
-    private Stack createImgTextStack(String text, Res res) {
+    private Stack createImgTextStack(String text, float labelWidth, Res res) {
         Stack stack = new Stack();
         stack.add(GraphicUtils.getImage(res));
-        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(getImgWidth())
+        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(labelWidth)
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE), 8f)).setText(text).build());
         stack.add(textLabel);
@@ -301,16 +354,24 @@ public abstract class KidLearnDragDropCreator {
         return ScreenDimensionsManager.getScreenHeightValue(93);
     }
 
-    private float getVerifyBtnY() {
+    protected float getVerifyBtnY() {
         return ScreenDimensionsManager.getScreenHeightValue(25);
     }
 
-    protected float getImgWidth() {
+    protected float getOptionWidth() {
         return ScreenDimensionsManager.getScreenWidthValue(12);
     }
 
-    protected float getImgHeight() {
+    protected float getOptionHeight() {
         return ScreenDimensionsManager.getScreenWidthValue(12);
+    }
+
+    protected float getResponseWidth() {
+        return getOptionWidth();
+    }
+
+    protected float getResponseHeight() {
+        return getOptionHeight();
     }
 
     private String getScoreLabelText() {
@@ -319,11 +380,11 @@ public abstract class KidLearnDragDropCreator {
 
 
     protected float getAcceptedDistanceForDropWidth() {
-        return getImgWidth() / 4;
+        return getResponseWidth() / 4;
     }
 
     protected float getAcceptedDistanceForDropHeight() {
-        return getImgHeight() / 4;
+        return getResponseHeight() / 4;
     }
 
 

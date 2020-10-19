@@ -65,7 +65,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
                 res = MainResource.crown;
                 nr = null;
             }
-            Stack imgStack = addImg(coord, res, getNr(nr));
+            Stack imgStack = addResponseImg(coord, res, getNr(nr));
             if (nr == null) {
                 unknownImg.add(new KidLearnImgInfo(coord, imgStack, String.valueOf(allCorrectNumbers.get(i))));
             }
@@ -108,11 +108,11 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     }
 
     private void addHead() {
-        addImg(getCoordsForResponseRow(-1), MainResource.error, "");
+        addResponseImg(getCoordsForResponseRow(-1), MainResource.error, "");
     }
 
     private void addTail() {
-        addImg(getCoordsForResponseRow(allCorrectNumbers.size()), MainResource.error, "");
+        addResponseImg(getCoordsForResponseRow(allCorrectNumbers.size()), MainResource.error, "");
     }
 
     private String getNr(Float val) {

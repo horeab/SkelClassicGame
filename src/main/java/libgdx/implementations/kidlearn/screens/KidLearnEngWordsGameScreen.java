@@ -9,7 +9,7 @@ import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
-import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsWordConfig;
+import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.MainResource;
 import libgdx.screen.AbstractScreen;
 
@@ -27,11 +27,11 @@ public class KidLearnEngWordsGameScreen<T extends Enum & KidLearnMathCaterLevel>
 
     private KidLearnEngWordsConfig createConfig() {
         return new KidLearnEngWordsConfig(Arrays.asList(
-                new KidLearnEngWordsWordConfig("Dog", MainResource.sound_on),
-                new KidLearnEngWordsWordConfig("Cat", MainResource.sound_off),
-                new KidLearnEngWordsWordConfig("Cow", MainResource.remove),
-                new KidLearnEngWordsWordConfig("Horse", MainResource.refresh_down),
-                new KidLearnEngWordsWordConfig("Lion", MainResource.heart_full)));
+                new KidLearnWordImgConfig("Dog", MainResource.sound_on),
+                new KidLearnWordImgConfig("Cat", MainResource.sound_off),
+                new KidLearnWordImgConfig("Cow", MainResource.remove),
+                new KidLearnWordImgConfig("Horse", MainResource.refresh_down),
+                new KidLearnWordImgConfig("Lion", MainResource.heart_full)));
     }
 
     @Override
