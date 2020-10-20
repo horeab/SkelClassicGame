@@ -6,13 +6,14 @@ import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterConfig;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterGameCreator;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
 import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterService;
 import libgdx.screen.AbstractScreen;
 
-public class KidLearnMathCaterGameScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
+public class KidLearnMathCaterGameScreen<T extends Enum & KidLearnMathCaterLevel & KidLearnLevel> extends AbstractScreen<KidLearnScreenManager> {
 
     private MyButton hoverBackButton;
     KidLearnMathCaterConfig config;

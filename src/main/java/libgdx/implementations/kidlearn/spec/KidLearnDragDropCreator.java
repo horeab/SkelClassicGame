@@ -28,6 +28,11 @@ import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
+import libgdx.implementations.kidlearn.screens.KidLearnEngWordsGameScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnMathCaterGameScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnSciGameScreen;
+import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
@@ -47,7 +52,6 @@ public abstract class KidLearnDragDropCreator {
     public AbstractScreen screen;
     private MyWrappedLabel scoreLabel;
     private KidLearnGameContext gameContext;
-    private boolean responseFixedEndPosition;
     private boolean allowMultipleItemsPerResponse;
     private MyButton verifyBtn;
     protected List<KidLearnImgInfo> unknownImg = new ArrayList<>();
@@ -56,11 +60,10 @@ public abstract class KidLearnDragDropCreator {
     protected List<KidLearnImgInfo> alreadyMovedOptionImg = new ArrayList<>();
 
 
-    public KidLearnDragDropCreator(KidLearnGameContext gameContext, boolean responseFixedEndPosition,
+    public KidLearnDragDropCreator(KidLearnGameContext gameContext,
                                    boolean allowMultipleItemsPerResponse) {
         this.screen = Game.getInstance().getAbstractScreen();
         this.gameContext = gameContext;
-        this.responseFixedEndPosition = responseFixedEndPosition;
         this.allowMultipleItemsPerResponse = allowMultipleItemsPerResponse;
     }
 
@@ -78,7 +81,7 @@ public abstract class KidLearnDragDropCreator {
 
     protected abstract void createAllItemsContainer();
 
-    protected abstract void sortAlreadyMoverOptionImg();
+    protected abstract void sortAlreadyMovedOptionImg();
 
     protected abstract Pair<Float, Float> getCoordsForOptionRow(int index);
 
@@ -95,7 +98,7 @@ public abstract class KidLearnDragDropCreator {
     private void createTitle() {
         MyWrappedLabel title = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText("1 to 10 in 10").build());
+                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(((KidLearnLevel) gameContext.level).title()).build());
         title.setY(getHeaderY());
         title.setX(ScreenDimensionsManager.getScreenWidth() / 2);
         addActorToScreen(title);
@@ -149,7 +152,7 @@ public abstract class KidLearnDragDropCreator {
         addActorToScreen(btn);
     }
 
-    private void addActorToScreen(Actor actor) {
+    protected void addActorToScreen(Actor actor) {
         new ActorAnimation(actor, screen).animateFastFadeIn();
         screen.addActor(actor);
     }
@@ -196,7 +199,7 @@ public abstract class KidLearnDragDropCreator {
         for (String option : allOptions) {
             int itemsAlreadyAdded = optionsImg.size();
             Pair<Float, Float> coord = getCoordsForOptionRow(itemsAlreadyAdded);
-            Stack img = addOptionImg(coord, MainResource.heart_full, option);
+            Stack img = addOptionImg(coord, getOptionRes(), option);
             KidLearnImgInfo opt = new KidLearnImgInfo(coord, img, String.valueOf(option));
             optionsImg.add(opt);
             img.addListener(new DragListener() {
@@ -226,11 +229,9 @@ public abstract class KidLearnDragDropCreator {
                             if (!allowMultipleItemsPerResponse && alreadyFilledUnknownImg.contains(unkInfo)) {
                                 break;
                             }
-                            if (responseFixedEndPosition || allowMultipleItemsPerResponse) {
-                                float moveToY = allowMultipleItemsPerResponse ? unk.getY() + unk.getHeight() / 3
-                                        : unk.getY();
-                                opt.img.addAction(Actions.moveTo(unk.getX(), moveToY, 0.3f));
-                            }
+                            float moveToY = allowMultipleItemsPerResponse ? unk.getY() + unk.getHeight() / 3
+                                    : unk.getY();
+                            opt.img.addAction(Actions.moveTo(unk.getX(), moveToY, 0.3f));
                             if (allowMultipleItemsPerResponse && !alreadyMovedOptionImg.isEmpty()) {
                                 Stack lastAddedImg = getLastAddedImgInContainer(unk.getX());
                                 if (lastAddedImg != null) {
@@ -264,6 +265,10 @@ public abstract class KidLearnDragDropCreator {
                 }
             });
         }
+    }
+
+    protected Res getOptionRes() {
+        return MainResource.heart_full;
     }
 
     protected Action[] getActionsToExecuteForResponseAfterCorrect() {
@@ -389,7 +394,7 @@ public abstract class KidLearnDragDropCreator {
 
 
     public List<KidLearnImgInfo> getAlreadyMovedOptionImg() {
-        sortAlreadyMoverOptionImg();
+        sortAlreadyMovedOptionImg();
         return alreadyMovedOptionImg;
     }
 

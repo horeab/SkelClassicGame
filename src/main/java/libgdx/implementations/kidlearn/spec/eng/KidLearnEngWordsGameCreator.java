@@ -20,7 +20,7 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
     KidLearnEngWordsConfig config;
 
     public KidLearnEngWordsGameCreator(KidLearnGameContext gameContext, KidLearnEngWordsConfig config) {
-        super(gameContext, false, false);
+        super(gameContext, false);
         this.config = config;
     }
 

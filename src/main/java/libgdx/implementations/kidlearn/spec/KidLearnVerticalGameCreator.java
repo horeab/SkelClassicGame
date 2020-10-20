@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn.spec;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -7,24 +8,26 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciConfig;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciPreDefConfig;
-import libgdx.resources.Res;
+import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.SkelClassicButtonSize;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSingleLabelConfig;
+import libgdx.resources.MainResource;
 import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     public static final int TOTAL_QUESTIONS = 2;
-    KidLearnSciConfig config;
+    KidLearnSingleLabelConfig config;
 
-    public KidLearnVerticalGameCreator(KidLearnGameContext gameContext, KidLearnSciConfig config) {
-        super(gameContext, true, false);
+    public KidLearnVerticalGameCreator(KidLearnGameContext gameContext, KidLearnSingleLabelConfig config) {
+        super(gameContext, false);
         this.config = config;
     }
 
     @Override
     protected double getNumberOfCorrectUnknownItems() {
-        return config.parts.size();
+        return config.words.size();
     }
 
     @Override
@@ -37,7 +40,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         boolean isCorrect = true;
         List<KidLearnImgInfo> alreadyMovedOptionImg = getAlreadyMovedOptionImg();
         for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
-            if (!config.parts.get(i).word.equals(alreadyMovedOptionImg.get(i).val)) {
+            if (!config.words.get(i).equals(alreadyMovedOptionImg.get(i).val)) {
                 isCorrect = false;
                 break;
             }
@@ -80,18 +83,26 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected void createAllItemsContainer() {
-        for (int i = 0; i < config.parts.size(); i++) {
+        for (int i = 0; i < config.words.size(); i++) {
             Pair<Float, Float> coord = getCoordsForResponseRow(i);
-            KidLearnSciPreDefConfig config = this.config.parts.get(i);
-            Res res = config.img;
-            String word = config.word;
-            Stack imgStack = addResponseImg(coord, res, word);
+            String word = this.config.words.get(i);
+            Stack imgStack = addResponseImg(coord, MainResource.heart_full, word);
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, word));
+            addRespArrow(coord);
         }
     }
 
+    protected void addRespArrow(Pair<Float, Float> coord) {
+        Image image = GraphicUtils.getImage(KidLearnSpecificResource.arrow_left);
+        image.setWidth(SkelClassicButtonSize.KIDLEARN_RESPONSE_ARROW.getWidth());
+        image.setHeight(SkelClassicButtonSize.KIDLEARN_RESPONSE_ARROW.getHeight());
+        image.setX(coord.getLeft()-image.getWidth());
+        image.setY(coord.getRight());
+        addActorToScreen(image);
+    }
+
     @Override
-    protected void sortAlreadyMoverOptionImg() {
+    protected void sortAlreadyMovedOptionImg() {
 
     }
 
@@ -106,21 +117,17 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected int getTotalItems() {
-        return config.parts.size();
+        return config.words.size();
     }
 
     @Override
     protected int getTotalOptions() {
-        return config.parts.size();
+        return config.words.size();
     }
 
     @Override
     protected List<String> getAllOptions() {
-        List<String> opt = new ArrayList<>();
-        for (KidLearnSciPreDefConfig word : config.parts) {
-            opt.add(word.word);
-        }
-        return opt;
+        return new ArrayList<>(config.words);
     }
 
     @Override

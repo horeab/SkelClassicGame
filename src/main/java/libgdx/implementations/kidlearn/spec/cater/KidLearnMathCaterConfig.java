@@ -2,9 +2,10 @@ package libgdx.implementations.kidlearn.spec.cater;
 
 import java.util.List;
 
-public class KidLearnMathCaterConfig<T extends Enum & KidLearnMathCaterLevel> {
+import libgdx.implementations.kidlearn.spec.KidLearnLevelConfig;
 
-    public KidLearnMathCaterConfig(Class<T> gameType, List<Float> allCorrectNumbers, List<Float> wrongNumbers, int nrOfCorrectUnknownNumbers, boolean asc) {
+public class KidLearnMathCaterConfig<T extends Enum & KidLearnMathCaterLevel> extends KidLearnLevelConfig {
+    public KidLearnMathCaterConfig(Class<? extends KidLearnMathCaterLevel> gameType, List<Float> allCorrectNumbers, List<Float> wrongNumbers, int nrOfCorrectUnknownNumbers, boolean asc) {
         this.gameType = gameType;
         this.allCorrectNumbers = allCorrectNumbers;
         this.wrongNumbers = wrongNumbers;

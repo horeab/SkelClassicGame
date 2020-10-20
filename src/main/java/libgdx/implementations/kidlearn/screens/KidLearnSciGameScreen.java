@@ -10,29 +10,31 @@ import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnVerticalGameCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
-import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciConfig;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnMultipleItemsGameCreator;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciMultipleItemsConfig;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciPreDefConfig;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyConfig;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyGameCreator;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSingleLabelConfig;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.screen.AbstractScreen;
 
-public class KidLearnSciGameScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
+public class KidLearnSciGameScreen extends AbstractScreen<KidLearnScreenManager> {
 
     private MyButton hoverBackButton;
-    KidLearnSciRecyConfig config;
-    KidLearnGameContext<T> gameContext;
+    KidLearnGameContext gameContext;
 
 
-    public KidLearnSciGameScreen(KidLearnGameContext<T> gameContext) {
+    public KidLearnSciGameScreen(KidLearnGameContext gameContext) {
         this.gameContext = gameContext;
-        config = createConfig();
     }
 
-    private KidLearnSciRecyConfig createConfig() {
-        return new KidLearnSciRecyConfig(Arrays.asList(
+
+    private KidLearnSingleLabelConfig createHumanBodyConfig() {
+        return new KidLearnSingleLabelConfig(Arrays.asList("Head", "Left arm", "Body", "Right arm", "Legs"));
+    }
+
+    private KidLearnSciMultipleItemsConfig createRecycleConfig() {
+        return new KidLearnSciMultipleItemsConfig(Arrays.asList(
                 new KidLearnWordImgConfig("Dog", MainResource.sound_on),
                 new KidLearnWordImgConfig("Cat", MainResource.sound_off),
                 new KidLearnWordImgConfig("Cow", MainResource.remove),
@@ -49,7 +51,11 @@ public class KidLearnSciGameScreen<T extends Enum & KidLearnMathCaterLevel> exte
     public void buildStage() {
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         hoverBackButton.toFront();
-        new KidLearnSciRecyGameCreator(gameContext, config).create();
+        if (true) {
+            new KidLearnVerticalGameCreator(gameContext, createHumanBodyConfig()).create();
+        } else if (true) {
+            new KidLearnMultipleItemsGameCreator(gameContext, createRecycleConfig()).create();
+        }
     }
 
     @Override

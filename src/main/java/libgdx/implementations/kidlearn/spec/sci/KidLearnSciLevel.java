@@ -1,22 +1,30 @@
 package libgdx.implementations.kidlearn.spec.sci;
 
 import libgdx.implementations.kidlearn.KidLearnQuestionDifficultyLevel;
+import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
+import libgdx.implementations.kidlearn.spec.KidLearnLevel;
+import libgdx.resources.gamelabel.GameLabel;
 
-public enum KidLearnSciLevel {
+public enum KidLearnSciLevel implements KidLearnLevel {
 
-    L0("Feed the animal", 5, KidLearnQuestionDifficultyLevel._0),//ce mananca fiecare animal
-    L1("Recycle waste", 5, KidLearnQuestionDifficultyLevel._0),// cosuri gunoi si clasificarea gunoaielor
-    L2("Food chain", 5, KidLearnQuestionDifficultyLevel._0),//
-    L3("States of water", 5, KidLearnQuestionDifficultyLevel._0), // clasificarea imaginilor (cub gheata, ceai, abur) solid/lichid/aer
+    L0(5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_feed),//ce mananca fiecare animal
+    L1(5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_recy),// cosuri gunoi si clasificarea gunoaielor
+    L2(5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_body),//
+    L3(5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_state), // clasificarea imaginilor (cub gheata, ceai, abur) solid/lichid/aer
     ;
 
-    public String category;
     public int nrOfCorrectUnknownWords;
     public KidLearnQuestionDifficultyLevel difficulty;
+    public GameLabel title;
 
-    KidLearnSciLevel(String category, int nrOfCorrectUnknownWords, KidLearnQuestionDifficultyLevel difficulty) {
-        this.category = category;
+    KidLearnSciLevel(int nrOfCorrectUnknownWords, KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
         this.nrOfCorrectUnknownWords = nrOfCorrectUnknownWords;
         this.difficulty = difficulty;
+        this.title = title;
+    }
+
+    @Override
+    public String title() {
+        return title.getText();
     }
 }

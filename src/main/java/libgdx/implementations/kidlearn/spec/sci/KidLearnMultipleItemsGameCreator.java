@@ -1,7 +1,6 @@
 package libgdx.implementations.kidlearn.spec.sci;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -17,13 +16,13 @@ import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
 
-public class KidLearnSciRecyGameCreator extends KidLearnHorizontalDragDropCreator {
+public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDropCreator {
 
     public static final int TOTAL_QUESTIONS = 2;
-    KidLearnSciRecyConfig config;
+    KidLearnSciMultipleItemsConfig config;
 
-    public KidLearnSciRecyGameCreator(KidLearnGameContext gameContext, KidLearnSciRecyConfig config) {
-        super(gameContext, true, true);
+    public KidLearnMultipleItemsGameCreator(KidLearnGameContext gameContext, KidLearnSciMultipleItemsConfig config) {
+        super(gameContext, true);
         this.config = config;
     }
 
@@ -87,12 +86,12 @@ public class KidLearnSciRecyGameCreator extends KidLearnHorizontalDragDropCreato
 
     @Override
     protected float getAcceptedDistanceForDropWidth() {
-        return getResponseWidth() / 10;
+        return getOptionWidth() / 2;
     }
 
     @Override
     protected float getAcceptedDistanceForDropHeight() {
-        return getResponseHeight() / 10;
+        return getOptionWidth() / 2;
     }
 
     @Override

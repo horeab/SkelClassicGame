@@ -10,9 +10,9 @@ import libgdx.utils.ScreenDimensionsManager;
 public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDropCreator {
 
 
-    public KidLearnHorizontalDragDropCreator(KidLearnGameContext gameContext, boolean responseFixedEndPosition,
+    public KidLearnHorizontalDragDropCreator(KidLearnGameContext gameContext,
                                              boolean allowMultipleItemsPerResponse) {
-        super(gameContext, responseFixedEndPosition, allowMultipleItemsPerResponse);
+        super(gameContext, allowMultipleItemsPerResponse);
     }
 
     @Override
@@ -56,7 +56,7 @@ public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDrop
     }
 
     @Override
-    protected void sortAlreadyMoverOptionImg() {
+    protected void sortAlreadyMovedOptionImg() {
         alreadyMovedOptionImg.sort(new CustomComparator());
     }
 

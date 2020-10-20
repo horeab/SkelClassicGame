@@ -7,10 +7,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
-import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 
 public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCreator {
@@ -23,7 +23,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     KidLearnMathCaterConfig config;
 
     public KidLearnMathCaterGameCreator(KidLearnGameContext gameContext, KidLearnMathCaterConfig config) {
-        super(gameContext, false,false);
+        super(gameContext, false);
         this.allCorrectNumbers = config.allCorrectNumbers;
         this.wrongNumbers = config.wrongNumbers;
         this.nrOfCorrectUnknownNumbers = config.nrOfCorrectUnknownNumbers;
@@ -56,16 +56,21 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     }
 
     @Override
+    protected Res getOptionRes() {
+        return KidLearnSpecificResource.cater_body;
+    }
+
+    @Override
     protected void createAllItemsContainer() {
         for (int i = 0; i < allCorrectNumbers.size(); i++) {
             Pair<Float, Float> coord = getCoordsForResponseRow(i);
-            Res res = MainResource.heart_full;
+            Res res = KidLearnSpecificResource.cater_body;
             Float nr = allCorrectNumbers.get(i);
             if (i >= getStartUnknownNrPos() && unknownImg.size() < nrOfCorrectUnknownNumbers) {
-                res = MainResource.crown;
+                res = KidLearnSpecificResource.cater_unk;
                 nr = null;
             }
-            Stack imgStack = addResponseImg(coord, res, getNr(nr));
+            Stack imgStack = addResponseImg(coord, res, getNrFromFloat(nr));
             if (nr == null) {
                 unknownImg.add(new KidLearnImgInfo(coord, imgStack, String.valueOf(allCorrectNumbers.get(i))));
             }
@@ -94,7 +99,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
         }
         List<String> res = new ArrayList<>();
         for (Float o : allOptionNr) {
-            res.add(getNr(o));
+            res.add(getNrFromFloat(o));
         }
         return res;
     }
@@ -108,14 +113,14 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     }
 
     private void addHead() {
-        addResponseImg(getCoordsForResponseRow(-1), MainResource.error, "");
+        addResponseImg(getCoordsForResponseRow(-1), KidLearnSpecificResource.cater_head, "");
     }
 
     private void addTail() {
-        addResponseImg(getCoordsForResponseRow(allCorrectNumbers.size()), MainResource.error, "");
+        addResponseImg(getCoordsForResponseRow(allCorrectNumbers.size()), KidLearnSpecificResource.cater_tail, "");
     }
 
-    private String getNr(Float val) {
+    public static String getNrFromFloat(Float val) {
         return val == null ? "" : val % 1 == 0 ? String.valueOf(Math.round(val)) : String.format("%.1f", val) + "";
     }
 

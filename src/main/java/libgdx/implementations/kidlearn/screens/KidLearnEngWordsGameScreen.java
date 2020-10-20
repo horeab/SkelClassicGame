@@ -6,21 +6,20 @@ import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
-import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
+import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
-import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.MainResource;
 import libgdx.screen.AbstractScreen;
 
-public class KidLearnEngWordsGameScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
+public class KidLearnEngWordsGameScreen extends AbstractScreen<KidLearnScreenManager> {
 
     private MyButton hoverBackButton;
     KidLearnEngWordsConfig config;
-    KidLearnGameContext<T> gameContext;
+    KidLearnGameContext gameContext;
 
 
-    public KidLearnEngWordsGameScreen(KidLearnGameContext<T> gameContext) {
+    public KidLearnEngWordsGameScreen(KidLearnGameContext gameContext) {
         this.gameContext = gameContext;
         config = createConfig();
     }
