@@ -1,4 +1,4 @@
-package libgdx.implementations.kidlearn.spec.cater;
+package libgdx.implementations.kidlearn.spec.math;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
@@ -11,11 +11,12 @@ import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
+import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.resources.Res;
 
 public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCreator {
 
-    public static final int TOTAL_QUESTIONS = 5;
+    public static final int TOTAL_QUESTIONS = 2;
     int nrOfCorrectUnknownNumbers;
     List<Float> allCorrectNumbers;
     List<Float> wrongNumbers;
@@ -47,7 +48,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
         boolean isCorrect = true;
         List<KidLearnImgInfo> alreadyMovedOptionImg = getAlreadyMovedOptionImg();
         for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
-            if (!allCorrectNumbers.get(startPos + i).equals(Float.valueOf(alreadyMovedOptionImg.get(i).val))) {
+            if (!Float.valueOf(formatFloat(allCorrectNumbers.get(startPos + i))).equals(Float.valueOf(alreadyMovedOptionImg.get(i).val))) {
                 isCorrect = false;
                 break;
             }
@@ -77,6 +78,21 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
         }
         addHead();
         addTail();
+    }
+
+    @Override
+    protected String getLevelTitle() {
+        if ((KidLearnMathCaterSeqLevel.class.isAssignableFrom(config.gameType))) {
+            KidLearnMathCaterSeqLevel level = (KidLearnMathCaterSeqLevel) gameContext.level;
+            Float interval = level.interval;
+            if (interval == null) {
+                interval = Math.abs(allCorrectNumbers.get(0) - allCorrectNumbers.get(1));
+                interval = Float.valueOf(formatFloat(interval));
+            }
+            return level.title.getText(interval);
+        } else {
+            return ((KidLearnLevel) gameContext.level).title();
+        }
     }
 
     @Override
@@ -121,7 +137,11 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     }
 
     public static String getNrFromFloat(Float val) {
-        return val == null ? "" : val % 1 == 0 ? String.valueOf(Math.round(val)) : String.format("%.1f", val) + "";
+        return val == null ? "" : val % 1 == 0 ? String.valueOf(Math.round(val)) : formatFloat(val) + "";
+    }
+
+    private static String formatFloat(Float val) {
+        return String.format("%.1f", val);
     }
 
 }

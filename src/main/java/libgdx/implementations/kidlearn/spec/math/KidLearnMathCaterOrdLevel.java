@@ -1,4 +1,4 @@
-package libgdx.implementations.kidlearn.spec.cater;
+package libgdx.implementations.kidlearn.spec.math;
 
 import libgdx.implementations.kidlearn.KidLearnQuestionDifficultyLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
@@ -9,14 +9,22 @@ public enum KidLearnMathCaterOrdLevel implements KidLearnMathCaterLevel, KidLear
 
     L0(1, 5, 1, 5, true, 4,
             KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc),
-    L1(0, 100, 10, 6, true, 4,
+    L1(0, 10, 1, 6, true, 4,
             KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc),
-    L2(-10, 10, 1, 6, true, 4,
+    L2(0, 100, 10, 6, true, 4,
+            KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc),
+    L3(0, 10, 1, 6, false, 4,
+            KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_desc),
+    L4(-10, 10, 1, 6, true, 4,
             KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_asc),
-    L3(0, 10, 0.1f, 6, true, 4,
+    L5(0, 10, 0.1f, 6, true, 4,
             KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_decimal),
-    L4(0, 999, 1, 5, false, 4,
+    L6(0, 999, 1, 5, false, 4,
             KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_desc),
+    L7(-10, 10, 1, 6, false, 4,
+            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_desc),
+    L8(-999, 999, 0.1f, 6, false, 4,
+            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_decimal),
     ;
 
     public int min;

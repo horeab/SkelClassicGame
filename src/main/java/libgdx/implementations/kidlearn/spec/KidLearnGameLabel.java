@@ -5,12 +5,24 @@ import libgdx.resources.gamelabel.GameLabelUtils;
 
 public enum KidLearnGameLabel implements libgdx.resources.gamelabel.GameLabel {
 
+    l_math_title,
+    l_math_seq_title,
+    l_math_ord_title,
     l_math_ord_asc,
     l_math_ord_desc,
     l_math_ord_decimal,
+    l_math_seq_add_nr,
+    l_math_seq_sub_nr,
     l_math_seq_add,
     l_math_seq_sub,
+    l_math_level,
+    l_math_ten,
+    l_math_decimal,
+
+    l_eng_title,
     l_eng_findword,
+
+    l_sci_title,
     l_sci_feed,
     l_sci_recy,
     l_sci_state,

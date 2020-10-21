@@ -21,6 +21,7 @@ import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
@@ -89,7 +90,7 @@ public class KidLearnEngWordsLevelScreen extends AbstractScreen<KidLearnScreenMa
     private Table createGameTitle() {
         return new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        FontConfig.FONT_SIZE * 2f, 8f)).setText("Caterpillar ordering").build());
+                        FontConfig.FONT_SIZE * 2f, 8f)).setText(KidLearnGameLabel.l_eng_title.getText()).build());
     }
 
     private MyButton createChooseLevelBtn(KidLearnEngWordsLevel level, int index) {

@@ -23,9 +23,14 @@ public enum KidLearnSpecificResource implements SpecificResource {
     cater_head("math/cater_head.png", Texture.class),
     cater_tail("math/cater_tail.png", Texture.class),
     cater_unk("math/cater_unk.png", Texture.class),
+    level_finished("math/level_finished.png", Texture.class),
+    level_not_finished("math/level_not_finished.png", Texture.class),
 
     //science
     arrow_left("science/arrow_left.png", Texture.class),
+
+    btn_hangman_up("buttons/btn_hangman_up.png", Texture.class),
+    btn_hangman_down("buttons/btn_hangman_down.png", Texture.class),
 
     specific_labels("labels/labels", I18NBundle.class),
     ;

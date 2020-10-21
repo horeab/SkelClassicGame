@@ -1,4 +1,4 @@
-package libgdx.implementations.kidlearn.spec.cater;
+package libgdx.implementations.kidlearn.spec.math;
 
 import java.util.List;
 

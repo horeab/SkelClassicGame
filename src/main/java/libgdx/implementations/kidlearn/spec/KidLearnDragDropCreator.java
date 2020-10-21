@@ -1,7 +1,6 @@
 package libgdx.implementations.kidlearn.spec;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -18,40 +18,29 @@ import java.util.Collections;
 import java.util.List;
 
 import libgdx.controls.ScreenRunnable;
-import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSize;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
-import libgdx.implementations.kidlearn.screens.KidLearnEngWordsGameScreen;
-import libgdx.implementations.kidlearn.screens.KidLearnMathCaterGameScreen;
-import libgdx.implementations.kidlearn.screens.KidLearnSciGameScreen;
-import libgdx.implementations.kidlearn.spec.cater.KidLearnMathCaterLevel;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
-import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
-public abstract class KidLearnDragDropCreator {
+public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
 
     private static final float OPT_MOVE_DURATION = 0.2f;
     private static final float UNK_FADE_DURATION = 0.1f;
     public static final float SCALE = 0.3f;
     public static final float SCALE_DURATION = 0.3f;
     public static final String SCALED_MARKER = "scaled";
-    public AbstractScreen screen;
-    private MyWrappedLabel scoreLabel;
-    private KidLearnGameContext gameContext;
     private boolean allowMultipleItemsPerResponse;
     private MyButton verifyBtn;
     protected List<KidLearnImgInfo> unknownImg = new ArrayList<>();
@@ -62,12 +51,9 @@ public abstract class KidLearnDragDropCreator {
 
     public KidLearnDragDropCreator(KidLearnGameContext gameContext,
                                    boolean allowMultipleItemsPerResponse) {
-        this.screen = Game.getInstance().getAbstractScreen();
-        this.gameContext = gameContext;
+        super(gameContext);
         this.allowMultipleItemsPerResponse = allowMultipleItemsPerResponse;
     }
-
-    protected abstract int getTotalQuestions();
 
     protected abstract boolean isResponseCorrect();
 
@@ -88,29 +74,10 @@ public abstract class KidLearnDragDropCreator {
     protected abstract Pair<Float, Float> getCoordsForResponseRow(int index);
 
     public void create() {
+        super.create();
         createAllItemsContainer();
         createResetBtn();
         createOptionsContainer();
-        createTitle();
-        createScoreLabel();
-    }
-
-    private void createTitle() {
-        MyWrappedLabel title = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(((KidLearnLevel) gameContext.level).title()).build());
-        title.setY(getHeaderY());
-        title.setX(ScreenDimensionsManager.getScreenWidth() / 2);
-        addActorToScreen(title);
-    }
-
-    private void createScoreLabel() {
-        scoreLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(getScoreLabelText()).build());
-        scoreLabel.setY(getHeaderY());
-        scoreLabel.setX(ScreenDimensionsManager.getScreenWidth() - MainDimen.horizontal_general_margin.getDimen() * 5);
-        addActorToScreen(scoreLabel);
     }
 
     protected Stack addOptionImg(Pair<Float, Float> coord, Res res, String text) {
@@ -152,11 +119,6 @@ public abstract class KidLearnDragDropCreator {
         addActorToScreen(btn);
     }
 
-    protected void addActorToScreen(Actor actor) {
-        new ActorAnimation(actor, screen).animateFastFadeIn();
-        screen.addActor(actor);
-    }
-
     private void executeReset() {
         if (verifyBtn != null) {
             verifyBtn.setVisible(false);
@@ -175,22 +137,6 @@ public abstract class KidLearnDragDropCreator {
                 learnImgInfo.img.setUserObject(null);
             }
         }
-    }
-
-    private Table createCorrectAnswerPopup() {
-        Table table = new Table();
-        float popupWidth = ScreenDimensionsManager.getScreenWidthValue(60);
-        table.setWidth(popupWidth);
-        table.setHeight(ScreenDimensionsManager.getScreenHeightValue(30));
-        table.setX(ScreenDimensionsManager.getScreenWidth() / 2 - popupWidth / 2);
-        table.setY(ScreenDimensionsManager.getScreenHeight() / 2 - table.getHeight() / 2);
-        table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
-        MyWrappedLabel msg = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setWidth(popupWidth / 1.1f)
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText("That's correct, well done!").build());
-        table.add(msg);
-        return table;
     }
 
     private void createOptionsContainer() {
@@ -303,36 +249,7 @@ public abstract class KidLearnDragDropCreator {
                     } else {
                         verifyBtn.setTouchable(Touchable.disabled);
                         verifyBtn.addAction(Actions.fadeOut(0.2f));
-                        gameContext.score = gameContext.score + 1;
-                        scoreLabel.setText(getScoreLabelText());
-                        new KidLearnPreferencesManager().putLevelScore(gameContext.level, gameContext.score);
-                        Table correctPopup = createCorrectAnswerPopup();
-                        correctPopup.setVisible(false);
-                        addActorToScreen(correctPopup);
-                        float duration = 0.2f;
-                        AlphaAction fadeOut = Actions.fadeOut(duration);
-                        fadeOut.setAlpha(0f);
-                        correctPopup.addAction(Actions.sequence(fadeOut, Utils.createRunnableAction(new ScreenRunnable(screen) {
-                            @Override
-                            public void executeOperations() {
-                                correctPopup.setVisible(true);
-                            }
-                        }), Actions.fadeIn(duration), Actions.delay(1.5f), Utils.createRunnableAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                KidLearnScreenManager screenManager = (KidLearnScreenManager) screen.getScreenManager();
-                                if (gameContext.score == getTotalQuestions()) {
-                                    screenManager.showLevelScreen(gameContext.level.getClass());
-                                } else {
-                                    screen.addAction(Actions.sequence(Actions.fadeOut(0.5f), Utils.createRunnableAction(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            screenManager.showGameScreen(gameContext);
-                                        }
-                                    })));
-                                }
-                            }
-                        })));
+                        executeCorrectAnswer();
                     }
                 }
             });
@@ -348,15 +265,19 @@ public abstract class KidLearnDragDropCreator {
     private Stack createImgTextStack(String text, float labelWidth, Res res) {
         Stack stack = new Stack();
         stack.add(GraphicUtils.getImage(res));
+        int standardFontSize = Math.round(FontConfig.FONT_SIZE / 1.0f);
+        int fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 3 ? standardFontSize / 1.05f :
+                standardFontSize);
+        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 4 ? standardFontSize / 1.125f :
+                fontSize);
+        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 5 ? standardFontSize / 1.2f :
+                fontSize);
         MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(labelWidth)
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(text).build());
+                        fontSize, 5f)).setText(text).build());
         stack.add(textLabel);
+        textLabel.toFront();
         return stack;
-    }
-
-    private float getHeaderY() {
-        return ScreenDimensionsManager.getScreenHeightValue(93);
     }
 
     protected float getVerifyBtnY() {
@@ -379,11 +300,6 @@ public abstract class KidLearnDragDropCreator {
         return getOptionHeight();
     }
 
-    private String getScoreLabelText() {
-        return gameContext.score + "/" + getTotalQuestions();
-    }
-
-
     protected float getAcceptedDistanceForDropWidth() {
         return getResponseWidth() / 4;
     }
@@ -391,7 +307,6 @@ public abstract class KidLearnDragDropCreator {
     protected float getAcceptedDistanceForDropHeight() {
         return getResponseHeight() / 4;
     }
-
 
     public List<KidLearnImgInfo> getAlreadyMovedOptionImg() {
         sortAlreadyMovedOptionImg();
