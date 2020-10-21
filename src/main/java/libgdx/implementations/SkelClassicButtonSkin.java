@@ -11,6 +11,7 @@ import libgdx.implementations.imagesplit.ImageSplitSpecificResource;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
+import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.utils.model.FontColor;
 
@@ -67,6 +68,7 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     KIDLEARN_ENGWORDS_FIN_1(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
     KIDLEARN_ENGWORDS_FIN_2(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
     KIDLEARN_ENGWORDS_FIN_3(KidLearnSpecificResource.diff_btn_1_up, KidLearnSpecificResource.diff_btn_2_down, KidLearnSpecificResource.diff_btn_2_up, KidLearnSpecificResource.diff_btn_2_up, null),
+    KIDLEARN_HANGMAN_LETTER(KidLearnSpecificResource.btn_hangman_up, KidLearnSpecificResource.btn_hangman_down, KidLearnSpecificResource.btn_hangman_up, MainResource.btn_lowcolor_down, null),
     ;
 
     private Res imgUp;
