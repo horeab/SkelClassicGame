@@ -5,15 +5,17 @@ import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.resources.gamelabel.GameLabel;
 
-public enum KidLearnEngHangmanLevel implements KidLearnLevel {
+public enum KidLearnEngVerbLevel implements KidLearnLevel {
 
-    L0(KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_hangman),
+    L0(KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_verb),
+    L1(KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_eng_verb),
+    L2(KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_eng_verb),
     ;
 
     public KidLearnQuestionDifficultyLevel difficulty;
     public GameLabel title;
 
-    KidLearnEngHangmanLevel(KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
+    KidLearnEngVerbLevel(KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
         this.difficulty = difficulty;
         this.title = title;
     }

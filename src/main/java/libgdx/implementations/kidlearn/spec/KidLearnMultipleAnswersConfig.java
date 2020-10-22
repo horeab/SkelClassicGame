@@ -1,15 +1,14 @@
 package libgdx.implementations.kidlearn.spec;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.List;
+import java.util.Map;
 
 
 public class KidLearnMultipleAnswersConfig extends KidLearnLevelConfig {
 
-    public Pair<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> vals;
+    public Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> responseWithAnswers;
 
-    public KidLearnMultipleAnswersConfig(Pair<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> vals) {
-        this.vals = vals;
+    public KidLearnMultipleAnswersConfig(Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> responseWithAnswers) {
+        this.responseWithAnswers = responseWithAnswers;
     }
 }

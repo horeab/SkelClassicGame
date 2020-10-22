@@ -24,7 +24,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     KidLearnMathCaterConfig config;
 
     public KidLearnMathCaterGameCreator(KidLearnGameContext gameContext, KidLearnMathCaterConfig config) {
-        super(gameContext, false);
+        super(gameContext);
         this.allCorrectNumbers = config.allCorrectNumbers;
         this.wrongNumbers = config.wrongNumbers;
         this.nrOfCorrectUnknownNumbers = config.nrOfCorrectUnknownNumbers;
@@ -54,11 +54,6 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
             }
         }
         return isCorrect;
-    }
-
-    @Override
-    protected Res getOptionRes() {
-        return KidLearnSpecificResource.cater_body;
     }
 
     @Override
@@ -106,16 +101,16 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     }
 
     @Override
-    protected List<String> getAllOptions() {
+    protected List<Pair<String, Res>> getAllOptions() {
         List<Float> allOptionNr = new ArrayList<>(wrongNumbers);
         for (int i = 0; i < allCorrectNumbers.size(); i++) {
             if (allOptionNr.size() < getTotalOptions() && i >= getStartUnknownNrPos()) {
                 allOptionNr.add(allCorrectNumbers.get(i));
             }
         }
-        List<String> res = new ArrayList<>();
+        List<Pair<String, Res>> res = new ArrayList<>();
         for (Float o : allOptionNr) {
-            res.add(getNrFromFloat(o));
+            res.add(Pair.of(getNrFromFloat(o), KidLearnSpecificResource.cater_body));
         }
         return res;
     }

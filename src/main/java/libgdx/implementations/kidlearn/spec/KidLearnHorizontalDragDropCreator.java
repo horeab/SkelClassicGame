@@ -10,9 +10,8 @@ import libgdx.utils.ScreenDimensionsManager;
 public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDropCreator {
 
 
-    public KidLearnHorizontalDragDropCreator(KidLearnGameContext gameContext,
-                                             boolean allowMultipleItemsPerResponse) {
-        super(gameContext, allowMultipleItemsPerResponse);
+    public KidLearnHorizontalDragDropCreator(KidLearnGameContext gameContext) {
+        super(gameContext);
     }
 
     @Override
@@ -51,7 +50,7 @@ public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDrop
         return ScreenDimensionsManager.getExternalDeviceHeightValue(60);
     }
 
-    private float getOptionsRowY() {
+    protected float getOptionsRowY() {
         return ScreenDimensionsManager.getExternalDeviceHeightValue(20);
     }
 

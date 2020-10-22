@@ -13,6 +13,7 @@ import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSingleLabelConfig;
 import libgdx.resources.MainResource;
+import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
@@ -21,7 +22,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
     KidLearnSingleLabelConfig config;
 
     public KidLearnVerticalGameCreator(KidLearnGameContext gameContext, KidLearnSingleLabelConfig config) {
-        super(gameContext, false);
+        super(gameContext);
         this.config = config;
     }
 
@@ -125,9 +126,14 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         return config.words.size();
     }
 
+
     @Override
-    protected List<String> getAllOptions() {
-        return new ArrayList<>(config.words);
+    protected List<Pair<String, Res>> getAllOptions() {
+        List<Pair<String, Res>> opt = new ArrayList<>();
+        for (String word : config.words) {
+            opt.add(Pair.of(word, KidLearnSpecificResource.word_unk));
+        }
+        return opt;
     }
 
     @Override

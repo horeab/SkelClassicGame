@@ -1,7 +1,18 @@
 package libgdx.implementations.kidlearn.spec;
 
+import com.badlogic.gdx.Gdx;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import libgdx.game.Game;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanLevel;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngVerbLevel;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
+import libgdx.resources.Res;
 
 public class KidLearnUtils {
 
@@ -12,5 +23,26 @@ public class KidLearnUtils {
         }
         gameContext.playedValues.add(rand);
         return rand;
+    }
+
+    public static Res getResource(String word) {
+        return KidLearnSpecificResource.valueOf(word.toLowerCase().replace(" ", "_"));
+    }
+
+    public static List<String> getWords(Enum level) {
+        String gameId = null;
+        String categId = null;
+
+        if (level instanceof KidLearnEngHangmanLevel) {
+            gameId = "eng";
+            categId = "hangman";
+        } else if (level instanceof KidLearnEngWordsLevel) {
+            gameId = "eng";
+            categId = "words";
+        } else if (level instanceof KidLearnEngVerbLevel) {
+            gameId = "eng";
+            categId = "verb";
+        }
+        return new ArrayList<>(Arrays.asList(Gdx.files.internal(Game.getInstance().getAppInfoService().getImplementationGameResourcesFolder() + "questions/" + gameId + "/" + categId + "/" + level.name().toLowerCase() + ".txt").readString().split("\n")));
     }
 }

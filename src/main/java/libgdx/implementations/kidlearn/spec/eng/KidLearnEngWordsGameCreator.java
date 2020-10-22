@@ -7,10 +7,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
+import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 
@@ -20,7 +21,7 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
     KidLearnEngWordsConfig config;
 
     public KidLearnEngWordsGameCreator(KidLearnGameContext gameContext, KidLearnEngWordsConfig config) {
-        super(gameContext, false);
+        super(gameContext);
         this.config = config;
     }
 
@@ -54,7 +55,7 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
             KidLearnWordImgConfig config = this.config.words.get(i);
             Res res = config.img;
             String word = config.word;
-            Stack imgStack = addResponseImg(coord, res, word);
+            Stack imgStack = addResponseImg(coord, res, "");
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, word));
         }
     }
@@ -86,13 +87,11 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
     }
 
     @Override
-    protected List<String> getAllOptions() {
-        List<String> opt = new ArrayList<>();
+    protected List<Pair<String, Res>> getAllOptions() {
+        List<Pair<String, Res>> opt = new ArrayList<>();
         for (KidLearnWordImgConfig word : config.words) {
-            opt.add(word.word);
+            opt.add(Pair.of(word.word, KidLearnSpecificResource.word_unk));
         }
         return opt;
     }
-
-
 }

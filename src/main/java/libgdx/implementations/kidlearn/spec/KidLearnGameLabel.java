@@ -20,7 +20,11 @@ public enum KidLearnGameLabel implements libgdx.resources.gamelabel.GameLabel {
     l_math_decimal,
 
     l_eng_title,
-    l_eng_findword,
+    l_eng_words,
+    l_eng_verb,
+    l_eng_verb_noun,
+    l_eng_verb_verb,
+    l_eng_hangman,
 
     l_sci_title,
     l_sci_feed,
