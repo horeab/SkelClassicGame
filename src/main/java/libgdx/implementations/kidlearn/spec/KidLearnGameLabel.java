@@ -1,5 +1,7 @@
 package libgdx.implementations.kidlearn.spec;
 
+import com.badlogic.gdx.graphics.Colors;
+
 import libgdx.game.Game;
 import libgdx.resources.gamelabel.GameLabelUtils;
 
@@ -25,6 +27,15 @@ public enum KidLearnGameLabel implements libgdx.resources.gamelabel.GameLabel {
     l_eng_verb_noun,
     l_eng_verb_verb,
     l_eng_hangman,
+    l_eng_animals,
+    l_eng_fruits,
+    l_eng_shapes,
+    l_eng_numbers,
+    l_eng_school,
+    l_eng_sport,
+    l_eng_colors,
+    l_eng_vegetables,
+    l_eng_kitchen,
 
     l_sci_title,
     l_sci_feed,

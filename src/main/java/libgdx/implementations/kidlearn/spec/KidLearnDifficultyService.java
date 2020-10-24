@@ -4,6 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.ImageButtonBuilder;
 import libgdx.game.Game;
@@ -14,6 +17,7 @@ import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
+import libgdx.utils.EnumUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
@@ -33,6 +37,16 @@ public class KidLearnDifficultyService {
             }
         }
         return table;
+    }
+
+    public <L extends Enum & KidLearnLevel> List<L> getLevelsForDifficulty(Class<L> levelClass, Class<? extends Enum> difficultyLevelClass) {
+        List<L> allLevels = new ArrayList<>();
+        for (L val : EnumUtils.getValues(levelClass)) {
+            if (val.difficulty() == kidLearnPreferencesManager.getDifficultyLevel(difficultyLevelClass)) {
+                allLevels.add(val);
+            }
+        }
+        return allLevels;
     }
 
     private MyButton createDifficultyButton(Class<? extends Enum> levelType, KidLearnQuestionDifficultyLevel difficultyLevel) {

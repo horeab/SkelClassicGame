@@ -2,6 +2,7 @@ package libgdx.implementations.kidlearn.spec.eng;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.FontConfig;
 
 public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreator {
 
@@ -60,6 +62,18 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
         }
     }
 
+    @Override
+    protected float getOptionWidth() {
+        return super.getOptionWidth() * 1.4f;
+    }
+
+    @Override
+    protected int getOptionFontSize(String text) {
+        int standardFontSize = Math.round(FontConfig.FONT_SIZE / 1.0f);
+        int fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 8 ? standardFontSize / 1.18f :
+                standardFontSize);
+        return fontSize;
+    }
 
     @Override
     protected float getAcceptedDistanceForDropWidth() {

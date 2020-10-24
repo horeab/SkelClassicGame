@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -13,14 +14,15 @@ import java.util.Map;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.FontConfig;
 
 public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDropCreator {
 
-    public static final int TOTAL_QUESTIONS = 2;
-    KidLearnMultipleAnswersConfig config;
-    public static final float SCALE = 0.2f;
-    public static final float SCALE_DURATION = 0.3f;
-    public static final String SCALED_MARKER = "scaled";
+    private static final int TOTAL_QUESTIONS = 2;
+    private KidLearnMultipleAnswersConfig config;
+    private static final float SCALE = 0.2f;
+    private static final float SCALE_DURATION = 0.3f;
+    private static final String SCALED_MARKER = "scaled";
 
     public KidLearnMultipleItemsGameCreator(KidLearnGameContext gameContext, KidLearnMultipleAnswersConfig config) {
         super(gameContext);
@@ -41,11 +43,21 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
     protected boolean isResponseCorrect() {
         boolean isCorrect = true;
         List<KidLearnImgInfo> alreadyMovedOptionImg = getAlreadyMovedOptionImg();
-        for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
-//            if (!config.words.get(i).word.equals(alreadyMovedOptionImg.get(i).val)) {
-//                isCorrect = false;
-//                break;
-//            }
+        for (KidLearnImgInfo unk : unknownImg) {
+            List<String> correctAnswersForUnk = new ArrayList<>();
+            for (Map.Entry<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> e : config.responseWithAnswers.entrySet()) {
+                if (e.getKey().word.equals(unk.val)) {
+                    for (KidLearnWordImgConfig c : e.getValue()) {
+                        correctAnswersForUnk.add(c.word);
+                    }
+                }
+            }
+            for (KidLearnImgInfo opt : alreadyMovedOptionImg) {
+                if (opt.img.getX() == getUnkOptionX(unk.img) && !correctAnswersForUnk.contains((opt.val))) {
+                    isCorrect = false;
+                    break;
+                }
+            }
         }
         return isCorrect;
     }
@@ -77,6 +89,23 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
     }
 
     @Override
+    protected float getOptionWidth() {
+        return super.getOptionWidth() * 1.1f;
+    }
+
+    @Override
+    protected int getOptionFontSize(String text) {
+        int standardFontSize = Math.round(FontConfig.FONT_SIZE / 1.0f);
+        int fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 7 ? standardFontSize / 1.15f :
+                standardFontSize);
+        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 8 ? standardFontSize / 1.18f :
+                fontSize);
+        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 9 ? standardFontSize / 1.21f :
+                fontSize);
+        return fontSize;
+    }
+
+    @Override
     protected float getAcceptedDistanceForDropWidth() {
         return getOptionWidth() / 2;
     }
@@ -88,7 +117,7 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
 
     @Override
     protected float getAvailableScreenWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(90);
+        return ScreenDimensionsManager.getScreenWidthValue(95);
     }
 
     @Override

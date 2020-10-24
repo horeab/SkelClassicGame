@@ -245,6 +245,14 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     private Stack createImgTextStack(String text, float labelWidth, Res res) {
         Stack stack = new Stack();
         stack.add(GraphicUtils.getImage(res));
+        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(labelWidth)
+                .setFontConfig(getOptionFontConfig(text)).setText(text).build());
+        stack.add(textLabel);
+        textLabel.toFront();
+        return stack;
+    }
+
+    protected int getOptionFontSize(String text) {
         int standardFontSize = Math.round(FontConfig.FONT_SIZE / 1.0f);
         int fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 3 ? standardFontSize / 1.05f :
                 standardFontSize);
@@ -252,12 +260,12 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
                 fontSize);
         fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 5 ? standardFontSize / 1.2f :
                 fontSize);
-        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(labelWidth)
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        fontSize, 5f)).setText(text).build());
-        stack.add(textLabel);
-        textLabel.toFront();
-        return stack;
+        return fontSize;
+    }
+
+    protected FontConfig getOptionFontConfig(String text) {
+        return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
+                getOptionFontSize(text), 3f);
     }
 
     protected float getVerifyBtnY() {

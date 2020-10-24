@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import libgdx.controls.button.ButtonBuilder;
@@ -30,12 +29,11 @@ import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterSeqLevel;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
-import libgdx.utils.EnumUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
-public class KidLearnMathCaterLevelScreen<T extends Enum & KidLearnMathCaterLevel> extends AbstractScreen<KidLearnScreenManager> {
+public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManager> {
 
     private MyButton hoverBackButton;
     private KidLearnPreferencesManager kidLearnPreferencesManager = new KidLearnPreferencesManager();
@@ -49,7 +47,7 @@ public class KidLearnMathCaterLevelScreen<T extends Enum & KidLearnMathCaterLeve
         createLevelMenu(KidLearnGameLabel.l_math_title.getText());
     }
 
-    private <L extends Enum & KidLearnMathCaterLevel> void createLevelMenu(String titleText) {
+    private void createLevelMenu(String titleText) {
         Table table = new Table();
         Table headerTable = new Table();
         float screenWidth = ScreenDimensionsManager.getScreenWidthValue(90);
@@ -61,24 +59,14 @@ public class KidLearnMathCaterLevelScreen<T extends Enum & KidLearnMathCaterLeve
         float headerHeight = ScreenDimensionsManager.getScreenHeightValue(20);
         table.add(headerTable).height(headerHeight).width(screenWidth).row();
         Table levelsContainer = new Table();
-        levelsContainer.add(createLevelContainer(getAllLevels(KidLearnMathCaterOrdLevel.class), KidLearnGameLabel.l_math_ord_title.getText())).width(screenWidth / 2);
-        levelsContainer.add(createLevelContainer(getAllLevels(KidLearnMathCaterSeqLevel.class), KidLearnGameLabel.l_math_seq_title.getText())).width(screenWidth / 2);
+        levelsContainer.add(createLevelContainer(kidLearnDifficultyService.getLevelsForDifficulty(KidLearnMathCaterOrdLevel.class, difficultyLevelClass()), KidLearnGameLabel.l_math_ord_title.getText())).width(screenWidth / 2);
+        levelsContainer.add(createLevelContainer(kidLearnDifficultyService.getLevelsForDifficulty(KidLearnMathCaterSeqLevel.class, difficultyLevelClass()), KidLearnGameLabel.l_math_seq_title.getText())).width(screenWidth / 2);
         table.add(levelsContainer).height(ScreenDimensionsManager.getScreenHeight() - headerHeight);
         getAllTable().add(table).grow();
     }
 
     public static Class<KidLearnMathCaterOrdLevel> difficultyLevelClass() {
         return KidLearnMathCaterOrdLevel.class;
-    }
-
-    private <L extends Enum & KidLearnMathCaterLevel> List<L> getAllLevels(Class<L> mathCaterLevelClass) {
-        List<L> allLevels = new ArrayList<>();
-        for (L val : EnumUtils.getValues(mathCaterLevelClass)) {
-            if (val.difficulty() == kidLearnPreferencesManager.getDifficultyLevel(difficultyLevelClass())) {
-                allLevels.add(val);
-            }
-        }
-        return allLevels;
     }
 
     private <L extends Enum & KidLearnMathCaterLevel> Table createLevelContainer(List<L> levelValues, String text) {
@@ -168,7 +156,6 @@ public class KidLearnMathCaterLevelScreen<T extends Enum & KidLearnMathCaterLeve
             }
             textOperation = Pair.of(text, operation);
         } else {
-            KidLearnMathCaterOrdLevel inst = (KidLearnMathCaterOrdLevel) level;
             String operation = null;
             if (interval % 10 == 0) {
                 operation = KidLearnGameLabel.l_math_ten.getText();
@@ -179,10 +166,6 @@ public class KidLearnMathCaterLevelScreen<T extends Enum & KidLearnMathCaterLeve
             textOperation = Pair.of(text, operation);
         }
         return textOperation;
-    }
-
-    private String getInterval(float interval) {
-        return interval % 1 == 0 ? String.valueOf(Math.round(interval)) : String.valueOf(interval);
     }
 
     @Override

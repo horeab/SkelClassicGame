@@ -21,7 +21,6 @@ import libgdx.implementations.kidlearn.spec.eng.KidLearnEngVerbLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
-import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsGameCreator;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
@@ -41,34 +40,46 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         hoverBackButton.toFront();
         if (gameContext.level instanceof KidLearnEngWordsLevel) {
-            List<KidLearnWordImgConfig> configs = new ArrayList<>();
             KidLearnEngWordsLevel inst = (KidLearnEngWordsLevel) gameContext.level;
-            for (String v : KidLearnUtils.getWords(gameContext.level)) {
-                configs.add(new KidLearnWordImgConfig(v, KidLearnUtils.getResource(v)));
+            List<String> wordsToPlay = KidLearnUtils.getLevelListValsToPlay(gameContext, inst.totalUnknownItems, KidLearnUtils.getWords(gameContext.level));
+            Collections.shuffle(wordsToPlay);
+            List<KidLearnWordImgConfig> configs = new ArrayList<>();
+            for (String word : wordsToPlay) {
+                configs.add(new KidLearnWordImgConfig(word, KidLearnUtils.getResource(word)));
             }
             Collections.shuffle(configs);
-            new KidLearnEngWordsGameCreator(gameContext, new KidLearnEngWordsConfig(configs.subList(0, inst.totalUnknownItems))).create();
+            new KidLearnEngWordsGameCreator(gameContext, new KidLearnEngWordsConfig(configs)).create();
         } else if (gameContext.level instanceof KidLearnEngVerbLevel) {
+            List<String> words = KidLearnUtils.getWords(gameContext.level);
+            Collections.shuffle(words);
             KidLearnWordImgConfig nounConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_eng_verb_noun.getText(), KidLearnSpecificResource.noun_container);
             KidLearnWordImgConfig verbConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_eng_verb_verb.getText(), KidLearnSpecificResource.verb_container);
             Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> configs = new HashMap<>();
             configs.put(nounConfig, new ArrayList<>());
             configs.put(verbConfig, new ArrayList<>());
-            KidLearnEngVerbLevel inst = (KidLearnEngVerbLevel) gameContext.level;
-            for (String v : KidLearnUtils.getWords(gameContext.level)) {
+            for (String v : words) {
                 String[] split = v.split(":");
-                KidLearnWordImgConfig key = null;
                 String word = split[1];
                 Res img = KidLearnUtils.getResource(word);
-                if (split[0].equals("0")) {
-                    configs.get(nounConfig).add(new KidLearnWordImgConfig(word, img));
-                } else {
-                    configs.get(verbConfig).add(new KidLearnWordImgConfig(word, img));
+                List<KidLearnWordImgConfig> nounConfigs = configs.get(nounConfig);
+                List<KidLearnWordImgConfig> verbConfigs = configs.get(verbConfig);
+                if (split[0].equals("0")
+                        && nounConfigs.size() < KidLearnEngVerbGameCreator.TOTAL_ITEMS_OF_TYPE
+                        && !gameContext.playedValues.contains(word)) {
+                    nounConfigs.add(new KidLearnWordImgConfig(word, img));
+                    gameContext.playedValues.add(word);
+                } else if (split[0].equals("1")
+                        && verbConfigs.size() < KidLearnEngVerbGameCreator.TOTAL_ITEMS_OF_TYPE
+                        && !gameContext.playedValues.contains(word)) {
+                    verbConfigs.add(new KidLearnWordImgConfig(word, img));
+                    gameContext.playedValues.add(word);
                 }
             }
             new KidLearnEngVerbGameCreator(gameContext, new KidLearnMultipleAnswersConfig(configs)).create();
         } else {
-            String rand = KidLearnUtils.getLevelValsToPlay(gameContext, KidLearnUtils.getWords(gameContext.level));
+            List<String> words = KidLearnUtils.getWords(gameContext.level);
+            Collections.shuffle(words);
+            String rand = KidLearnUtils.getLevelValsToPlay(gameContext, words);
             setUpAllTable();
             getAllTable().add(new KidLearnEngHangmanGameCreator(gameContext, new KidLearnWordImgConfig(rand,
                     KidLearnUtils.getResource(rand))).createTable())

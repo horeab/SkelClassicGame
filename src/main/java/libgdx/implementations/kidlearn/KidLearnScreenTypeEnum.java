@@ -1,13 +1,14 @@
 package libgdx.implementations.kidlearn;
 
 import libgdx.implementations.kidlearn.screens.KidLearnEngGameScreen;
-import libgdx.implementations.kidlearn.screens.KidLearnEngWordsLevelScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnEngLevelScreen;
 import libgdx.implementations.kidlearn.screens.KidLearnMainMenuScreen;
 import libgdx.implementations.kidlearn.screens.KidLearnMathGameScreen;
-import libgdx.implementations.kidlearn.screens.KidLearnMathCaterLevelScreen;
+import libgdx.implementations.kidlearn.screens.KidLearnMathLevelScreen;
 import libgdx.implementations.kidlearn.screens.KidLearnSciGameScreen;
 import libgdx.implementations.kidlearn.screens.KidLearnSciLevelScreen;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngLevel;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciLevel;
 import libgdx.screen.AbstractScreen;
@@ -36,11 +37,11 @@ public enum KidLearnScreenTypeEnum implements ScreenType {
         public AbstractScreen getScreen(Object... params) {
             Object param = params[0];
             if (param instanceof Class && KidLearnMathCaterLevel.class.isAssignableFrom((Class<?>) param)) {
-                return new KidLearnMathCaterLevelScreen();
-            } else if (param instanceof Class && KidLearnMathCaterLevel.class.isAssignableFrom((Class<?>) param)) {
-                return new KidLearnSciLevelScreen();
+                return new KidLearnMathLevelScreen();
+            } else if (param instanceof Class && KidLearnEngLevel.class.isAssignableFrom((Class<?>) param)) {
+                return new KidLearnEngLevelScreen();
             } else {
-                return new KidLearnEngWordsLevelScreen();
+                return new KidLearnSciLevelScreen();
             }
         }
     }

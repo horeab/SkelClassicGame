@@ -25,6 +25,19 @@ public class KidLearnUtils {
         return rand;
     }
 
+    public static <T> List<T> getLevelListValsToPlay(KidLearnGameContext gameContext, int resListSize, List<T> allVals) {
+        List<T> res = new ArrayList<>();
+        while (res.size() < resListSize) {
+            T rand = allVals.get(new Random().nextInt(allVals.size()));
+            while (gameContext.playedValues.contains(rand)) {
+                rand = allVals.get(new Random().nextInt(allVals.size()));
+            }
+            res.add(rand);
+            gameContext.playedValues.add(rand);
+        }
+        return res;
+    }
+
     public static Res getResource(String word) {
         return KidLearnSpecificResource.valueOf(word.toLowerCase().replace(" ", "_"));
     }

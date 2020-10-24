@@ -64,14 +64,14 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
             if (i > 0 && i % 2 == 0) {
                 btnTable.row();
             }
-            MyButton chooseLevelBtn = createChooseLevelBtn(level, i);
-            btnTable.add(chooseLevelBtn)
-                    .padLeft(padSide / 2).padRight(padSide / 2).width(btnSize.getWidth() * 1.5f).height(btnSize.getHeight() * 1.5f);
-            if (i == 0) {
-                btnTable.padBottom(padSide);
-            }
-            i++;
-            chooseLevelBtn.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+//            MyButton chooseLevelBtn = createChooseLevelBtn(level, i);
+//            btnTable.add(chooseLevelBtn)
+//                    .padLeft(padSide / 2).padRight(padSide / 2).width(btnSize.getWidth() * 1.5f).height(btnSize.getHeight() * 1.5f);
+//            if (i == 0) {
+//                btnTable.padBottom(padSide);
+//            }
+//            i++;
+//            chooseLevelBtn.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         }
         float extraHeight = ScreenDimensionsManager.getScreenHeight() - btnTableHeight;
         table.add(createGameTitle()).height(extraHeight / 2).row();
@@ -90,27 +90,6 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         return new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
                         FontConfig.FONT_SIZE * 2f, 8f)).setText("Caterpillar ordering").build());
-    }
-
-    private MyButton createChooseLevelBtn(KidLearnEngWordsLevel level, int index) {
-        SkelClassicButtonSkin skin = SkelClassicButtonSkin.valueOf("KIDLEARN_ENGWORDS_" + index);
-        skin = kidLearnPreferencesManager.getLevelScore(level) == KidLearnEngWordsGameCreator.TOTAL_QUESTIONS ?
-                SkelClassicButtonSkin.valueOf("KIDLEARN_ENGWORDS_FIN_" + index) : skin;
-        MyButton btn = new ImageButtonBuilder(skin, Game.getInstance().getAbstractScreen())
-                .padBetweenImageAndText(1.3f)
-                .textBackground(MainResource.transparent_background)
-                .setFixedButtonSize(getChooseLevelBtnSize())
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        FontConfig.FONT_SIZE * 3f, 7f))
-                .setText(level.category)
-                .build();
-        btn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                getScreenManager().showGameScreen(new KidLearnGameContext(level));
-            }
-        });
-        return btn;
     }
 
     private ButtonSize getChooseLevelBtnSize() {

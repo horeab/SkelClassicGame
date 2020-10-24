@@ -7,6 +7,8 @@ import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnEngVerbGameCreator extends KidLearnMultipleItemsGameCreator {
 
+    public static final int TOTAL_ITEMS_OF_TYPE = 3;
+
     public KidLearnEngVerbGameCreator(KidLearnGameContext gameContext, KidLearnMultipleAnswersConfig config) {
         super(gameContext, config);
     }

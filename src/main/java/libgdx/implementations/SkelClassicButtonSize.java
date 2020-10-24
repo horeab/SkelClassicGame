@@ -18,6 +18,7 @@ public enum SkelClassicButtonSize implements ButtonSize {
     IMAGE_SPLIT_START_GAME_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 2f),
     IMAGE_SPLIT_NAVIG_BTN(MainDimen.side_btn_image.getDimen() * 1.2f, MainDimen.side_btn_image.getDimen() * 1.2f),
 
+    KIDLEARN_MAIN_MENU_LEVEL(MainDimen.side_btn_image.getDimen() * 4f, MainDimen.side_btn_image.getDimen() * 4f),
     KIDLEARN_CHOOSE_LEVEL(MainDimen.side_btn_image.getDimen() * 5f, MainDimen.side_btn_image.getDimen() * 5f),
     KIDLEARN_ENG_WORDS_LEVEL(MainDimen.side_btn_image.getDimen() * 3f, MainDimen.side_btn_image.getDimen() * 3f),
     KIDLEARN_MATH_CATER_LEVEL(MainDimen.side_btn_image.getDimen() * 7f, MainDimen.side_btn_image.getDimen() * 2f),

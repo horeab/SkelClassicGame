@@ -24,6 +24,10 @@ public enum KidLearnSciLevel implements KidLearnLevel {
     }
 
     @Override
+    public KidLearnQuestionDifficultyLevel difficulty() {
+        return difficulty;
+    }
+    @Override
     public String title() {
         return title.getText();
     }
