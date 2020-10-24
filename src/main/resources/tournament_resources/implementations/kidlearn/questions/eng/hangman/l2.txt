@@ -1,0 +1,10 @@
+Spoon
+Fork
+Knife
+Bottle
+Napkin
+Cup
+Jar
+Glass
+Teapot
+Fridge

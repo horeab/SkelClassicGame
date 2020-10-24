@@ -1,0 +1,12 @@
+0:Ball
+0:Shoes
+0:Bicycle
+0:Snowboard
+0:Bow
+0:Glasses
+1:Play
+1:Swim
+1:Run
+1:Ride
+1:Jump
+1:Dive

@@ -1,0 +1,11 @@
+Circle
+Triangle
+Square
+Oval
+Heart
+Diamond
+Star
+Rectangle
+Pentagon
+Hexagon
+Octagon

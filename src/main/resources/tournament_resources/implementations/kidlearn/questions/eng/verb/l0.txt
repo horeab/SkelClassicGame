@@ -1,0 +1,12 @@
+0:Pencil
+0:Book
+0:Math
+0:Geography
+0:Pen
+0:Notebook
+1:Read
+1:Write
+1:Sing
+1:Learn
+1:Listen
+1:Talk

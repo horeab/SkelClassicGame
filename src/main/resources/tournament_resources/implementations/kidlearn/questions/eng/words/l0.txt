@@ -1,0 +1,15 @@
+Horse
+Cow
+Dog
+Lion
+Cat
+Bear
+Tiger
+Wolf
+Monkey
+Elephant
+Snake
+Rhino
+Giraffe
+Hippo
+Tortoise
