@@ -4,21 +4,19 @@ import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterOrdLevel;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciFeedLevel;
 import libgdx.screen.AbstractScreenManager;
 
 public class KidLearnScreenManager extends AbstractScreenManager {
 
     @Override
     public void showMainScreen() {
-        showScreen(KidLearnScreenTypeEnum.MAIN_SCREEN);
-//        showLevelScreen(KidLearnMathCaterSeqLevel.class);
-        showLevelScreen(KidLearnSciLevel.class);
-        showGameScreen(new KidLearnGameContext(KidLearnSciLevel.L0));
+        showLevelScreen(KidLearnSciFeedLevel.class);
         showGameScreen(new KidLearnGameContext(KidLearnMathCaterOrdLevel.L0));
         showGameScreen(new KidLearnGameContext(KidLearnEngHangmanLevel.L0));
-        showLevelScreen(KidLearnEngWordsLevel.class);
         showScreen(KidLearnScreenTypeEnum.MAIN_SCREEN);
+        showGameScreen(new KidLearnGameContext(KidLearnSciFeedLevel.L0));
+        showLevelScreen(KidLearnSciFeedLevel.class);
     }
 
     public void showGameScreen(KidLearnGameContext gameContext) {

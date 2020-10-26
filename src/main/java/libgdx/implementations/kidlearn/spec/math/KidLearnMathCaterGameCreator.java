@@ -1,6 +1,7 @@
 package libgdx.implementations.kidlearn.spec.math;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -66,7 +67,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
                 res = KidLearnSpecificResource.cater_unk;
                 nr = null;
             }
-            Stack imgStack = addResponseImg(coord, res, getNrFromFloat(nr));
+            Table imgStack = addResponseImg(coord, res, getNrFromFloat(nr));
             if (nr == null) {
                 unknownImg.add(new KidLearnImgInfo(coord, imgStack, String.valueOf(allCorrectNumbers.get(i))));
             }

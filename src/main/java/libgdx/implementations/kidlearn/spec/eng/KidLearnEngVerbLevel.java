@@ -1,9 +1,14 @@
 package libgdx.implementations.kidlearn.spec.eng;
 
+import org.apache.commons.lang3.EnumUtils;
+
 import libgdx.implementations.kidlearn.KidLearnQuestionDifficultyLevel;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
+import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.resources.gamelabel.GameLabel;
+import libgdx.utils.SoundUtils;
 
 public enum KidLearnEngVerbLevel implements KidLearnLevel, KidLearnEngLevel {
 

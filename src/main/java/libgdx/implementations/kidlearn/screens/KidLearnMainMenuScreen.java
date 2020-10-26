@@ -17,7 +17,7 @@ import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngLevel;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterLevel;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSciLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciFeedLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
@@ -44,7 +44,7 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
         float margin = MainDimen.horizontal_general_margin.getDimen() * 3;
         table.add(createOptionBtn(KidLearnMathCaterLevel.class, KidLearnGameLabel.l_math_title.getText())).pad(margin);
         table.add(createOptionBtn(KidLearnEngLevel.class, KidLearnGameLabel.l_eng_title.getText())).pad(margin);
-        table.add(createOptionBtn(KidLearnSciLevel.class, KidLearnGameLabel.l_sci_title.getText())).pad(margin);
+        table.add(createOptionBtn(KidLearnSciFeedLevel.class, KidLearnGameLabel.l_sci_title.getText())).pad(margin);
         return table;
     }
 

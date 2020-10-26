@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 
@@ -69,26 +70,28 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         createOptionsContainer();
     }
 
-    protected Stack addOptionImg(Pair<Float, Float> coord, Res res, String text) {
-        Stack img = addImg(coord, res, getOptionWidth(), text);
+    protected Table addOptionImg(Pair<Float, Float> coord, Res res, String text) {
+        Table img = addImg(coord, res, getOptionWidth(), text);
         img.setWidth(getOptionWidth());
         img.setHeight(getOptionHeight());
         return img;
     }
 
-    protected Stack addResponseImg(Pair<Float, Float> coord, Res res, String text) {
-        Stack img = addImg(coord, res, getResponseWidth(), text);
+    protected Table addResponseImg(Pair<Float, Float> coord, Res res, String text) {
+        Table img = addImg(coord, res, getResponseWidth(), text);
         img.setWidth(getResponseWidth());
         img.setHeight(getResponseHeight());
         return img;
     }
 
-    private Stack addImg(Pair<Float, Float> coord, Res res, float labelWidth, String text) {
+    private Table addImg(Pair<Float, Float> coord, Res res, float labelWidth, String text) {
         Stack img = createImgTextStack(text, labelWidth, res);
-        img.setX(coord.getLeft());
-        img.setY(coord.getRight());
-        addActorToScreen(img);
-        return img;
+        Table table = new Table();
+        table.add(img);
+        table.setX(coord.getLeft());
+        table.setY(coord.getRight());
+        addActorToScreen(table);
+        return table;
     }
 
     protected void createResetBtn() {
@@ -116,16 +119,23 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         alreadyMovedOptionImg.clear();
         for (KidLearnImgInfo unkInfo : unknownImg) {
             unkInfo.img.addAction(Actions.fadeIn(UNK_FADE_DURATION));
+            executeOptionResetAnimation(unkInfo.img);
         }
         for (KidLearnImgInfo learnImgInfo : optionsImg) {
             Pair<Float, Float> initialCoord = learnImgInfo.initialCoord;
             learnImgInfo.img.addAction(Actions.moveTo(initialCoord.getLeft(), initialCoord.getRight(), OPT_MOVE_DURATION));
             learnImgInfo.img.setTouchable(Touchable.enabled);
-            executeResetAnimation(learnImgInfo.img);
+            executeOptionResetAnimation(learnImgInfo.img);
         }
     }
 
-    protected void executeResetAnimation(Stack img) {
+    protected void executeResponseResetAnimation(Table img) {
+    }
+
+    protected void executeOptionResetAnimation(Table img) {
+    }
+
+    protected void executeOnDragStart(KidLearnImgInfo opt) {
     }
 
     private void createOptionsContainer() {
@@ -134,10 +144,18 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         for (Pair<String, Res> option : allOptions) {
             int itemsAlreadyAdded = optionsImg.size();
             Pair<Float, Float> coord = getCoordsForOptionRow(itemsAlreadyAdded);
-            Stack img = addOptionImg(coord, option.getRight(), option.getLeft());
+            Table img = addOptionImg(coord, option.getRight(), option.getLeft());
             KidLearnImgInfo opt = new KidLearnImgInfo(coord, img, option.getLeft());
             optionsImg.add(opt);
             img.addListener(new DragListener() {
+
+                @Override
+                public void dragStart(InputEvent event, float x, float y, int pointer) {
+                    if (!alreadyMovedOptionImg.contains(opt)) {
+                        executeOnDragStart(opt);
+                    }
+                }
+
                 @Override
                 public void drag(InputEvent event, float x, float y, int pointer) {
                     if (!alreadyMovedOptionImg.contains(opt)) {
@@ -156,7 +174,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
                     float acceptedDistHeight = getAcceptedDistanceForDropHeight();
                     boolean noMatch = true;
                     for (KidLearnImgInfo unkInfo : unknownImg) {
-                        Stack unk = unkInfo.img;
+                        Table unk = unkInfo.img;
                         if ((unk.getX() - acceptedDistWidth < img.getX() && unk.getX() + responseSideDimenWidth + acceptedDistWidth > (img.getX() + optionWidth))
                                 &&
                                 (unk.getY() - acceptedDistHeight < img.getY() && unk.getY() + responseSideDimenHeight + acceptedDistHeight > (img.getY() + optionHeight))
@@ -164,7 +182,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
                         ) {
                             opt.img.addAction(Actions.moveTo(dragStopMoveToX(unk), dragStopMoveToY(unk), 0.3f));
                             noMatch = false;
-                            unk.addAction(Actions.sequence(getActionsToExecuteForResponseAfterCorrect()));
+                            unk.addAction(Actions.sequence(getActionsToExecuteForResponseAfterDragStop()));
                             opt.img.setTouchable(Touchable.disabled);
                             alreadyMovedOptionImg.add(opt);
                             alreadyFilledUnknownImg.add(unkInfo);
@@ -181,11 +199,11 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         }
     }
 
-    protected float dragStopMoveToY(Stack unk) {
+    protected float dragStopMoveToY(Table unk) {
         return unk.getY();
     }
 
-    protected float dragStopMoveToX(Stack unk) {
+    protected float dragStopMoveToX(Table unk) {
         return unk.getX();
     }
 
@@ -193,16 +211,16 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         return !alreadyFilledUnknownImg.contains(unkInfo);
     }
 
-    protected void executeAnimationAfterDragStop(Stack opt, Stack unk) {
+    protected void executeAnimationAfterDragStop(Table opt, Table unk) {
     }
 
 
-    protected Action[] getActionsToExecuteForResponseAfterCorrect() {
+    protected Action[] getActionsToExecuteForResponseAfterDragStop() {
         return new AlphaAction[]{Actions.fadeOut(UNK_FADE_DURATION)};
     }
 
-    protected Stack getLastAddedImgInContainer(float containerX) {
-        Stack res = null;
+    protected Table getLastAddedImgInContainer(float containerX) {
+        Table res = null;
         for (KidLearnImgInfo info : alreadyMovedOptionImg) {
             if (info.img.getX() == containerX) {
                 res = info.img;
@@ -246,7 +264,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         Stack stack = new Stack();
         stack.add(GraphicUtils.getImage(res));
         MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(labelWidth)
-                .setFontConfig(getOptionFontConfig(text)).setText(text).build());
+                .setFontConfig(getImgStackTextFontConfig(text)).setText(text).build());
         stack.add(textLabel);
         textLabel.toFront();
         return stack;
@@ -263,7 +281,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         return fontSize;
     }
 
-    protected FontConfig getOptionFontConfig(String text) {
+    protected FontConfig getImgStackTextFontConfig(String text) {
         return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
                 getOptionFontSize(text), 3f);
     }

@@ -1,6 +1,7 @@
 package libgdx.implementations.kidlearn.spec.eng;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -21,11 +22,15 @@ import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
+import libgdx.implementations.kidlearn.KidLearnQuestionDifficultyLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameCreator;
+import libgdx.implementations.kidlearn.spec.KidLearnLevel;
+import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
@@ -42,6 +47,12 @@ public class KidLearnEngHangmanGameCreator extends KidLearnGameCreator {
         super(gameContext);
         this.kidLearnWordImgConfig = kidLearnWordImgConfig;
         this.allAnswerButtons = createAnswerOptionsButtons();
+        Game.getInstance().getAbstractScreen().addAction(Actions.sequence(Actions.delay(0.5f), Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                KidLearnUtils.playSoundForEnum(kidLearnWordImgConfig.word);
+            }
+        })));
     }
 
     @Override

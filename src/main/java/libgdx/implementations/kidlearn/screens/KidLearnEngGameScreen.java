@@ -41,7 +41,7 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
         hoverBackButton.toFront();
         if (gameContext.level instanceof KidLearnEngWordsLevel) {
             KidLearnEngWordsLevel inst = (KidLearnEngWordsLevel) gameContext.level;
-            List<String> wordsToPlay = KidLearnUtils.getLevelListValsToPlay(gameContext, inst.totalUnknownItems, KidLearnUtils.getWords(gameContext.level));
+            List<String> wordsToPlay = KidLearnUtils.getRandomLevelListValsToPlay(gameContext, inst.totalUnknownItems, KidLearnUtils.getWords(gameContext.level));
             Collections.shuffle(wordsToPlay);
             List<KidLearnWordImgConfig> configs = new ArrayList<>();
             for (String word : wordsToPlay) {

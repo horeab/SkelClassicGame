@@ -1,17 +1,17 @@
-package libgdx.implementations.kidlearn.spec.eng;
+package libgdx.implementations.kidlearn.spec.sci;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
-import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleAnswersConfig;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsGameCreator;
-import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.utils.ScreenDimensionsManager;
 
-public class KidLearnEngVerbGameCreator extends KidLearnMultipleItemsGameCreator {
+public class KidLearnSciStateGameCreator extends KidLearnMultipleItemsGameCreator {
 
-    public static final int TOTAL_ITEMS_OF_TYPE = 3;
+    public static final int TOTAL_ITEMS_OF_TYPE = 2;
 
-    public KidLearnEngVerbGameCreator(KidLearnGameContext gameContext, KidLearnMultipleAnswersConfig config) {
+    public KidLearnSciStateGameCreator(KidLearnGameContext gameContext, KidLearnMultipleAnswersConfig config) {
         super(gameContext, config);
     }
 
@@ -37,11 +37,12 @@ public class KidLearnEngVerbGameCreator extends KidLearnMultipleItemsGameCreator
 
     @Override
     protected float getResponseHeight() {
-        return super.getResponseHeight() * 2.5f;
+        return super.getResponseHeight() * 2.2f;
     }
 
     @Override
-    protected void executeOnDragStart(KidLearnImgInfo opt) {
-        KidLearnUtils.playSoundForEnum(opt.val);
+    protected float getUnkOptionX(Table unk) {
+        return unk.getX() + unk.getWidth() / 4.3f;
     }
+
 }

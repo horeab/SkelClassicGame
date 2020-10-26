@@ -1,7 +1,7 @@
 package libgdx.implementations.kidlearn.spec;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -11,19 +11,39 @@ import java.util.List;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
-import libgdx.implementations.kidlearn.spec.sci.KidLearnSingleLabelConfig;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnArrowConfig;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnArrowsConfig;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
+import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     public static final int TOTAL_QUESTIONS = 2;
-    KidLearnSingleLabelConfig config;
+    KidLearnArrowsConfig config;
 
-    public KidLearnVerticalGameCreator(KidLearnGameContext gameContext, KidLearnSingleLabelConfig config) {
+    public KidLearnVerticalGameCreator(KidLearnGameContext gameContext, KidLearnArrowsConfig config) {
         super(gameContext);
         this.config = config;
+    }
+
+    @Override
+    public void create() {
+        addMainImg();
+        super.create();
+    }
+
+    private void addMainImg() {
+        Image img = GraphicUtils.getImage(config.mainImg);
+        float availableScreenHeight = getAvailableScreenHeight();
+        float newWidthForNewHeight = ScreenDimensionsManager.getNewWidthForNewHeight(availableScreenHeight, img);
+        img.setHeight(availableScreenHeight);
+        img.setWidth(newWidthForNewHeight);
+
+        img.setX((getResponsesRowX() - newWidthForNewHeight) / 2);
+        img.setY((ScreenDimensionsManager.getScreenHeight() - availableScreenHeight) / 2);
+        addActorToScreen(img);
     }
 
     @Override
@@ -51,13 +71,14 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected Pair<Float, Float> getCoordsForResponseRow(int index) {
-        return createImgCoord(index, getTotalItems(), getResponsesRowX());
+        Pair<Float, Float> imgCoord = createImgCoord(index, getTotalItems(), getResponsesRowX());
+        return Pair.of(imgCoord.getLeft(), config.words.get(index).wordY * getAvailableScreenHeight() - getOptionHeight() / 2);
     }
 
     @Override
     protected Pair<Float, Float> getCoordsForOptionRow(int index) {
         int screenHeight = ScreenDimensionsManager.getScreenHeight();
-        float availableScreenHeight = screenHeight / 1.2f;
+        float availableScreenHeight = getAvailableScreenHeight();
         float partHeight = availableScreenHeight / getTotalOptions();
         float halfScreen = ScreenDimensionsManager.getScreenWidthValue(50);
         float halfQ = halfScreen / 4;
@@ -66,14 +87,14 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
             x = x + halfQ * 1.3f;
         }
         float y = (screenHeight - availableScreenHeight)
-                + partHeight * 1.3f * Math.floorDiv(index + 1, 2);
-        y = y + screenHeight / 10;
+                + partHeight / 1.3f * Math.floorDiv(index + 1, 2);
+        y = y + screenHeight / 10f;
         return Pair.of(x, y);
     }
 
     private Pair<Float, Float> createImgCoord(int index, int totalNr, float x) {
         int screenHeight = ScreenDimensionsManager.getScreenHeight();
-        float availableScreenHeight = screenHeight / 1.2f;
+        float availableScreenHeight = getAvailableScreenHeight();
         float partHeight = availableScreenHeight / totalNr;
         float y = (screenHeight - availableScreenHeight) / 2
                 + partHeight / 2
@@ -82,34 +103,40 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         return Pair.of(x, y);
     }
 
+    private float getAvailableScreenHeight() {
+        int screenHeight = ScreenDimensionsManager.getScreenHeight();
+        return screenHeight / 1.2f;
+    }
+
     @Override
     protected void createAllItemsContainer() {
         for (int i = 0; i < config.words.size(); i++) {
             Pair<Float, Float> coord = getCoordsForResponseRow(i);
-            String word = this.config.words.get(i);
-            Stack imgStack = addResponseImg(coord, MainResource.heart_full, word);
+            KidLearnArrowConfig config = this.config.words.get(i);
+            String word = config.word;
+            Table imgStack = addResponseImg(coord, KidLearnSpecificResource.arrow_left, "");
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, word));
-            addRespArrow(coord);
+            addRespArrow(coord, config.arrowX);
         }
     }
 
-    protected void addRespArrow(Pair<Float, Float> coord) {
+    private void addRespArrow(Pair<Float, Float> coord, float arrowX) {
+        float arrowWidth = getResponsesRowX() * arrowX;
         Image image = GraphicUtils.getImage(KidLearnSpecificResource.arrow_left);
-        image.setWidth(SkelClassicButtonSize.KIDLEARN_RESPONSE_ARROW.getWidth());
+        image.setWidth(arrowWidth);
         image.setHeight(SkelClassicButtonSize.KIDLEARN_RESPONSE_ARROW.getHeight());
-        image.setX(coord.getLeft()-image.getWidth());
-        image.setY(coord.getRight());
+        image.setX(coord.getLeft() - image.getWidth());
+        image.setY(coord.getRight() + image.getHeight() / 2);
         addActorToScreen(image);
     }
 
     @Override
     protected void sortAlreadyMovedOptionImg() {
-
     }
 
     @Override
     protected float getAcceptedDistanceForDropHeight() {
-        return getOptionHeight();
+        return getOptionHeight() / 3;
     }
 
     private float getResponsesRowX() {
@@ -130,19 +157,19 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
     @Override
     protected List<Pair<String, Res>> getAllOptions() {
         List<Pair<String, Res>> opt = new ArrayList<>();
-        for (String word : config.words) {
-            opt.add(Pair.of(word, KidLearnSpecificResource.word_unk));
+        for (KidLearnArrowConfig word : config.words) {
+            opt.add(Pair.of(word.word, KidLearnSpecificResource.word_unk));
         }
         return opt;
     }
 
     @Override
     protected float getOptionWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(20);
+        return ScreenDimensionsManager.getScreenWidthValue(17);
     }
 
     @Override
     protected float getOptionHeight() {
-        return ScreenDimensionsManager.getScreenHeightValue(5);
+        return ScreenDimensionsManager.getScreenHeightValue(9);
     }
 }

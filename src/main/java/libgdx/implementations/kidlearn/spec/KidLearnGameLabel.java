@@ -41,7 +41,12 @@ public enum KidLearnGameLabel implements libgdx.resources.gamelabel.GameLabel {
     l_sci_feed,
     l_sci_recy,
     l_sci_state,
+    l_sci_state_liquid,
+    l_sci_state_solid,
+    l_sci_state_gas,
     l_sci_body,
+    l_sci_plant,
+    l_sci_skel,
     ;
 
     @Override

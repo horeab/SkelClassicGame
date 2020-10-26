@@ -3,6 +3,7 @@ package libgdx.implementations.kidlearn.spec;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -67,7 +68,7 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
         int i = 0;
         for (Map.Entry<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> e : config.responseWithAnswers.entrySet()) {
             Pair<Float, Float> coord = getCoordsForResponseRow(i);
-            Stack imgStack = addResponseImg(coord, e.getKey().img, e.getKey().word);
+            Table imgStack = addResponseImg(coord, e.getKey().img, e.getKey().word);
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, e.getKey().word));
             i++;
         }
@@ -84,7 +85,7 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
     }
 
     @Override
-    protected Action[] getActionsToExecuteForResponseAfterCorrect() {
+    protected Action[] getActionsToExecuteForResponseAfterDragStop() {
         return new Action[0];
     }
 
@@ -146,16 +147,16 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
     }
 
     @Override
-    protected float dragStopMoveToY(Stack unk) {
+    protected float dragStopMoveToY(Table unk) {
         return unk.getY() + unk.getHeight() / 1.6f;
     }
 
     @Override
-    protected float dragStopMoveToX(Stack unk) {
+    protected float dragStopMoveToX(Table unk) {
         return getUnkOptionX(unk);
     }
 
-    private float getUnkOptionX(Stack unk) {
+    protected float getUnkOptionX(Table unk) {
         return unk.getX() + unk.getWidth() / 5.75f;
     }
 
@@ -164,7 +165,7 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
     }
 
     @Override
-    protected void executeResetAnimation(Stack img) {
+    protected void executeOptionResetAnimation(Table img) {
         if (SCALED_MARKER.equals(img.getUserObject())) {
             img.addAction(Actions.scaleBy(SCALE, SCALE, SCALE_DURATION));
             img.setUserObject(null);
@@ -173,13 +174,13 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
 
 
     @Override
-    protected void executeAnimationAfterDragStop(Stack opt, Stack unk) {
+    protected void executeAnimationAfterDragStop(Table opt, Table unk) {
         if (!SCALED_MARKER.equals(opt.getUserObject())) {
             opt.setTransform(true);
             opt.addAction(Actions.scaleBy(-SCALE, -SCALE, SCALE_DURATION));
             opt.setUserObject(SCALED_MARKER);
         }
-        Stack lastAddedImg = getLastAddedImgInContainer(getUnkOptionX(unk));
+        Table lastAddedImg = getLastAddedImgInContainer(getUnkOptionX(unk));
         if (lastAddedImg != null) {
             opt.addAction(Actions.moveTo(lastAddedImg.getX(),
                     lastAddedImg.getY() - lastAddedImg.getHeight() / 3, 0.3f));

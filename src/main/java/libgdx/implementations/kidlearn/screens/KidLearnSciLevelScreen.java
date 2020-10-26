@@ -4,30 +4,32 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import libgdx.controls.animations.ActorAnimation;
+import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSize;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
-import libgdx.controls.button.builders.ImageButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
+import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
+import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
-import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
-import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciBodyLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciFeedLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
-import libgdx.utils.EnumUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
@@ -48,52 +50,81 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
 
     private void createChooseLevelMenu() {
         Table table = new Table();
-        ButtonSize btnSize = getChooseLevelBtnSize();
         Table btnTable = new Table();
-        float btnTableHeight = ScreenDimensionsManager.getScreenHeightValue(70);
-        float padSide = MainDimen.horizontal_general_margin.getDimen() * 5;
+        List<KidLearnSciBodyLevel> bodyLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnSciBodyLevel.class, difficultyLevelClass());
+        List<KidLearnSciFeedLevel> feedLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnSciFeedLevel.class, difficultyLevelClass());
+        List<KidLearnSciRecyLevel> recyLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnSciRecyLevel.class, difficultyLevelClass());
+        List<KidLearnSciStateLevel> stateLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnSciStateLevel.class, difficultyLevelClass());
         int i = 0;
-        List<KidLearnEngWordsLevel> allLevels = new ArrayList<>();
-        Class<KidLearnEngWordsLevel> enumClass = KidLearnEngWordsLevel.class;
-        for (KidLearnEngWordsLevel val : EnumUtils.getValues(enumClass)) {
-            if (val.difficulty == kidLearnPreferencesManager.getDifficultyLevel(enumClass)) {
-                allLevels.add(val);
-            }
+        for (KidLearnSciBodyLevel level : bodyLevels) {
+            addLevelToTable(btnTable, i, level);
+            i++;
         }
-        for (KidLearnEngWordsLevel level : allLevels) {
-            if (i > 0 && i % 2 == 0) {
-                btnTable.row();
-            }
-//            MyButton chooseLevelBtn = createChooseLevelBtn(level, i);
-//            btnTable.add(chooseLevelBtn)
-//                    .padLeft(padSide / 2).padRight(padSide / 2).width(btnSize.getWidth() * 1.5f).height(btnSize.getHeight() * 1.5f);
-//            if (i == 0) {
-//                btnTable.padBottom(padSide);
-//            }
-//            i++;
-//            chooseLevelBtn.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+        for (KidLearnSciFeedLevel level : feedLevels) {
+            addLevelToTable(btnTable, i, level);
+            i++;
         }
+        for (KidLearnSciRecyLevel level : recyLevels) {
+            addLevelToTable(btnTable, i, level);
+            i++;
+        }
+        for (KidLearnSciStateLevel level : stateLevels) {
+            addLevelToTable(btnTable, i, level);
+            i++;
+        }
+        float btnTableHeight = ScreenDimensionsManager.getScreenHeightValue(70);
         float extraHeight = ScreenDimensionsManager.getScreenHeight() - btnTableHeight;
         table.add(createGameTitle()).height(extraHeight / 2).row();
         table.add().height(extraHeight / 2).row();
         Table contentContainer = new Table();
+        Table difficultyButtonsTable = kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), false);
+        contentContainer.add(difficultyButtonsTable).height(ScreenDimensionsManager.getScreenHeightValue(10)).top().row();
         contentContainer.add(btnTable).top().height(btnTableHeight);
-        Table difficultyButtonsTable = kidLearnDifficultyService.createDifficultyButtonsTable(enumClass, true);
-        difficultyButtonsTable.toBack();
-        contentContainer.add(difficultyButtonsTable).width(ScreenDimensionsManager.getScreenWidthValue(20)).top().height(btnTableHeight);
         table.add(contentContainer).top().height(btnTableHeight);
         new ActorAnimation(table, getAbstractScreen()).animateFastFadeIn();
         getAllTable().add(table).grow();
     }
 
+    private <T extends Enum & KidLearnLevel & KidLearnSciLevel> void addLevelToTable(Table btnTable, int i, T level) {
+        int colspan = 1;
+        MyButton chooseLevelBtn = createChooseLevelBtn(level, i);
+        float padSide = MainDimen.horizontal_general_margin.getDimen();
+        ButtonSize buttonSize = getChooseLevelBtnSize();
+        btnTable.add(chooseLevelBtn).colspan(colspan)
+                .padLeft(padSide).padBottom(padSide).width(buttonSize.getWidth()).height(buttonSize.getHeight());
+        chooseLevelBtn.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
+    }
+
+    public static Class<KidLearnSciFeedLevel> difficultyLevelClass() {
+        return KidLearnSciFeedLevel.class;
+    }
+
     private Table createGameTitle() {
         return new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        FontConfig.FONT_SIZE * 2f, 8f)).setText("Caterpillar ordering").build());
+                        FontConfig.FONT_SIZE * 2f, 8f)).setText(KidLearnGameLabel.l_sci_title.getText()).build());
+    }
+
+    private <T extends Enum & KidLearnLevel & KidLearnSciLevel> MyButton createChooseLevelBtn(T level, int index) {
+        ButtonSize btnSize = getChooseLevelBtnSize();
+        MyButton btn = new ButtonBuilder()
+                .setButtonSkin(SkelClassicButtonSkin.KIDLEARN_SCI_LEVEL)
+                .setFixedButtonSize(btnSize)
+                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                        FontConfig.FONT_SIZE, 4f))
+                .setText(level.title())
+                .build();
+        btn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                getScreenManager().showGameScreen(new KidLearnGameContext(level));
+            }
+        });
+        return btn;
     }
 
     private ButtonSize getChooseLevelBtnSize() {
-        return SkelClassicButtonSize.KIDLEARN_ENG_WORDS_LEVEL;
+        return SkelClassicButtonSize.KIDLEARN_SCI_LEVEL;
     }
 
 
