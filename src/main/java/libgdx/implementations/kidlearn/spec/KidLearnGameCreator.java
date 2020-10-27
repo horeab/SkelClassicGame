@@ -12,10 +12,12 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.SoundUtils;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
@@ -84,6 +86,7 @@ public abstract class KidLearnGameCreator {
 
 
     protected void executeCorrectAnswer() {
+        SoundUtils.playSound(KidLearnSpecificResource.level_success);
         gameContext.score = gameContext.score + 1;
         scoreLabel.setText(getScoreLabelText());
         new KidLearnPreferencesManager().putLevelScore(gameContext.level, gameContext.score);

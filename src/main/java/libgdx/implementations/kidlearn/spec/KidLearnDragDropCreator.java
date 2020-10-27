@@ -24,9 +24,11 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.SoundUtils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
@@ -247,6 +249,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (!isResponseCorrect()) {
+                        SoundUtils.playSound(KidLearnSpecificResource.level_fail);
                         executeReset();
                     } else {
                         verifyBtn.setTouchable(Touchable.disabled);
@@ -319,11 +322,11 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     }
 
     protected float getAcceptedDistanceForDropWidth() {
-        return getResponseWidth() / 4;
+        return getResponseWidth() / 3;
     }
 
     protected float getAcceptedDistanceForDropHeight() {
-        return getResponseHeight() / 4;
+        return getResponseHeight() / 3;
     }
 
     public List<KidLearnImgInfo> getAlreadyMovedOptionImg() {
