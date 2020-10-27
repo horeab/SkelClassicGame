@@ -3,18 +3,18 @@ package libgdx.startgame;
 import libgdx.constants.Language;
 import libgdx.game.Game;
 import libgdx.implementations.GameIdEnum;
-import libgdx.implementations.buylow.BuyLowGame;
 import libgdx.implementations.imagesplit.ImageSplitGame;
+import libgdx.implementations.kidlearn.KidLearnGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 
-public class ImageSplitStartGame {
+public class KidLearnStartGame {
 
     public static void main(String[] args) {
-        ImageSplitGame game = new ImageSplitGame(
+        KidLearnGame game = new KidLearnGame(
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.imagesplit.name();
+                        return GameIdEnum.kidlearn.name();
                     }
 
                     @Override
@@ -29,7 +29,12 @@ public class ImageSplitStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return "en";
+                        return Language.en.name();
+                    }
+
+                    @Override
+                    public boolean isPortraitMode() {
+                        return false;
                     }
                 });
         libgdx.utils.startgame.StartGame.main(game, args);
@@ -38,63 +43,63 @@ public class ImageSplitStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "Foto Puzzle";
+                return "Vzdělávací hry";
             case da:
-                return "Foto Puslespil";
+                return "Uddannelsesspil";
             case de:
-                return "Fotopuzzle";
+                return "Lernspiel";
             case el:
-                return "Παζλ φωτογραφιών";
+                return "Παιχνίδια εκμάθησης";
             case en:
-                return "Photo Puzzle Game";
+                return "Educational Games";
             case es:
-                return "Rompecabezas de Fotos";
+                return "Juegos educacionales";
             case fi:
-                return "Valokuvapulma";
+                return "Koulutuspelit";
             case fr:
-                return "Puzzle Photo";
+                return "Jeux éducatifs";
             case hi:
-                return "फोटो पहेली";
+                return "शैक्षिक खेल";
             case hr:
-                return "Foto Zagonetka";
+                return "Obrazovne igre";
             case hu:
-                return "Fotó Puzzle";
+                return "Oktatási játékok";
             case id:
-                return "Teka-teki Foto";
+                return "Game Edukasi";
             case it:
-                return "Puzzle di fotografia";
+                return "Giochi di apprendimento";
             case ja:
-                return "フォトパズルゲーム";
+                return "教育ゲーム";
             case ko:
-                return "사진 퍼즐 게임";
+                return "교육용 게임";
             case ms:
-                return "Teka-teki Gambar";
+                return "Permainan Pembelajaran";
             case nl:
-                return "Foto Puzzelspel";
+                return "Educatieve spellen";
             case no:
-                return "Fotopuslespill";
+                return "Pedagogiske spill";
             case pl:
-                return "Puzzle ze Zdjęciem";
+                return "Gry edukacyjne";
             case pt:
-                return "Quebra-cabeça de Fotos";
+                return "Jogo Educativo";
             case ro:
-                return "Puzzle cu Fotografii";
+                return "Jocuri educaționale";
             case ru:
-                return "Фото пазл";
+                return "Развивающая игра";
             case sk:
-                return "Foto Puzzle";
+                return "Vzdelávacie hry";
             case sv:
-                return "Fotopussel";
+                return "Pedagogiskt spel";
             case th:
-                return "ปริศนาภาพ";
+                return "เกมการศึกษา";
             case tr:
-                return "Fotoğraf Bulmaca";
+                return "Eğitici oyunlar";
             case uk:
-                return "Фото головоломка";
+                return "Навчальні ігри";
             case vi:
-                return "Câu đố ảnh";
+                return "Trò chơi giáo dục";
             case zh:
-                return "照片逻辑游戏";
+                return "教育游戏";
         }
         return null;
     }
