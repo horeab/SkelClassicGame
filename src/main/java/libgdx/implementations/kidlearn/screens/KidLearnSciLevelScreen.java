@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 import libgdx.controls.animations.ActorAnimation;
@@ -111,9 +113,14 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
                 .setButtonSkin(SkelClassicButtonSkin.KIDLEARN_SCI_LEVEL)
                 .setFixedButtonSize(btnSize)
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        FontConfig.FONT_SIZE, 4f))
+                        FontConfig.FONT_SIZE * 1.1f, 4f))
                 .setText(level.title())
                 .build();
+        btn.getCenterRow().row();
+        float imgSideDimen = MainDimen.side_btn_image.getDimen() * 2;
+        Table imgTable = new Table();
+        imgTable.add(GraphicUtils.getImage(level.categImg())).height(imgSideDimen).width(imgSideDimen);
+        btn.getCenterRow().add(imgTable).padTop(MainDimen.vertical_general_margin.getDimen() * 1.5f);
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

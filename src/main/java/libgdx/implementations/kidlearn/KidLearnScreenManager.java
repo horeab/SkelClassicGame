@@ -14,9 +14,9 @@ public class KidLearnScreenManager extends AbstractScreenManager {
         showLevelScreen(KidLearnSciFeedLevel.class);
         showGameScreen(new KidLearnGameContext(KidLearnMathCaterOrdLevel.L0));
         showGameScreen(new KidLearnGameContext(KidLearnEngHangmanLevel.L0));
-        showScreen(KidLearnScreenTypeEnum.MAIN_SCREEN);
         showGameScreen(new KidLearnGameContext(KidLearnSciFeedLevel.L0));
         showLevelScreen(KidLearnSciFeedLevel.class);
+        showScreen(KidLearnScreenTypeEnum.MAIN_SCREEN);
     }
 
     public void showGameScreen(KidLearnGameContext gameContext) {

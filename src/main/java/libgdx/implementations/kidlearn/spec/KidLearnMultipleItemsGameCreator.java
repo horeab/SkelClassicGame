@@ -2,7 +2,6 @@ package libgdx.implementations.kidlearn.spec;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import libgdx.controls.label.MyWrappedLabel;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
@@ -72,6 +72,12 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, e.getKey().word));
             i++;
         }
+    }
+
+    @Override
+    protected void processResponseTextLabel(MyWrappedLabel label) {
+        label.bottom();
+        label.padBottom(MainDimen.vertical_general_margin.getDimen());
     }
 
     @Override

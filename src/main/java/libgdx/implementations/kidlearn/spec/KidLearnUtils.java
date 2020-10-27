@@ -16,6 +16,7 @@ import libgdx.implementations.kidlearn.spec.eng.KidLearnEngVerbLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciBodyLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciFeedLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateLevel;
 import libgdx.resources.Res;
 import libgdx.utils.SoundUtils;
@@ -92,6 +93,9 @@ public class KidLearnUtils {
         } else if (level instanceof KidLearnSciStateLevel) {
             gameId = "sci";
             categId = "state";
+        } else if (level instanceof KidLearnSciRecyLevel) {
+            gameId = "sci";
+            categId = "recy";
         }
         return new ArrayList<>(Arrays.asList(Gdx.files.internal(Game.getInstance().getAppInfoService().getImplementationGameResourcesFolder() + "questions/" + gameId + "/" + categId + "/" + level.name().toLowerCase() + ".txt").readString().split("\n")));
     }

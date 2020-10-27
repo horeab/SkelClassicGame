@@ -3,8 +3,8 @@ package libgdx.implementations.kidlearn.screens;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +15,7 @@ import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleAnswersConfig;
+import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsConfigCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnArrowConfig;
@@ -24,9 +25,10 @@ import libgdx.implementations.kidlearn.spec.sci.KidLearnSciBodyLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciFeedConfig;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciFeedGameCreator;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciFeedLevel;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyGameCreator;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateGameCreator;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateLevel;
-import libgdx.resources.Res;
 import libgdx.screen.AbstractScreen;
 
 public class KidLearnSciGameScreen extends AbstractScreen<KidLearnScreenManager> {
@@ -64,40 +66,21 @@ public class KidLearnSciGameScreen extends AbstractScreen<KidLearnScreenManager>
             }
             new KidLearnSciBodyGameCreator(gameContext, new KidLearnArrowsConfig(inst.mainImg, configs)).create();
         } else if (gameContext.level instanceof KidLearnSciStateLevel) {
-            List<String> words = KidLearnUtils.getWords(gameContext.level);
-            Collections.shuffle(words);
             KidLearnWordImgConfig solidConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_state_solid.getText(), KidLearnSpecificResource.solid_container);
             KidLearnWordImgConfig liqConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_state_liquid.getText(), KidLearnSpecificResource.liquid_container);
             KidLearnWordImgConfig gasConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_state_gas.getText(), KidLearnSpecificResource.gas_container);
-            Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> configs = new HashMap<>();
-            configs.put(liqConfig, new ArrayList<>());
-            configs.put(solidConfig, new ArrayList<>());
-            configs.put(gasConfig, new ArrayList<>());
-            for (String v : words) {
-                String[] split = v.split(":");
-                String word = split[1];
-                Res img = KidLearnUtils.getResource(word);
-                List<KidLearnWordImgConfig> solidConfigs = configs.get(solidConfig);
-                List<KidLearnWordImgConfig> liqConfigs = configs.get(liqConfig);
-                List<KidLearnWordImgConfig> gasConfigs = configs.get(gasConfig);
-                if (split[0].equals("0")
-                        && solidConfigs.size() < KidLearnSciStateGameCreator.TOTAL_ITEMS_OF_TYPE
-                        && !gameContext.playedValues.contains(word)) {
-                    solidConfigs.add(new KidLearnWordImgConfig(word, img));
-                    gameContext.playedValues.add(word);
-                } else if (split[0].equals("1")
-                        && liqConfigs.size() < KidLearnSciStateGameCreator.TOTAL_ITEMS_OF_TYPE
-                        && !gameContext.playedValues.contains(word)) {
-                    liqConfigs.add(new KidLearnWordImgConfig(word, img));
-                    gameContext.playedValues.add(word);
-                } else if (split[0].equals("2")
-                        && gasConfigs.size() < KidLearnSciStateGameCreator.TOTAL_ITEMS_OF_TYPE
-                        && !gameContext.playedValues.contains(word)) {
-                    gasConfigs.add(new KidLearnWordImgConfig(word, img));
-                    gameContext.playedValues.add(word);
-                }
-            }
+            Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> configs = new KidLearnMultipleItemsConfigCreator().create(gameContext, Arrays.asList(Pair.of(0, solidConfig),
+                    Pair.of(1, liqConfig), Pair.of(2, gasConfig)), KidLearnSciStateGameCreator.TOTAL_ITEMS_OF_TYPE);
             new KidLearnSciStateGameCreator(gameContext, new KidLearnMultipleAnswersConfig(configs)).create();
+        } else if (gameContext.level instanceof KidLearnSciRecyLevel) {
+            KidLearnWordImgConfig paperConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_recy_paper.getText(), KidLearnSpecificResource.paper_container);
+            KidLearnWordImgConfig plasticConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_recy_plastic.getText(), KidLearnSpecificResource.plastic_container);
+            KidLearnWordImgConfig glassConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_recy_glass.getText(), KidLearnSpecificResource.glass_container);
+            KidLearnWordImgConfig organicConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_recy_organic.getText(), KidLearnSpecificResource.organic_container);
+            Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> configs = new KidLearnMultipleItemsConfigCreator().create(gameContext,
+                    Arrays.asList(Pair.of(0, paperConfig), Pair.of(1, glassConfig), Pair.of(2, plasticConfig),
+                            Pair.of(3, organicConfig)), KidLearnSciRecyGameCreator.TOTAL_ITEMS_OF_TYPE);
+            new KidLearnSciRecyGameCreator(gameContext, new KidLearnMultipleAnswersConfig(configs)).create();
         }
     }
 

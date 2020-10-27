@@ -55,7 +55,7 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                         FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * mult * 1.2f),
+                        Math.round(FontConfig.FONT_SIZE * mult * 1.0f),
                         8f)).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
     }
 

@@ -71,21 +71,25 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     }
 
     protected Table addOptionImg(Pair<Float, Float> coord, Res res, String text) {
-        Table img = addImg(coord, res, getOptionWidth(), text);
+        String labelName = "OPTION_LABEL" + text;
+        Table img = addImg(coord, res, getOptionWidth(), labelName, text);
+        processOptionTextLabel(img.findActor(labelName));
         img.setWidth(getOptionWidth());
         img.setHeight(getOptionHeight());
         return img;
     }
 
     protected Table addResponseImg(Pair<Float, Float> coord, Res res, String text) {
-        Table img = addImg(coord, res, getResponseWidth(), text);
+        String labelName = "RESPONSE_LABEL" + text;
+        Table img = addImg(coord, res, getResponseWidth(), labelName, text);
+        processResponseTextLabel(img.findActor(labelName));
         img.setWidth(getResponseWidth());
         img.setHeight(getResponseHeight());
         return img;
     }
 
-    private Table addImg(Pair<Float, Float> coord, Res res, float labelWidth, String text) {
-        Stack img = createImgTextStack(text, labelWidth, res);
+    private Table addImg(Pair<Float, Float> coord, Res res, float labelWidth, String labelName, String text) {
+        Stack img = createImgTextStack(text, labelWidth, labelName, res);
         Table table = new Table();
         table.add(img);
         table.setX(coord.getLeft());
@@ -260,11 +264,13 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         verifyBtn.toFront();
     }
 
-    private Stack createImgTextStack(String text, float labelWidth, Res res) {
+    private Stack createImgTextStack(String text, float labelWidth, String labelName, Res res) {
         Stack stack = new Stack();
         stack.add(GraphicUtils.getImage(res));
-        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(labelWidth)
+        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setWidth(labelWidth)
                 .setFontConfig(getImgStackTextFontConfig(text)).setText(text).build());
+        textLabel.setName(labelName);
         stack.add(textLabel);
         textLabel.toFront();
         return stack;
@@ -279,6 +285,12 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 5 ? standardFontSize / 1.2f :
                 fontSize);
         return fontSize;
+    }
+
+    protected void processOptionTextLabel(MyWrappedLabel label) {
+    }
+
+    protected void processResponseTextLabel(MyWrappedLabel label) {
     }
 
     protected FontConfig getImgStackTextFontConfig(String text) {

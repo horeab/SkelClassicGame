@@ -1,8 +1,10 @@
 package libgdx.implementations.kidlearn.screens;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleAnswersConfig;
+import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsConfigCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanGameCreator;
@@ -21,7 +24,7 @@ import libgdx.implementations.kidlearn.spec.eng.KidLearnEngVerbLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
-import libgdx.resources.Res;
+import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateGameCreator;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 
@@ -50,31 +53,10 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
             Collections.shuffle(configs);
             new KidLearnEngWordsGameCreator(gameContext, new KidLearnEngWordsConfig(configs)).create();
         } else if (gameContext.level instanceof KidLearnEngVerbLevel) {
-            List<String> words = KidLearnUtils.getWords(gameContext.level);
-            Collections.shuffle(words);
             KidLearnWordImgConfig nounConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_eng_verb_noun.getText(), KidLearnSpecificResource.noun_container);
             KidLearnWordImgConfig verbConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_eng_verb_verb.getText(), KidLearnSpecificResource.verb_container);
-            Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> configs = new HashMap<>();
-            configs.put(nounConfig, new ArrayList<>());
-            configs.put(verbConfig, new ArrayList<>());
-            for (String v : words) {
-                String[] split = v.split(":");
-                String word = split[1];
-                Res img = KidLearnUtils.getResource(word);
-                List<KidLearnWordImgConfig> nounConfigs = configs.get(nounConfig);
-                List<KidLearnWordImgConfig> verbConfigs = configs.get(verbConfig);
-                if (split[0].equals("0")
-                        && nounConfigs.size() < KidLearnEngVerbGameCreator.TOTAL_ITEMS_OF_TYPE
-                        && !gameContext.playedValues.contains(word)) {
-                    nounConfigs.add(new KidLearnWordImgConfig(word, img));
-                    gameContext.playedValues.add(word);
-                } else if (split[0].equals("1")
-                        && verbConfigs.size() < KidLearnEngVerbGameCreator.TOTAL_ITEMS_OF_TYPE
-                        && !gameContext.playedValues.contains(word)) {
-                    verbConfigs.add(new KidLearnWordImgConfig(word, img));
-                    gameContext.playedValues.add(word);
-                }
-            }
+            Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> configs = new KidLearnMultipleItemsConfigCreator().create(gameContext,
+                    Arrays.asList(Pair.of(0, nounConfig), Pair.of(1, verbConfig)), KidLearnEngVerbGameCreator.TOTAL_ITEMS_OF_TYPE);
             new KidLearnEngVerbGameCreator(gameContext, new KidLearnMultipleAnswersConfig(configs)).create();
         } else {
             List<String> words = KidLearnUtils.getWords(gameContext.level);

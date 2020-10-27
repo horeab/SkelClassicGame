@@ -8,6 +8,7 @@ import java.util.List;
 
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonSize;
+import libgdx.controls.button.ButtonSkin;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.button.builders.ImageButtonBuilder;
@@ -16,7 +17,6 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
-import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
@@ -26,7 +26,6 @@ import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngVerbLevel;
-import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
@@ -110,9 +109,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
     }
 
     private <T extends Enum & KidLearnLevel & KidLearnEngLevel> MyButton createChooseLevelBtn(T level, int index) {
-        SkelClassicButtonSkin skin = SkelClassicButtonSkin.valueOf("KIDLEARN_ENGWORDS_" + index);
-        skin = kidLearnPreferencesManager.getLevelScore(level) == KidLearnEngWordsGameCreator.TOTAL_QUESTIONS ?
-                SkelClassicButtonSkin.valueOf("KIDLEARN_ENGWORDS_FIN_" + index) : skin;
+        ButtonSkin skin = level.buttonSkin();
         ButtonSize btnSize = getChooseLevelBtnSize();
         MyButton btn = new ImageButtonBuilder(skin, Game.getInstance().getAbstractScreen())
                 .padBetweenImageAndText(1.3f)

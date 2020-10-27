@@ -16,6 +16,7 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
@@ -110,9 +111,9 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
         Table table = new Table();
         Pair<String, String> levelText = getLevelText(level, levelMax, levelMin, asc, interval);
         MyButton btn = new ButtonBuilder()
+                .setButtonSkin(SkelClassicButtonSkin.KIDLEARN_HANGMAN_LETTER)
                 .setFontConfig(createBtnFontConfig(FontConfig.FONT_SIZE / 1.2f, 4f))
                 .setWrappedText(levelText.getLeft(), getLevelBtnSize().getWidth())
-                .setDefaultButton()
                 .setFixedButtonSize(getLevelBtnSize())
                 .build();
         btn.getCenterRow().row();
