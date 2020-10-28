@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: กล่องนม
+0: โน๊ตบุ๊ค
+1: กระจกแตก
+1: โถ
+2: ขวดแชมพู
+2: ขวดซอสมะเขือเทศ
+3: เปลือกกล้วย
+3: เศษอาหาร

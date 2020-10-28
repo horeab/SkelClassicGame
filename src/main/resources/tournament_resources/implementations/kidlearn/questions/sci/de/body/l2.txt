@@ -1,5 +1,5 @@
 Schädel: 0,9: 0,5
 Wirbelsäule: 0,7: 0,8
-Rippen: 0,6: 0,5
+Brustkorb: 0,6: 0,5
 Femur: 0,5: 0,2
 Tibia: 0,2: 0,5

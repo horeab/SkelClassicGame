@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Natural gas
+0: Jää
+0: Lyijykynä
+0: Paperi
+0: Auto
+1: Vesi
+1: Sade
+1: Tee
+1: Maito
+2: Höyry
+2: Pilvi
+2: Ilma
+2: Maakaasu

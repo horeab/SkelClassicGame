@@ -1,10 +1,10 @@
-Lion + Meat
-Rabbit + Carrot
-Penguin + Fish
-Squirrel + Acorn
-Monkey + Banana
-Giraffe + Leaves
-Dog + Bone
-Mouse + Seeds
-Dolphin + Fish
-Frog + Mosquito
+Aslan + Et
+Tavşan + Havuç
+Penguen + Balık
+Sincap + Meşe palamudu
+Maymun + Muz
+Zürafa + Yapraklar
+Köpek + Kemik
+Fare + Tohumlar
+Yunus + Balık
+Kurbağa + Sivrisinek

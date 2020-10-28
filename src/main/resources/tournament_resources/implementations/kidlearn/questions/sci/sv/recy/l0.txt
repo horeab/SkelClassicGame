@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Tidning
+0: Bok
+1: Mjölkflaska
+1: Trasigt mugg
+2: Plastpåse
+2: Juiceflaska
+3: Fruktrester
+3: löv

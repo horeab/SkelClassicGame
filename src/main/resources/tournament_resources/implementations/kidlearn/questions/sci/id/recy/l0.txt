@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Koran
+0: Buku
+1: Botol susu
+1: Mug rusak
+2: Kantong plastik
+2: Botol jus
+3: Potongan buah
+3: Daun

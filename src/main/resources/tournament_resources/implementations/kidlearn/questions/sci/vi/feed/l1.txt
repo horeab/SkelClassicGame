@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Sói + thỏ
+Cá mập + Cá
+Ong + phấn hoa
+Linh dương + Cỏ
+Panda + Tre
+Koala + bạch đàn
+Gấu Bắc Cực + Cá
+Gà + Giun đất
+Báo đốm + Linh dương
+Tuần lộc + lá

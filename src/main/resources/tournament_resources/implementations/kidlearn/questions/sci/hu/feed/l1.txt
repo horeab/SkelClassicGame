@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Farkas + Nyúl
+Cápa + Hal
+Méh + virágpor
+Antilop + fű
+Panda + bambusz
+Koala + eukaliptusz
+Jegesmedve + Hal
+Csirke + földigiliszta
+Gepárd + Antilop
+Rénszarvas + levelek

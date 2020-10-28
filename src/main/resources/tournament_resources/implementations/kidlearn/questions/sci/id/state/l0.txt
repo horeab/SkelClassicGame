@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Natural gas
+0: Es
+0: Pensil
+0: Kertas
+0: Mobil
+1: Air
+1: Hujan
+1: Teh
+1: Susu
+2: Uap
+2: Awan
+2: Udara
+2: Gas alam

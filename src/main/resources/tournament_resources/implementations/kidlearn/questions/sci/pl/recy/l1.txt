@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Pojemnik na mleko
+0: Notatnik
+1: Rozbite szkło
+1: słoik
+2: butelka szamponu
+2: Butelka keczupu
+3: Skórka od banana
+3: resztki jedzenia

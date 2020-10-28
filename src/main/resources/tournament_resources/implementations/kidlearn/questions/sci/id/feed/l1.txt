@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
+Serigala + Kelinci
+Hiu + Ikan
+Lebah + Bunga serbuk sari
+Antelop + Rumput
+Panda + Bambu
 Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Beruang Kutub + Ikan
+Ayam + Cacing Tanah
+Cheetah + Antelop
+Rusa + Daun

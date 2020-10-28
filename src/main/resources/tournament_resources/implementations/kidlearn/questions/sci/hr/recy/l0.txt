@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Novine
+0: Knjiga
+1: Boca s mlijekom
+1: Slomljena šalica
+2: plastična vrećica
+2: Boca sa sokom
+3: Ostaci voća
+3: Lišće

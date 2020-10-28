@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Natural gas
+0: Is
+0: penna
+0: Papper
+0: Bil
+1: Vatten
+1: Regn
+1: Te
+1: Mjölk
+2: Ånga
+2: Moln
+2: Luft
+2: Naturgas

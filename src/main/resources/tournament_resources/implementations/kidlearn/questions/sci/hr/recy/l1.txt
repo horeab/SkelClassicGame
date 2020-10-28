@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Kutija za mlijeko
+0: Bilježnica
+1: Razbijeno staklo
+1: staklenka
+2: bočica sa šamponom
+2: Boca s kečapom
+3: Kora banane
+3: Ostaci hrane

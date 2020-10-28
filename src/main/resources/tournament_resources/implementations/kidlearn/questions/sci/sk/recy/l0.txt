@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Noviny
+0: Kniha
+1: Fľaša s mliekom
+1: Rozbitý hrnček
+2: Plastová taška
+2: Fľaša s džúsom
+3: zvyšky ovocia
+3: Listy

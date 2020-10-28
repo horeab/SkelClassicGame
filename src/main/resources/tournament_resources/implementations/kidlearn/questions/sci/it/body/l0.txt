@@ -1,5 +1,5 @@
-Forehead:0.9:0.5
-Elbow:0.7:0.8
-Stomach:0.6:0.5
-Knee:0.5:0.2
-Ankle:0.2:0.5
+Fronte: 0,9: 0,5
+Gomito: 0,7: 0,8
+Stomaco: 0,6: 0,5
+Ginocchio: 0,5: 0,2
+Caviglia: 0,2: 0,5

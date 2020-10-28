@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Süt kutusu
+0: Defter
+1: Kırık cam
+1: Kavanoz
+2: Şampuan şişesi
+2: Ketçap şişesi
+3: Muz kabuğu
+3: Yiyecek artıkları

@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Vuk + Zec
+Morski pas + riba
+Pčela + Cvjetni polen
+Antilopa + trava
+Panda + bambus
+Koala + Eukaliptus
+Polarni medvjed + riba
+Piletina + glista
+Gepardi + antilopa
+Sob + lišće

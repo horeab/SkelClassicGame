@@ -1,5 +1,5 @@
 List: 0,9: 0,5
 Ovoce: 0,7: 0,8
-Květina: 0,6: 0,5
-Stopka: 0,5: 0,2
+Hrudní koš: 0,6: 0,5
+Stonek: 0,5: 0,2
 Kořen: 0,2: 0,5

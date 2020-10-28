@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Natural gas
+0 : 얼음
+0 : 연필
+0 : 종이
+0 : 자동차
+1 : 물
+1 : 비
+1 : 차
+1 : 우유
+2 : 증기
+2 : 클라우드
+2 : 공기
+2 : 천연 가스

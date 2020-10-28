@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
+Wolf + Konijn
+Haai + vis
+Bij + bloempollen
+Antilope + gras
+Panda + bamboe
 Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+IJsbeer + vis
+Kip + Regenworm
+Jachtluipaard + antilope
+Rendier + bladeren

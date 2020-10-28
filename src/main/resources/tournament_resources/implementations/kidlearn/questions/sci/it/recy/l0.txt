@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Giornale
+0: Prenota
+1: bottiglia di latte
+1: tazza rotta
+2: sacchetto di plastica
+2: bottiglia di succo
+3: Avanzi di frutta
+3: foglie

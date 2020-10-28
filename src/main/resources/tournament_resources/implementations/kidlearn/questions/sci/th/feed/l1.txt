@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+หมาป่า + กระต่าย
+ปลาฉลาม + ปลา
+ผึ้ง + เกสรดอกไม้
+ละมั่ง + หญ้า
+แพนด้า + ไผ่
+โคอาล่า + ยูคาลิปตัส
+หมีขั้วโลก + ปลา
+ไก่ + ไส้เดือน
+เสือชีต้า + ละมั่ง
+กวางเรนเดียร์ + ใบไม้

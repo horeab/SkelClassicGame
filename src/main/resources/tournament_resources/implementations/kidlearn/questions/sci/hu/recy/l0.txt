@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Újság
+0: Könyv
+1: Tejüveg
+1: Törött bögre
+2: Műanyag zacskó
+2: Lé palack
+3: Gyümölcs maradványok
+3: Levelek

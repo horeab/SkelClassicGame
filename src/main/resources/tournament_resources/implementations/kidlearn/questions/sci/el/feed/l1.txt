@@ -1,10 +1,10 @@
 Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Καρχαρίας + Ψάρια
+Γύρη μελισσών + λουλουδιών
+Αντιλόπη + γρασίδι
+Panda + Μπαμπού
+Κοάλα + Ευκάλυπτος
+Πολική αρκούδα + ψάρια
+Κοτόπουλο + σκουλήκι
+Τσίτα + Αντιλόπη
+Τάρανδος + Φύλλα

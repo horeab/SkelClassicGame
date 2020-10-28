@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0：报纸
+0：书
+1：牛奶瓶
+1：碎的杯子
+2：塑料袋
+2：果汁瓶
+3：水果碎料
+3：叶子

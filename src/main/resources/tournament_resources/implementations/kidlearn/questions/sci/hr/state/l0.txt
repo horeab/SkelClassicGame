@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Natural gas
+0: Led
+0: Olovka
+0: Papir
+0: Automobil
+1: Voda
+1: Kiša
+1: čaj
+1: Mlijeko
+2: Para
+2: Oblak
+2: Zrak
+2: Prirodni plin

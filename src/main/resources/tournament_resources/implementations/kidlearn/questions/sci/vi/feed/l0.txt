@@ -1,10 +1,10 @@
-Lion + Meat
-Rabbit + Carrot
+Sư tử + thịt
+Thỏ + cà rốt
 Penguin + Fish
 Squirrel + Acorn
-Monkey + Banana
-Giraffe + Leaves
-Dog + Bone
-Mouse + Seeds
+Khỉ + chuối
+Hươu cao cổ + lá
+Chó + Xương
+Chuột + Hạt giống
 Dolphin + Fish
-Frog + Mosquito
+Ếch + Muỗi

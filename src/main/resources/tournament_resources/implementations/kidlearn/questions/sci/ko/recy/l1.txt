@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0 : 우유 상자
+0 : 노트북
+1 : 깨진 유리
+1 : 항아리
+2 : 샴푸 병
+2 : 케첩 병
+3 : 바나나 껍질
+3 : 음식 찌꺼기

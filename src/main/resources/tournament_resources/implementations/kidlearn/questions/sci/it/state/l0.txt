@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Natural gas
+0: ghiaccio
+0: matita
+0: carta
+0: macchina
+1: acqua
+1: pioggia
+1: tè
+1: latte
+2: Vapore
+2: Nube
+2: Aria
+2: gas naturale

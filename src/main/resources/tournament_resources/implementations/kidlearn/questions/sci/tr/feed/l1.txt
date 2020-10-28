@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Kurt + Tavşan
+Köpekbalığı + Balık
+Arı + Çiçek poleni
+Antilop + Çim
+Panda + Bambu
+Koala + Okaliptüs
+Kutup Ayısı + Balık
+Tavuk + Solucan
+Çita + Antilop
+Ren geyiği + Yapraklar

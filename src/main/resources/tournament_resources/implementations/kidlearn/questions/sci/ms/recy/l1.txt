@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Kotak susu
+0: Buku nota
+1: Gelas pecah
+1: balang
+2: Botol syampu
+2: Botol cendawan
+3: Kulit pisang
+3: Sekerap makanan

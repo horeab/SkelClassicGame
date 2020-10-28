@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Вовк + Кролик
+Акула + риба
+Бджола + квітковий пилок
+Антилопа + трава
+Панда + бамбук
+Коала + евкаліпт
+Білий ведмідь + риба
+Курка + дощовий черв’як
+Гепард + Антилопа
+Північний олень + Листя

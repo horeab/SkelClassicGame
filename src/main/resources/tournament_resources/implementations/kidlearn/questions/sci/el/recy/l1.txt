@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Γάλα γάλακτος
+0: Σημειωματάριο
+1: Σπασμένο γυαλί
+1: Βάζο
+2: Μπουκάλι σαμπουάν
+2: Μπουκάλι κέτσαπ
+3: Φλούδα μπανάνας
+3: Απορρίμματα τροφίμων

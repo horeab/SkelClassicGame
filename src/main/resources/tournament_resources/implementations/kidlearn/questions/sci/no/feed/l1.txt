@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Ulv + kanin
+Hai + fisk
+Bi + Blomsterpollen
+Antilope + Gress
+Panda + bambus
+Koala + Eukalyptus
+Isbjørn + fisk
+Kylling + meitemark
+Cheetah + antilope
+Reinsdyr + løv

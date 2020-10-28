@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0：ミルクボックス
+0：ノート
+1：割れたガラス
+1：瓶
+2：シャンプーボトル
+2：ケチャップボトル
+3：バナナの皮
+3：生ごみ

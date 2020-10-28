@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Maitolaatikko
+0: Muistikirja
+1: Rikkoutunut lasi
+1: purkki
+2: Shampoo pullo
+2: Ketsuppi
+3: Banaanikuori
+3: Ruokaromut

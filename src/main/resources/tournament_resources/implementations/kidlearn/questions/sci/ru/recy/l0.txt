@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Газета
+0: Книга
+1: Бутылка для молока
+1: сломанная кружка
+2: пластиковый пакет
+2: бутылка сока
+3: Обрывки фруктов
+3: листья

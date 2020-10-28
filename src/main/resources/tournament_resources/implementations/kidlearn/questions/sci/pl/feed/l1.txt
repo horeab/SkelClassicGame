@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
+Wilk + Królik
+Rekin + Ryba
+Pyłek pszczeli + kwiat
+Antylopa + Trawa
 Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Koala + Eukaliptus
+Niedźwiedź polarny + ryba
+Kurczak + dżdżownica
+Gepard + Antelope
+Renifer + Liście

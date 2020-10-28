@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: krant
+0: Boek
+1: Melkfles
+1: Gebroken mok
+2: plastic zak
+2: Sapfles
+3: Fruitresten
+3: Bladeren

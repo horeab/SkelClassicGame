@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+Susi + Kani
+Hai + kala
+Mehiläinen + kukka siitepöly
+Antilooppi + ruoho
+Panda + bambu
+Koala + eukalyptus
+Jääkarhu + kala
+Kana + Kastemato
+Gepardi + antilooppi
+Poro + Lehdet

@@ -1,5 +1,5 @@
-Skull:0.9:0.5
-Vertebral column:0.7:0.8
-Ribs:0.6:0.5
-Femur:0.5:0.2
-Tibia:0.2:0.5
+Kallo: 0,9: 0,5
+Selkäranka: 0,7: 0,8
+Rintakehä: 0,6: 0,5
+Reisi: 0,5: 0,2
+Sääriluu: 0,2: 0,5

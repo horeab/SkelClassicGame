@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Εφημερίδα
+0: Βιβλίο
+1: Μπουκάλι γάλακτος
+1: Σπασμένη κούπα
+2: Πλαστική σακούλα
+2: Μπουκάλι χυμού
+3: Απορρίμματα φρούτων
+3: Φύλλα

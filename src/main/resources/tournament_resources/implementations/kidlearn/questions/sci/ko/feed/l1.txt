@@ -1,10 +1,10 @@
-Wolf + Rabbit
-Shark + Fish
-Bee + Flower pollen
-Antelope + Grass
-Panda + Bamboo
-Koala + Eucalyptus
-Polar Bear + Fish
-Chicken + Earthworm
-Cheetah + Antelope
-Reindeer + Leaves
+늑대 + 토끼
+상어 + 물고기
+벌 + 꽃가루
+영양 + 잔디
+판다 + 대나무
+코알라 + 유칼립투스
+북극곰 + 물고기
+치킨 + 지렁이
+치타 + 영양
+순록 + 잎

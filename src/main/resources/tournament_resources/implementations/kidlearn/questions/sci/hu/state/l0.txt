@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Natural gas
+0: Jég
+0: Ceruza
+0: Papír
+0: Autó
+1: Víz
+1: Eső
+1: Tea
+1: Tej
+2: Gőz
+2: Felhő
+2: Levegő
+2: Földgáz

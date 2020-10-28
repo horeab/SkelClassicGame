@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Melkeboks
+0: Notatbok
+1: knust glass
+1: Krukke
+2: Sjampoflaske
+2: Ketchup-flaske
+3: Bananskall
+3: Matrester
