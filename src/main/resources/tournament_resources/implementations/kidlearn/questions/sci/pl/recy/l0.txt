@@ -1,0 +1,8 @@
+0:Newspaper
+0:Book
+1:Milk bottle
+1:Glass
+2:Plastic bag
+2:Soda bottle
+3:Fruit waste
+3:Pizza

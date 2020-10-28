@@ -1,0 +1,8 @@
+0:Milk carton
+0:Box
+1:Mirror
+1:Window
+2:Comb
+2:Tooth paste
+3:Banana peel
+3:Leaves
