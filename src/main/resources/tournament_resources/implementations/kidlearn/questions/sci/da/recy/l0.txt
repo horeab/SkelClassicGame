@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Avis
+0: Bog
+1: Mælkeflaske
+1: Brudt krus
+2: Plastpose
+2: Juiceflaske
+3: Frugtrester
+3: Blade

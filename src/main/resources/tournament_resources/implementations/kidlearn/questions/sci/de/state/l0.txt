@@ -1,12 +1,12 @@
-0:Ice
-0:Pencil
-0:Paper
-0:Car
-1:Water
-1:Rain
-1:Tea
-1:Milk
-2:Steam
-2:Cloud
-2:Air
-2:Water vapor
+0: Eis
+0: Bleistift
+0: Papier
+0: Auto
+1: Wasser
+1: Regen
+1: Tee
+1: Milch
+2: Dampf
+2: Wolke
+2: Luft
+2: Erdgas

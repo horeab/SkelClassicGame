@@ -1,8 +1,8 @@
-0:Milk box
-0:Notebook
-1:Broken glass
-1:Jar
-2:Shampoo bottle
-2:Ketchup bottle
-3:Banana peel
-3:Food scraps
+0: Mléko
+0: zápisník
+1: Rozbité sklo
+1: Sklenice
+2: Láhev šamponu
+2: Kečupová láhev
+3: Banánová slupka
+3: zbytky jídla

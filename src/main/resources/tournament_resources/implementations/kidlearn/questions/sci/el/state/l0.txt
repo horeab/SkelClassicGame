@@ -9,4 +9,4 @@
 2:Steam
 2:Cloud
 2:Air
-2:Water vapor
+2:Natural gas

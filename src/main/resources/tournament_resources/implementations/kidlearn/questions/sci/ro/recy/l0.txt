@@ -1,8 +1,8 @@
-0:Newspaper
-0:Book
-1:Milk bottle
-1:Broken mug
-2:Plastic bag
-2:Juice bottle
-3:Fruit scraps
-3:Leaves
+0: Ziar
+0: carte
+1: Sticlă de lapte
+1: cană spartă
+2: Pungă de plastic
+2: Sticlă de suc
+3: Resturi de fructe
+3: Frunze
