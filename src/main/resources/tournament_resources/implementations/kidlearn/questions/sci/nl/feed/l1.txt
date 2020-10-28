@@ -1,10 +1,10 @@
-Wolf:Rabbit
-Shark:Fish
-Bee:Flower pollen
-Antelope:Grass
-Panda:Bamboo
-Koala:Eucalyptus
-Polar Bear:Fish
-Chicken:Earthworm
-Cheetah:Antelope
-Reindeer:Leaves
+Wolf + Rabbit
+Shark + Fish
+Bee + Flower pollen
+Antelope + Grass
+Panda + Bamboo
+Koala + Eucalyptus
+Polar Bear + Fish
+Chicken + Earthworm
+Cheetah + Antelope
+Reindeer + Leaves
