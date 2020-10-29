@@ -1,10 +1,10 @@
-Aslan + Et
-Tavşan + Havuç
-Penguen + Balık
-Sincap + Meşe palamudu
-Maymun + Muz
-Zürafa + Yapraklar
-Köpek + Kemik
-Fare + Tohumlar
-Yunus + Balık
-Kurbağa + Sivrisinek
+Aslan:Et
+Tavşan:Havuç
+Penguen:Balık
+Sincap:Meşe palamudu
+Maymun:Muz
+Zürafa:Yapraklar
+Köpek:Kemik
+Fare:Tohumlar
+Yunus:Balık
+Kurbağa:Sivrisinek

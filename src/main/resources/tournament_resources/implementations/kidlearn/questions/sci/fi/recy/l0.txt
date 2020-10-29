@@ -1,8 +1,8 @@
-0: Sanomalehti
-0: Kirja
-1: Maitopullo
-1: Rikki muki
-2: Muovipussi
-2: Mehupullo
-3: Hedelmäromut
-3: Lehdet
+0:Sanomalehti
+0:Kirja
+1:Maitopullo
+1:Rikki muki
+2:Muovipussi
+2:Mehupullo
+3:Hedelmäromut
+3:Lehdet

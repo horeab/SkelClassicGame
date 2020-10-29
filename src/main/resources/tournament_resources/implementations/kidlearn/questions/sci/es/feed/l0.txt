@@ -1,10 +1,10 @@
-León + Carne
-Conejo + Zanahoria
-Pingüino + Pez
-Ardilla + Bellota
-Mono + Plátano
-Jirafa + Hojas
-Perro + Hueso
-Ratón + Semillas
-Delfín + Pez
-Rana + Mosquito
+León:Carne
+Conejo:Zanahoria
+Pingüino:Pez
+Ardilla:Bellota
+Mono:Plátano
+Jirafa:Hojas
+Perro:Hueso
+Ratón:Semillas
+Delfín:Pez
+Rana:Mosquito

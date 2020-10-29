@@ -1,10 +1,10 @@
-Løve + kjøtt
-Kanin + gulrot
-Pingvin + fisk
-Ekorn + Acorn
-Ape + banan
-Sjiraff + blader
-Hund + bein
-Mus + frø
-delfin + fisk
-Frosk + Mygg
+Løve:kjøtt
+Kanin:gulrot
+Pingvin:fisk
+Ekorn:Acorn
+Ape:banan
+Sjiraff:blader
+Hund:bein
+Mus:frø
+delfin:fisk
+Frosk:Mygg

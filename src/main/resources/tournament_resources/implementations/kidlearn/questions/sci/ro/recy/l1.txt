@@ -1,8 +1,8 @@
-0: Cutie de lapte
-0: Caiet
-1: Sticlă spartă
-1: Borcan
-2: Sticlă de șampon
-2: Sticlă de ketchup
-3: coajă de banană
-3: Resturi alimentare
+0:Cutie de lapte
+0:Caiet
+1:Sticlă spartă
+1:Borcan
+2:Sticlă de șampon
+2:Sticlă de ketchup
+3:coajă de banană
+3:Resturi alimentare

@@ -1,10 +1,10 @@
-Lejon + kött
-Kanin + morot
-Pingvin + Fisk
-Ekorre + ekollon
-Apa + banan
-Giraff + löv
-Hund + ben
-Mus + frön
-Delfin + Fisk
-Groda + mygga
+Lejon:kött
+Kanin:morot
+Pingvin:Fisk
+Ekorre:ekollon
+Apa:banan
+Giraff:löv
+Hund:ben
+Mus:frön
+Delfin:Fisk
+Groda:mygga

@@ -1,10 +1,10 @@
-Leão + Carne
-Coelho + cenoura
-Pinguim + Peixe
-Esquilo + bolota
-Macaco + Banana
-Girafa + Folhas
-Cão + osso
-Rato + Sementes
-Golfinho + Peixe
-Sapo + Mosquito
+Leão:Carne
+Coelho:cenoura
+Pinguim:Peixe
+Esquilo:bolota
+Macaco:Banana
+Girafa:Folhas
+Cão:osso
+Rato:Sementes
+Golfinho:Peixe
+Sapo:Mosquito

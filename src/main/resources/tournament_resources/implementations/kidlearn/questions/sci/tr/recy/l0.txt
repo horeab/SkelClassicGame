@@ -1,8 +1,8 @@
-0: Gazete
-0: Kitap
-1: Süt şişesi
-1: Kırık kupa
-2: Plastik torba
-2: Meyve suyu şişesi
-3: Meyve artıkları
-3: Yapraklar
+0:Gazete
+0:Kitap
+1:Süt şişesi
+1:Kırık kupa
+2:Plastik torba
+2:Meyve suyu şişesi
+3:Meyve artıkları
+3:Yapraklar

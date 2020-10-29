@@ -1,8 +1,8 @@
-0: Kotak susu
-0: Buku Catatan
-1: Kaca pecah
-1: Toples
-2: Botol sampo
-2: Botol kecap
-3: Kulit pisang
-3: Sisa makanan
+0:Kotak susu
+0:Buku Catatan
+1:Kaca pecah
+1:Toples
+2:Botol sampo
+2:Botol kecap
+3:Kulit pisang
+3:Sisa makanan

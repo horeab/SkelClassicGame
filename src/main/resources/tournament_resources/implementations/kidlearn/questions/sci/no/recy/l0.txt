@@ -1,8 +1,8 @@
-0: Avis
-0: Bestill
-1: Melkeflaske
-1: Knust krus
-2: Plastpose
-2: Juiceflaske
-3: Fruktrester
-3: Blader
+0:Avis
+0:Bestill
+1:Melkeflaske
+1:Knust krus
+2:Plastpose
+2:Juiceflaske
+3:Fruktrester
+3:Blader

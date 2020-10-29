@@ -1,8 +1,8 @@
-0: scatola del latte
-0: Taccuino
-1: vetro rotto
-1: barattolo
-2: bottiglia di shampoo
-2: bottiglia di ketchup
-3: Buccia di banana
-3: avanzi di cibo
+0:scatola del latte
+0:Taccuino
+1:vetro rotto
+1:barattolo
+2:bottiglia di shampoo
+2:bottiglia di ketchup
+3:Buccia di banana
+3:avanzi di cibo

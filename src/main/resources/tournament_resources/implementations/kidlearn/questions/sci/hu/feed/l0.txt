@@ -1,10 +1,10 @@
-Oroszlán + hús
-Nyúl + sárgarépa
-Pingvin + Hal
-Mókus + Makk
-Majom + banán
-Zsiráf + levelek
-Kutya + Csont
-Egér + magok
-Delfin + hal
-Béka + szúnyog
+Oroszlán:hús
+Nyúl:sárgarépa
+Pingvin:Hal
+Mókus:Makk
+Majom:banán
+Zsiráf:levelek
+Kutya:Csont
+Egér:magok
+Delfin:hal
+Béka:szúnyog

@@ -1,8 +1,8 @@
-0: Caixa de leite
-0: Notebook
-1: vidro quebrado
-1: Jarra
-2: Frasco de shampoo
-2: garrafa de ketchup
-3: casca de banana
-3: Restos de comida
+0:Caixa de leite
+0:Notebook
+1:vidro quebrado
+1:Jarra
+2:Frasco de shampoo
+2:garrafa de ketchup
+3:casca de banana
+3:Restos de comida

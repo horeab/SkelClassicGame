@@ -1,10 +1,10 @@
-Lew + mięso
-Królik + Marchewka
-Pingwin + Ryba
-Wiewiórka + Żołądź
-Małpa + Banan
-Żyrafa + Liście
-Pies + Kość
-Mysz + nasiona
-Delfin + Ryba
-Żaba + Komar
+Lew:mięso
+Królik:Marchewka
+Pingwin:Ryba
+Wiewiórka:Żołądź
+Małpa:Banan
+Żyrafa:Liście
+Pies:Kość
+Mysz:nasiona
+Delfin:Ryba
+Żaba:Komar

@@ -1,12 +1,12 @@
-0: Ľad
-0: Ceruzka
-0: Papier
-0: Auto
-1: Voda
-1: Dážď
-1: Čaj
-1: Mlieko
-2: Para
-2: Oblak
-2: Vzduch
-2: Zemný plyn
+0:Ľad
+0:Ceruzka
+0:Papier
+0:Auto
+1:Voda
+1:Dážď
+1:Čaj
+1:Mlieko
+2:Para
+2:Oblak
+2:Vzduch
+2:Zemný plyn

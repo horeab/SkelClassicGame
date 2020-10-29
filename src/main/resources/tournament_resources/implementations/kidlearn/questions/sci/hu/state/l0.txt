@@ -1,12 +1,12 @@
-0: Jég
-0: Ceruza
-0: Papír
-0: Autó
-1: Víz
-1: Eső
-1: Tea
-1: Tej
-2: Gőz
-2: Felhő
-2: Levegő
-2: Földgáz
+0:Jég
+0:Ceruza
+0:Papír
+0:Autó
+1:Víz
+1:Eső
+1:Tea
+1:Tej
+2:Gőz
+2:Felhő
+2:Levegő
+2:Földgáz

@@ -1,10 +1,10 @@
-Leone + carne
-Coniglio + Carota
-Pinguino + Pesce
-Scoiattolo + ghianda
-Scimmia + Banana
-Giraffa + foglie
-Cane + Osso
-Topo + semi
-Delfino + Pesce
-Rana + Zanzara
+Leone:carne
+Coniglio:Carota
+Pinguino:Pesce
+Scoiattolo:ghianda
+Scimmia:Banana
+Giraffa:foglie
+Cane:Osso
+Topo:semi
+Delfino:Pesce
+Rana:Zanzara

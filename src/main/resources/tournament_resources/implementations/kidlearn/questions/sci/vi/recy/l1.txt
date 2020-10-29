@@ -1,8 +1,8 @@
-0: Hộp sữa
-0: Máy tính xách tay
-1: Kính vỡ
-1: Bình
-2: Chai dầu gội đầu
-2: Chai tương cà
-3: Vỏ chuối
-3: Thức ăn thừa
+0:Hộp sữa
+0:Máy tính xách tay
+1:Kính vỡ
+1:Bình
+2:Chai dầu gội đầu
+2:Chai tương cà
+3:Vỏ chuối
+3:Thức ăn thừa

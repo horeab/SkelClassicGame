@@ -1,8 +1,8 @@
-0: Báo
-0: Sách
-1: Bình sữa
-1: Cốc vỡ
-2: Túi nhựa
-2: Chai nước trái cây
-3: Trái cây vụn
-3: Lá
+0:Báo
+0:Sách
+1:Bình sữa
+1:Cốc vỡ
+2:Túi nhựa
+2:Chai nước trái cây
+3:Trái cây vụn
+3:Lá

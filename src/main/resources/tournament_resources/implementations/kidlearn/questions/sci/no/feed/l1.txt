@@ -1,10 +1,10 @@
-Ulv + kanin
-Hai + fisk
-Bi + Blomsterpollen
-Antilope + Gress
-Panda + bambus
-Koala + Eukalyptus
-Isbjørn + fisk
-Kylling + meitemark
-Cheetah + antilope
-Reinsdyr + løv
+Ulv:kanin
+Hai:fisk
+Bi:Blomsterpollen
+Antilope:Gress
+Panda:bambus
+Koala:Eukalyptus
+Isbjørn:fisk
+Kylling:meitemark
+Cheetah:antilope
+Reinsdyr:løv

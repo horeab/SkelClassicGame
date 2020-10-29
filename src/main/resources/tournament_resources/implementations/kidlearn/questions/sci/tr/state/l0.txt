@@ -1,12 +1,12 @@
-0: Buz
-0: Kalem
-0: Kağıt
-0: Araba
-1: Su
-1: Yağmur
-1: Çay
-1: Süt
-2: Buhar
-2: Bulut
-2: Hava
-2: Doğal gaz
+0:Buz
+0:Kalem
+0:Kağıt
+0:Araba
+1:Su
+1:Yağmur
+1:Çay
+1:Süt
+2:Buhar
+2:Bulut
+2:Hava
+2:Doğal gaz

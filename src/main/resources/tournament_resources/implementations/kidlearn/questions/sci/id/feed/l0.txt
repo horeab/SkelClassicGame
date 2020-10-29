@@ -1,10 +1,10 @@
-Singa + Daging
-Kelinci + Wortel
-pinguin + Ikan
-Tupai + Biji pohon ek
-Monyet + Pisang
-Jerapah + Daun
-Anjing + Tulang
-Tikus + Biji
-Dolphin + Ikan
-Katak + Nyamuk
+Singa:Daging
+Kelinci:Wortel
+pinguin:Ikan
+Tupai:Biji pohon ek
+Monyet:Pisang
+Jerapah:Daun
+Anjing:Tulang
+Tikus:Biji
+Dolphin:Ikan
+Katak:Nyamuk

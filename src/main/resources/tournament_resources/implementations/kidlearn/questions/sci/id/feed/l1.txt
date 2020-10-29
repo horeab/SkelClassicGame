@@ -1,10 +1,10 @@
-Serigala + Kelinci
-Hiu + Ikan
-Lebah + Bunga serbuk sari
-Antelop + Rumput
-Panda + Bambu
-Koala + Eucalyptus
-Beruang Kutub + Ikan
-Ayam + Cacing Tanah
-Cheetah + Antelop
-Rusa + Daun
+Serigala:Kelinci
+Hiu:Ikan
+Lebah:Bunga serbuk sari
+Antelop:Rumput
+Panda:Bambu
+Koala:Eucalyptus
+Beruang Kutub:Ikan
+Ayam:Cacing Tanah
+Cheetah:Antelop
+Rusa:Daun

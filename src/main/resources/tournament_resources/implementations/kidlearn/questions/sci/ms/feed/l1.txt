@@ -1,10 +1,10 @@
-Serigala + Arnab
-Jerung + Ikan
-Debu lebah + bunga
-Antelope + Rumput
-Panda + Buluh
-Koala + Eucalyptus
-Beruang Kutub + Ikan
-Ayam + Cacing Tanah
-Cheetah + Antelope
-Rusa + Daun
+Serigala:Arnab
+Jerung:Ikan
+Debu lebah:bunga
+Antelope:Rumput
+Panda:Buluh
+Koala:Eucalyptus
+Beruang Kutub:Ikan
+Ayam:Cacing Tanah
+Cheetah:Antelope
+Rusa:Daun

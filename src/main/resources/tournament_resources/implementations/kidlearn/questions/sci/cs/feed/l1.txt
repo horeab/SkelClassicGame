@@ -1,10 +1,10 @@
-Vlk + králík
-Žralok + ryba
-Včelí + květový pyl
-Antilopa + tráva
-Panda + bambus
-Koala + eukalyptus
-Lední medvěd + ryba
-Kuře + žížala
-Gepard + antilopa
-Sob + listy
+Vlk:králík
+Žralok:ryba
+Včelí:květový pyl
+Antilopa:tráva
+Panda:bambus
+Koala:eukalyptus
+Lední medvěd:ryba
+Kuře:žížala
+Gepard:antilopa
+Sob:listy

@@ -1,8 +1,8 @@
-0: boîte à lait
-0: ordinateur portable
-1: verre brisé
-1: pot
-2: bouteille de shampooing
-2: bouteille de ketchup
-3: peau de banane
-3: restes de nourriture
+0:boîte à lait
+0:ordinateur portable
+1:verre brisé
+1:pot
+2:bouteille de shampooing
+2:bouteille de ketchup
+3:peau de banane
+3:restes de nourriture

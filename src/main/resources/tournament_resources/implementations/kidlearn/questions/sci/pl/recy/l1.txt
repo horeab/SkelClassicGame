@@ -1,8 +1,8 @@
-0: Pojemnik na mleko
-0: Notatnik
-1: Rozbite szkło
-1: słoik
-2: butelka szamponu
-2: Butelka keczupu
-3: Skórka od banana
-3: resztki jedzenia
+0:Pojemnik na mleko
+0:Notatnik
+1:Rozbite szkło
+1:słoik
+2:butelka szamponu
+2:Butelka keczupu
+3:Skórka od banana
+3:resztki jedzenia

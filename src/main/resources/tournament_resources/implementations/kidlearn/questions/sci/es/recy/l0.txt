@@ -1,8 +1,8 @@
-0: Periódico
-0: Libro
-1: botella de leche
-1: taza rota
-2: bolsa de plástico
-2: botella de jugo
-3: restos de frutas
-3: hojas
+0:Periódico
+0:Libro
+1:botella de leche
+1:taza rota
+2:bolsa de plástico
+2:botella de jugo
+3:restos de frutas
+3:hojas

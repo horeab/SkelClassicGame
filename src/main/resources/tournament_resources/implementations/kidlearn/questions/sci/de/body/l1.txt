@@ -1,5 +1,5 @@
-Blatt: 0,9: 0,5
-Frucht: 0,7: 0,8
-Blüte: 0,6: 0,5
-Stamm: 0,5: 0,2
-Wurzel: 0,2: 0,5
+Blatt:0.9:0.5
+Frucht:0.9:0.5
+Blüte:0.6:0.5
+Stamm:0.5:0.2
+Wurzel:0.2:0.5

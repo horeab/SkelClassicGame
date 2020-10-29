@@ -1,8 +1,8 @@
-0: Kotak susu
-0: Buku nota
-1: Gelas pecah
-1: balang
-2: Botol syampu
-2: Botol cendawan
-3: Kulit pisang
-3: Sekerap makanan
+0:Kotak susu
+0:Buku nota
+1:Gelas pecah
+1:balang
+2:Botol syampu
+2:Botol cendawan
+3:Kulit pisang
+3:Sekerap makanan

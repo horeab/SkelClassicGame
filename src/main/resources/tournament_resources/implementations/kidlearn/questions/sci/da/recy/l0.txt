@@ -1,8 +1,8 @@
-0: Avis
-0: Bog
-1: Mælkeflaske
-1: Brudt krus
-2: Plastpose
-2: Juiceflaske
-3: Frugtrester
-3: Blade
+0:Avis
+0:Bog
+1:Mælkeflaske
+1:Brudt krus
+2:Plastpose
+2:Juiceflaske
+3:Frugtrester
+3:Blade

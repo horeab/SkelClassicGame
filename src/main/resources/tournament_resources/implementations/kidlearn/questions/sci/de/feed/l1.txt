@@ -1,10 +1,10 @@
-Wolf + Kaninchen
-Hai + Fisch
-Biene + Blütenpollen
-Antilope + Gras
-Panda + Bambus
-Koala + Eukalyptus
-Eisbär + Fisch
-Huhn + Regenwurm
-Gepard + Antilope
-Rentier + Blätter
+Wolf:Kaninchen
+Hai:Fisch
+Biene:Blütenpollen
+Antilope:Gras
+Panda:Bambus
+Koala:Eukalyptus
+Eisbär:Fisch
+Huhn:Regenwurm
+Gepard:Antilope
+Rentier:Blätter

@@ -1,5 +1,5 @@
-Hodeskalle: 0,9: 0,5
-Ryggrad: 0,7: 0,8
-Ribbe bur: 0,6: 0,5
-Lårben: 0,5: 0,2
-Tibia: 0,2: 0,5
+Hodeskalle:0.9:0.5
+Ryggrad:0.9:0.5
+Ribbe bur:0.6:0.5
+Lårben:0.5:0.2
+Tibia:0.2:0.5

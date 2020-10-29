@@ -1,8 +1,8 @@
-0: Melkbox
-0: notitieboekje
-1: Gebroken glas
-1: pot
-2: Shampoofles
-2: Ketchupfles
-3: Bananenschil
-3: Voedselresten
+0:Melkbox
+0:notitieboekje
+1:Gebroken glas
+1:pot
+2:Shampoofles
+2:Ketchupfles
+3:Bananenschil
+3:Voedselresten

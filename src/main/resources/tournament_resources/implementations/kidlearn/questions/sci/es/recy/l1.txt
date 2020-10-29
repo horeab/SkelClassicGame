@@ -1,8 +1,8 @@
-0: caja de leche
-0: cuaderno
-1: vidrio roto
-1: tarro
-2: botella de champú
-2: botella de salsa de tomate
-3: cáscara de plátano
-3: restos de comida
+0:caja de leche
+0:cuaderno
+1:vidrio roto
+1:tarro
+2:botella de champú
+2:botella de salsa de tomate
+3:cáscara de plátano
+3:restos de comida

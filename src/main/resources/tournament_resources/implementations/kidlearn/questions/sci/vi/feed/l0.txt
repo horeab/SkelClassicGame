@@ -1,10 +1,10 @@
-Sư tử + thịt
-Thỏ + cà rốt
-Penguin + Fish
-Squirrel + Acorn
-Khỉ + chuối
-Hươu cao cổ + lá
-Chó + Xương
-Chuột + Hạt giống
-Dolphin + Fish
-Ếch + Muỗi
+Sư tử:thịt
+Thỏ:cà rốt
+Penguin:Fish
+Squirrel:Acorn
+Khỉ:chuối
+Hươu cao cổ:lá
+Chó:Xương
+Chuột:Hạt giống
+Dolphin:Fish
+Ếch:Muỗi

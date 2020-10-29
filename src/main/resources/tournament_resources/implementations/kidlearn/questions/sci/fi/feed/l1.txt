@@ -1,10 +1,10 @@
-Susi + Kani
-Hai + kala
-Mehiläinen + kukka siitepöly
-Antilooppi + ruoho
-Panda + bambu
-Koala + eukalyptus
-Jääkarhu + kala
-Kana + Kastemato
-Gepardi + antilooppi
-Poro + Lehdet
+Susi:Kani
+Hai:kala
+Mehiläinen:kukka siitepöly
+Antilooppi:ruoho
+Panda:bambu
+Koala:eukalyptus
+Jääkarhu:kala
+Kana:Kastemato
+Gepardi:antilooppi
+Poro:Lehdet

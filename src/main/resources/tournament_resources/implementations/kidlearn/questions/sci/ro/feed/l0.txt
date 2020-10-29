@@ -1,10 +1,10 @@
-Leu + Carne
-Iepure + Morcov
-Pinguin + Pește
-Veveriță + Ghindă
-Maimuță + Banană
-Girafa + Frunze
-Câine + Os
-Șoricel + semințe
-Delfin + Pește
-Broasca + Țânțar
+Leu:Carne
+Iepure:Morcov
+Pinguin:Pește
+Veveriță:Ghindă
+Maimuță:Banană
+Girafa:Frunze
+Câine:Os
+Șoricel:semințe
+Delfin:Pește
+Broasca:Țânțar

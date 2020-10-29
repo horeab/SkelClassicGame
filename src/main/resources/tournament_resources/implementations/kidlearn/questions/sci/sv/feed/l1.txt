@@ -1,10 +1,10 @@
-Varg + kanin
-Haj + fisk
-Bi + Blommapollen
-Antilop + gräs
-Panda + bambu
-Koala + Eukalyptus
-Isbjörn + fisk
-Kyckling + daggmask
-Gepard + antilop
-Ren + löv
+Varg:kanin
+Haj:fisk
+Bi:Blommapollen
+Antilop:gräs
+Panda:bambu
+Koala:Eukalyptus
+Isbjörn:fisk
+Kyckling:daggmask
+Gepard:antilop
+Ren:löv

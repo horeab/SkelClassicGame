@@ -1,5 +1,5 @@
-List: 0,9: 0,5
-Voće: 0,7: 0,8
-Cvijet: 0,6: 0,5
-Stabljika: 0,5: 0,2
-Korijen: 0,2: 0,5
+List:0.9:0.5
+Voće:0.9:0.5
+Cvijet:0.6:0.5
+Stabljika:0.5:0.2
+Korijen:0.2:0.5

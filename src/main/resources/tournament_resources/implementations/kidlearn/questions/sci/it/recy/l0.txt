@@ -1,8 +1,8 @@
-0: Giornale
-0: Prenota
-1: bottiglia di latte
-1: tazza rotta
-2: sacchetto di plastica
-2: bottiglia di succo
-3: Avanzi di frutta
-3: foglie
+0:Giornale
+0:Prenota
+1:bottiglia di latte
+1:tazza rotta
+2:sacchetto di plastica
+2:bottiglia di succo
+3:Avanzi di frutta
+3:foglie

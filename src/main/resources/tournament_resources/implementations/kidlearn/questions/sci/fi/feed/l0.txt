@@ -1,10 +1,10 @@
-Leijona + liha
-Kani + porkkana
-Pingviini + kala
-Orava + tammenterho
-Apina + banaani
-Kirahvi + lehdet
-Koira + Bone
-Hiiri + siemenet
-Delfiini + kala
-Sammakko + Hyttyset
+Leijona:liha
+Kani:porkkana
+Pingviini:kala
+Orava:tammenterho
+Apina:banaani
+Kirahvi:lehdet
+Koira:Bone
+Hiiri:siemenet
+Delfiini:kala
+Sammakko:Hyttyset

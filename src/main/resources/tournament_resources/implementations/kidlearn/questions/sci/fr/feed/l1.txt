@@ -1,10 +1,10 @@
-Loup + lapin
-Requin + poisson
-Abeille + pollen de fleurs
-Antilope + herbe
-Panda + Bambou
-Koala + Eucalyptus
-Ours polaire + poisson
-Poulet + Ver de terre
-Guépard + antilope
-Renne + Feuilles
+Loup:lapin
+Requin:poisson
+Abeille:pollen de fleurs
+Antilope:herbe
+Panda:Bambou
+Koala:Eucalyptus
+Ours polaire:poisson
+Poulet:Ver de terre
+Guépard:antilope
+Renne:Feuilles

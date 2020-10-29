@@ -1,8 +1,8 @@
-0: Jornal
-0: Livro
-1: garrafa de leite
-1: caneca quebrada
-2: saco plástico
-2: garrafa de suco
-3: restos de frutas
-3: Folhas
+0:Jornal
+0:Livro
+1:garrafa de leite
+1:caneca quebrada
+2:saco plástico
+2:garrafa de suco
+3:restos de frutas
+3:Folhas

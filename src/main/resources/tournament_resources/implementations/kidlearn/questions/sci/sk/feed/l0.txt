@@ -1,10 +1,10 @@
-Lev + mäso
-Králik + mrkva
-Tučniak + ryby
-Veverička + Žaluď
-Opica + banán
-Žirafa + odchádza
-Pes + kosť
-Myš + semená
-Delfín + ryby
-Žaba + komár
+Lev:mäso
+Králik:mrkva
+Tučniak:ryby
+Veverička:Žaluď
+Opica:banán
+Žirafa:odchádza
+Pes:kosť
+Myš:semená
+Delfín:ryby
+Žaba:komár

@@ -1,10 +1,10 @@
-Singa + Daging
-Arnab + Lobak
-Penguin + Ikan
-Tupai + biji ek
-Monyet + Pisang
-Zirafah + Daun
-Anjing + Tulang
-Tetikus + Benih
-Lumba-lumba + Ikan
-Katak + Nyamuk
+Singa:Daging
+Arnab:Lobak
+Penguin:Ikan
+Tupai:biji ek
+Monyet:Pisang
+Zirafah:Daun
+Anjing:Tulang
+Tetikus:Benih
+Lumba-lumba:Ikan
+Katak:Nyamuk

@@ -1,10 +1,10 @@
-Lup + Iepure
-Rechin + Pește
-albină + Polen
-Antilopă + Iarbă
-Panda + Bambus
-Koala + Eucalipt
-Urs polar + pește
-Pui + Vierme
-Ghepard + Antilopă
-Ren + Frunze
+Lup:Iepure
+Rechin:Pește
+albină:Polen
+Antilopă:Iarbă
+Panda:Bambus
+Koala:Eucalipt
+Urs polar:pește
+Pui:Vierme
+Ghepard:Antilopă
+Ren:Frunze

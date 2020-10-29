@@ -1,12 +1,12 @@
-0: Led
-0: Tužka
-0: Papír
-0: Auto
-1: Voda
-1: Déšť
-1: Čaj
-1: Mléko
-2: Pára
-2: Mrak
-2: Vzduch
-2: Zemní plyn
+0:Led
+0:Tužka
+0:Papír
+0:Auto
+1:Voda
+1:Déšť
+1:Čaj
+1:Mléko
+2:Pára
+2:Mrak
+2:Vzduch
+2:Zemní plyn

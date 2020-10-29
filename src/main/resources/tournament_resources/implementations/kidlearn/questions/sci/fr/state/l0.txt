@@ -1,12 +1,12 @@
-0: glace
-0: crayon
-0: papier
-0: voiture
-1: eau
-1: pluie
-1: Thé
-1: lait
-2: vapeur
-2: Nuage
-2: Air
-2: Gaz naturel
+0:glace
+0:crayon
+0:papier
+0:voiture
+1:eau
+1:pluie
+1:Thé
+1:lait
+2:vapeur
+2:Nuage
+2:Air
+2:Gaz naturel

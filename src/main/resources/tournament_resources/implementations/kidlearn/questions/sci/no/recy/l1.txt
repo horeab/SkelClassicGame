@@ -1,8 +1,8 @@
-0: Melkeboks
-0: Notatbok
-1: knust glass
-1: Krukke
-2: Sjampoflaske
-2: Ketchup-flaske
-3: Bananskall
-3: Matrester
+0:Melkeboks
+0:Notatbok
+1:knust glass
+1:Krukke
+2:Sjampoflaske
+2:Ketchup-flaske
+3:Bananskall
+3:Matrester

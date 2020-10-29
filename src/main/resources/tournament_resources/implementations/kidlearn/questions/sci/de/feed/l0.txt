@@ -1,10 +1,10 @@
-Löwe + Fleisch
-Kaninchen + Karotte
-Pinguin + Fisch
-Eichhörnchen + Eichel
-Affe + Banane
-Giraffe + Blätter
-Hund + Knochen
-Maus + Samen
-Delphin + Fisch
-Frosch + Mücke
+Löwe:Fleisch
+Kaninchen:Karotte
+Pinguin:Fisch
+Eichhörnchen:Eichel
+Affe:Banane
+Giraffe:Blätter
+Hund:Knochen
+Maus:Samen
+Delphin:Fisch
+Frosch:Mücke

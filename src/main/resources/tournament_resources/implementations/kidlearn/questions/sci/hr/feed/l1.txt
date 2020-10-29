@@ -1,10 +1,10 @@
-Vuk + Zec
-Morski pas + riba
-Pčela + Cvjetni polen
-Antilopa + trava
-Panda + bambus
-Koala + Eukaliptus
-Polarni medvjed + riba
-Piletina + glista
-Gepardi + antilopa
-Sob + lišće
+Vuk:Zec
+Morski pas:riba
+Pčela:Cvjetni polen
+Antilopa:trava
+Panda:bambus
+Koala:Eukaliptus
+Polarni medvjed:riba
+Piletina:glista
+Gepardi:antilopa
+Sob:lišće

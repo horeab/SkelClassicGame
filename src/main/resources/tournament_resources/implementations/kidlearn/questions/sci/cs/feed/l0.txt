@@ -1,10 +1,10 @@
-Lion + maso
-Králík + mrkev
-Tučňák + ryby
-Veverka + žalud
-Opice + banán
-Žirafa + listy
-Pes + kost
-Myš + semínka
-Delfín + ryby
-Žába + komár
+Lion:maso
+Králík:mrkev
+Tučňák:ryby
+Veverka:žalud
+Opice:banán
+Žirafa:listy
+Pes:kost
+Myš:semínka
+Delfín:ryby
+Žába:komár

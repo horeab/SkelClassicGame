@@ -1,8 +1,8 @@
-0: Skrinka na mlieko
-0: Notebook
-1: Rozbité sklo
-1: Jar
-2: Šampónová fľaša
-2: Fľaša na kečup
-3: Banánová šupka
-3: zvyšky jedla
+0:Skrinka na mlieko
+0:Notebook
+1:Rozbité sklo
+1:Jar
+2:Šampónová fľaša
+2:Fľaša na kečup
+3:Banánová šupka
+3:zvyšky jedla

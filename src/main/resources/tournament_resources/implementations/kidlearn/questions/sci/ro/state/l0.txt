@@ -1,12 +1,12 @@
-0: Gheață
-0: Creion
-0: Hârtie
-0: Mașină
-1: Apă
-1: Ploaie
-1: Ceai
-1: Lapte
-2: Abur
-2: Nor
-2: Aer
-2: Gaz natural
+0:Gheață
+0:Creion
+0:Hârtie
+0:Mașină
+1:Apă
+1:Ploaie
+1:Ceai
+1:Lapte
+2:Abur
+2:Nor
+2:Aer
+2:Gaz natural

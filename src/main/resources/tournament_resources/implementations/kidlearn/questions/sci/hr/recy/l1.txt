@@ -1,8 +1,8 @@
-0: Kutija za mlijeko
-0: Bilježnica
-1: Razbijeno staklo
-1: staklenka
-2: bočica sa šamponom
-2: Boca s kečapom
-3: Kora banane
-3: Ostaci hrane
+0:Kutija za mlijeko
+0:Bilježnica
+1:Razbijeno staklo
+1:staklenka
+2:bočica sa šamponom
+2:Boca s kečapom
+3:Kora banane
+3:Ostaci hrane

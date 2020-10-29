@@ -1,12 +1,12 @@
-0: Băng
-0: Bút chì
-0: Giấy
-0: Xe hơi
-1: Nước
-1: Mưa
-1: Trà
-1: Sữa
-2: Hơi nước
-2: Đám mây
-2: Không khí
-2: Khí tự nhiên
+0:Băng
+0:Bút chì
+0:Giấy
+0:Xe hơi
+1:Nước
+1:Mưa
+1:Trà
+1:Sữa
+2:Hơi nước
+2:Đám mây
+2:Không khí
+2:Khí tự nhiên

@@ -1,12 +1,12 @@
-0: IJs
-0: potlood
-0: papier
-0: auto
-1: Water
-1: Regen
-1: Thee
-1: Melk
-2: Stoom
-2: Wolk
-2: Lucht
-2: Aardgas
+0:IJs
+0:potlood
+0:papier
+0:auto
+1:Water
+1:Regen
+1:Thee
+1:Melk
+2:Stoom
+2:Wolk
+2:Lucht
+2:Aardgas

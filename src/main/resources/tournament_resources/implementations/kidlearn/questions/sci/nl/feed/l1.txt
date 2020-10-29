@@ -1,10 +1,10 @@
-Wolf + Konijn
-Haai + vis
-Bij + bloempollen
-Antilope + gras
-Panda + bamboe
-Koala + Eucalyptus
-IJsbeer + vis
-Kip + Regenworm
-Jachtluipaard + antilope
-Rendier + bladeren
+Wolf:Konijn
+Haai:vis
+Bij:bloempollen
+Antilope:gras
+Panda:bamboe
+Koala:Eucalyptus
+IJsbeer:vis
+Kip:Regenworm
+Jachtluipaard:antilope
+Rendier:bladeren

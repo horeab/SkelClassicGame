@@ -1,5 +1,5 @@
-Čelo: 0,9: 0,5
-Lakat: 0,7: 0,8
-Želudac: 0,6: 0,5
-Koljeno: 0,5: 0,2
-Gležanj: 0,2: 0,5
+Čelo:0.9:0.5
+Lakat:0.9:0.5
+Želudac:0.6:0.5
+Koljeno:0.5:0.2
+Gležanj:0.2:0.5

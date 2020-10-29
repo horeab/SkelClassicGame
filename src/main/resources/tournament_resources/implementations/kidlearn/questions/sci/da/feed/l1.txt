@@ -1,10 +1,10 @@
-Ulv + kanin
-Haj + fisk
-Bi + Blomsterpollen
-Antilope + Græs
-Panda + bambus
-Koala + Eucalyptus
-Isbjørn + fisk
-Kylling + regnorm
-Gepard + antilope
-Rensdyr + blade
+Ulv:kanin
+Haj:fisk
+Bi:Blomsterpollen
+Antilope:Græs
+Panda:bambus
+Koala:Eucalyptus
+Isbjørn:fisk
+Kylling:regnorm
+Gepard:antilope
+Rensdyr:blade

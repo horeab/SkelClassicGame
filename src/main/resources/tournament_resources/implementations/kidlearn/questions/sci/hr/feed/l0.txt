@@ -1,10 +1,10 @@
-Lav + Meso
-Zec + mrkva
-Pingvin + Riba
-Vjeverica + žir
-Majmun + banana
-Žirafa + lišće
-Pas + Kost
-Miš + Sjeme
-Dupin + Riba
-Žaba + komarac
+Lav:Meso
+Zec:mrkva
+Pingvin:Riba
+Vjeverica:žir
+Majmun:banana
+Žirafa:lišće
+Pas:Kost
+Miš:Sjeme
+Dupin:Riba
+Žaba:komarac
