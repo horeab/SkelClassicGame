@@ -1,4 +1,4 @@
-0:Tejdoboz
+0:Tejesdoboz
 0:Jegyzetfüzet
 1:Törött üveg
 1:Befőttes üveg

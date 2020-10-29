@@ -1,5 +1,5 @@
 0:Hộp sữa
-0:Máy tính xách tay
+0:Ghi chú
 1:Kính vỡ
 1:Bình
 2:Chai dầu gội đầu

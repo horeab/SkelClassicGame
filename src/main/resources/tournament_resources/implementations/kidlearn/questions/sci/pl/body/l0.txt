@@ -1,5 +1,5 @@
 Czoło:0.9:0.5
-Kolano:0.9:0.5
+Łokieć:0.9:0.5
 Żołądek:0.6:0.5
 Kolano:0.5:0.2
 Kostka:0.2:0.5

@@ -1,10 +1,10 @@
 Wilk:Królik
 Rekin:Ryba
-Pyłek pszczeli:kwiat
+Pszczoła: pyłek kwiatowy
 Antylopa:Trawa
 Panda:Bamboo
 Koala:Eukaliptus
 Niedźwiedź polarny:ryba
 Kurczak:dżdżownica
-Gepard:Antelope
+Gepard:Antylopa
 Renifer:Liście

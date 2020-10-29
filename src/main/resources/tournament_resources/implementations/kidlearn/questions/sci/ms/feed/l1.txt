@@ -1,6 +1,6 @@
 Serigala:Arnab
 Jerung:Ikan
-Debu lebah:bunga
+Lebah: Debunga bunga
 Antelope:Rumput
 Panda:Buluh
 Koala:Eucalyptus

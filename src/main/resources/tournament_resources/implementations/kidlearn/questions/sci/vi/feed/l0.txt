@@ -1,10 +1,10 @@
 Sư tử:thịt
 Thỏ:cà rốt
-Penguin:Fish
-Squirrel:Acorn
+chim cánh cụt: Cá
+Sóc:cây dẻ rừng
 Khỉ:chuối
 Hươu cao cổ:lá
 Chó:Xương
 Chuột:Hạt giống
-Dolphin:Fish
+Cá heo:Cá
 Ếch:Muỗi

@@ -7,4 +7,4 @@ Giraf:blade
 Hund:knogle
 Mus:frø
 Delfin:fisk
-Frø:myg
+Springpadder:myg

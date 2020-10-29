@@ -1,6 +1,6 @@
 Lupo:Coniglio
 Squalo:Pesce
-Polline di api:fiori
+Ape: polline di fiori
 Antilope:Erba
 Panda:bambù
 Koala:Eucalipto

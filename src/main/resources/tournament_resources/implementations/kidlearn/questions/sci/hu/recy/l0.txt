@@ -1,6 +1,6 @@
 0:Újság
 0:Könyv
-1:Tejüveg
+1:Tejesüveg
 1:Törött bögre
 2:Műanyag zacskó
 2:Lé palack

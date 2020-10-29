@@ -1,7 +1,7 @@
 0:ghiaccio
 0:matita
 0:carta
-0:macchina
+0:Auto
 1:acqua
 1:pioggia
 1:tè

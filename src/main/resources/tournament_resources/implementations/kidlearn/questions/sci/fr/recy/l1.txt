@@ -1,5 +1,5 @@
 0:boîte à lait
-0:ordinateur portable
+0:Carnet
 1:verre brisé
 1:pot
 2:bouteille de shampooing

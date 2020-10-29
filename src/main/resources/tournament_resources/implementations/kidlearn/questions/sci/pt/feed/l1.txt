@@ -1,6 +1,6 @@
 Lobo:coelho
 Tubarão:Peixe
-Pólen de abelha:flor
+Abelha: pólen de flor
 Antílope:Relva
 Panda:Bambu
 Coala:Eucalipto

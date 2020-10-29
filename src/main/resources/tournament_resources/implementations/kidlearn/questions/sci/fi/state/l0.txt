@@ -8,5 +8,5 @@
 1:Maito
 2:Höyry
 2:Pilvi
-2:Ilma
+2:Ilmaa
 2:Maakaasu

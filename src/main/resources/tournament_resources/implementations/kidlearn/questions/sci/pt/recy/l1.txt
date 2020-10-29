@@ -1,5 +1,5 @@
 0:Caixa de leite
-0:Notebook
+0:Caderno
 1:vidro quebrado
 1:Jarra
 2:Frasco de shampoo

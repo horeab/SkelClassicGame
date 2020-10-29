@@ -1,5 +1,5 @@
 Hộp sọ:0.9:0.5
 Cột sống:0.9:0.5
-Khung sườn:0.6:0.5
+khung xương sườn:0.6:0.5
 Xương đùi:0.5:0.2
 Xương chày:0.2:0.5

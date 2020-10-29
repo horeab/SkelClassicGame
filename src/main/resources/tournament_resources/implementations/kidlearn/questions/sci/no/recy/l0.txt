@@ -1,5 +1,5 @@
 0:Avis
-0:Bestill
+0:Bok
 1:Melkeflaske
 1:Knust krus
 2:Plastpose

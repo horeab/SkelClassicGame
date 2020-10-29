@@ -3,6 +3,6 @@
 1:Gelas pecah
 1:balang
 2:Botol syampu
-2:Botol cendawan
+2:botol sos tomato
 3:Kulit pisang
-3:Sekerap makanan
+3:makanan sekerap
