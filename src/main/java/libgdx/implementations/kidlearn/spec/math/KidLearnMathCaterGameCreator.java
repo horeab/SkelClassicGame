@@ -1,6 +1,5 @@
 package libgdx.implementations.kidlearn.spec.math;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.tuple.Pair;

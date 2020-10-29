@@ -1,11 +1,13 @@
 package libgdx.implementations.kidlearn.spec;
 
-import com.badlogic.gdx.graphics.Colors;
-
 import libgdx.game.Game;
 import libgdx.resources.gamelabel.GameLabelUtils;
 
 public enum KidLearnGameLabel implements libgdx.resources.gamelabel.GameLabel {
+
+    l_reset,
+    l_verify,
+    l_success,
 
     l_math_title,
     l_math_seq_title,

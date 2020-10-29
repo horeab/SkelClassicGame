@@ -3,10 +3,14 @@ package libgdx.implementations.kidlearn.spec;
 import com.badlogic.gdx.Gdx;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import libgdx.game.Game;
@@ -23,38 +27,39 @@ import libgdx.utils.SoundUtils;
 
 public class KidLearnUtils {
 
-    public static <T> T getLevelValsToPlay(KidLearnGameContext gameContext, List<T> vals) {
-        T rand = vals.get(new Random().nextInt(vals.size()));
-        while (gameContext.playedValues.contains(rand)) {
-            rand = vals.get(new Random().nextInt(vals.size()));
+    public static <T> Map.Entry<T, T> getLevelValsToPlay(KidLearnGameContext gameContext, LinkedHashMap<T, T> allVals) {
+        Map.Entry<T, T> rand = new ArrayList<>(allVals.entrySet()).get(new Random().nextInt(allVals.size()));
+        while (gameContext.playedValues.containsKey(rand.getKey())) {
+            rand = new ArrayList<>(allVals.entrySet()).get(new Random().nextInt(allVals.size()));
         }
-        gameContext.playedValues.add(rand);
+        gameContext.playedValues.put(rand.getKey(), rand.getValue());
         return rand;
     }
 
-    public static <T> List<T> getRandomLevelListValsToPlay(KidLearnGameContext gameContext, int resListSize, List<T> allVals) {
-        List<T> res = new ArrayList<>();
+    public static <T> LinkedHashMap<T, T> getRandomLevelListValsToPlay(KidLearnGameContext gameContext, int resListSize, LinkedHashMap<T, T> allVals) {
+        LinkedHashMap<T, T> res = new LinkedHashMap<>();
         while (res.size() < resListSize) {
-            T rand = allVals.get(new Random().nextInt(allVals.size()));
-            while (gameContext.playedValues.contains(rand)) {
-                rand = allVals.get(new Random().nextInt(allVals.size()));
+            Map.Entry<T, T> rand = new ArrayList<>(allVals.entrySet()).get(new Random().nextInt(allVals.size()));
+            while (gameContext.playedValues.containsKey(rand.getKey())) {
+                rand = new ArrayList<>(allVals.entrySet()).get(new Random().nextInt(allVals.size()));
             }
-            res.add(rand);
-            gameContext.playedValues.add(rand);
+            res.put(rand.getKey(), rand.getValue());
+            gameContext.playedValues.put(rand.getKey(), rand.getValue());
         }
         return res;
     }
 
-    public static <T> List<T> getLevelListValsToPlay(KidLearnGameContext gameContext, int resListSize, List<T> allVals) {
-        List<T> res = new ArrayList<>();
+    public static <T> LinkedHashMap<T, T> getLevelListValsToPlay(KidLearnGameContext gameContext, int resListSize, LinkedHashMap<T, T> allVals) {
+        LinkedHashMap<T, T> res = new LinkedHashMap<>();
         int i = 0;
         while (res.size() < resListSize) {
-            T el = allVals.get(i);
-            while (gameContext.playedValues.contains(el)) {
-                el = allVals.get(new Random().nextInt(allVals.size()));
+            Map.Entry<T, T> el = new ArrayList<>(allVals.entrySet()).get(i);
+            while (gameContext.playedValues.containsKey(el.getKey())) {
+                i++;
+                el = new ArrayList<>(allVals.entrySet()).get(i);
             }
-            res.add(el);
-            gameContext.playedValues.add(el);
+            res.put(el.getKey(), el.getValue());
+            gameContext.playedValues.put(el.getKey(), el.getValue());
             i++;
         }
         return res;
@@ -71,9 +76,10 @@ public class KidLearnUtils {
         }
     }
 
-    public static List<String> getWords(Enum level) {
+    public static LinkedHashMap<String, String> getWords(Enum level) {
         String gameId = null;
         String categId = null;
+        String engWordsPath = null;
 
         if (level instanceof KidLearnEngHangmanLevel) {
             gameId = "eng";
@@ -84,20 +90,60 @@ public class KidLearnUtils {
         } else if (level instanceof KidLearnEngVerbLevel) {
             gameId = "eng";
             categId = "verb";
-        } else if (level instanceof KidLearnSciFeedLevel) {
-            gameId = "sci";
-            categId = "feed";
-        } else if (level instanceof KidLearnSciBodyLevel) {
-            gameId = "sci";
-            categId = "body";
-        } else if (level instanceof KidLearnSciStateLevel) {
-            gameId = "sci";
-            categId = "state";
-        } else if (level instanceof KidLearnSciRecyLevel) {
-            gameId = "sci";
-            categId = "recy";
+        } else {
+            String gamePrefix = "sci/";
+            engWordsPath = gamePrefix + "en";
+            String SCI_PREFIX = gamePrefix + Game.getInstance().getAppInfoService().getLanguage();
+            if (level instanceof KidLearnSciFeedLevel) {
+                gameId = SCI_PREFIX;
+                categId = "feed";
+            } else if (level instanceof KidLearnSciBodyLevel) {
+                gameId = SCI_PREFIX;
+                categId = "body";
+            } else if (level instanceof KidLearnSciStateLevel) {
+                gameId = SCI_PREFIX;
+                categId = "state";
+            } else if (level instanceof KidLearnSciRecyLevel) {
+                gameId = SCI_PREFIX;
+                categId = "recy";
+            }
         }
-        return new ArrayList<>(Arrays.asList(Gdx.files.internal(Game.getInstance().getAppInfoService().getImplementationGameResourcesFolder() + "questions/" + gameId + "/" + categId + "/" + level.name().toLowerCase() + ".txt").readString().split("\n")));
+        LinkedHashMap<String, String> res = new LinkedHashMap<>();
+        List<String> translatedWords = getWords(level, categId, gameId);
+        List<String> pairWords = translatedWords;
+        if (StringUtils.isNotBlank(engWordsPath)) {
+            pairWords = getWords(level, categId, engWordsPath);
+        }
+        for (int i = 0; i < translatedWords.size(); i++) {
+            res.put(translatedWords.get(i), pairWords.get(i));
+        }
+        return res;
     }
 
+    private static ArrayList<String> getWords(Enum levelNr, String gameCateg, String gamePath) {
+        return new ArrayList<>(Arrays.asList(Gdx.files.internal(Game.getInstance().getAppInfoService().getImplementationGameResourcesFolder()
+                + "questions/" + gamePath + "/" + gameCateg + "/" + levelNr.name().toLowerCase() + ".txt")
+                .readString().split("\n")));
+    }
+
+    public static LinkedHashMap<String, String> shuffleMap(LinkedHashMap<String, String> map) {
+        LinkedHashMap<String, String> res = new LinkedHashMap<>();
+        List<String> keys = new ArrayList<>(map.keySet());
+        Collections.shuffle(keys);
+        for (String key : keys) {
+            res.put(key, map.get(key));
+        }
+        return res;
+    }
+
+
+    public static LinkedHashMap<String, String> reverseMap(LinkedHashMap<String, String> map) {
+        LinkedHashMap<String, String> res = new LinkedHashMap<>();
+        List<String> keys = new ArrayList<>(map.keySet());
+        Collections.reverse(keys);
+        for (String key : keys) {
+            res.put(key, map.get(key));
+        }
+        return res;
+    }
 }

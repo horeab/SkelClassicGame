@@ -1,6 +1,7 @@
 package libgdx.implementations.kidlearn.spec;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class KidLearnGameContext<T extends Enum & KidLearnLevel> {
@@ -9,7 +10,7 @@ public class KidLearnGameContext<T extends Enum & KidLearnLevel> {
         this.level = level;
     }
 
-    public List<Object> playedValues = new ArrayList<>();
+    public LinkedHashMap<Object, Object> playedValues = new LinkedHashMap<>();
     public int score;
     public T level;
 }

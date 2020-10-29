@@ -17,9 +17,8 @@ import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontConfig;
 
-public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDropCreator {
+public abstract class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDropCreator {
 
-    private static final int TOTAL_QUESTIONS = 2;
     private KidLearnMultipleAnswersConfig config;
     private static final float SCALE = 0.2f;
     private static final float SCALE_DURATION = 0.3f;
@@ -33,11 +32,6 @@ public class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDrop
     @Override
     protected double getNumberOfCorrectUnknownItems() {
         return getTotalOptions();
-    }
-
-    @Override
-    protected int getTotalQuestions() {
-        return TOTAL_QUESTIONS;
     }
 
     @Override

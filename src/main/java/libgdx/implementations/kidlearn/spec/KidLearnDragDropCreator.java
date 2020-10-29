@@ -102,7 +102,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
 
     protected void createResetBtn() {
         ButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_RESET;
-        MyButton btn = new ButtonBuilder("Reset")
+        MyButton btn = new ButtonBuilder(KidLearnGameLabel.l_reset.getText())
                 .setDefaultButton()
                 .setFixedButtonSize(btnSize)
                 .build();
@@ -241,7 +241,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         }
         if (verifyBtn == null) {
             ButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_VERIFY;
-            verifyBtn = new ButtonBuilder("Verify")
+            verifyBtn = new ButtonBuilder(KidLearnGameLabel.l_verify.getText())
                     .setDefaultButton()
                     .setFixedButtonSize(btnSize)
                     .build();

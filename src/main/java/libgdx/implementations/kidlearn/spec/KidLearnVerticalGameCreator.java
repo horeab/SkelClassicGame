@@ -88,7 +88,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         }
         float y = (screenHeight - availableScreenHeight)
                 + partHeight / 1.3f * Math.floorDiv(index + 1, 2);
-        y = y + screenHeight / 10f;
+        y = y + screenHeight / 6f;
         return Pair.of(x, y);
     }
 

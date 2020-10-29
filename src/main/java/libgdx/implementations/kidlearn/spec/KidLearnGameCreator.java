@@ -79,7 +79,7 @@ public abstract class KidLearnGameCreator {
         MyWrappedLabel msg = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setWidth(popupWidth / 1.1f)
                 .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText("That's correct, well done!").build());
+                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(KidLearnGameLabel.l_success.getText()).build());
         table.add(msg);
         return table;
     }

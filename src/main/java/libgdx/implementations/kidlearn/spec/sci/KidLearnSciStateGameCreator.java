@@ -9,10 +9,16 @@ import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnSciStateGameCreator extends KidLearnMultipleItemsGameCreator {
 
+    public static final int TOTAL_QUESTIONS = 2;
     public static final int TOTAL_ITEMS_OF_TYPE = 2;
 
     public KidLearnSciStateGameCreator(KidLearnGameContext gameContext, KidLearnMultipleAnswersConfig config) {
         super(gameContext, config);
+    }
+
+    @Override
+    protected int getTotalQuestions() {
+        return TOTAL_QUESTIONS;
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,22 +48,23 @@ public class KidLearnSciGameScreen extends AbstractScreen<KidLearnScreenManager>
         hoverBackButton.toFront();
         if (gameContext.level instanceof KidLearnSciFeedLevel) {
             KidLearnSciFeedLevel inst = (KidLearnSciFeedLevel) gameContext.level;
-            List<String> wordsToPlay = KidLearnUtils.getLevelListValsToPlay(gameContext, inst.nrOfCorrectUnknownWords, KidLearnUtils.getWords(gameContext.level));
+            LinkedHashMap<String, String> wordsToPlay = KidLearnUtils.getLevelListValsToPlay(gameContext, inst.nrOfCorrectUnknownWords, KidLearnUtils.getWords(gameContext.level));
             List<Pair<KidLearnWordImgConfig, KidLearnWordImgConfig>> configs = new ArrayList<>();
-            for (String word : wordsToPlay) {
+            for (String word : wordsToPlay.keySet()) {
                 String[] split = word.split(":");
-                configs.add(Pair.of(new KidLearnWordImgConfig(split[0], KidLearnUtils.getResource(split[0])),
-                        new KidLearnWordImgConfig(split[1], KidLearnUtils.getResource(split[1]))));
+                String[] transSplit = wordsToPlay.get(word).split(":");
+                configs.add(Pair.of(new KidLearnWordImgConfig(split[0], KidLearnUtils.getResource(transSplit[0])),
+                        new KidLearnWordImgConfig(split[1], KidLearnUtils.getResource(transSplit[1]))));
             }
             new KidLearnSciFeedGameCreator(gameContext, new KidLearnSciFeedConfig(configs)).create();
         } else if (gameContext.level instanceof KidLearnSciBodyLevel) {
             KidLearnSciBodyLevel inst = (KidLearnSciBodyLevel) gameContext.level;
-            List<String> wordsToPlay = KidLearnUtils.getLevelListValsToPlay(gameContext, inst.nrOfCorrectUnknownWords, KidLearnUtils.getWords(gameContext.level));
-            Collections.reverse(wordsToPlay);
+            LinkedHashMap<String, String> wordsToPlay = KidLearnUtils.getLevelListValsToPlay(gameContext, inst.nrOfCorrectUnknownWords, KidLearnUtils.getWords(gameContext.level));
+            KidLearnUtils.reverseMap(wordsToPlay);
             List<KidLearnArrowConfig> configs = new ArrayList<>();
-            for (String word : wordsToPlay) {
+            for (String word : wordsToPlay.keySet()) {
                 String[] split = word.split(":");
-                configs.add(new KidLearnArrowConfig(split[0], Float.valueOf(split[1]), Float.valueOf(split[2])));
+                configs.add(new KidLearnArrowConfig(split[0], Float.parseFloat(split[1]), Float.parseFloat(split[2])));
             }
             new KidLearnSciBodyGameCreator(gameContext, new KidLearnArrowsConfig(inst.mainImg, configs)).create();
         } else if (gameContext.level instanceof KidLearnSciStateLevel) {

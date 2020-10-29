@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,11 +45,11 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
         hoverBackButton.toFront();
         if (gameContext.level instanceof KidLearnEngWordsLevel) {
             KidLearnEngWordsLevel inst = (KidLearnEngWordsLevel) gameContext.level;
-            List<String> wordsToPlay = KidLearnUtils.getRandomLevelListValsToPlay(gameContext, inst.totalUnknownItems, KidLearnUtils.getWords(gameContext.level));
-            Collections.shuffle(wordsToPlay);
+            LinkedHashMap<String, String> wordsToPlay = KidLearnUtils.getRandomLevelListValsToPlay(gameContext, inst.totalUnknownItems, KidLearnUtils.getWords(gameContext.level));
+            KidLearnUtils.shuffleMap(wordsToPlay);
             List<KidLearnWordImgConfig> configs = new ArrayList<>();
-            for (String word : wordsToPlay) {
-                configs.add(new KidLearnWordImgConfig(word, KidLearnUtils.getResource(word)));
+            for (String word : wordsToPlay.keySet()) {
+                configs.add(new KidLearnWordImgConfig(word, KidLearnUtils.getResource(wordsToPlay.get(word))));
             }
             Collections.shuffle(configs);
             new KidLearnEngWordsGameCreator(gameContext, new KidLearnEngWordsConfig(configs)).create();
@@ -59,12 +60,12 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
                     Arrays.asList(Pair.of(0, nounConfig), Pair.of(1, verbConfig)), KidLearnEngVerbGameCreator.TOTAL_ITEMS_OF_TYPE);
             new KidLearnEngVerbGameCreator(gameContext, new KidLearnMultipleAnswersConfig(configs)).create();
         } else {
-            List<String> words = KidLearnUtils.getWords(gameContext.level);
-            Collections.shuffle(words);
-            String rand = KidLearnUtils.getLevelValsToPlay(gameContext, words);
+            LinkedHashMap<String, String>  words = KidLearnUtils.getWords(gameContext.level);
+            KidLearnUtils.shuffleMap(words);
+            Map.Entry<String, String> rand = KidLearnUtils.getLevelValsToPlay(gameContext, words);
             setUpAllTable();
-            getAllTable().add(new KidLearnEngHangmanGameCreator(gameContext, new KidLearnWordImgConfig(rand,
-                    KidLearnUtils.getResource(rand))).createTable())
+            getAllTable().add(new KidLearnEngHangmanGameCreator(gameContext, new KidLearnWordImgConfig(rand.getKey(),
+                    KidLearnUtils.getResource(rand.getValue()))).createTable())
                     .padTop(MainDimen.vertical_general_margin.getDimen() * 4);
         }
     }

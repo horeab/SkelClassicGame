@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -23,9 +24,12 @@ import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngLevel;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngVerbGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngVerbLevel;
+import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngWordsLevel;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
@@ -57,15 +61,15 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         List<KidLearnEngVerbLevel> verbLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnEngVerbLevel.class, difficultyLevelClass());
         int i = 0;
         for (KidLearnEngWordsLevel level : wordsLevels) {
-            addLevelToTable(btnTable, i, level);
+            addLevelToTable(btnTable, i, level, KidLearnEngWordsGameCreator.TOTAL_QUESTIONS);
             i++;
         }
         for (KidLearnEngHangmanLevel level : hangmanLevels) {
-            addLevelToTable(btnTable, i, level);
+            addLevelToTable(btnTable, i, level, KidLearnEngHangmanGameCreator.TOTAL_QUESTIONS);
             i++;
         }
         for (KidLearnEngVerbLevel level : verbLevels) {
-            addLevelToTable(btnTable, i, level);
+            addLevelToTable(btnTable, i, level, KidLearnEngVerbGameCreator.TOTAL_QUESTIONS);
             i++;
         }
         float extraHeight = ScreenDimensionsManager.getScreenHeight() - btnTableHeight;
@@ -81,13 +85,13 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         getAllTable().add(table).grow();
     }
 
-    private <T extends Enum & KidLearnLevel & KidLearnEngLevel> void addLevelToTable(Table btnTable, int i, T level) {
+    private <T extends Enum & KidLearnLevel & KidLearnEngLevel> void addLevelToTable(Table btnTable, int i, T level, int totalQuestions) {
         int colspan = 1;
         if (i == 2) {
             btnTable.row();
             colspan = 2;
         }
-        MyButton chooseLevelBtn = createChooseLevelBtn(level, i);
+        MyButton chooseLevelBtn = createChooseLevelBtn(level, totalQuestions);
         float padSide = MainDimen.horizontal_general_margin.getDimen() * 5;
         ButtonSize buttonSize = getChooseLevelBtnSize();
         btnTable.add(chooseLevelBtn).colspan(colspan)
@@ -108,14 +112,15 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
                         FontConfig.FONT_SIZE * 2f, 8f)).setText(KidLearnGameLabel.l_eng_title.getText()).build());
     }
 
-    private <T extends Enum & KidLearnLevel & KidLearnEngLevel> MyButton createChooseLevelBtn(T level, int index) {
+    private <T extends Enum & KidLearnLevel & KidLearnEngLevel> MyButton createChooseLevelBtn(T level, int totalQuestions) {
         ButtonSkin skin = level.buttonSkin();
         ButtonSize btnSize = getChooseLevelBtnSize();
+        Color mainFontColor = kidLearnPreferencesManager.getLevelScore(level) == totalQuestions ? FontColor.LIGHT_GREEN.getColor() : FontColor.WHITE.getColor();
         MyButton btn = new ImageButtonBuilder(skin, Game.getInstance().getAbstractScreen())
                 .padBetweenImageAndText(1.3f)
                 .textBackground(MainResource.transparent_background)
                 .setFixedButtonSize(btnSize)
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                .setFontConfig(new FontConfig(mainFontColor, FontColor.GREEN.getColor(),
                         FontConfig.FONT_SIZE * 3f, 7f))
                 .setText(level.title())
                 .build();
@@ -127,7 +132,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         });
         btn.getCenterRow().row();
         MyWrappedLabel categoryLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                .setFontConfig(new FontConfig(mainFontColor, FontColor.GREEN.getColor(),
                         Math.round(FontConfig.FONT_SIZE / 1.05f), 2f))
                 .setWrappedLineLabel(btnSize.getWidth() * 1.5f)
                 .setText(level.category().getText())

@@ -258,7 +258,7 @@ public enum KidLearnSpecificResource implements SpecificResource {
     fifteen("questions/img/apple.png", Texture.class),
     five("questions/img/apple.png", Texture.class),
     fish("questions/img/apple.png", Texture.class),
-    fly("questions/img/apple.png", Texture.class),
+    mosquito("questions/img/apple.png", Texture.class),
     fork("questions/img/apple.png", Texture.class),
     four("questions/img/apple.png", Texture.class),
     fourteen("questions/img/apple.png", Texture.class),
