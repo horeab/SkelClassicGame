@@ -270,24 +270,32 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     private Stack createImgTextStack(String text, float labelWidth, String labelName, Res res) {
         Stack stack = new Stack();
         stack.add(GraphicUtils.getImage(res));
-        MyWrappedLabel textLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+        MyWrappedLabelConfigBuilder builder = new MyWrappedLabelConfigBuilder()
                 .setWidth(labelWidth)
-                .setFontConfig(getImgStackTextFontConfig(text)).setText(text).build());
+                .setFontConfig(getImgStackTextFontConfig(FontConfig.FONT_SIZE / 1.0f)).setText(StringUtils.capitalize(text));
+        boolean isLongText = text.length() >= 10 && text.contains(" ");
+        if (isLongText) {
+            builder.setWrappedLineLabel(labelWidth);
+            float mult = 1f;
+            if (text.length() >= 15) {
+                mult = 1.4f;
+            } else if (text.length() >= 14) {
+                mult = 1.3f;
+            } else if (text.length() >= 13) {
+                mult = 1.2f;
+            } else if (text.length() >= 12) {
+                mult = 1.1f;
+            }
+            builder.setFontConfig(getImgStackTextFontConfig(FontConfig.FONT_SIZE / mult));
+        }
+        MyWrappedLabel textLabel = new MyWrappedLabel(builder.build());
+        if (!isLongText) {
+            textLabel = textLabel.fitToContainer();
+        }
         textLabel.setName(labelName);
         stack.add(textLabel);
         textLabel.toFront();
         return stack;
-    }
-
-    protected int getOptionFontSize(String text) {
-        int standardFontSize = Math.round(FontConfig.FONT_SIZE / 1.0f);
-        int fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 3 ? standardFontSize / 1.05f :
-                standardFontSize);
-        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 4 ? standardFontSize / 1.125f :
-                fontSize);
-        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 5 ? standardFontSize / 1.2f :
-                fontSize);
-        return fontSize;
     }
 
     protected void processOptionTextLabel(MyWrappedLabel label) {
@@ -296,9 +304,9 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     protected void processResponseTextLabel(MyWrappedLabel label) {
     }
 
-    protected FontConfig getImgStackTextFontConfig(String text) {
+    private FontConfig getImgStackTextFontConfig(float fontSize) {
         return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
-                getOptionFontSize(text), 3f);
+                Math.round(fontSize), 3f);
     }
 
     protected float getVerifyBtnY() {

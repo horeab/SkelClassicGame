@@ -95,18 +95,6 @@ public abstract class KidLearnMultipleItemsGameCreator extends KidLearnHorizonta
     }
 
     @Override
-    protected int getOptionFontSize(String text) {
-        int standardFontSize = Math.round(FontConfig.FONT_SIZE / 1.0f);
-        int fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 7 ? standardFontSize / 1.15f :
-                standardFontSize);
-        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 8 ? standardFontSize / 1.18f :
-                fontSize);
-        fontSize = Math.round(StringUtils.isNotBlank(text) && text.length() > 9 ? standardFontSize / 1.21f :
-                fontSize);
-        return fontSize;
-    }
-
-    @Override
     protected float getAcceptedDistanceForDropWidth() {
         return getOptionWidth() / 2;
     }
