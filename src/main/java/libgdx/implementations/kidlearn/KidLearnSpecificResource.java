@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import libgdx.game.Game;
 import libgdx.resources.SpecificResource;
-import sun.tools.jar.resources.jar;
 
 public enum KidLearnSpecificResource implements SpecificResource {
 
@@ -347,6 +346,29 @@ public enum KidLearnSpecificResource implements SpecificResource {
     wolf("questions/img/apple.png", Texture.class),
     write("questions/img/apple.png", Texture.class),
     yellow("questions/img/apple.png", Texture.class),
+    shark("questions/img/apple.png", Texture.class),
+    bee("questions/img/apple.png", Texture.class),
+    flower_pollen("questions/img/apple.png", Texture.class),
+    antelope("questions/img/apple.png", Texture.class),
+    grass("questions/img/apple.png", Texture.class),
+    panda("questions/img/apple.png", Texture.class),
+    bamboo("questions/img/apple.png", Texture.class),
+    koala("questions/img/apple.png", Texture.class),
+    eucalyptus("questions/img/apple.png", Texture.class),
+    polar_bear("questions/img/apple.png", Texture.class),
+    chicken("questions/img/apple.png", Texture.class),
+    earthworm("questions/img/apple.png", Texture.class),
+    cheetah("questions/img/apple.png", Texture.class),
+    reindeer("questions/img/apple.png", Texture.class),
+    broken_mug("questions/img/apple.png", Texture.class),
+    juice_bottle("questions/img/apple.png", Texture.class),
+    fruit_scraps("questions/img/apple.png", Texture.class),
+    milk_box("questions/img/apple.png", Texture.class),
+    broken_glass("questions/img/apple.png", Texture.class),
+    shampoo_bottle("questions/img/apple.png", Texture.class),
+    ketchup_bottle("questions/img/apple.png", Texture.class),
+    food_scraps("questions/img/apple.png", Texture.class),
+    natural_gas("questions/img/apple.png", Texture.class),
 
     specific_labels("labels/labels", I18NBundle.class),
     ;

@@ -20,7 +20,6 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.SoundUtils;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
-import libgdx.utils.model.FontConfig;
 
 public abstract class KidLearnGameCreator {
 
@@ -42,9 +41,7 @@ public abstract class KidLearnGameCreator {
     }
 
     private void createTitle() {
-        MyWrappedLabel title = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(getLevelTitle()).build());
+        Table title = KidLearnControlsUtils.createGameSubTitle(getLevelTitle());
         title.setY(getHeaderY());
         title.setX(ScreenDimensionsManager.getScreenWidth() / 2);
         addActorToScreen(title);
@@ -55,9 +52,9 @@ public abstract class KidLearnGameCreator {
     }
 
     private void createScoreLabel() {
+        String scoreLabelText = getScoreLabelText();
         scoreLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(getScoreLabelText()).build());
+                .setFontConfig(KidLearnControlsUtils.getSubTitleFontConfig(FontColor.WHITE.getColor())).setText(scoreLabelText).build());
         scoreLabel.setY(getHeaderY());
         scoreLabel.setX(ScreenDimensionsManager.getScreenWidth() - MainDimen.horizontal_general_margin.getDimen() * 5);
         addActorToScreen(scoreLabel);
@@ -78,8 +75,7 @@ public abstract class KidLearnGameCreator {
         table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
         MyWrappedLabel msg = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setWidth(popupWidth / 1.1f)
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE), 8f)).setText(KidLearnGameLabel.l_success.getText()).build());
+                .setFontConfig(KidLearnControlsUtils.getSubTitleFontConfig(FontColor.WHITE.getColor())).setText(KidLearnGameLabel.l_success.getText()).build());
         table.add(msg);
         return table;
     }

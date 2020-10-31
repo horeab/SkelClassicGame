@@ -1,6 +1,7 @@
 package libgdx.implementations.kidlearn.spec;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import libgdx.controls.label.MyWrappedLabel;
+import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanLevel;
@@ -24,6 +27,8 @@ import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateLevel;
 import libgdx.resources.Res;
 import libgdx.utils.SoundUtils;
+import libgdx.utils.model.FontColor;
+import libgdx.utils.model.FontConfig;
 
 public class KidLearnUtils {
 
@@ -118,6 +123,33 @@ public class KidLearnUtils {
             res.put(translatedWords.get(i), pairWords.get(i));
         }
         return res;
+    }
+
+    public static float getFontSize(String text, int minTextLength, float standardFontSize, float variable) {
+        int i = 0;
+        float res = standardFontSize / getVariableForTextLength(text, variable);
+        while (i < text.length() - minTextLength) {
+            res = res / (1 + variable);
+            i++;
+        }
+        return res;
+    }
+
+    public static float getVariableForTextLength(String text, float var) {
+        boolean isLongText = text.length() >= 10 && text.contains(" ");
+        float mult = 1f;
+        if (isLongText) {
+            if (text.length() >= 15) {
+                mult = 1 + var * 4;
+            } else if (text.length() >= 14) {
+                mult = 1 + var * 3;
+            } else if (text.length() >= 13) {
+                mult = 1 + var * 2;
+            } else if (text.length() >= 12) {
+                mult = 1 + var;
+            }
+        }
+        return mult;
     }
 
     private static ArrayList<String> getWords(Enum levelNr, String gameCateg, String gamePath) {

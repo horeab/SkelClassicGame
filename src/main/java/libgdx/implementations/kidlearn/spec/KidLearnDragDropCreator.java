@@ -19,11 +19,15 @@ import java.util.List;
 
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSize;
+import libgdx.controls.button.MainButtonSize;
+import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
+import libgdx.controls.button.builders.ImageButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
@@ -102,9 +106,8 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
 
     protected void createResetBtn() {
         ButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_RESET;
-        MyButton btn = new ButtonBuilder(KidLearnGameLabel.l_reset.getText())
-                .setDefaultButton()
-                .setFixedButtonSize(btnSize)
+        MyButton btn = new ImageButtonBuilder(MainButtonSkin.REFRESH, screen)
+                .setFixedButtonSize(SkelClassicButtonSize.KIDLEARN_RESET)
                 .build();
         btn.addListener(new ClickListener() {
             @Override

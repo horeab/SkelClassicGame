@@ -20,10 +20,12 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
+import libgdx.implementations.kidlearn.spec.KidLearnControlsUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
+import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngLevel;
@@ -73,7 +75,8 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
             i++;
         }
         float extraHeight = ScreenDimensionsManager.getScreenHeight() - btnTableHeight;
-        table.add(createGameTitle()).height(extraHeight / 2).row();
+        table.add(KidLearnControlsUtils.createGameTitleAllWidth(KidLearnGameLabel.l_eng_title.getText()))
+                .height(extraHeight / 2).row();
         table.add().height(extraHeight / 2).row();
         Table contentContainer = new Table();
         contentContainer.add(btnTable).top().height(btnTableHeight);
@@ -106,12 +109,6 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         return KidLearnEngWordsLevel.class;
     }
 
-    private Table createGameTitle() {
-        return new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        FontConfig.FONT_SIZE * 2f, 8f)).setText(KidLearnGameLabel.l_eng_title.getText()).build());
-    }
-
     private <T extends Enum & KidLearnLevel & KidLearnEngLevel> MyButton createChooseLevelBtn(T level, int totalQuestions) {
         ButtonSkin skin = level.buttonSkin();
         ButtonSize btnSize = getChooseLevelBtnSize();
@@ -120,9 +117,8 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
                 .padBetweenImageAndText(1.3f)
                 .textBackground(MainResource.transparent_background)
                 .setFixedButtonSize(btnSize)
-                .setFontConfig(new FontConfig(mainFontColor, FontColor.GREEN.getColor(),
-                        FontConfig.FONT_SIZE * 3f, 7f))
-                .setText(level.title())
+                .setFontConfig(KidLearnControlsUtils.getBtnLevelFontConfig(level.title()))
+                .setWrappedText(level.title(), btnSize.getWidth() * 2)
                 .build();
         btn.addListener(new ChangeListener() {
             @Override
@@ -133,7 +129,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         btn.getCenterRow().row();
         MyWrappedLabel categoryLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(mainFontColor, FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE / 1.05f), 2f))
+                        Math.round(KidLearnControlsUtils.getBtnLevelFontSize(level.title()) / 1.5f), 2f))
                 .setWrappedLineLabel(btnSize.getWidth() * 1.5f)
                 .setText(level.category().getText())
                 .build());

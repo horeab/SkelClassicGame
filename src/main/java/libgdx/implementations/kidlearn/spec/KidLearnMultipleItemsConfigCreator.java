@@ -23,12 +23,12 @@ public class KidLearnMultipleItemsConfigCreator {
             for (String v : words.keySet()) {
                 String[] split = v.split(":");
                 String word = split[1];
-                Res img = KidLearnUtils.getResource(words.get(v));
+                Res img = KidLearnUtils.getResource(words.get(v).split(":")[1]);
                 if (split[0].equals(String.valueOf(config.getKey()))
                         && configs.get(config.getRight()).size() < totalItemsOfType
                         && !gameContext.playedValues.containsKey(word)) {
                     configs.get(config.getRight()).add(new KidLearnWordImgConfig(word, img));
-                    gameContext.playedValues.put(word, words.get(v));
+                    gameContext.playedValues.put(word, words.get(v).split(":")[1]);
                 }
             }
         }

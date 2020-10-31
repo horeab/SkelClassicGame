@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn.spec;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -20,7 +21,6 @@ import libgdx.screen.AbstractScreen;
 import libgdx.utils.EnumUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
-import libgdx.utils.model.FontConfig;
 
 public class KidLearnDifficultyService {
 
@@ -65,12 +65,10 @@ public class KidLearnDifficultyService {
         int index = difficultyLevel.getIndex();
         AbstractScreen abstractScreen = Game.getInstance().getAbstractScreen();
         SkelClassicButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_DIFFICULTY;
+        Color mainColor = index == kidLearnPreferencesManager.getDifficultyLevel(levelType).getIndex() ? fontColor.getColor() : FontColor.WHITE.getColor();
         MyButton btn = new ImageButtonBuilder(SkelClassicButtonSkin.valueOf("KIDLEARN_DIFF_LEVEL_" + index), abstractScreen)
-                .setFontConfig(new FontConfig(
-                        index == kidLearnPreferencesManager.getDifficultyLevel(levelType).getIndex() ? fontColor.getColor() : FontColor.WHITE.getColor(),
-                        FontColor.BLACK.getColor(),
-                        FontConfig.FONT_SIZE * 1f,
-                        3f))
+                .setFontConfig(KidLearnControlsUtils.getSubTitleFontConfig(mainColor,
+                        KidLearnControlsUtils.getTitleStandardFontSize() / 2.2f))
                 .setFixedButtonSize(btnSize)
                 .setWrappedText(labelText, ScreenDimensionsManager.getScreenWidthValue(20))
                 .build();
