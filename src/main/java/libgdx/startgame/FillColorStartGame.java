@@ -3,18 +3,18 @@ package libgdx.startgame;
 import libgdx.constants.Language;
 import libgdx.game.Game;
 import libgdx.implementations.GameIdEnum;
-import libgdx.implementations.imagesplit.ImageSplitGame;
+import libgdx.implementations.fillcolor.FillColorGame;
 import libgdx.implementations.kidlearn.KidLearnGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 
-public class KidLearnStartGame {
+public class FillColorStartGame {
 
     public static void main(String[] args) {
-        KidLearnGame game = new KidLearnGame(
+        FillColorGame game = new FillColorGame(
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.kidlearn.name();
+                        return GameIdEnum.fillcolor.name();
                     }
 
                     @Override
@@ -29,12 +29,12 @@ public class KidLearnStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return Language.el.name();
+                        return Language.en.name();
                     }
 
                     @Override
                     public boolean isPortraitMode() {
-                        return false;
+                        return true;
                     }
                 });
         libgdx.utils.startgame.StartGame.main(game, args);
@@ -43,63 +43,63 @@ public class KidLearnStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "Vzdělávací hry";
+                return "xxx";
             case da:
-                return "Uddannelsesspil";
+                return "xxx";
             case de:
-                return "Lernspiel für Kinder";
+                return "xxx";
             case el:
-                return "Παιχνίδια εκμάθησης";
+                return "xxx";
             case en:
-                return "Educational Games";
+                return "xxx";
             case es:
-                return "Juegos educacionales";
+                return "xxx";
             case fi:
-                return "Koulutuspelit";
+                return "xxx";
             case fr:
-                return "Jeux éducatifs";
+                return "xxx";
             case hi:
-                return "शैक्षिक खेल";
+                return "xxx";
             case hr:
-                return "Obrazovne igre";
+                return "xxx";
             case hu:
-                return "Oktatási játékok";
+                return "xxx";
             case id:
-                return "Game Edukasi";
+                return "xxx";
             case it:
-                return "Giochi di apprendimento";
+                return "xxx";
             case ja:
-                return "教育ゲーム";
+                return "xxx";
             case ko:
-                return "교육용 게임";
+                return "xxx";
             case ms:
-                return "Permainan Pembelajaran";
+                return "xxx";
             case nl:
-                return "Educatieve spellen";
+                return "xxx";
             case no:
-                return "Pedagogiske spill";
+                return "xxx";
             case pl:
-                return "Gry edukacyjne";
+                return "xxx";
             case pt:
-                return "Jogo Educativo";
+                return "xxx";
             case ro:
-                return "Jocuri educaționale";
+                return "xxx";
             case ru:
-                return "Развивающая игра";
+                return "xxx";
             case sk:
-                return "Vzdelávacie hry";
+                return "xxx";
             case sv:
-                return "Pedagogiskt spel";
+                return "xxx";
             case th:
-                return "เกมการศึกษา";
+                return "xxx";
             case tr:
-                return "Eğitici oyunlar";
+                return "xxx";
             case uk:
-                return "Навчальні ігри";
+                return "xxx";
             case vi:
-                return "Trò chơi giáo dục";
+                return "xxx";
             case zh:
-                return "教育游戏";
+                return "xxx";
         }
         return null;
     }

@@ -1,7 +1,7 @@
 package libgdx.implementations.fillcolor.screens;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -11,10 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
@@ -31,14 +32,16 @@ import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import libgdx.utils.model.RGBColor;
 
 public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> {
 
     private Image imgToDisplay;
     private Res imgToFill;
     private FillColorService fillColorService = new FillColorService();
-    private Map<Pair<Integer, Integer>, Color> correctColors;
+    private Map<Pair<Integer, Integer>, RGBColor> correctColors;
     private Table percentTable;
+    private RGBColor selectedColor;
 
     public FillColorGameScreen(FillColorCampaignLevelEnum campaignLevelEnum) {
         FillColorSpecificResource res = FillColorSpecificResource.img0;
@@ -47,13 +50,14 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         correctColors = createCorrectColors();
     }
 
-    private Map<Pair<Integer, Integer>, Color> createCorrectColors() {
-        Map<Pair<Integer, Integer>, Color> correctColors = new HashMap<>();
-        correctColors.put(Pair.of(1, 1), Color.RED);
-        correctColors.put(Pair.of(2, 1), Color.RED);
-        correctColors.put(Pair.of(3, 1), Color.RED);
+    private Map<Pair<Integer, Integer>, RGBColor> createCorrectColors() {
+        Map<Pair<Integer, Integer>, RGBColor> correctColors = new HashMap<>();
+        correctColors.put(Pair.of(1, 1), RGBColor.DARK_GREEN);
+        correctColors.put(Pair.of(2, 1), RGBColor.LIGHT_BLUE);
+        correctColors.put(Pair.of(3, 1), RGBColor.RED);
         return correctColors;
     }
+
 
     @Override
     public void buildStage() {
@@ -66,9 +70,10 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         getAllTable().add(container).grow();
         addImage(stackContainer);
         getAllTable().row();
-        getAllTable().add(createProgressBar(2)).width(getProgressBarWidth());
+        int progressBarWidth = getProgressBarWidth();
+        getAllTable().add(createProgressBar(2)).width(progressBarWidth);
         getAllTable().row();
-        getAllTable().add(createColorToolbar());
+        getAllTable().add(createColorToolbar()).width(progressBarWidth);
     }
 
     protected int getProgressBarWidth() {
@@ -85,11 +90,11 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     }
 
     private void addImage(Table stackContainer) {
-        stackContainer.setTransform(true);
+        stackContainer.setTouchable(Touchable.enabled);
         stackContainer.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Stack img = fillColorService.fillWithColor(imgToDisplay, imgToFill, Math.round(x), Math.round(y));
+                Stack img = fillColorService.fillWithColor(imgToDisplay, imgToFill, selectedColor, Math.round(x), Math.round(y));
                 stackContainer.clear();
                 stackContainer.add(img).width(img.getWidth()).height(img.getHeight());
                 addImage(stackContainer);
@@ -139,13 +144,35 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
 
     private Table createColorToolbar() {
         Table table = new Table();
-        table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
-        List<Integer> colors = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        float sideDimen = MainDimen.horizontal_general_margin.getDimen() * 6;
-        for (Integer color : colors) {
-            table.add(GraphicUtils.getImage(MainResource.heart_full)).height(sideDimen).width(sideDimen);
+        table.setBackground(GraphicUtils.getColorBackground(RGBColor.LIGHT_BLUE.toColor()));
+        float sideDimen = MainDimen.horizontal_general_margin.getDimen() * 8;
+        List<RGBColor> colors = createRandomRGBColors(2);
+        Collections.shuffle(colors);
+        selectedColor = colors.get(0);
+        for (RGBColor color : colors) {
+            Table colorTable = new Table();
+            colorTable.setWidth(sideDimen);
+            colorTable.setHeight(sideDimen);
+            colorTable.setBackground(GraphicUtils.getColorBackground(color.toColor()));
+            table.add(colorTable).height(colorTable.getHeight()).width(colorTable.getWidth());
+            colorTable.setTouchable(Touchable.enabled);
+            colorTable.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    selectedColor = color;
+                }
+            });
         }
         return table;
+    }
+
+    private List<RGBColor> createRandomRGBColors(int nrOfWrongColor) {
+        List<RGBColor> colors = new ArrayList<>(correctColors.values());
+        for (int i = 0; i < nrOfWrongColor; i++) {
+            colors.add(new RGBColor(new Random().nextInt(255) + 1,
+                    new Random().nextInt(255) + 1, new Random().nextInt(255) + 1));
+        }
+        return colors;
     }
 
     private void addLevelIcon() {

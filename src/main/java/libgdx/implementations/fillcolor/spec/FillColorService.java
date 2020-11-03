@@ -1,6 +1,7 @@
 package libgdx.implementations.fillcolor.spec;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,6 +17,7 @@ import java.util.Queue;
 import libgdx.game.Game;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.RGBColor;
 
 public class FillColorService {
 
@@ -26,11 +28,13 @@ public class FillColorService {
 
     }
 
-    public Stack fillWithColor(Image imgToDisplay, Res imgToFill, int x, int y) {
+    public Stack fillWithColor(Image imgToDisplay, Res imgToFill, RGBColor colorToFill, int x, int y) {
         if (processedPixmap == null) {
             processedPixmap = getPixMapFromRes(imgToFill);
         }
-        floodFill(processedPixmap, Pair.of(x, processedPixmap.getHeight() - y), 0, 0x00ff00ff);
+        int pixmapY = processedPixmap.getHeight() - y;
+        floodFill(processedPixmap, Pair.of(x, pixmapY), processedPixmap.getPixel(x, pixmapY),
+                Color.rgba8888(colorToFill.toColor()));
         Stack stackFromImage = getStackFromImage(getImageFromPixmap(processedPixmap));
         stackFromImage.add(imgToDisplay);
         return stackFromImage;
