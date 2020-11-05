@@ -13,9 +13,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
@@ -30,6 +32,7 @@ import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
@@ -38,23 +41,24 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
 
     private Image imgToDisplay;
     private Res imgToFill;
-    private FillColorService fillColorService = new FillColorService();
+    private FillColorService fillColorService;
     private Map<Pair<Integer, Integer>, RGBColor> correctColors;
     private Table percentTable;
     private RGBColor selectedColor;
 
     public FillColorGameScreen(FillColorCampaignLevelEnum campaignLevelEnum) {
         FillColorSpecificResource res = FillColorSpecificResource.img0;
-        imgToDisplay = fillColorService.getImageFromPixmap(fillColorService.getPixMapFromRes(res));
-        imgToFill = FillColorSpecificResource.valueOf(res.name() + "_fill");
         correctColors = createCorrectColors();
+        imgToDisplay = FillColorService.getImageFromPixmap(FillColorService.getPixMapFromRes(res));
+        imgToFill = FillColorSpecificResource.valueOf(res.name() + "_fill");
+        fillColorService = new FillColorService(imgToDisplay, imgToFill, correctColors);
     }
 
     private Map<Pair<Integer, Integer>, RGBColor> createCorrectColors() {
         Map<Pair<Integer, Integer>, RGBColor> correctColors = new HashMap<>();
-        correctColors.put(Pair.of(1, 1), RGBColor.DARK_GREEN);
-        correctColors.put(Pair.of(2, 1), RGBColor.LIGHT_BLUE);
-        correctColors.put(Pair.of(3, 1), RGBColor.RED);
+        correctColors.put(Pair.of(166, FillColorService.getPixmapY(100)), RGBColor.LIGHT_RED1);
+        correctColors.put(Pair.of(176, FillColorService.getPixmapY(226)), RGBColor.GREEN);
+        correctColors.put(Pair.of(137, FillColorService.getPixmapY(271)), RGBColor.GREEN);
         return correctColors;
     }
 
@@ -90,16 +94,35 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     }
 
     private void addImage(Table stackContainer) {
+        int beforePressCorrectAnswersNr = fillColorService.getCorrectColorsPressed().size();
         stackContainer.setTouchable(Touchable.enabled);
         stackContainer.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Stack img = fillColorService.fillWithColor(imgToDisplay, imgToFill, selectedColor, Math.round(x), Math.round(y));
+                Stack img = fillColorService.fillWithColor(selectedColor, Math.round(x), Math.round(y));
                 stackContainer.clear();
                 stackContainer.add(img).width(img.getWidth()).height(img.getHeight());
                 addImage(stackContainer);
-                percentTable.setVisible(true);
-                percentTable.addAction(Actions.sizeBy(getCorrectAnswerStepPercent(), 0, 0.2f));
+                float amountToIncrease = getCorrectAnswerStepPercent();
+                int pressedCorrectAnswers = fillColorService.getCorrectColorsPressed().size();
+                if (beforePressCorrectAnswersNr > pressedCorrectAnswers) {
+                    amountToIncrease = -amountToIncrease;
+                } else if (beforePressCorrectAnswersNr == pressedCorrectAnswers) {
+                    amountToIncrease = 0;
+                }
+                if (pressedCorrectAnswers > 0) {
+                    percentTable.setVisible(true);
+                }
+                percentTable.addAction(Actions.sequence(Actions.sizeBy(amountToIncrease, 0, 0.2f),
+                        Utils.createRunnableAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (pressedCorrectAnswers == 0) {
+                                    percentTable.setVisible(false);
+                                }
+                            }
+                        })));
+
             }
         });
     }
@@ -167,12 +190,12 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     }
 
     private List<RGBColor> createRandomRGBColors(int nrOfWrongColor) {
-        List<RGBColor> colors = new ArrayList<>(correctColors.values());
+        Set<RGBColor> colors = new HashSet<>(correctColors.values());
         for (int i = 0; i < nrOfWrongColor; i++) {
             colors.add(new RGBColor(new Random().nextInt(255) + 1,
                     new Random().nextInt(255) + 1, new Random().nextInt(255) + 1));
         }
-        return colors;
+        return new ArrayList<>(colors);
     }
 
     private void addLevelIcon() {
