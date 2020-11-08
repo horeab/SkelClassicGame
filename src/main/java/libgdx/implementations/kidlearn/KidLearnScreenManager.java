@@ -12,10 +12,10 @@ public class KidLearnScreenManager extends AbstractScreenManager {
     @Override
     public void showMainScreen() {
         showLevelScreen(KidLearnSciFeedLevel.class);
-        showGameScreen(new KidLearnGameContext(KidLearnMathCaterOrdLevel.L0));
         showGameScreen(new KidLearnGameContext(KidLearnEngHangmanLevel.L0));
-        showGameScreen(new KidLearnGameContext(KidLearnSciFeedLevel.L0));
+        showGameScreen(new KidLearnGameContext(KidLearnMathCaterOrdLevel.L0));
         showLevelScreen(KidLearnSciFeedLevel.class);
+        showGameScreen(new KidLearnGameContext(KidLearnSciFeedLevel.L0));
         showScreen(KidLearnScreenTypeEnum.MAIN_SCREEN);
     }
 

@@ -30,11 +30,6 @@ public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreato
     }
 
     @Override
-    protected Action[] getActionsToExecuteForResponseAfterDragStop() {
-        return new Action[0];
-    }
-
-    @Override
     protected float dragStopMoveToY(Table unk) {
         return super.dragStopMoveToY(unk) - getOptionHeight() / 2;
     }
@@ -116,6 +111,7 @@ public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreato
 
     @Override
     protected void executeAnimationAfterDragStop(Table opt, Table unk) {
+        unk.toFront();
         if (!SCALE_MARKER.equals(opt.getUserObject())) {
             opt.setTransform(true);
             opt.setUserObject(SCALE_MARKER);
@@ -141,7 +137,12 @@ public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreato
     }
 
     @Override
+    protected float getOptionHeight() {
+        return getOptionWidth();
+    }
+
+    @Override
     protected float getOptionWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(15);
+        return ScreenDimensionsManager.getScreenWidthValue(11);
     }
 }

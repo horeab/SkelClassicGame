@@ -27,11 +27,6 @@ public class KidLearnEngVerbGameCreator extends KidLearnMultipleItemsGameCreator
     }
 
     @Override
-    protected float getOptionWidth() {
-        return super.getOptionWidth() * 1.2f;
-    }
-
-    @Override
     protected float getResponsesRowY() {
         return ScreenDimensionsManager.getExternalDeviceHeightValue(36);
     }
@@ -48,6 +43,7 @@ public class KidLearnEngVerbGameCreator extends KidLearnMultipleItemsGameCreator
 
     @Override
     protected void executeOnDragStart(KidLearnImgInfo opt) {
+        super.executeOnDragStart(opt);
         KidLearnUtils.playSoundForEnum(opt.val);
     }
 }

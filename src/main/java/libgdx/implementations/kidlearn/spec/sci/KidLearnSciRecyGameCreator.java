@@ -3,10 +3,8 @@ package libgdx.implementations.kidlearn.spec.sci;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
-import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleAnswersConfig;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsGameCreator;
-import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnSciRecyGameCreator extends KidLearnMultipleItemsGameCreator {
@@ -26,11 +24,6 @@ public class KidLearnSciRecyGameCreator extends KidLearnMultipleItemsGameCreator
     @Override
     protected float getOptionsRowY() {
         return ScreenDimensionsManager.getExternalDeviceHeightValue(13);
-    }
-
-    @Override
-    protected float getOptionWidth() {
-        return super.getOptionWidth() * 1.2f;
     }
 
     @Override

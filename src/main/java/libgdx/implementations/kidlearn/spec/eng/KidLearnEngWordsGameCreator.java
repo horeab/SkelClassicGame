@@ -1,5 +1,8 @@
 package libgdx.implementations.kidlearn.spec.eng;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -7,12 +10,15 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
+import libgdx.implementations.kidlearn.spec.KidLearnDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
+import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 
@@ -24,6 +30,19 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
     public KidLearnEngWordsGameCreator(KidLearnGameContext gameContext, KidLearnEngWordsConfig config) {
         super(gameContext);
         this.config = config;
+    }
+
+    @Override
+    protected void executeOptionResetAnimation(Table img) {
+        super.executeOptionResetAnimation(img);
+        img.findActor(KidLearnDragDropCreator.IMG_TEXT_STACK_IMAGE).addAction(Actions.sequence(
+                new AlphaAction[]{Actions.fadeIn(UNK_FADE_DURATION)}));
+    }
+
+    @Override
+    protected void executeAnimationAfterDragStop(Table opt, Table unk) {
+        opt.findActor(KidLearnDragDropCreator.IMG_TEXT_STACK_IMAGE).addAction(Actions.sequence(
+                new AlphaAction[]{Actions.fadeOut(UNK_FADE_DURATION)}));
     }
 
     @Override
@@ -63,7 +82,12 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
 
     @Override
     protected float getOptionWidth() {
-        return super.getOptionWidth() * 1.4f;
+        return super.getOptionWidth() * 1.2f;
+    }
+
+    @Override
+    protected float getOptionHeight() {
+        return getOptionWidth();
     }
 
     @Override
@@ -102,6 +126,7 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
 
     @Override
     protected void executeOnDragStart(KidLearnImgInfo opt) {
+        super.executeOnDragStart(opt);
         KidLearnUtils.playSoundForEnum(opt.val);
     }
 }

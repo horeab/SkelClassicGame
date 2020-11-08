@@ -1,10 +1,10 @@
 package libgdx.implementations.kidlearn.spec;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,7 +19,6 @@ import java.util.List;
 
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSize;
-import libgdx.controls.button.MainButtonSize;
 import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.ImageButtonBuilder;
@@ -27,7 +26,6 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
-import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
@@ -39,7 +37,8 @@ import libgdx.utils.model.FontConfig;
 public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
 
     private static final float OPT_MOVE_DURATION = 0.2f;
-    private static final float UNK_FADE_DURATION = 0.1f;
+    protected static final float UNK_FADE_DURATION = 0.1f;
+    public static final String IMG_TEXT_STACK_IMAGE = "ImgTextStackIMAGE";
     private MyButton verifyBtn;
     protected List<KidLearnImgInfo> unknownImg = new ArrayList<>();
     protected List<KidLearnImgInfo> optionsImg = new ArrayList<>();
@@ -191,7 +190,6 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
                         ) {
                             opt.img.addAction(Actions.moveTo(dragStopMoveToX(unk), dragStopMoveToY(unk), 0.3f));
                             noMatch = false;
-                            unk.addAction(Actions.sequence(getActionsToExecuteForResponseAfterDragStop()));
                             opt.img.setTouchable(Touchable.disabled);
                             alreadyMovedOptionImg.add(opt);
                             alreadyFilledUnknownImg.add(unkInfo);
@@ -221,11 +219,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     }
 
     protected void executeAnimationAfterDragStop(Table opt, Table unk) {
-    }
-
-
-    protected Action[] getActionsToExecuteForResponseAfterDragStop() {
-        return new AlphaAction[]{Actions.fadeOut(UNK_FADE_DURATION)};
+        unk.addAction(Actions.sequence(new AlphaAction[]{Actions.fadeOut(UNK_FADE_DURATION)}));
     }
 
     protected Table getLastAddedImgInContainer(float containerX) {
@@ -272,7 +266,9 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
 
     private Stack createImgTextStack(String text, float labelWidth, String labelName, Res res) {
         Stack stack = new Stack();
-        stack.add(GraphicUtils.getImage(res));
+        Image image = GraphicUtils.getImage(res);
+        image.setName(IMG_TEXT_STACK_IMAGE);
+        stack.add(image);
         MyWrappedLabelConfigBuilder builder = new MyWrappedLabelConfigBuilder()
                 .setWidth(labelWidth)
                 .setFontConfig(getImgStackTextFontConfig(FontConfig.FONT_SIZE / 1.0f)).setText(StringUtils.capitalize(text));
@@ -295,9 +291,14 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         if (!isLongText) {
             textLabel = textLabel.fitToContainer();
         }
+        Table table = new Table();
+        Table labelTable = new Table();
+        table.add().growY().row();
+        table.add(labelTable);
+        labelTable.add(textLabel);
         textLabel.setName(labelName);
-        stack.add(textLabel);
-        textLabel.toFront();
+        stack.add(table);
+        table.toFront();
         return stack;
     }
 

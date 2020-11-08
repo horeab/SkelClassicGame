@@ -4,10 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +15,6 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
-import libgdx.utils.model.FontConfig;
 
 public abstract class KidLearnMultipleItemsGameCreator extends KidLearnHorizontalDragDropCreator {
 
@@ -85,13 +84,13 @@ public abstract class KidLearnMultipleItemsGameCreator extends KidLearnHorizonta
     }
 
     @Override
-    protected Action[] getActionsToExecuteForResponseAfterDragStop() {
-        return new Action[0];
+    protected float getOptionWidth() {
+        return super.getOptionWidth() * 1f;
     }
 
     @Override
-    protected float getOptionWidth() {
-        return super.getOptionWidth() * 1.1f;
+    protected float getOptionHeight() {
+        return getOptionWidth();
     }
 
     @Override
@@ -163,6 +162,11 @@ public abstract class KidLearnMultipleItemsGameCreator extends KidLearnHorizonta
 
     @Override
     protected void executeAnimationAfterDragStop(Table opt, Table unk) {
+        List<KidLearnImgInfo> toSort = new ArrayList<>(alreadyMovedOptionImg);
+        Collections.reverse(toSort);
+        for (KidLearnImgInfo info : toSort) {
+            info.img.toFront();
+        }
         if (!SCALED_MARKER.equals(opt.getUserObject())) {
             opt.setTransform(true);
             opt.addAction(Actions.scaleBy(-SCALE, -SCALE, SCALE_DURATION));

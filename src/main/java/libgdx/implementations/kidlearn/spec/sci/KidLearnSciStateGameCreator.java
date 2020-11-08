@@ -27,11 +27,6 @@ public class KidLearnSciStateGameCreator extends KidLearnMultipleItemsGameCreato
     }
 
     @Override
-    protected float getOptionWidth() {
-        return super.getOptionWidth() * 1.2f;
-    }
-
-    @Override
     protected float getResponsesRowY() {
         return ScreenDimensionsManager.getExternalDeviceHeightValue(36);
     }
