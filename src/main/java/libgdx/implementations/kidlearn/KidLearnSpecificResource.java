@@ -81,7 +81,6 @@ public enum KidLearnSpecificResource implements SpecificResource {
     word_unk("eng/word_unk.png", Texture.class),
 
     background_music("questions/sound/background.mp3", Music.class),
-    background_sound("questions/sound/apple.mp3", Sound.class),
     level_fail("questions/sound/level_fail.mp3", Sound.class),
     level_success("questions/sound/level_success.mp3", Sound.class),
     //sounds,
