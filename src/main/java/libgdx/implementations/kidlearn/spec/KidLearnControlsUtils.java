@@ -24,22 +24,22 @@ public class KidLearnControlsUtils {
                 getBtnLevelFontSize(text), 3f);
     }
 
-    public static FontConfig getTitleFontConfig(String text, int maxTextLength, float borderWidth) {
+    public static FontConfig getTitleFontConfig(String text, int maxTextLength, FontColor borderColor, float borderWidth) {
         float fontSize = KidLearnUtils.getFontSize(text, maxTextLength, getTitleStandardFontSize(), 0.05f);
-        return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
+        return new FontConfig(FontColor.WHITE.getColor(), borderColor.getColor(),
                 fontSize, borderWidth);
     }
 
-    public static FontConfig getTitleFontConfig(String text, float borderWidth) {
-        return getTitleFontConfig(text, 20, borderWidth);
+    public static FontConfig getTitleFontConfig(String text, FontColor borderColor, float borderWidth) {
+        return getTitleFontConfig(text, 20, borderColor, borderWidth);
     }
 
     protected static float getTitleStandardFontSize() {
         return FontConfig.FONT_SIZE * 2f;
     }
 
-    public static FontConfig getTitleFontConfig(String text) {
-        return getTitleFontConfig(text, getStandardTitleBorderWidth());
+    public static FontConfig getTitleFontConfig(String text, FontColor borderColor) {
+        return getTitleFontConfig(text, borderColor, getStandardTitleBorderWidth());
     }
 
     public static float getStandardTitleBorderWidth() {
@@ -52,9 +52,9 @@ public class KidLearnControlsUtils {
                 .setFontConfig(fontConfig).setText(text).build());
     }
 
-    public static Table createGameTitleAllWidth(String text) {
+    public static Table createGameTitleAllWidth(String text, FontColor borderColor) {
         return createGameTitle(text, getTitleFontConfig(text,
-                99, KidLearnControlsUtils.getStandardTitleBorderWidth()));
+                99, borderColor, KidLearnControlsUtils.getStandardTitleBorderWidth()));
     }
 
     public static Table createGameSubTitle(String text) {
@@ -64,7 +64,7 @@ public class KidLearnControlsUtils {
     }
 
     public static FontConfig getSubTitleFontConfig(Color mainColor) {
-        return getSubTitleFontConfig(mainColor,getTitleStandardFontSize() / 1.8f);
+        return getSubTitleFontConfig(mainColor, getTitleStandardFontSize() / 1.8f);
     }
 
     public static FontConfig getSubTitleFontConfig(Color mainColor, float fontSize) {
@@ -72,7 +72,7 @@ public class KidLearnControlsUtils {
                 fontSize, 3f);
     }
 
-    public static Table createGameTitle(String text) {
-        return createGameTitle(text, getTitleFontConfig(text));
+    public static Table createGameTitle(String text, FontColor borderColor) {
+        return createGameTitle(text, getTitleFontConfig(text, borderColor));
     }
 }

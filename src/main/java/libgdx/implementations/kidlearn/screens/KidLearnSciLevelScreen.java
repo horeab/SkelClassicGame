@@ -71,7 +71,7 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         float btnTableHeight = ScreenDimensionsManager.getScreenHeightValue(70);
         float extraHeight = ScreenDimensionsManager.getScreenHeight() - btnTableHeight;
         table.add(KidLearnControlsUtils.createGameTitleAllWidth(
-                KidLearnGameLabel.l_sci_title.getText())).height(extraHeight / 2).row();
+                KidLearnGameLabel.l_sci_title.getText(), kidLearnDifficultyService.getTitleBorderColor(difficultyLevelClass()))).height(extraHeight / 2).row();
         table.add().height(extraHeight / 2).row();
         Table contentContainer = new Table();
         Table difficultyButtonsTable = kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), false);

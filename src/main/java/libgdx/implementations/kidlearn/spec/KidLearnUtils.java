@@ -71,7 +71,7 @@ public class KidLearnUtils {
     }
 
     public static Res getResource(String word) {
-        return KidLearnSpecificResource.valueOf(word.toLowerCase().replace(" ", "_"));
+        return KidLearnSpecificResource.valueOf(word.toLowerCase().replace(" ", "_").replace("\r", ""));
     }
 
     public static void playSoundForEnum(String enumName) {

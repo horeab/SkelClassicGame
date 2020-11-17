@@ -2,6 +2,7 @@ package libgdx.implementations.resourcewars.screens;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 import libgdx.constants.Language;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
@@ -60,7 +61,7 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
         table.add(gameTable).row();
         table.add(containerManager.createFooter());
         addActor(table);
-        addActor(new BackButtonBuilder().addHoverBackButton(getAbstractScreen(),0));
+        addActor(new BackButtonBuilder().addHoverBackButton(getAbstractScreen(), 0, BackButtonBuilder.getY()));
     }
 
     private Table getInvMarket(String headerText, Table scrollTable) {

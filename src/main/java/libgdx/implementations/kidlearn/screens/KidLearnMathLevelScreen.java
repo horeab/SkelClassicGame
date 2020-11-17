@@ -9,6 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
@@ -24,7 +25,6 @@ import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
-import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterGameCreator;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterLevel;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterOrdLevel;
@@ -44,17 +44,22 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
 
     @Override
     public void buildStage() {
+        new ActorAnimation(getAbstractScreen()).createScrollingBackground(KidLearnSpecificResource.scroll_background_math);
         setUpAllTable();
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         hoverBackButton.toFront();
         createLevelMenu(KidLearnGameLabel.l_math_title.getText());
+        kidLearnDifficultyService.setBackgroundDiff(new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()), getBackgroundStage());
     }
 
     private void createLevelMenu(String titleText) {
         Table table = new Table();
         Table headerTable = new Table();
         float screenWidth = ScreenDimensionsManager.getScreenWidthValue(90);
-        headerTable.add(KidLearnControlsUtils.createGameTitle(titleText)).pad(MainDimen.horizontal_general_margin.getDimen()).width(screenWidth / 2);
+        headerTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setWidth(ScreenDimensionsManager.getScreenWidthValue(38))
+                .setFontConfig(KidLearnControlsUtils.getTitleFontConfig(titleText, kidLearnDifficultyService.getTitleBorderColor(difficultyLevelClass()))).setText(titleText).build()))
+                .padTop(MainDimen.vertical_general_margin.getDimen() * 2).width(screenWidth / 2);
         headerTable.add(kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), false)).width(screenWidth / 2);
         float headerHeight = ScreenDimensionsManager.getScreenHeightValue(20);
         table.add(headerTable).height(headerHeight).width(screenWidth).row();
@@ -101,23 +106,28 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
     }
 
     private <L extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(L level, int levelMax, int levelMin, final boolean asc, float interval) {
+        SkelClassicButtonSkin kidlearnHangmanLetter = SkelClassicButtonSkin.KIDLEARN_MATH_ORD_LEVEL;
+        if (level instanceof KidLearnMathCaterSeqLevel) {
+            kidlearnHangmanLetter = SkelClassicButtonSkin.KIDLEARN_MATH_SEQ_LEVEL;
+        }
         Table table = new Table();
         Pair<String, String> levelText = getLevelText(level, levelMax, levelMin, asc, interval);
+        float borderWidth = 3f;
         MyButton btn = new ButtonBuilder()
-                .setButtonSkin(SkelClassicButtonSkin.KIDLEARN_HANGMAN_LETTER)
-                .setFontConfig(createBtnFontConfig(FontConfig.FONT_SIZE / 1.1f, 2f))
+                .setButtonSkin(kidlearnHangmanLetter)
+                .setFontConfig(createBtnFontConfig(FontConfig.FONT_SIZE * 1.2f, borderWidth))
                 .setWrappedText(levelText.getLeft(), getLevelBtnSize().getWidth())
                 .setFixedButtonSize(getLevelBtnSize())
                 .build();
         btn.getCenterRow().row();
-        if (StringUtils.isNotBlank(levelText.getRight())) {
-            MyWrappedLabel operationLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                    .setFontConfig(createBtnFontConfig(FontConfig.FONT_SIZE / 1.3f, 2f))
-                    .setWidth(getLevelBtnSize().getWidth())
-                    .setText(levelText.getRight())
-                    .build());
-            btn.getCenterRow().padTop(MainDimen.vertical_general_margin.getDimen()).add(operationLabel);
-        }
+//        if (StringUtils.isNotBlank(levelText.getRight())) {
+//            MyWrappedLabel operationLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+//                    .setFontConfig(createBtnFontConfig(FontConfig.FONT_SIZE / 1.3f, borderWidth))
+//                    .setWidth(getLevelBtnSize().getWidth())
+//                    .setText(levelText.getRight())
+//                    .build());
+//            btn.getCenterRow().padTop(MainDimen.vertical_general_margin.getDimen()).add(operationLabel);
+//        }
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -132,7 +142,7 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
     }
 
     private FontConfig createBtnFontConfig(float fontSize, float borderWidth) {
-        return new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+        return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
                 Math.round(fontSize), borderWidth);
     }
 

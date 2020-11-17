@@ -75,7 +75,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
             i++;
         }
         float extraHeight = ScreenDimensionsManager.getScreenHeight() - btnTableHeight;
-        table.add(KidLearnControlsUtils.createGameTitleAllWidth(KidLearnGameLabel.l_eng_title.getText()))
+        table.add(KidLearnControlsUtils.createGameTitleAllWidth(KidLearnGameLabel.l_eng_title.getText(), kidLearnDifficultyService.getTitleBorderColor(difficultyLevelClass())))
                 .height(extraHeight / 2).row();
         table.add().height(extraHeight / 2).row();
         Table contentContainer = new Table();

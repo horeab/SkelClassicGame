@@ -19,7 +19,7 @@ public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDrop
         float variableY = getVariableResponseY();
         variableY = new Random().nextBoolean() ? variableY : -variableY;
         float y = getResponsesRowY() + variableY;
-        return createImgCoord(index, getTotalItems(), y, getResponseWidth());
+        return createImgCoord(index, getTotalItems(), y, getResponseWidth(), getResponseAvailableScreenWidth());
     }
 
     protected float getVariableResponseY() {
@@ -28,12 +28,11 @@ public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDrop
 
     @Override
     protected Pair<Float, Float> getCoordsForOptionRow(int index) {
-        return createImgCoord(index, getTotalOptions(), getOptionsRowY(), getOptionWidth());
+        return createImgCoord(index, getTotalOptions(), getOptionsRowY(), getOptionWidth(), getOptionsAvailableScreenWidth());
     }
 
-    private Pair<Float, Float> createImgCoord(int index, int totalNr, float y, float imgWidth) {
+    private Pair<Float, Float> createImgCoord(int index, int totalNr, float y, float imgWidth, float availableScreenWidth) {
         int screenWidth = ScreenDimensionsManager.getScreenWidth();
-        float availableScreenWidth = getAvailableScreenWidth();
         float partWidth = availableScreenWidth / totalNr;
         float x = (screenWidth - availableScreenWidth) / 2
                 + partWidth / 2
@@ -42,7 +41,11 @@ public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDrop
         return Pair.of(x, y);
     }
 
-    protected float getAvailableScreenWidth() {
+    protected float getOptionsAvailableScreenWidth() {
+        return ScreenDimensionsManager.getScreenWidth() / 1.5f;
+    }
+
+    protected float getResponseAvailableScreenWidth() {
         return ScreenDimensionsManager.getScreenWidth() / 1.5f;
     }
 

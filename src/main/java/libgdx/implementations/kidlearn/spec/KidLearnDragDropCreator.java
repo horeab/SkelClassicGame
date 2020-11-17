@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn.spec;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -271,7 +272,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         stack.add(image);
         MyWrappedLabelConfigBuilder builder = new MyWrappedLabelConfigBuilder()
                 .setWidth(labelWidth)
-                .setFontConfig(getImgStackTextFontConfig(FontConfig.FONT_SIZE / 1.0f)).setText(StringUtils.capitalize(text));
+                .setFontConfig(getImgStackTextFontConfig(FontConfig.FONT_SIZE / getOptionTextStandardFontSize(text))).setText(StringUtils.capitalize(text));
         boolean isLongText = text.length() >= 10 && text.contains(" ");
         if (isLongText) {
             builder.setWrappedLineLabel(labelWidth);
@@ -293,7 +294,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         }
         Table table = new Table();
         Table labelTable = new Table();
-        table.add().growY().row();
+        processTextTableBeforeAddText(table);
         table.add(labelTable);
         labelTable.add(textLabel);
         textLabel.setName(labelName);
@@ -302,13 +303,21 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         return stack;
     }
 
+    protected float getOptionTextStandardFontSize(String text) {
+        return 1.0f;
+    }
+
+    protected void processTextTableBeforeAddText(Table table) {
+        table.add().growY().row();
+    }
+
     protected void processOptionTextLabel(MyWrappedLabel label) {
     }
 
     protected void processResponseTextLabel(MyWrappedLabel label) {
     }
 
-    private FontConfig getImgStackTextFontConfig(float fontSize) {
+    protected FontConfig getImgStackTextFontConfig(float fontSize) {
         return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
                 Math.round(fontSize), 3f);
     }

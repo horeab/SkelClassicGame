@@ -29,7 +29,7 @@ public class KidLearnStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return Language.el.name();
+                        return Language.en.name();
                     }
 
                     @Override

@@ -20,12 +20,24 @@ public enum KidLearnSpecificResource implements SpecificResource {
     diff_btn_2_up("buttons/diff_btn_2_up.png", Texture.class),
     btn_sci_level_up("buttons/btn_sci_level_up.png", Texture.class),
     btn_sci_level_down("buttons/btn_sci_level_down.png", Texture.class),
-    btn_main_menu_up("buttons/btn_hangman_up.png", Texture.class),
-    btn_main_menu_down("buttons/btn_hangman_down.png", Texture.class),
+    btn_main_menu_math_up("buttons/btn_math_up.png", Texture.class),
+    btn_main_menu_math_down("buttons/btn_math_down.png", Texture.class),
+    btn_main_menu_eng_up("buttons/btn_eng_up.png", Texture.class),
+    btn_main_menu_eng_down("buttons/btn_eng_down.png", Texture.class),
+    btn_main_menu_sci_up("buttons/btn_sci_up.png", Texture.class),
+    btn_main_menu_sci_down("buttons/btn_sci_down.png", Texture.class),
+
+
+    background_texture_diff0("background/background_texture_diff0.png", Texture.class),
+    background_texture_diff1("background/background_texture_diff1.png", Texture.class),
+    background_texture_diff2("background/background_texture_diff2.png", Texture.class),
+    scroll_background_math("background/scroll_background_math.png", Texture.class),
 
     //math
-    btn_math_level_up("buttons/btn_hangman_up.png", Texture.class),
-    btn_math_level_down("buttons/btn_hangman_down.png", Texture.class),
+    btn_math_ord_level_up("buttons/btn_math_ord_level_up.png", Texture.class),
+    btn_math_ord_level_down("buttons/btn_math_ord_level_down.png", Texture.class),
+    btn_math_seq_level_up("buttons/btn_math_seq_level_up.png", Texture.class),
+    btn_math_seq_level_down("buttons/btn_math_seq_level_down.png", Texture.class),
     cater_body("math/cater_body.png", Texture.class),
     cater_head("math/cater_head.png", Texture.class),
     cater_tail("math/cater_tail.png", Texture.class),

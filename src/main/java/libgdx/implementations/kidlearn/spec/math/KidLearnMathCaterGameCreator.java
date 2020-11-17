@@ -13,6 +13,9 @@ import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.resources.Res;
+import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.FontColor;
+import libgdx.utils.model.FontConfig;
 
 public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCreator {
 
@@ -57,6 +60,35 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
     }
 
     @Override
+    protected void processTextTableBeforeAddText(Table table) {
+    }
+
+    @Override
+    protected float getOptionTextStandardFontSize(String text) {
+        float size = 0.5f;
+        if (text.length() > 5) {
+            size = 1f;
+        } else if (text.length() > 4) {
+            size = 0.9f;
+        } else if (text.length() > 3) {
+            size = 0.75f;
+        } else if (text.length() > 2) {
+            size = 0.65f;
+        }
+        return size;
+    }
+
+    @Override
+    protected float getOptionsAvailableScreenWidth() {
+        return ScreenDimensionsManager.getScreenWidth() / 1.1f;
+    }
+
+    protected FontConfig getImgStackTextFontConfig(float fontSize) {
+        return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLUE.getColor(),
+                Math.round(fontSize), 3f);
+    }
+
+    @Override
     protected void createAllItemsContainer() {
         for (int i = 0; i < allCorrectNumbers.size(); i++) {
             Pair<Float, Float> coord = getCoordsForResponseRow(i);
@@ -88,6 +120,16 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
         } else {
             return ((KidLearnLevel) gameContext.level).title();
         }
+    }
+
+    @Override
+    protected float getOptionWidth() {
+        return ScreenDimensionsManager.getScreenWidthValue(16);
+    }
+
+    @Override
+    protected float getOptionHeight() {
+        return getOptionWidth();
     }
 
     @Override
