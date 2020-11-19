@@ -9,14 +9,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
+import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleAnswersConfig;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsConfigCreator;
+import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
 import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanGameCreator;
@@ -33,6 +36,7 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
 
     private MyButton hoverBackButton;
     KidLearnGameContext gameContext;
+    private KidLearnDifficultyService kidLearnDifficultyService = new KidLearnDifficultyService();
 
 
     public KidLearnEngGameScreen(KidLearnGameContext gameContext) {
@@ -41,6 +45,7 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
 
     @Override
     public void buildStage() {
+        new ActorAnimation(getAbstractScreen()).createScrollingBackground(KidLearnSpecificResource.scroll_background_eng);
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         hoverBackButton.toFront();
         if (gameContext.level instanceof KidLearnEngWordsLevel) {
@@ -68,6 +73,7 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
                     KidLearnUtils.getResource(rand.getValue()))).createTable())
                     .padTop(MainDimen.vertical_general_margin.getDimen() * 4);
         }
+        kidLearnDifficultyService.setBackgroundDiff(new KidLearnPreferencesManager().getDifficultyLevel(KidLearnMathLevelScreen.difficultyLevelClass()), getBackgroundStage());
     }
 
     @Override

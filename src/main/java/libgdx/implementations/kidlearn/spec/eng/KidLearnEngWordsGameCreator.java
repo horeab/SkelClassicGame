@@ -1,10 +1,12 @@
 package libgdx.implementations.kidlearn.spec.eng;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.RGBColor;
 
 public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreator {
 
@@ -43,6 +46,11 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
     protected void executeAnimationAfterDragStop(Table opt, Table unk) {
         opt.findActor(KidLearnDragDropCreator.IMG_TEXT_STACK_IMAGE).addAction(Actions.sequence(
                 new AlphaAction[]{Actions.fadeOut(UNK_FADE_DURATION)}));
+    }
+
+    @Override
+    protected float getResponseAvailableScreenWidth() {
+        return ScreenDimensionsManager.getScreenWidth() / 1.1f;
     }
 
     @Override
@@ -103,6 +111,13 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
     @Override
     protected float getOptionsAvailableScreenWidth() {
         return ScreenDimensionsManager.getScreenWidthValue(90);
+    }
+
+    @Override
+    protected void processLabelTable(Table labelTable, String text) {
+        if (StringUtils.isNotBlank(text)) {
+            labelTable.setBackground(GraphicUtils.getColorBackground(RGBColor.LIGHT_BLUE.toColor(0.8f)));
+        }
     }
 
     @Override

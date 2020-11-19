@@ -19,6 +19,7 @@ import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnControlsUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
@@ -39,6 +40,7 @@ import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import libgdx.utils.model.RGBColor;
 
 public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager> {
 
@@ -48,10 +50,12 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
 
     @Override
     public void buildStage() {
+        new ActorAnimation(getAbstractScreen()).createScrollingBackground(KidLearnSpecificResource.scroll_background_eng);
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         hoverBackButton.toFront();
         setUpAllTable();
         createChooseLevelMenu();
+        kidLearnDifficultyService.setBackgroundDiff(new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()), getBackgroundStage());
     }
 
     private void createChooseLevelMenu() {
@@ -112,13 +116,15 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
     private <T extends Enum & KidLearnLevel & KidLearnEngLevel> MyButton createChooseLevelBtn(T level, int totalQuestions) {
         ButtonSkin skin = level.buttonSkin();
         ButtonSize btnSize = getChooseLevelBtnSize();
-        Color mainFontColor = kidLearnPreferencesManager.getLevelScore(level) == totalQuestions ? FontColor.LIGHT_GREEN.getColor() : FontColor.WHITE.getColor();
+        int levelScore = kidLearnPreferencesManager.getLevelScore(level);
+        Color mainFontColor = levelScore == totalQuestions ? FontColor.LIGHT_GREEN.getColor() : FontColor.WHITE.getColor();
+        Color borderColor = levelScore == totalQuestions ? FontColor.DARK_GRAY.getColor() : FontColor.GRAY.getColor();
+        Color backColor = levelScore == totalQuestions ? RGBColor.LIGHT_GREEN.toColor(0.9f) : RGBColor.LIGHT_BLUE.toColor(0.9f);
         MyButton btn = new ImageButtonBuilder(skin, Game.getInstance().getAbstractScreen())
-                .padBetweenImageAndText(1.3f)
-                .textBackground(MainResource.transparent_background)
+                .textBackground(MainResource.popup_background)
                 .setFixedButtonSize(btnSize)
                 .setFontConfig(KidLearnControlsUtils.getBtnLevelFontConfig(level.title()))
-                .setWrappedText(level.title(), btnSize.getWidth() * 2)
+                .setWrappedText(level.category().getText(), btnSize.getWidth() * 2)
                 .build();
         btn.addListener(new ChangeListener() {
             @Override
@@ -127,11 +133,12 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
             }
         });
         btn.getCenterRow().row();
+        btn.getCenterRow().setBackground(GraphicUtils.getColorBackground(backColor));
         MyWrappedLabel categoryLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(mainFontColor, FontColor.GREEN.getColor(),
-                        Math.round(KidLearnControlsUtils.getBtnLevelFontSize(level.title()) / 1.5f), 2f))
-                .setWrappedLineLabel(btnSize.getWidth() * 1.5f)
-                .setText(level.category().getText())
+                .setFontConfig(new FontConfig(mainFontColor, borderColor,
+                        Math.round(KidLearnControlsUtils.getBtnLevelFontSize(level.title()) * 0.9f), 3f))
+                .setWrappedLineLabel(btnSize.getWidth() * 2.5f)
+                .setText(level.title())
                 .build());
         btn.getCenterRow().padTop(MainDimen.vertical_general_margin.getDimen()).add(categoryLabel).width(btnSize.getWidth());
         return btn;

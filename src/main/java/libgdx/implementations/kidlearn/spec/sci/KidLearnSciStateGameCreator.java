@@ -2,10 +2,14 @@ package libgdx.implementations.kidlearn.spec.sci;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
+import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleAnswersConfig;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsGameCreator;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.RGBColor;
 
 public class KidLearnSciStateGameCreator extends KidLearnMultipleItemsGameCreator {
 
@@ -29,6 +33,13 @@ public class KidLearnSciStateGameCreator extends KidLearnMultipleItemsGameCreato
     @Override
     protected float getResponsesRowY() {
         return ScreenDimensionsManager.getExternalDeviceHeightValue(36);
+    }
+
+    @Override
+    protected void processLabelTable(Table labelTable, String text) {
+        if (StringUtils.isNotBlank(text)) {
+            labelTable.setBackground(GraphicUtils.getColorBackground(RGBColor.LIGHT_BLUE.toColor(0.8f)));
+        }
     }
 
     @Override

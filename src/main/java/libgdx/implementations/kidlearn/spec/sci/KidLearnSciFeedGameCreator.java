@@ -1,20 +1,22 @@
 package libgdx.implementations.kidlearn.spec.sci;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.RGBColor;
 
 public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreator {
 
@@ -32,6 +34,13 @@ public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreato
     @Override
     protected float dragStopMoveToY(Table unk) {
         return super.dragStopMoveToY(unk) - getOptionHeight() / 2;
+    }
+
+    @Override
+    protected void processLabelTable(Table labelTable, String text) {
+        if (StringUtils.isNotBlank(text)) {
+            labelTable.setBackground(GraphicUtils.getColorBackground(RGBColor.LIGHT_BLUE.toColor(0.8f)));
+        }
     }
 
     @Override
@@ -96,6 +105,11 @@ public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreato
 
     @Override
     protected float getOptionsAvailableScreenWidth() {
+        return ScreenDimensionsManager.getScreenWidthValue(90);
+    }
+
+    @Override
+    protected float getResponseAvailableScreenWidth() {
         return ScreenDimensionsManager.getScreenWidthValue(90);
     }
 

@@ -188,7 +188,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
                                 &&
                                 (unk.getY() - acceptedDistHeight < img.getY() && unk.getY() + responseSideDimenHeight + acceptedDistHeight > (img.getY() + optionHeight))
                                 && optionDragStopValidExtraCondition(unkInfo)
-                        ) {
+                                ) {
                             opt.img.addAction(Actions.moveTo(dragStopMoveToX(unk), dragStopMoveToY(unk), 0.3f));
                             noMatch = false;
                             opt.img.setTouchable(Touchable.disabled);
@@ -296,11 +296,15 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         Table labelTable = new Table();
         processTextTableBeforeAddText(table);
         table.add(labelTable);
+        processLabelTable(labelTable, text);
         labelTable.add(textLabel);
         textLabel.setName(labelName);
         stack.add(table);
         table.toFront();
         return stack;
+    }
+
+    protected void processLabelTable(Table labelTable, String text) {
     }
 
     protected float getOptionTextStandardFontSize(String text) {
