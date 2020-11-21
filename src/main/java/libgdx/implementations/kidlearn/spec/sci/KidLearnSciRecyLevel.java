@@ -9,8 +9,8 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnSciRecyLevel implements KidLearnLevel, KidLearnSciLevel {
 
-    L0(KidLearnSpecificResource.categ_recy1, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_recy),
-    L1(KidLearnSpecificResource.categ_recy2, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_sci_recy),
+    L0(KidLearnSpecificResource.btn_sci_recy1, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_recy),
+    L1(KidLearnSpecificResource.btn_sci_recy2, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_sci_recy),
     ;
 
     public Res categImg;

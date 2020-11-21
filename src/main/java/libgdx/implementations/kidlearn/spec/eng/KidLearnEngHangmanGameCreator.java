@@ -35,6 +35,7 @@ import libgdx.utils.SoundUtils;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import libgdx.utils.model.RGBColor;
 
 public class KidLearnEngHangmanGameCreator extends KidLearnGameCreator {
 
@@ -79,7 +80,7 @@ public class KidLearnEngHangmanGameCreator extends KidLearnGameCreator {
     private Table createPressedAnswersTable() {
         Table table = new Table();
         answersLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), RGBColor.DARK_GREEN.toColor(),
                         Math.round(FontConfig.FONT_SIZE * 1.7f), 4f))
                 .setText(getUnkString(kidLearnWordImgConfig.word.length())).build());
         table.add(answersLabel).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();

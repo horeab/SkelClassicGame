@@ -9,7 +9,7 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnSciStateLevel implements KidLearnLevel, KidLearnSciLevel {
 
-    L0(KidLearnSpecificResource.categ_state, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_state),
+    L0(KidLearnSpecificResource.btn_sci_state, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_state),
     ;
 
     public Res categImg;

@@ -155,7 +155,7 @@ public class KidLearnUtils {
     private static ArrayList<String> getWords(Enum levelNr, String gameCateg, String gamePath) {
         return new ArrayList<>(Arrays.asList(Gdx.files.internal(Game.getInstance().getAppInfoService().getImplementationGameResourcesFolder()
                 + "questions/" + gamePath + "/" + gameCateg + "/" + levelNr.name().toLowerCase() + ".txt")
-                .readString().split("\n")));
+                .readString().replace("\r", "").split("\n")));
     }
 
     public static LinkedHashMap<String, String> shuffleMap(LinkedHashMap<String, String> map) {

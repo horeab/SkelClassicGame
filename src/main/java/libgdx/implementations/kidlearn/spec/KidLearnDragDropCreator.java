@@ -27,7 +27,9 @@ import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
+import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
@@ -240,7 +242,8 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         if (verifyBtn == null) {
             ButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_VERIFY;
             verifyBtn = new ButtonBuilder(KidLearnGameLabel.l_verify.getText())
-                    .setDefaultButton()
+                    .setFontScale(FontManager.getBigFontDim())
+                    .setButtonSkin(SkelClassicButtonSkin.KIDLEARN_VERIFY)
                     .setFixedButtonSize(btnSize)
                     .build();
             verifyBtn.addListener(new ClickListener() {

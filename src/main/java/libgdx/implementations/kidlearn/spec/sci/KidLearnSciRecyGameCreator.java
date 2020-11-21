@@ -32,7 +32,7 @@ public class KidLearnSciRecyGameCreator extends KidLearnMultipleItemsGameCreator
 
     @Override
     protected float getResponsesRowY() {
-        return ScreenDimensionsManager.getExternalDeviceHeightValue(36);
+        return ScreenDimensionsManager.getExternalDeviceHeightValue(43);
     }
 
     @Override
@@ -43,13 +43,18 @@ public class KidLearnSciRecyGameCreator extends KidLearnMultipleItemsGameCreator
     }
 
     @Override
+    protected float dragStopMoveToY(Table unk) {
+        return unk.getY() + unk.getHeight() / 2f;
+    }
+
+    @Override
     protected float getResponseWidth() {
         return super.getResponseWidth() * 1.2f;
     }
 
     @Override
     protected float getResponseHeight() {
-        return super.getResponseHeight() * 2.2f;
+        return super.getResponseHeight() * 1.6f;
     }
 
     @Override

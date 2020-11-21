@@ -1,5 +1,6 @@
 package libgdx.implementations.kidlearn.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -15,6 +16,7 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnControlsUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
@@ -31,9 +33,11 @@ import libgdx.implementations.kidlearn.spec.sci.KidLearnSciRecyLevel;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateGameCreator;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciStateLevel;
 import libgdx.resources.MainResource;
+import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.model.FontColor;
 
 public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager> {
 
@@ -43,10 +47,12 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
 
     @Override
     public void buildStage() {
+        new ActorAnimation(getAbstractScreen()).createScrollingBackground(KidLearnSpecificResource.scroll_background_sci);
         hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         hoverBackButton.toFront();
         setUpAllTable();
         createChooseLevelMenu();
+        kidLearnDifficultyService.setBackgroundDiff(new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()), getBackgroundStage());
     }
 
     private void createChooseLevelMenu() {
@@ -107,7 +113,9 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         btn.getCenterRow().row();
         float imgSideDimen = MainDimen.side_btn_image.getDimen() * 2;
         Table imgTable = new Table();
-        imgTable.add(GraphicUtils.getImage(level.categImg())).height(imgSideDimen).width(imgSideDimen);
+        int levelScore = kidLearnPreferencesManager.getLevelScore(level);
+        Res categImg = levelScore == totalQuestions ? level.categImg() : KidLearnSpecificResource.valueOf(level.categImg().name() + "_unk");
+        imgTable.add(GraphicUtils.getImage(categImg)).height(imgSideDimen).width(imgSideDimen);
         btn.getCenterRow().add(imgTable).padTop(MainDimen.vertical_general_margin.getDimen() * 1.5f);
         btn.addListener(new ChangeListener() {
             @Override

@@ -9,9 +9,9 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnSciBodyLevel implements KidLearnLevel, KidLearnSciLevel {
 
-    L0(5, KidLearnSpecificResource.categ_human_body, KidLearnSpecificResource.human_body, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_body),
-    L1(5, KidLearnSpecificResource.categ_plant_parts, KidLearnSpecificResource.plant_parts, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_plant),
-    L2(5, KidLearnSpecificResource.categ_human_skeleton, KidLearnSpecificResource.human_skeleton, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_sci_skel),
+    L0(5, KidLearnSpecificResource.btn_sci_human_body, KidLearnSpecificResource.human_body, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_body),
+    L1(5, KidLearnSpecificResource.btn_sci_plant_parts, KidLearnSpecificResource.plant_parts, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_plant),
+    L2(5, KidLearnSpecificResource.btn_sci_human_skeleton, KidLearnSpecificResource.human_skeleton, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_sci_skel),
     ;
 
     public int nrOfCorrectUnknownWords;

@@ -41,7 +41,7 @@ public class KidLearnEngVerbGameCreator extends KidLearnMultipleItemsGameCreator
 
     @Override
     protected float getResponsesRowY() {
-        return ScreenDimensionsManager.getExternalDeviceHeightValue(36);
+        return ScreenDimensionsManager.getExternalDeviceHeightValue(41);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class KidLearnEngVerbGameCreator extends KidLearnMultipleItemsGameCreator
 
     @Override
     protected float getResponseHeight() {
-        return super.getResponseHeight() * 2.5f;
+        return super.getResponseHeight() * 2.1f;
     }
 
     @Override

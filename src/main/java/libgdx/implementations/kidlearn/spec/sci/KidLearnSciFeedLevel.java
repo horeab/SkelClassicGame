@@ -9,8 +9,8 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnSciFeedLevel implements KidLearnLevel, KidLearnSciLevel {
 
-    L0(5, KidLearnSpecificResource.categ_feed1, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_feed),
-    L1(5, KidLearnSpecificResource.categ_feed2, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_feed),
+    L0(5, KidLearnSpecificResource.btn_sci_feed1, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_feed),
+    L1(5, KidLearnSpecificResource.btn_sci_feed2, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_feed),
     ;
 
     public int nrOfCorrectUnknownWords;

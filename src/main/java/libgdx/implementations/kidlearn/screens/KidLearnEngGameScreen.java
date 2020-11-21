@@ -73,7 +73,7 @@ public class KidLearnEngGameScreen extends AbstractScreen<KidLearnScreenManager>
                     KidLearnUtils.getResource(rand.getValue()))).createTable())
                     .padTop(MainDimen.vertical_general_margin.getDimen() * 4);
         }
-        kidLearnDifficultyService.setBackgroundDiff(new KidLearnPreferencesManager().getDifficultyLevel(KidLearnMathLevelScreen.difficultyLevelClass()), getBackgroundStage());
+        kidLearnDifficultyService.setBackgroundDiff(new KidLearnPreferencesManager().getDifficultyLevel(KidLearnEngLevelScreen.difficultyLevelClass()), getBackgroundStage());
     }
 
     @Override
