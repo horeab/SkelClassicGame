@@ -1,5 +1,5 @@
-Czaszka:0.9:0.5
-Kręgosłup:0.9:0.5
-Klatka piersiowa:0.6:0.5
-Kość udowa:0.5:0.2
-Tibia:0.2:0.5
+Czaszka:0.95:0.45
+Kręgosłup:0.59:0.47
+Klatka piersiowa:0.73:0.42
+Kość udowa:0.4:0.35
+Tibia:0.2:0.4

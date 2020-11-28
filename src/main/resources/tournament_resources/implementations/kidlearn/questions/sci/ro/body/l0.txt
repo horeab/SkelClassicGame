@@ -1,5 +1,5 @@
-Frunte:0.9:0.5
-Cot:0.9:0.5
-Stomac:0.6:0.5
-Genunchi:0.5:0.2
-Gleznă:0.2:0.5
+Frunte:0.94:0.47
+Cot:0.6:0.33
+Piept:0.74:0.47
+Genunchi:0.25:0.4
+Gleznă:0.038:0.4

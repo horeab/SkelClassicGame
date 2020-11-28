@@ -1,5 +1,5 @@
-Frente:0.9:0.5
-Codo:0.9:0.5
-Estómago:0.6:0.5
-Rodilla:0.5:0.2
-Tobillo:0.2:0.5
+Frente:0.94:0.47
+Codo:0.6:0.33
+Pecho:0.74:0.47
+Rodilla:0.25:0.4
+Tobillo:0.038:0.4

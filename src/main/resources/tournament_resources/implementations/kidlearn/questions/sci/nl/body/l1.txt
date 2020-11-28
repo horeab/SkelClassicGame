@@ -1,5 +1,5 @@
-Blad:0.9:0.5
-Vrucht:0.9:0.5
-Bloem:0.6:0.5
-Stengel:0.5:0.2
+Blad:0.7:0.1
+Vrucht:0.4:0.7
+Bloem:0.9:0.6
+Stengel:0.55:0.45
 Wortel:0.2:0.5

@@ -37,7 +37,9 @@ public abstract class KidLearnGameCreator {
 
     public void create() {
         createTitle();
-        createScoreLabel();
+        if (getTotalQuestions() > 1) {
+            createScoreLabel();
+        }
     }
 
     private void createTitle() {

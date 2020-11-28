@@ -52,6 +52,7 @@ public enum KidLearnSpecificResource implements SpecificResource {
 
     //science
     arrow_left("sci/arrow_left.png", Texture.class),
+    arrow_left_pointer("sci/arrow_left_pointer.png", Texture.class),
     vertical_unk("sci/vertical_unk.png", Texture.class),
     liquid_container("sci/liquid_container.png", Texture.class),
     solid_container("sci/solid_container.png", Texture.class),
@@ -60,9 +61,9 @@ public enum KidLearnSpecificResource implements SpecificResource {
     glass_container("sci/glass_container.png", Texture.class),
     organic_container("sci/organic_container.png", Texture.class),
     paper_container("sci/paper_container.png", Texture.class),
-    human_body("questions/img/apple.png", Texture.class),
+    human_body("sci/human_body.png", Texture.class),
     plant_parts("sci/plant_parts.png", Texture.class),
-    human_skeleton("questions/img/apple.png", Texture.class),
+    human_skeleton("sci/human_skeleton.png", Texture.class),
     vertical_word_unk("sci/vertical_word_unk.png", Texture.class),
     btn_sci_human_body("buttons/btn_sci_human_body.png", Texture.class),
     btn_sci_plant_parts("buttons/btn_sci_plant_parts.png", Texture.class),

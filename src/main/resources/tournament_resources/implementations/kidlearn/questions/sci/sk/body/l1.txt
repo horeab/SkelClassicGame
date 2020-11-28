@@ -1,5 +1,5 @@
-List:0.9:0.5
-Ovocie:0.9:0.5
-Kvetina:0.6:0.5
-Stonka:0.5:0.2
+List:0.7:0.1
+Ovocie:0.4:0.7
+Kvetina:0.9:0.6
+Stonka:0.55:0.45
 Koreň:0.2:0.5

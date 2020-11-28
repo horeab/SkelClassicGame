@@ -1,5 +1,5 @@
-Koponya:0.9:0.5
-Csigolya:0.9:0.5
-Mellkas:0.6:0.5
-Femur:0.5:0.2
-Sípcsont:0.2:0.5
+Koponya:0.95:0.45
+Csigolya:0.59:0.47
+Mellkas:0.73:0.42
+Femur:0.4:0.35
+Sípcsont:0.2:0.4

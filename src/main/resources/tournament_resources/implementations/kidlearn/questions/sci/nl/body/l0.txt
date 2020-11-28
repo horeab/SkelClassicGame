@@ -1,5 +1,5 @@
-Voorhoofd:0.9:0.5
-Elleboog:0.9:0.5
-Maag:0.6:0.5
-Knie:0.5:0.2
-Enkel:0.2:0.5
+Voorhoofd:0.94:0.47
+Elleboog:0.6:0.33
+Borst:0.74:0.47
+Knie:0.25:0.4
+Enkel:0.038:0.4

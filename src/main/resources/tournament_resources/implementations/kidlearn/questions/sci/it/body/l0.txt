@@ -1,5 +1,5 @@
-Fronte:0.9:0.5
-Gomito:0.9:0.5
-Stomaco:0.6:0.5
-Ginocchio:0.5:0.2
-Caviglia:0.2:0.5
+Fronte:0.94:0.47
+Gomito:0.6:0.33
+Petto:0.74:0.47
+Ginocchio:0.25:0.4
+Caviglia:0.038:0.4

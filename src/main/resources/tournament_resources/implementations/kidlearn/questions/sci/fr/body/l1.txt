@@ -1,5 +1,5 @@
-Feuille:0.9:0.5
-Fruits:0.9:0.5
-Fleur:0.6:0.5
-Tige:0.5:0.2
+Feuille:0.7:0.1
+Fruits:0.4:0.7
+Fleur:0.9:0.6
+Tige:0.55:0.45
 Racine:0.2:0.5

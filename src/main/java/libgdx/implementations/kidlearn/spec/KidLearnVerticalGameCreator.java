@@ -13,14 +13,13 @@ import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnArrowConfig;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnArrowsConfig;
-import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
 
 public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
-    public static final int TOTAL_QUESTIONS = 2;
+    public static final int TOTAL_QUESTIONS = 1;
     KidLearnArrowsConfig config;
 
     public KidLearnVerticalGameCreator(KidLearnGameContext gameContext, KidLearnArrowsConfig config) {
@@ -140,9 +139,18 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         Image image = GraphicUtils.getImage(KidLearnSpecificResource.arrow_left);
         image.setWidth(arrowWidth);
         image.setHeight(SkelClassicButtonSize.KIDLEARN_RESPONSE_ARROW.getHeight());
-        image.setX(coord.getLeft() - image.getWidth());
-        image.setY(coord.getRight() + image.getHeight() / 2);
-        addActorToScreen(image);
+        float pointerSideDimen = MainDimen.horizontal_general_margin.getDimen();
+        Image pointer = GraphicUtils.getImage(KidLearnSpecificResource.arrow_left_pointer);
+        pointer.setWidth(pointerSideDimen);
+        pointer.setHeight(pointerSideDimen);
+        Table table = new Table();
+        table.setHeight(image.getHeight());
+        table.setWidth(image.getWidth() + pointerSideDimen);
+        table.add(pointer).width(pointerSideDimen).height(pointerSideDimen);
+        table.add(image).width(image.getWidth()).height(image.getHeight());
+        table.setX(coord.getLeft() - image.getWidth() - pointerSideDimen);
+        table.setY(coord.getRight() + image.getHeight() / 2);
+        addActorToScreen(table);
     }
 
     @Override

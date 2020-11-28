@@ -1,5 +1,5 @@
-Yaprak:0.9:0.5
-Meyve:0.9:0.5
-Çiçek:0.6:0.5
-İnternod:0.5:0.2
+Yaprak:0.7:0.1
+Meyve:0.4:0.7
+Çiçek:0.9:0.6
+İnternod:0.55:0.45
 Kök:0.2:0.5

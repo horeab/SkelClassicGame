@@ -1,5 +1,5 @@
-Craniu:0.9:0.5
-Coloană vertebrală:0.9:0.5
-Coaste:0.6:0.5
-Femur:0.5:0.2
-Tibie:0.2:0.5
+Craniu:0.95:0.45
+Coloană vertebrală:0.59:0.47
+Coaste:0.73:0.42
+Femur:0.4:0.35
+Tibie:0.2:0.4

@@ -1,5 +1,5 @@
-Testa:0.9:0.5
-Cotovelo:0.9:0.5
-Estômago:0.6:0.5
-Joelho:0.5:0.2
-Tornozelo:0.2:0.5
+Testa:0.94:0.47
+Cotovelo:0.6:0.33
+Peito:0.74:0.47
+Joelho:0.25:0.4
+Tornozelo:0.038:0.4

@@ -1,5 +1,5 @@
-Kraniet:0.9:0.5
-Rygsøjle:0.9:0.5
-Ribben:0.6:0.5
-Lårben:0.5:0.2
-Tibia:0.2:0.5
+Kraniet:0.95:0.45
+Rygsøjle:0.59:0.47
+Ribben:0.73:0.42
+Lårben:0.4:0.35
+Tibia:0.2:0.4

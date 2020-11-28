@@ -1,5 +1,5 @@
-Forehead:0.9:0.5
-Elbow:0.9:0.5
-Stomach:0.6:0.5
-Knee:0.5:0.2
-Ankle:0.2:0.5
+Forehead:0.94:0.47
+Elbow:0.6:0.33
+Chest:0.74:0.47
+Knee:0.25:0.4
+Ankle:0.038:0.4
