@@ -42,7 +42,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         img.setWidth(newWidthForNewHeight);
 
         img.setX((getResponsesRowX() - newWidthForNewHeight) / 2);
-        img.setY((ScreenDimensionsManager.getScreenHeight() - availableScreenHeight) / 2);
+        img.setY(ScreenDimensionsManager.getScreenHeightValue(5));
         addActorToScreen(img);
     }
 
@@ -70,9 +70,13 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
     }
 
     @Override
+    protected void processTextTableBeforeAddText(Table table) {
+    }
+
+    @Override
     protected Pair<Float, Float> getCoordsForResponseRow(int index) {
         Pair<Float, Float> imgCoord = createImgCoord(index, getTotalItems(), getResponsesRowX());
-        return Pair.of(imgCoord.getLeft(), config.words.get(index).wordY * getAvailableScreenHeight() - getOptionHeight() / 2);
+        return Pair.of(imgCoord.getLeft(), config.words.get(index).wordY * getAvailableScreenHeight());
     }
 
     @Override
@@ -84,10 +88,10 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         float halfQ = halfScreen / 4;
         float x = halfScreen + halfQ / 1.3f;
         if (index % 2 != 0) {
-            x = x + halfQ * 1.3f;
+            x = x + halfQ * 1.5f;
         }
         float y = (screenHeight - availableScreenHeight)
-                + partHeight / 1.3f * Math.floorDiv(index + 1, 2);
+                + partHeight / 1f * Math.floorDiv(index + 1, 2);
         y = y + screenHeight / 6f;
         return Pair.of(x, y);
     }
@@ -114,11 +118,22 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
             Pair<Float, Float> coord = getCoordsForResponseRow(i);
             KidLearnArrowConfig config = this.config.words.get(i);
             String word = config.word;
-            Table imgStack = addResponseImg(coord, KidLearnSpecificResource.arrow_left, "");
+            Table imgStack = addResponseImg(coord, KidLearnSpecificResource.vertical_unk, "");
             unknownImg.add(new KidLearnImgInfo(coord, imgStack, word));
             addRespArrow(coord, config.arrowX);
         }
     }
+
+    @Override
+    protected float getVerifyBtnX() {
+        return ScreenDimensionsManager.getScreenWidth() / 1.8f;
+    }
+
+    @Override
+    protected float getVerifyBtnY() {
+        return ScreenDimensionsManager.getScreenHeightValue(50) - verifyBtn.getHeight() / 2;
+    }
+
 
     private void addRespArrow(Pair<Float, Float> coord, float arrowX) {
         float arrowWidth = getResponsesRowX() * arrowX;
@@ -158,7 +173,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
     protected List<Pair<String, Res>> getAllOptions() {
         List<Pair<String, Res>> opt = new ArrayList<>();
         for (KidLearnArrowConfig word : config.words) {
-            opt.add(Pair.of(word.word, KidLearnSpecificResource.word_unk));
+            opt.add(Pair.of(word.word, KidLearnSpecificResource.vertical_word_unk));
         }
         return opt;
     }

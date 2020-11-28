@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import libgdx.game.Game;
 import libgdx.resources.SpecificResource;
+import sun.net.www.content.image.png;
 
 public enum KidLearnSpecificResource implements SpecificResource {
 
@@ -60,8 +61,9 @@ public enum KidLearnSpecificResource implements SpecificResource {
     organic_container("sci/organic_container.png", Texture.class),
     paper_container("sci/paper_container.png", Texture.class),
     human_body("questions/img/apple.png", Texture.class),
-    plant_parts("questions/img/apple.png", Texture.class),
+    plant_parts("sci/plant_parts.png", Texture.class),
     human_skeleton("questions/img/apple.png", Texture.class),
+    vertical_word_unk("sci/vertical_word_unk.png", Texture.class),
     btn_sci_human_body("buttons/btn_sci_human_body.png", Texture.class),
     btn_sci_plant_parts("buttons/btn_sci_plant_parts.png", Texture.class),
     btn_sci_human_skeleton("buttons/btn_sci_human_skeleton.png", Texture.class),

@@ -1,6 +1,5 @@
 package libgdx.implementations.kidlearn.spec;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -42,7 +41,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     private static final float OPT_MOVE_DURATION = 0.2f;
     protected static final float UNK_FADE_DURATION = 0.1f;
     public static final String IMG_TEXT_STACK_IMAGE = "ImgTextStackIMAGE";
-    private MyButton verifyBtn;
+    protected MyButton verifyBtn;
     protected List<KidLearnImgInfo> unknownImg = new ArrayList<>();
     protected List<KidLearnImgInfo> optionsImg = new ArrayList<>();
     protected List<KidLearnImgInfo> alreadyFilledUnknownImg = new ArrayList<>();
@@ -259,7 +258,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
                     }
                 }
             });
-            verifyBtn.setX(ScreenDimensionsManager.getScreenWidth() / 2 - verifyBtn.getWidth() / 2);
+            verifyBtn.setX(getVerifyBtnX());
             verifyBtn.setY(getVerifyBtnY());
             addActorToScreen(verifyBtn);
         } else {
@@ -327,6 +326,10 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     protected FontConfig getImgStackTextFontConfig(float fontSize) {
         return new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
                 Math.round(fontSize), 3f);
+    }
+
+    protected float getVerifyBtnX() {
+        return ScreenDimensionsManager.getScreenWidth() / 2 - verifyBtn.getWidth() / 2;
     }
 
     protected float getVerifyBtnY() {

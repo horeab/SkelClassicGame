@@ -1,5 +1,5 @@
-Leaf:0.9:0.5
-Fruit:0.9:0.5
-Flower:0.6:0.5
-Stem:0.5:0.2
+Leaf:0.7:0.1
+Fruit:0.4:0.7
+Flower:0.9:0.6
+Stem:0.55:0.5
 Root:0.2:0.5
