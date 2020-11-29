@@ -2,15 +2,18 @@ package libgdx.implementations.kidlearn.spec;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.ImageButtonBuilder;
 import libgdx.game.Game;
@@ -33,12 +36,21 @@ public class KidLearnDifficultyService {
 
     private KidLearnPreferencesManager kidLearnPreferencesManager = new KidLearnPreferencesManager();
 
-    public Table createDifficultyButtonsTable(Class<? extends Enum> levelType, boolean vertical) {
+    public Table createDifficultyButtonsTable(Class<? extends Enum> levelType, boolean vertical, KidLearnQuestionDifficultyLevel currentDifficultyLevel) {
         Table table = new Table();
         float marginDimen = MainDimen.horizontal_general_margin.getDimen();
+        SkelClassicButtonSize kidlearnDifficultySize = SkelClassicButtonSize.KIDLEARN_DIFFICULTY;
         for (KidLearnQuestionDifficultyLevel difficultyLevel : KidLearnQuestionDifficultyLevel.values()) {
-            MyButton difficultyButton = createDifficultyButton(levelType, difficultyLevel);
-            table.add(difficultyButton).width(difficultyButton.getWidth()).pad(marginDimen * 2).height(difficultyButton.getHeight());
+            Actor toAdd;
+            if (difficultyLevel == currentDifficultyLevel) {
+                toAdd = new Image(SkelClassicButtonSkin.valueOf("KIDLEARN_DIFF_LEVEL_" + difficultyLevel.getIndex()).getImgDown());
+
+            } else {
+                toAdd =  createDifficultyButton(levelType, difficultyLevel);
+                ((MyButton)  toAdd).setTransform(true);
+                new ActorAnimation(toAdd, Game.getInstance().getAbstractScreen()).animateZoomInZoomOut(0.1f);
+            }
+            table.add(toAdd).width(kidlearnDifficultySize.getWidth()).pad(marginDimen * 2).height(kidlearnDifficultySize.getHeight());
             if (vertical) {
                 table.padBottom(marginDimen * 6).row();
             }

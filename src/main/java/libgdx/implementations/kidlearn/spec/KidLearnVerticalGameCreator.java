@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import libgdx.graphics.GraphicUtils;
@@ -60,12 +61,16 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         boolean isCorrect = true;
         List<KidLearnImgInfo> alreadyMovedOptionImg = getAlreadyMovedOptionImg();
         for (int i = 0; i < alreadyMovedOptionImg.size(); i++) {
-            if (!config.words.get(i).equals(alreadyMovedOptionImg.get(i).val)) {
+            if (!config.words.get(i).word.equals(alreadyMovedOptionImg.get(i).val)) {
                 isCorrect = false;
                 break;
             }
         }
         return isCorrect;
+    }
+
+    @Override
+    protected void afterFirstTutorial(KidLearnImgInfo centerResponse2, float initialDelayDuration, float moveDuration, float fadeOutDuration) {
     }
 
     @Override
@@ -155,6 +160,14 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected void sortAlreadyMovedOptionImg() {
+        alreadyMovedOptionImg.sort(new CustomComparator());
+    }
+
+    private static class CustomComparator implements Comparator<KidLearnImgInfo> {
+        @Override
+        public int compare(KidLearnImgInfo o1, KidLearnImgInfo o2) {
+            return Float.compare(o1.img.getY(), o2.img.getY());
+        }
     }
 
     @Override

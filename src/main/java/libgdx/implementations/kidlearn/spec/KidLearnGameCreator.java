@@ -26,6 +26,7 @@ public abstract class KidLearnGameCreator {
     protected AbstractScreen screen;
     protected MyWrappedLabel scoreLabel;
     protected KidLearnGameContext gameContext;
+    protected KidLearnPreferencesManager kidLearnPreferencesManager = new KidLearnPreferencesManager();
 
 
     public KidLearnGameCreator(KidLearnGameContext gameContext) {
@@ -37,9 +38,7 @@ public abstract class KidLearnGameCreator {
 
     public void create() {
         createTitle();
-        if (getTotalQuestions() > 1) {
-            createScoreLabel();
-        }
+        createScoreLabel();
     }
 
     private void createTitle() {
@@ -59,7 +58,9 @@ public abstract class KidLearnGameCreator {
                 .setFontConfig(KidLearnControlsUtils.getSubTitleFontConfig(FontColor.WHITE.getColor())).setText(scoreLabelText).build());
         scoreLabel.setY(getHeaderY());
         scoreLabel.setX(ScreenDimensionsManager.getScreenWidth() - MainDimen.horizontal_general_margin.getDimen() * 5);
-        addActorToScreen(scoreLabel);
+        if (getTotalQuestions() > 1) {
+            addActorToScreen(scoreLabel);
+        }
     }
 
     protected void addActorToScreen(Actor actor) {

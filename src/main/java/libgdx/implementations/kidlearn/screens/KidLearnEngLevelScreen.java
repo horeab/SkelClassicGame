@@ -84,7 +84,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         table.add().height(extraHeight / 2).row();
         Table contentContainer = new Table();
         contentContainer.add(btnTable).top().height(btnTableHeight);
-        Table difficultyButtonsTable = kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), true);
+        Table difficultyButtonsTable = kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), true, new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()));
         difficultyButtonsTable.toBack();
         contentContainer.add(difficultyButtonsTable).width(ScreenDimensionsManager.getScreenWidthValue(20)).top().height(btnTableHeight);
         table.add(contentContainer).top().height(btnTableHeight);

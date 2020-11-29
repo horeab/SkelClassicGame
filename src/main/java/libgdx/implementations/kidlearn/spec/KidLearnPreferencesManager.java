@@ -2,6 +2,7 @@ package libgdx.implementations.kidlearn.spec;
 
 import org.apache.commons.lang3.StringUtils;
 
+import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
 import libgdx.implementations.kidlearn.KidLearnQuestionDifficultyLevel;
 import libgdx.preferences.PreferencesService;
 
@@ -45,6 +46,18 @@ public class KidLearnPreferencesManager {
 
     private String getLevelKey(Enum level) {
         return level.getClass().getSimpleName() + "_" + level.name();
+    }
+
+    public void putTutorialPlayed(String level) {
+        preferencesService.putBoolean(getTutorialKey(level), true);
+    }
+
+    public boolean isTutorialPlayed(String level) {
+        return preferencesService.getPreferences().getBoolean(getTutorialKey(level), false);
+    }
+
+    private String getTutorialKey(String level) {
+        return level + "_TUTORIAL";
     }
 
 }

@@ -33,6 +33,7 @@ import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.SoundUtils;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
@@ -75,6 +76,46 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         createAllItemsContainer();
         createResetBtn();
         createOptionsContainer();
+        if (!kidLearnPreferencesManager.isTutorialPlayed(getTutorialLevelName())) {
+            tutorialFinger();
+            kidLearnPreferencesManager.putTutorialPlayed(getTutorialLevelName());
+        }
+    }
+
+    private String getTutorialLevelName() {
+        return gameContext.level.getClass().getSimpleName();
+    }
+
+    protected void tutorialFinger() {
+        int index = (int) Math.ceil(unknownImg.size() / 2f);
+        KidLearnImgInfo centerResponse1 = unknownImg.get(index);
+        KidLearnImgInfo centerResponse2 = unknownImg.get(index - 1);
+        float initialDelayDuration = 0.5f;
+        float moveDuration = 0.75f;
+        float fadeOutDuration = 0.5f;
+        tutorialFinger(centerResponse1, initialDelayDuration, moveDuration, fadeOutDuration);
+        afterFirstTutorial(centerResponse2, initialDelayDuration, moveDuration, fadeOutDuration);
+    }
+
+    protected void afterFirstTutorial(KidLearnImgInfo centerResponse2, float initialDelayDuration, float moveDuration, float fadeOutDuration) {
+        screen.addAction(Actions.sequence(Actions.delay(initialDelayDuration + moveDuration + fadeOutDuration, Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                tutorialFinger(centerResponse2, initialDelayDuration, moveDuration, fadeOutDuration);
+            }
+        }))));
+    }
+
+    private void tutorialFinger(KidLearnImgInfo response, float initialDelayDuration, float moveDuration, float fadeOutDuration) {
+        KidLearnImgInfo centerOption = optionsImg.get(optionsImg.size() / 2);
+        Image finger = GraphicUtils.getImage(KidLearnSpecificResource.tutorial_finger);
+        finger.setHeight(getOptionWidth() / 2);
+        finger.setWidth(getOptionWidth() / 2);
+        finger.setX(centerOption.initialCoord.getLeft() + getOptionWidth() / 2);
+        finger.setY(centerOption.initialCoord.getRight());
+        addActorToScreen(finger);
+        finger.addAction(Actions.sequence(Actions.delay(initialDelayDuration), Actions.moveTo(response.initialCoord.getLeft() + getOptionWidth() / 2,
+                finger.getY() + ScreenDimensionsManager.getScreenHeightValue(20), moveDuration), Actions.fadeOut(fadeOutDuration)));
     }
 
     protected Table addOptionImg(Pair<Float, Float> coord, Res res, String text) {

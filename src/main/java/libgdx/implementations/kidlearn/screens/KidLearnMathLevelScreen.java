@@ -60,7 +60,7 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
                 .setWidth(ScreenDimensionsManager.getScreenWidthValue(38))
                 .setFontConfig(KidLearnControlsUtils.getTitleFontConfig(titleText, kidLearnDifficultyService.getTitleBorderColor(difficultyLevelClass()))).setText(titleText).build()))
                 .padTop(MainDimen.vertical_general_margin.getDimen() * 2).width(screenWidth / 2);
-        headerTable.add(kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), false)).width(screenWidth / 2);
+        headerTable.add(kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), false, new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()))).width(screenWidth / 2);
         float headerHeight = ScreenDimensionsManager.getScreenHeightValue(20);
         table.add(headerTable).height(headerHeight).width(screenWidth).row();
         Table levelsContainer = new Table();
