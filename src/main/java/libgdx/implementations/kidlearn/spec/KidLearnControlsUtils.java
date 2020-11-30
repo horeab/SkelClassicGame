@@ -3,6 +3,8 @@ package libgdx.implementations.kidlearn.spec;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.utils.model.FontColor;
@@ -49,7 +51,7 @@ public class KidLearnControlsUtils {
     public static Table createGameTitle(String text, FontConfig fontConfig) {
         return new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setSingleLineLabel()
-                .setFontConfig(fontConfig).setText(text).build());
+                .setFontConfig(fontConfig).setText(StringUtils.capitalize(text)).build());
     }
 
     public static Table createGameTitleAllWidth(String text, FontColor borderColor) {
@@ -60,7 +62,7 @@ public class KidLearnControlsUtils {
     public static Table createGameSubTitle(String text) {
         return new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setSingleLineLabel()
-                .setFontConfig(getSubTitleFontConfig(FontColor.WHITE.getColor())).setText(text).build());
+                .setFontConfig(getSubTitleFontConfig(FontColor.WHITE.getColor())).setText(StringUtils.capitalize(text)).build());
     }
 
     public static FontConfig getSubTitleFontConfig(Color mainColor) {

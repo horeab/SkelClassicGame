@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import org.apache.commons.lang3.StringUtils;
+
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.ImageButtonBuilder;
@@ -71,7 +73,7 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
                 .textBackground(MainResource.transparent_background)
                 .setFixedButtonSize(levelBtnSize)
                 .setFontConfig(KidLearnControlsUtils.getBtnLevelFontConfig(text))
-                .setWrappedText(text, levelBtnSize.getWidth() * 1.5f)
+                .setWrappedText(StringUtils.capitalize(text), levelBtnSize.getWidth() * 1.5f)
                 .build();
         btn.addListener(new ClickListener() {
             @Override
