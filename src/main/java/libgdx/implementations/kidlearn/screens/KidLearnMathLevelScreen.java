@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -24,6 +23,8 @@ import libgdx.implementations.kidlearn.spec.KidLearnControlsUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
+import libgdx.implementations.kidlearn.spec.KidLearnInAppPurchaseTable;
+import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterGameCreator;
 import libgdx.implementations.kidlearn.spec.math.KidLearnMathCaterLevel;
@@ -33,6 +34,7 @@ import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 
@@ -74,7 +76,7 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
         return KidLearnMathCaterOrdLevel.class;
     }
 
-    private <L extends Enum & KidLearnMathCaterLevel> Table createLevelContainer(List<L> levelValues, String text) {
+    private <L extends Enum & KidLearnMathCaterLevel & KidLearnLevel> Table createLevelContainer(List<L> levelValues, String text) {
         Table table = new Table();
         table.add(KidLearnControlsUtils.createGameSubTitle(text)).pad(MainDimen.horizontal_general_margin.getDimen()).row();
         for (L level : levelValues) {
@@ -105,7 +107,7 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
         return SkelClassicButtonSize.KIDLEARN_MATH_CATER_LEVEL;
     }
 
-    private <L extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(final L level, int levelMax, int levelMin, final boolean asc, float interval) {
+    private <L extends Enum & KidLearnMathCaterLevel & KidLearnLevel> Table createOptionBtn(final L level, int levelMax, int levelMin, final boolean asc, float interval) {
         SkelClassicButtonSkin kidlearnHangmanLetter = SkelClassicButtonSkin.KIDLEARN_MATH_ORD_LEVEL;
         if (level instanceof KidLearnMathCaterSeqLevel) {
             kidlearnHangmanLetter = SkelClassicButtonSkin.KIDLEARN_MATH_SEQ_LEVEL;
@@ -113,21 +115,14 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
         Table table = new Table();
         Pair<String, String> levelText = getLevelText(level, levelMax, levelMin, asc, interval);
         float borderWidth = 3f;
+        SkelClassicButtonSize levelBtnSize = getLevelBtnSize();
         MyButton btn = new ButtonBuilder()
                 .setButtonSkin(kidlearnHangmanLetter)
                 .setFontConfig(createBtnFontConfig(FontConfig.FONT_SIZE * 1.2f, borderWidth))
-                .setWrappedText(levelText.getLeft(), getLevelBtnSize().getWidth())
-                .setFixedButtonSize(getLevelBtnSize())
+                .setWrappedText(levelText.getLeft(), levelBtnSize.getWidth())
+                .setFixedButtonSize(levelBtnSize)
                 .build();
         btn.getCenterRow().row();
-//        if (StringUtils.isNotBlank(levelText.getRight())) {
-//            MyWrappedLabel operationLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-//                    .setFontConfig(createBtnFontConfig(FontConfig.FONT_SIZE / 1.3f, borderWidth))
-//                    .setWidth(getLevelBtnSize().getWidth())
-//                    .setText(levelText.getRight())
-//                    .build());
-//            btn.getCenterRow().padTop(MainDimen.vertical_general_margin.getDimen()).add(operationLabel);
-//        }
         btn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -135,6 +130,12 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
             }
         });
         table.add(btn).width(btn.getWidth()).height(btn.getHeight());
+        KidLearnInAppPurchaseTable inAppPurchaseTable = new KidLearnInAppPurchaseTable(levelBtnSize.getHeight());
+        if (!Utils.isValidExtraContent() && level.isLocked()) {
+            btn.setDisabled(true);
+            table = inAppPurchaseTable.createForProVersion(table);
+        }
+
         float checkImgSideDimen = MainDimen.horizontal_general_margin.getDimen() * 3;
         Res res = kidLearnPreferencesManager.getLevelScore(level) == KidLearnMathCaterGameCreator.TOTAL_QUESTIONS ? KidLearnSpecificResource.level_finished : KidLearnSpecificResource.level_not_finished;
         table.add(GraphicUtils.getImage(res)).width(checkImgSideDimen).height(checkImgSideDimen);

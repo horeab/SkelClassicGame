@@ -9,19 +9,20 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnEngWordsLevel implements KidLearnLevel, KidLearnEngLevel {
 
-    L0(KidLearnGameLabel.l_eng_animals, SkelClassicButtonSkin.KIDLEARN_ENG_ANIMALS, 5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_words),
-    L1(KidLearnGameLabel.l_eng_fruits, SkelClassicButtonSkin.KIDLEARN_ENG_FRUITS, 5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_words),
-    L2(KidLearnGameLabel.l_eng_numbers, SkelClassicButtonSkin.KIDLEARN_ENG_NUMBERS, 5, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_eng_words),
-    L3(KidLearnGameLabel.l_eng_shapes, SkelClassicButtonSkin.KIDLEARN_ENG_SHAPES, 5, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_eng_words),
-    ;
+    L0(KidLearnGameLabel.l_eng_animals, SkelClassicButtonSkin.KIDLEARN_ENG_ANIMALS, 5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_words, false),
+    L1(KidLearnGameLabel.l_eng_fruits, SkelClassicButtonSkin.KIDLEARN_ENG_FRUITS, 5, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_words, false),
+    L2(KidLearnGameLabel.l_eng_numbers, SkelClassicButtonSkin.KIDLEARN_ENG_NUMBERS, 5, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_eng_words, true),
+    L3(KidLearnGameLabel.l_eng_shapes, SkelClassicButtonSkin.KIDLEARN_ENG_SHAPES, 5, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_eng_words, true),;
 
     public GameLabel category;
     public ButtonSkin buttonSkin;
     public int totalUnknownItems;
     public KidLearnQuestionDifficultyLevel difficulty;
     public GameLabel title;
+    public boolean isLocked;
 
-    KidLearnEngWordsLevel(GameLabel category, ButtonSkin buttonSkin, int totalUnknownItems, KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
+    KidLearnEngWordsLevel(GameLabel category, ButtonSkin buttonSkin, int totalUnknownItems, KidLearnQuestionDifficultyLevel difficulty, GameLabel title, boolean isLocked) {
+        this.isLocked = isLocked;
         this.category = category;
         this.buttonSkin = buttonSkin;
         this.totalUnknownItems = totalUnknownItems;
@@ -47,5 +48,10 @@ public enum KidLearnEngWordsLevel implements KidLearnLevel, KidLearnEngLevel {
     @Override
     public GameLabel category() {
         return category;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return isLocked;
     }
 }

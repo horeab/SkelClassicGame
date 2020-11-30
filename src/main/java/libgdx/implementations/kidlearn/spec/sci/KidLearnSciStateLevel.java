@@ -9,14 +9,15 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnSciStateLevel implements KidLearnLevel, KidLearnSciLevel {
 
-    L0(KidLearnSpecificResource.btn_sci_state, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_state),
-    ;
+    L0(KidLearnSpecificResource.btn_sci_state, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_state, true),;
 
     public Res categImg;
     public KidLearnQuestionDifficultyLevel difficulty;
     public GameLabel title;
+    public boolean isLocked;
 
-    KidLearnSciStateLevel(Res categImg, KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
+    KidLearnSciStateLevel(Res categImg, KidLearnQuestionDifficultyLevel difficulty, GameLabel title, boolean isLocked) {
+        this.isLocked = isLocked;
         this.categImg = categImg;
         this.difficulty = difficulty;
         this.title = title;
@@ -35,5 +36,10 @@ public enum KidLearnSciStateLevel implements KidLearnLevel, KidLearnSciLevel {
     @Override
     public Res categImg() {
         return categImg;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return isLocked;
     }
 }

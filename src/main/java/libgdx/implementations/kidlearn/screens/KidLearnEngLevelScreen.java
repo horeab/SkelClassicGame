@@ -20,13 +20,13 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
-import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnControlsUtils;
+import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
+import libgdx.implementations.kidlearn.spec.KidLearnInAppPurchaseTable;
 import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
-import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanGameCreator;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngHangmanLevel;
 import libgdx.implementations.kidlearn.spec.eng.KidLearnEngLevel;
@@ -38,6 +38,7 @@ import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
@@ -98,15 +99,21 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
             btnTable.row();
             colspan = 2;
         }
+        Table chooseLevelBtnTable = new Table();
         MyButton chooseLevelBtn = createChooseLevelBtn(level, totalQuestions);
         float padSide = MainDimen.horizontal_general_margin.getDimen() * 5;
-        ButtonSize buttonSize = getChooseLevelBtnSize();
-        btnTable.add(chooseLevelBtn).colspan(colspan)
+        final ButtonSize buttonSize = getChooseLevelBtnSize();
+        chooseLevelBtnTable.add(chooseLevelBtn).width(buttonSize.getWidth()).height(buttonSize.getHeight());
+        KidLearnInAppPurchaseTable inAppPurchaseTable = new KidLearnInAppPurchaseTable(buttonSize.getWidth());
+        if (!Utils.isValidExtraContent() && level.isLocked()) {
+            chooseLevelBtn.setDisabled(true);
+            chooseLevelBtnTable = inAppPurchaseTable.createForProVersion(chooseLevelBtnTable);
+        }
+        btnTable.add(chooseLevelBtnTable).colspan(colspan)
                 .padLeft(padSide / 2).padRight(padSide / 2).width(buttonSize.getWidth() * 1.5f).height(buttonSize.getHeight() * 1.5f);
         if (i == 0) {
             btnTable.padBottom(padSide);
         }
-        chooseLevelBtn.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
     }
 
     public static Class<KidLearnEngWordsLevel> difficultyLevelClass() {

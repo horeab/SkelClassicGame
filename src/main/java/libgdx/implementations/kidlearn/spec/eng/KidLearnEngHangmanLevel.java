@@ -9,17 +9,18 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnEngHangmanLevel implements KidLearnLevel, KidLearnEngLevel {
 
-    L0(KidLearnGameLabel.l_eng_vegetables, SkelClassicButtonSkin.KIDLEARN_ENG_VEGETABLES, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_hangman),
-    L1(KidLearnGameLabel.l_eng_colors, SkelClassicButtonSkin.KIDLEARN_ENG_COLORS, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_eng_hangman),
-    L2(KidLearnGameLabel.l_eng_kitchen, SkelClassicButtonSkin.KIDLEARN_ENG_KITCHEN, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_eng_hangman),
-    ;
+    L0(KidLearnGameLabel.l_eng_vegetables, SkelClassicButtonSkin.KIDLEARN_ENG_VEGETABLES, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_eng_hangman, false),
+    L1(KidLearnGameLabel.l_eng_colors, SkelClassicButtonSkin.KIDLEARN_ENG_COLORS, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_eng_hangman, true),
+    L2(KidLearnGameLabel.l_eng_kitchen, SkelClassicButtonSkin.KIDLEARN_ENG_KITCHEN, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_eng_hangman, true),;
 
     public GameLabel category;
     public ButtonSkin buttonSkin;
     public KidLearnQuestionDifficultyLevel difficulty;
     public GameLabel title;
+    public boolean isLocked;
 
-    KidLearnEngHangmanLevel(GameLabel category, ButtonSkin buttonSkin, KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
+    KidLearnEngHangmanLevel(GameLabel category, ButtonSkin buttonSkin, KidLearnQuestionDifficultyLevel difficulty, GameLabel title, boolean isLocked) {
+        this.isLocked = isLocked;
         this.category = category;
         this.buttonSkin = buttonSkin;
         this.difficulty = difficulty;
@@ -44,5 +45,10 @@ public enum KidLearnEngHangmanLevel implements KidLearnLevel, KidLearnEngLevel {
     @Override
     public GameLabel category() {
         return category;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return isLocked;
     }
 }

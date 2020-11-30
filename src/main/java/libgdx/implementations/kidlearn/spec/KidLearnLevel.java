@@ -7,4 +7,6 @@ public interface KidLearnLevel {
     String title();
 
     KidLearnQuestionDifficultyLevel difficulty();
+
+    boolean isLocked();
 }

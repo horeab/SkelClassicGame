@@ -9,18 +9,19 @@ import libgdx.resources.gamelabel.GameLabel;
 
 public enum KidLearnSciBodyLevel implements KidLearnLevel, KidLearnSciLevel {
 
-    L0(5, KidLearnSpecificResource.btn_sci_human_body, KidLearnSpecificResource.human_body, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_body),
-    L1(5, KidLearnSpecificResource.btn_sci_plant_parts, KidLearnSpecificResource.plant_parts, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_plant),
-    L2(5, KidLearnSpecificResource.btn_sci_human_skeleton, KidLearnSpecificResource.human_skeleton, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_sci_skel),
-    ;
+    L0(5, KidLearnSpecificResource.btn_sci_human_body, KidLearnSpecificResource.human_body, KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_sci_body, true),
+    L1(5, KidLearnSpecificResource.btn_sci_plant_parts, KidLearnSpecificResource.plant_parts, KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_sci_plant, false),
+    L2(5, KidLearnSpecificResource.btn_sci_human_skeleton, KidLearnSpecificResource.human_skeleton, KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_sci_skel, true),;
 
     public int nrOfCorrectUnknownWords;
     public Res categImg;
     public Res mainImg;
     public KidLearnQuestionDifficultyLevel difficulty;
     public GameLabel title;
+    public boolean isLocked;
 
-    KidLearnSciBodyLevel(int nrOfCorrectUnknownWords, Res categImg, Res mainImg, KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
+    KidLearnSciBodyLevel(int nrOfCorrectUnknownWords, Res categImg, Res mainImg, KidLearnQuestionDifficultyLevel difficulty, GameLabel title, boolean isLocked) {
+        this.isLocked = isLocked;
         this.nrOfCorrectUnknownWords = nrOfCorrectUnknownWords;
         this.categImg = categImg;
         this.mainImg = mainImg;
@@ -41,5 +42,10 @@ public enum KidLearnSciBodyLevel implements KidLearnLevel, KidLearnSciLevel {
     @Override
     public Res categImg() {
         return categImg;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return isLocked;
     }
 }

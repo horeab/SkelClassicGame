@@ -8,23 +8,23 @@ import libgdx.resources.gamelabel.GameLabel;
 public enum KidLearnMathCaterOrdLevel implements KidLearnMathCaterLevel, KidLearnLevel {
 
     L0(1, 5, 1, 5, true, 4,
-            KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc),
+            KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc, false),
     L1(0, 10, 1, 6, true, 4,
-            KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc),
+            KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc, false),
     L2(0, 100, 10, 6, true, 4,
-            KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc),
+            KidLearnQuestionDifficultyLevel._0, KidLearnGameLabel.l_math_ord_asc, true),
     L3(0, 10, 1, 6, false, 4,
-            KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_desc),
+            KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_desc, false),
     L4(-10, 10, 1, 6, true, 4,
-            KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_asc),
+            KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_asc, true),
     L5(0, 10, 0.1f, 6, true, 4,
-            KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_decimal),
+            KidLearnQuestionDifficultyLevel._1, KidLearnGameLabel.l_math_ord_decimal, true),
     L6(0, 999, 1, 5, false, 4,
-            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_desc),
+            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_desc, true),
     L7(-10, 10, 1, 6, false, 4,
-            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_desc),
+            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_desc, true),
     L8(-999, 999, 0.1f, 6, false, 4,
-            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_decimal),
+            KidLearnQuestionDifficultyLevel._2, KidLearnGameLabel.l_math_ord_decimal, true),
     ;
 
     public int min;
@@ -35,8 +35,10 @@ public enum KidLearnMathCaterOrdLevel implements KidLearnMathCaterLevel, KidLear
     public int nrOfCorrectUnknownNumbers;
     public KidLearnQuestionDifficultyLevel difficulty;
     public GameLabel title;
+    public boolean isLocked;
 
-    KidLearnMathCaterOrdLevel(int min, int max, float interval, int totalNrOfNumbers, boolean asc, int nrOfCorrectUnknownNumbers, KidLearnQuestionDifficultyLevel difficulty, GameLabel title) {
+    KidLearnMathCaterOrdLevel(int min, int max, float interval, int totalNrOfNumbers, boolean asc, int nrOfCorrectUnknownNumbers, KidLearnQuestionDifficultyLevel difficulty, GameLabel title, boolean isLocked) {
+        this.isLocked = isLocked;
         this.min = min;
         this.max = max;
         this.interval = interval;
@@ -65,5 +67,10 @@ public enum KidLearnMathCaterOrdLevel implements KidLearnMathCaterLevel, KidLear
     @Override
     public String title() {
         return title.getText();
+    }
+
+    @Override
+    public boolean isLocked() {
+        return isLocked;
     }
 }

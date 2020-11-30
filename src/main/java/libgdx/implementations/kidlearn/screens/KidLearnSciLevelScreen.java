@@ -1,6 +1,5 @@
 package libgdx.implementations.kidlearn.screens;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -21,6 +20,7 @@ import libgdx.implementations.kidlearn.spec.KidLearnControlsUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
+import libgdx.implementations.kidlearn.spec.KidLearnInAppPurchaseTable;
 import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnSciBodyGameCreator;
@@ -37,7 +37,7 @@ import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
-import libgdx.utils.model.FontColor;
+import libgdx.utils.Utils;
 
 public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager> {
 
@@ -90,7 +90,7 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
 
     private <T extends Enum & KidLearnLevel & KidLearnSciLevel> void addLevelToTable(Table btnTable, T level, int totalQuestions) {
         int colspan = 1;
-        MyButton chooseLevelBtn = createChooseLevelBtn(level, totalQuestions);
+        Table chooseLevelBtn = createChooseLevelBtn(level, totalQuestions);
         float padSide = MainDimen.horizontal_general_margin.getDimen();
         ButtonSize buttonSize = getChooseLevelBtnSize();
         btnTable.add(chooseLevelBtn).colspan(colspan)
@@ -102,7 +102,7 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         return KidLearnSciFeedLevel.class;
     }
 
-    private <T extends Enum & KidLearnLevel & KidLearnSciLevel> MyButton createChooseLevelBtn(final T level, int totalQuestions) {
+    private <T extends Enum & KidLearnLevel & KidLearnSciLevel> Table createChooseLevelBtn(final T level, int totalQuestions) {
         ButtonSize btnSize = getChooseLevelBtnSize();
         MyButton btn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.KIDLEARN_SCI_LEVEL)
@@ -123,7 +123,14 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
                 getScreenManager().showGameScreen(new KidLearnGameContext(level));
             }
         });
-        return btn;
+        Table chooseLevelBtnTable = new Table();
+        chooseLevelBtnTable.add(btn).width(btnSize.getWidth()).height(btnSize.getHeight());
+        KidLearnInAppPurchaseTable inAppPurchaseTable = new KidLearnInAppPurchaseTable(btnSize.getHeight() / 1.3f);
+        if (!Utils.isValidExtraContent() && level.isLocked()) {
+            btn.setDisabled(true);
+            chooseLevelBtnTable = inAppPurchaseTable.createForProVersion(chooseLevelBtnTable);
+        }
+        return chooseLevelBtnTable;
     }
 
     private ButtonSize getChooseLevelBtnSize() {

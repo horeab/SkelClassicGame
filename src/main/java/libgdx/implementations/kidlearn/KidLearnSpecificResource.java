@@ -40,12 +40,14 @@ public enum KidLearnSpecificResource implements SpecificResource {
     scroll_background_main("background/scroll_background_main.png", Texture.class),
 
     tutorial_finger("tutorial_finger.png", Texture.class),
+    locked_level("locked_level.png", Texture.class),
 
     //math
     btn_math_ord_level_up("buttons/btn_math_ord_level_up.png", Texture.class),
     btn_math_ord_level_down("buttons/btn_math_ord_level_down.png", Texture.class),
     btn_math_seq_level_up("buttons/btn_math_seq_level_up.png", Texture.class),
     btn_math_seq_level_down("buttons/btn_math_seq_level_down.png", Texture.class),
+    btn_math_level_disabled("buttons/btn_math_level_disabled.png", Texture.class),
     cater_body("math/cater_body.png", Texture.class),
     cater_head("math/cater_head.png", Texture.class),
     cater_tail("math/cater_tail.png", Texture.class),
