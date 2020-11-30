@@ -97,11 +97,11 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         return ImageSplitCampaignLevelEnum.values()[ImageSplitCampaignLevelEnum.values().length - 1];
     }
 
-    private MyButton createNavigationBtn(SwipeDirection direction, ImageSplitCampaignLevelEnum campaignLevelEnum) {
+    private MyButton createNavigationBtn(SwipeDirection direction, final ImageSplitCampaignLevelEnum campaignLevelEnum) {
         MyButton button = new ButtonBuilder()
                 .setFixedButtonSize(SkelClassicButtonSize.IMAGE_SPLIT_NAVIG_BTN)
                 .setButtonSkin(direction == SwipeDirection.RIGHT ? SkelClassicButtonSkin.IMAGE_SPLIT_NAVIG_RIGHT : SkelClassicButtonSkin.IMAGE_SPLIT_NAVIG_LEFT).build();
-        int amount = direction == SwipeDirection.RIGHT ? 1 : -1;
+        final int amount = direction == SwipeDirection.RIGHT ? 1 : -1;
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -151,7 +151,7 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         return scoreTable;
     }
 
-    private MyButton createStartGameBtn(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum) {
+    private MyButton createStartGameBtn(final ImageSplitGameType gameType, final ImageSplitCampaignLevelEnum campaignLevelEnum) {
         int category = CampaignLevelEnumService.getCategory(campaignLevelEnum.getName());
         int firstNotFinishedCategory = CampaignLevelEnumService.getCategory(getFirstNotFinishedLevel().getName());
         boolean btnDisabled = category > firstNotFinishedCategory;

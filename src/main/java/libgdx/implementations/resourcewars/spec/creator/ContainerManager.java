@@ -9,6 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+
+import org.apache.commons.lang3.mutable.MutableBoolean;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSkin;
 import libgdx.controls.button.MyButton;
@@ -46,13 +54,6 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
-import org.apache.commons.lang3.mutable.MutableBoolean;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ContainerManager {
 
@@ -275,8 +276,8 @@ public class ContainerManager {
             }
         });
 
-        for (ResourceInventory resourceInventory : availableResources) {
-            Table itemTable = new Table();
+        for (final ResourceInventory resourceInventory : availableResources) {
+            final Table itemTable = new Table();
             Integer actualSellPrice = getActualSellPrice(resourceInventory, market);
             final boolean isEnabled = isInventoryItemEnabled(resourceInventory);
             MyWrappedLabel displayName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
@@ -377,9 +378,9 @@ public class ContainerManager {
                 return Integer.compare(r1.getPrice(), r2.getPrice());
             }
         });
-        for (ResourceMarket resourceMarket : availableResources) {
-            int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
-            Table itemTable = new Table();
+        for (final ResourceMarket resourceMarket : availableResources) {
+            final int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(resourceMarket);
+            final Table itemTable = new Table();
 
             boolean isEnabled = isMarketItemEnabled(resourceMarket);
             float nameWidth = tableWidth / 1.7f;
@@ -744,12 +745,12 @@ public class ContainerManager {
     }
 
     public static void gameOver(CurrentGame currentGame) {
-        int currentRep = currentGame.getPlayerInfo().getReputation();
-        int currentDaysPassed = currentGame.getDaysPassed();
+        final int currentRep = currentGame.getPlayerInfo().getReputation();
+        final int currentDaysPassed = currentGame.getDaysPassed();
         final HighScorePreferencesManager highScorePreferencesManager = new HighScorePreferencesManager();
         int maxRep = highScorePreferencesManager.getMaxReputation();
         int maxDaysPassed = highScorePreferencesManager.getMaxDays();
-        MutableBoolean newHighScore = new MutableBoolean(false);
+        final MutableBoolean newHighScore = new MutableBoolean(false);
         if (currentDaysPassed > ContainerManager.TOTAL_DAYS
                 ||
                 currentRep >= 100) {

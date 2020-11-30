@@ -598,12 +598,12 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         }
     }
 
-    void simulateMoveFinger(List<Pair<Integer, Integer>> coords, List<SwipeDirection> directions, int directionIndex) {
+    void simulateMoveFinger(final List<Pair<Integer, Integer>> coords, final List<SwipeDirection> directions, final int directionIndex) {
         if (directionIndex < directions.size()) {
             tutorialRunning = true;
-            SwipeDirection direction = directions.get(directionIndex);
+            final SwipeDirection direction = directions.get(directionIndex);
             Pair<Integer, Integer> coord = coords.get(directionIndex);
-            Image pressFinger = GraphicUtils.getImage(ImageSplitSpecificResource.tutorial_swipe_finger);
+            final Image pressFinger = GraphicUtils.getImage(ImageSplitSpecificResource.tutorial_swipe_finger);
             float imgDim = MainDimen.horizontal_general_margin.getDimen() * 10;
             pressFinger.setWidth(imgDim);
             pressFinger.setHeight(imgDim);

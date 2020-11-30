@@ -93,8 +93,8 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         return stackContainer;
     }
 
-    private void addImage(Table stackContainer) {
-        int beforePressCorrectAnswersNr = fillColorService.getCorrectColorsPressed().size();
+    private void addImage(final Table stackContainer) {
+        final int beforePressCorrectAnswersNr = fillColorService.getCorrectColorsPressed().size();
         stackContainer.setTouchable(Touchable.enabled);
         stackContainer.addListener(new ClickListener() {
             @Override
@@ -104,7 +104,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
                 stackContainer.add(img).width(img.getWidth()).height(img.getHeight());
                 addImage(stackContainer);
                 float amountToIncrease = getCorrectAnswerStepPercent();
-                int pressedCorrectAnswers = fillColorService.getCorrectColorsPressed().size();
+                final int pressedCorrectAnswers = fillColorService.getCorrectColorsPressed().size();
                 if (beforePressCorrectAnswersNr > pressedCorrectAnswers) {
                     amountToIncrease = -amountToIncrease;
                 } else if (beforePressCorrectAnswersNr == pressedCorrectAnswers) {
@@ -172,7 +172,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         List<RGBColor> colors = createRandomRGBColors(2);
         Collections.shuffle(colors);
         selectedColor = colors.get(0);
-        for (RGBColor color : colors) {
+        for (final RGBColor color : colors) {
             Table colorTable = new Table();
             colorTable.setWidth(sideDimen);
             colorTable.setHeight(sideDimen);

@@ -66,7 +66,7 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
                 .padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
     }
 
-    private <L extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(Class<?> levelType, String text, SkelClassicButtonSkin buttonSkin) {
+    private <L extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(final Class<?> levelType, String text, SkelClassicButtonSkin buttonSkin) {
         Table table = new Table();
         SkelClassicButtonSize levelBtnSize = getLevelBtnSize();
         MyButton btn = new ImageButtonBuilder(buttonSkin, Game.getInstance().getAbstractScreen())

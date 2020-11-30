@@ -46,7 +46,7 @@ public class KidLearnEngHangmanGameCreator extends KidLearnGameCreator {
     private Map<String, MyButton> allAnswerButtons;
     private List<String> pressedAnswers = new ArrayList<>();
 
-    public KidLearnEngHangmanGameCreator(KidLearnGameContext gameContext, KidLearnWordImgConfig kidLearnWordImgConfig) {
+    public KidLearnEngHangmanGameCreator(KidLearnGameContext gameContext,final  KidLearnWordImgConfig kidLearnWordImgConfig) {
         super(gameContext);
         this.kidLearnWordImgConfig = kidLearnWordImgConfig;
         this.allAnswerButtons = createAnswerOptionsButtons();

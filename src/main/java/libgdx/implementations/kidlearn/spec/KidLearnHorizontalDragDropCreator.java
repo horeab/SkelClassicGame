@@ -2,6 +2,7 @@ package libgdx.implementations.kidlearn.spec;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
@@ -59,13 +60,11 @@ public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDrop
 
     @Override
     protected void sortAlreadyMovedOptionImg() {
-        alreadyMovedOptionImg.sort(new CustomComparator());
-    }
-
-    private static class CustomComparator implements Comparator<KidLearnImgInfo> {
-        @Override
-        public int compare(KidLearnImgInfo o1, KidLearnImgInfo o2) {
-            return Float.compare(o1.img.getX(), o2.img.getX());
-        }
+        Collections.sort(alreadyMovedOptionImg, new Comparator<KidLearnImgInfo>() {
+            @Override
+            public int compare(final KidLearnImgInfo o1, KidLearnImgInfo o2) {
+                return Float.compare(o1.img.getX(), o2.img.getX());
+            }
+        });
     }
 }

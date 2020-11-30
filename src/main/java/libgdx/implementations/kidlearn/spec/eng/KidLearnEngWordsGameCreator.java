@@ -1,7 +1,5 @@
 package libgdx.implementations.kidlearn.spec.eng;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,7 +18,6 @@ import libgdx.implementations.kidlearn.spec.KidLearnHorizontalDragDropCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
-import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.RGBColor;
@@ -134,7 +131,7 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
     protected List<Pair<String, Res>> getAllOptions() {
         List<Pair<String, Res>> opt = new ArrayList<>();
         for (KidLearnWordImgConfig word : config.words) {
-            opt.add(Pair.of(word.word, KidLearnSpecificResource.word_unk));
+            opt.add(Pair.of(word.word, (Res) KidLearnSpecificResource.word_unk));
         }
         return opt;
     }

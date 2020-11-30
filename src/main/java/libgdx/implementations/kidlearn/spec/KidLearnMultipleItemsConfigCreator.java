@@ -17,7 +17,7 @@ public class KidLearnMultipleItemsConfigCreator {
         KidLearnUtils.shuffleMap(words);
         Map<KidLearnWordImgConfig, List<KidLearnWordImgConfig>> configs = new HashMap<>();
         for (Pair<Integer, KidLearnWordImgConfig> config : containerConfigs) {
-            configs.put(config.getRight(), new ArrayList<>());
+            configs.put(config.getRight(), new ArrayList<KidLearnWordImgConfig>());
         }
         for (Pair<Integer, KidLearnWordImgConfig> config : containerConfigs) {
             for (String v : words.keySet()) {

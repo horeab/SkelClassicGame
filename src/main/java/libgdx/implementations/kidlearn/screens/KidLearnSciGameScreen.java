@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,12 +18,10 @@ import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnDifficultyService;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameLabel;
-import libgdx.implementations.kidlearn.spec.KidLearnImgInfo;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleAnswersConfig;
 import libgdx.implementations.kidlearn.spec.KidLearnMultipleItemsConfigCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnPreferencesManager;
 import libgdx.implementations.kidlearn.spec.KidLearnUtils;
-import libgdx.implementations.kidlearn.spec.KidLearnVerticalGameCreator;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnArrowConfig;
 import libgdx.implementations.kidlearn.spec.sci.KidLearnArrowsConfig;
@@ -73,7 +72,12 @@ public class KidLearnSciGameScreen extends AbstractScreen<KidLearnScreenManager>
                 String[] split = word.split(":");
                 configs.add(new KidLearnArrowConfig(split[0], Float.parseFloat(split[1]), Float.parseFloat(split[2])));
             }
-            configs.sort(new CustomComparator());
+            Collections.sort(configs, new Comparator<KidLearnArrowConfig>() {
+                @Override
+                public int compare(final KidLearnArrowConfig o1, KidLearnArrowConfig o2) {
+                    return Float.compare(o1.wordY, o2.wordY);
+                }
+            });
             new KidLearnSciBodyGameCreator(gameContext, new KidLearnArrowsConfig(inst.mainImg, configs)).create();
         } else if (gameContext.level instanceof KidLearnSciStateLevel) {
             KidLearnWordImgConfig solidConfig = new KidLearnWordImgConfig(KidLearnGameLabel.l_sci_state_solid.getText(), KidLearnSpecificResource.solid_container);
@@ -95,12 +99,6 @@ public class KidLearnSciGameScreen extends AbstractScreen<KidLearnScreenManager>
         kidLearnDifficultyService.setBackgroundDiff(new KidLearnPreferencesManager().getDifficultyLevel(KidLearnSciLevelScreen.difficultyLevelClass()), getBackgroundStage());
     }
 
-    private static class CustomComparator implements Comparator<KidLearnArrowConfig> {
-        @Override
-        public int compare(KidLearnArrowConfig o1, KidLearnArrowConfig o2) {
-            return Float.compare(o1.wordY, o2.wordY);
-        }
-    }
 
     @Override
     public void onBackKeyPress() {

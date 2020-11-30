@@ -105,7 +105,7 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
         return SkelClassicButtonSize.KIDLEARN_MATH_CATER_LEVEL;
     }
 
-    private <L extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(L level, int levelMax, int levelMin, final boolean asc, float interval) {
+    private <L extends Enum & KidLearnMathCaterLevel> Table createOptionBtn(final L level, int levelMax, int levelMin, final boolean asc, float interval) {
         SkelClassicButtonSkin kidlearnHangmanLetter = SkelClassicButtonSkin.KIDLEARN_MATH_ORD_LEVEL;
         if (level instanceof KidLearnMathCaterSeqLevel) {
             kidlearnHangmanLetter = SkelClassicButtonSkin.KIDLEARN_MATH_SEQ_LEVEL;

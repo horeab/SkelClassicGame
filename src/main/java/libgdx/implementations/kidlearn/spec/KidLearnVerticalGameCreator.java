@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -94,10 +95,10 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         if (index % 2 != 0) {
             x = x + halfQ * 1.5f;
         }
-        float y = (screenHeight - availableScreenHeight)
-                + partHeight / 1f * Math.floorDiv(index + 1, 2);
+        Double y = (screenHeight - availableScreenHeight)
+                + partHeight / 1f * Math.floor((index + 1) / 2f);
         y = y + screenHeight / 6f;
-        return Pair.of(x, y);
+        return Pair.of(x, y.floatValue());
     }
 
     private Pair<Float, Float> createImgCoord(int index, int totalNr, float x) {
@@ -160,14 +161,12 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected void sortAlreadyMovedOptionImg() {
-        alreadyMovedOptionImg.sort(new CustomComparator());
-    }
-
-    private static class CustomComparator implements Comparator<KidLearnImgInfo> {
-        @Override
-        public int compare(KidLearnImgInfo o1, KidLearnImgInfo o2) {
-            return Float.compare(o1.img.getY(), o2.img.getY());
-        }
+        Collections.sort(alreadyMovedOptionImg, new Comparator<KidLearnImgInfo>() {
+            @Override
+            public int compare(final KidLearnImgInfo o1, KidLearnImgInfo o2) {
+                return Float.compare(o1.img.getY(), o2.img.getY());
+            }
+        });
     }
 
     @Override
@@ -194,7 +193,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
     protected List<Pair<String, Res>> getAllOptions() {
         List<Pair<String, Res>> opt = new ArrayList<>();
         for (KidLearnArrowConfig word : config.words) {
-            opt.add(Pair.of(word.word, KidLearnSpecificResource.vertical_word_unk));
+            opt.add(Pair.of(word.word, (Res) KidLearnSpecificResource.vertical_word_unk));
         }
         return opt;
     }

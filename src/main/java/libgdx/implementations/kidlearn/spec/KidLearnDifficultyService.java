@@ -46,8 +46,8 @@ public class KidLearnDifficultyService {
                 toAdd = new Image(SkelClassicButtonSkin.valueOf("KIDLEARN_DIFF_LEVEL_" + difficultyLevel.getIndex()).getImgDown());
 
             } else {
-                toAdd =  createDifficultyButton(levelType, difficultyLevel);
-                ((MyButton)  toAdd).setTransform(true);
+                toAdd = createDifficultyButton(levelType, difficultyLevel);
+                ((MyButton) toAdd).setTransform(true);
                 new ActorAnimation(toAdd, Game.getInstance().getAbstractScreen()).animateZoomInZoomOut(0.1f);
             }
             table.add(toAdd).width(kidlearnDifficultySize.getWidth()).pad(marginDimen * 2).height(kidlearnDifficultySize.getHeight());
@@ -68,7 +68,7 @@ public class KidLearnDifficultyService {
         return allLevels;
     }
 
-    private MyButton createDifficultyButton(Class<? extends Enum> levelType, KidLearnQuestionDifficultyLevel difficultyLevel) {
+    private MyButton createDifficultyButton(final Class<? extends Enum> levelType, final KidLearnQuestionDifficultyLevel difficultyLevel) {
         String labelText = difficultyLevel.name() + "";
         FontColor fontColor = FontColor.WHITE;
         if (difficultyLevel == KidLearnQuestionDifficultyLevel._0) {
@@ -82,7 +82,7 @@ public class KidLearnDifficultyService {
             fontColor = FontColor.RED;
         }
         int index = difficultyLevel.getIndex();
-        AbstractScreen abstractScreen = Game.getInstance().getAbstractScreen();
+        final AbstractScreen abstractScreen = Game.getInstance().getAbstractScreen();
         SkelClassicButtonSize btnSize = SkelClassicButtonSize.KIDLEARN_DIFFICULTY;
         Color mainColor = index == kidLearnPreferencesManager.getDifficultyLevel(levelType).getIndex() ? fontColor.getColor() : FontColor.WHITE.getColor();
         MyButton btn = new ImageButtonBuilder(SkelClassicButtonSkin.valueOf("KIDLEARN_DIFF_LEVEL_" + index), abstractScreen)

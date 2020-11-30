@@ -89,7 +89,7 @@ public abstract class KidLearnGameCreator {
         gameContext.score = gameContext.score + 1;
         scoreLabel.setText(getScoreLabelText());
         new KidLearnPreferencesManager().putLevelScore(gameContext.level, gameContext.score);
-        Table correctPopup = createCorrectAnswerPopup();
+        final Table correctPopup = createCorrectAnswerPopup();
         correctPopup.setVisible(false);
         screen.addActor(correctPopup);
         float duration = 0.2f;
@@ -103,7 +103,7 @@ public abstract class KidLearnGameCreator {
         }), Actions.fadeIn(0.5f), Actions.delay(1.5f), Utils.createRunnableAction(new Runnable() {
             @Override
             public void run() {
-                KidLearnScreenManager screenManager = (KidLearnScreenManager) screen.getScreenManager();
+                final KidLearnScreenManager screenManager = (KidLearnScreenManager) screen.getScreenManager();
                 if (gameContext.score == getTotalQuestions()) {
                     screenManager.showLevelScreen(gameContext.level.getClass());
                 } else {

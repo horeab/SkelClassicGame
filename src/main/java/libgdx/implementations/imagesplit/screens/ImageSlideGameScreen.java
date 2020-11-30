@@ -24,12 +24,12 @@ public class ImageSlideGameScreen extends ImageSplitGameScreen {
     }
 
     @Override
-    void processClonedImages(List<ImageMoveConfig> imageMoveConfigs, Pair<Integer, Integer> pressedCoord, float duration, SwipeDirection swipeDirection) {
+    void processClonedImages(List<ImageMoveConfig> imageMoveConfigs, final Pair<Integer, Integer> pressedCoord, float duration, SwipeDirection swipeDirection) {
         if (imageMoveConfigs != null && !imageMoveConfigs.isEmpty()) {
             ImageMoveConfig startImg = swipeDirection == SwipeDirection.DOWN || swipeDirection == SwipeDirection.RIGHT ? imageMoveConfigs.get(0) : imageMoveConfigs.get(imageMoveConfigs.size() - 1);
-            ImageMoveConfig finishImg = swipeDirection == SwipeDirection.UP || swipeDirection == SwipeDirection.LEFT ? imageMoveConfigs.get(0) : imageMoveConfigs.get(imageMoveConfigs.size() - 1);
-            Image copyImg = new Image(finishImg.getImage().getDrawable());
-            SwipeDirection copyImgDirection = finishImg.getDirection();
+            final ImageMoveConfig finishImg = swipeDirection == SwipeDirection.UP || swipeDirection == SwipeDirection.LEFT ? imageMoveConfigs.get(0) : imageMoveConfigs.get(imageMoveConfigs.size() - 1);
+            final Image copyImg = new Image(finishImg.getImage().getDrawable());
+            final SwipeDirection copyImgDirection = finishImg.getDirection();
             float initCopyImgPos = upDownSwipe(swipeDirection) ? getPartHeight() : getPartWidth();
             initCopyImgPos = initCopyImgPos + getPartPad();
             initCopyImgPos = swipeDirection == SwipeDirection.UP || swipeDirection == SwipeDirection.RIGHT ? -initCopyImgPos : initCopyImgPos;

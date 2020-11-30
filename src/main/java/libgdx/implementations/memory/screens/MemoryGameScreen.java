@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import libgdx.campaign.CampaignStoreService;
 import libgdx.controls.ScreenRunnable;
 import libgdx.controls.button.MainButtonSize;
@@ -36,6 +37,7 @@ import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -87,13 +89,13 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
         };
     }
 
-    private void addAllTable(int levelNr) {
+    private void addAllTable(final int levelNr) {
         this.levelNr = levelNr;
         this.gameLevel = GameLevel.values()[levelNr];
         this.currentGame = new CurrentGame(this, this.gameLevel.ordinal(), 0);
         levelMatrix = new GameLogic().generateMatrix(gameLevel);
         hideAllImageViews();
-        Table table = new Table();
+        final Table table = new Table();
 
         final int rows = currentGame.getCurrentLevel().getRows();
         final int columns = currentGame.getCurrentLevel().getCols();
@@ -102,7 +104,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
         Table headerTable = createHeaderTable();
         float headerHeight = getHeaderHeight();
         table.add(headerTable).width(ScreenDimensionsManager.getScreenWidth()).height(headerHeight).row();
-        Table gameTable = new Table();
+        final Table gameTable = new Table();
         headerTable.setHeight(headerHeight);
         boolean horiz = !isVerticalGreater();
         float imagePadding = getImagePadding(horiz);
@@ -146,7 +148,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                                                 @Override
                                                 public void run() {
                                                     table.remove();
-                                                    int nextLevel = levelNr + 1;
+                                                    final int nextLevel = levelNr + 1;
                                                     if (nextLevel == 1) {
                                                         setBackgroundColor(new RGBColor(1, 234, 234, 234));
                                                     } else if (nextLevel == 2) {
@@ -176,7 +178,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                                         }
                                     }
 
-                                    String firstChoiceName = currentGame.getFirstChoice() == null ? "" : getCellName(currentGame.getFirstChoice().getX(), currentGame.getFirstChoice().getY());
+                                    final String firstChoiceName = currentGame.getFirstChoice() == null ? "" : getCellName(currentGame.getFirstChoice().getX(), currentGame.getFirstChoice().getY());
                                     MatrixChoice firstItemClicked = currentGame.getFirstChoice() == null ? clickedItem : null;
                                     currentGame.setFirstChoice(firstItemClicked);
 
@@ -300,7 +302,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
 
     public void refreshImageViews(final Runnable afterRefresh, String... namesToBeRefreshed) {
         final float duration = 0.1f;
-        int imageSideDimen = getImageSideDimen();
+        final int imageSideDimen = getImageSideDimen();
         for (final TableCell tableCell : cells) {
             if (namesToBeRefreshed.length == 0 || Arrays.asList(namesToBeRefreshed).contains(tableCell.getCell().getName())) {
                 for (final Actor actor : tableCell.getCell().getChildren()) {

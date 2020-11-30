@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.ButtonSkin;
 import libgdx.controls.button.MainButtonSkin;
@@ -46,7 +47,7 @@ public class LocationPopup extends MyPopup<AbstractScreen, AbstractScreenManager
 
     @Override
     protected void addButtons() {
-        for (Location location : Location.values()) {
+        for (final Location location : Location.values()) {
             ButtonSkin buttonSkin = SkelClassicButtonSkin.RESOURCEWARS_LOCATION;
             boolean isCurrentLocation = location == currentGame.getMarket().getCurrentLocation();
             boolean isDisabled = isCurrentLocation;

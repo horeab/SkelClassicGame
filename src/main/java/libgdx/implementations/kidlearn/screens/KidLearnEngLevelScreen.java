@@ -113,7 +113,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         return KidLearnEngWordsLevel.class;
     }
 
-    private <T extends Enum & KidLearnLevel & KidLearnEngLevel> MyButton createChooseLevelBtn(T level, int totalQuestions) {
+    private <T extends Enum & KidLearnLevel & KidLearnEngLevel> MyButton createChooseLevelBtn(final T level, int totalQuestions) {
         ButtonSkin skin = level.buttonSkin();
         ButtonSize btnSize = getChooseLevelBtnSize();
         int levelScore = kidLearnPreferencesManager.getLevelScore(level);

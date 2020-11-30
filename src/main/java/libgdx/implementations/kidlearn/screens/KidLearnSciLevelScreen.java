@@ -102,7 +102,7 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         return KidLearnSciFeedLevel.class;
     }
 
-    private <T extends Enum & KidLearnLevel & KidLearnSciLevel> MyButton createChooseLevelBtn(T level, int totalQuestions) {
+    private <T extends Enum & KidLearnLevel & KidLearnSciLevel> MyButton createChooseLevelBtn(final T level, int totalQuestions) {
         ButtonSize btnSize = getChooseLevelBtnSize();
         MyButton btn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.KIDLEARN_SCI_LEVEL)

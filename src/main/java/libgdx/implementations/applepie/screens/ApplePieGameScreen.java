@@ -171,7 +171,7 @@ public class ApplePieGameScreen extends AbstractScreen<ApplePieScreenManager> {
     }
 
     private MyButton createPressBtn() {
-        MyButton btn = new ButtonBuilder()
+        final MyButton btn = new ButtonBuilder()
                 .setButtonName(PRESS_BTN)
                 .setButtonSkin(SkelClassicButtonSkin.APPLEPIE_PRESS_BTN)
                 .setFixedButtonSize(SkelClassicButtonSize.APPLEPIE_PRESS_BTN).build();

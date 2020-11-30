@@ -152,7 +152,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
         }
         List<Pair<String, Res>> res = new ArrayList<>();
         for (Float o : allOptionNr) {
-            res.add(Pair.of(getNrFromFloat(o), KidLearnSpecificResource.cater_body));
+            res.add(Pair.of(getNrFromFloat(o), (Res) KidLearnSpecificResource.cater_body));
         }
         return res;
     }

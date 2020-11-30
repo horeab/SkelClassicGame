@@ -170,7 +170,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         return ScreenDimensionsManager.getScreenWidthValue(65);
     }
 
-    private Table createResTable(int index, BuyLowResource res, int currentPrice) {
+    private Table createResTable(int index, final BuyLowResource res, final int currentPrice) {
         float itemHeight = itemHeight();
         float itemWidth = itemWidth();
         float infoHeight = itemHeight / 1.5f;

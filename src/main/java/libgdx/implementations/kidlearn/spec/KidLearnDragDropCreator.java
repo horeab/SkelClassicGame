@@ -97,7 +97,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         afterFirstTutorial(centerResponse2, initialDelayDuration, moveDuration, fadeOutDuration);
     }
 
-    protected void afterFirstTutorial(KidLearnImgInfo centerResponse2, float initialDelayDuration, float moveDuration, float fadeOutDuration) {
+    protected void afterFirstTutorial(final KidLearnImgInfo centerResponse2, final float initialDelayDuration, final float moveDuration, final float fadeOutDuration) {
         screen.addAction(Actions.sequence(Actions.delay(initialDelayDuration + moveDuration + fadeOutDuration, Utils.createRunnableAction(new Runnable() {
             @Override
             public void run() {
@@ -120,26 +120,30 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
 
     protected Table addOptionImg(Pair<Float, Float> coord, Res res, String text) {
         String labelName = "OPTION_LABEL" + text;
-        Table img = addImg(coord, res, getOptionWidth(), labelName, text);
-        processOptionTextLabel(img.findActor(labelName));
-        img.setWidth(getOptionWidth());
-        img.setHeight(getOptionHeight());
+        float optionHeight = getOptionHeight();
+        float optionWidth = getOptionWidth();
+        Table img = addImg(coord, res, optionWidth, optionHeight, labelName, text);
+        processOptionTextLabel((MyWrappedLabel) img.findActor(labelName));
+        img.setWidth(optionWidth);
+        img.setHeight(optionHeight);
         return img;
     }
 
     protected Table addResponseImg(Pair<Float, Float> coord, Res res, String text) {
         String labelName = "RESPONSE_LABEL" + text;
-        Table img = addImg(coord, res, getResponseWidth(), labelName, text);
-        processResponseTextLabel(img.findActor(labelName));
-        img.setWidth(getResponseWidth());
-        img.setHeight(getResponseHeight());
+        float responseHeight = getResponseHeight();
+        float responseWidth = getResponseWidth();
+        Table img = addImg(coord, res, responseWidth, responseHeight, labelName, text);
+        processResponseTextLabel((MyWrappedLabel) img.findActor(labelName));
+        img.setWidth(responseWidth);
+        img.setHeight(responseHeight);
         return img;
     }
 
-    private Table addImg(Pair<Float, Float> coord, Res res, float labelWidth, String labelName, String text) {
-        Stack img = createImgTextStack(text, labelWidth, labelName, res);
+    private Table addImg(Pair<Float, Float> coord, Res res, float imgWidth, float imgHeight, String labelName, String text) {
+        Stack img = createImgTextStack(text, imgWidth, labelName, res);
         Table table = new Table();
-        table.add(img);
+        table.add(img).width(imgWidth).height(imgHeight);
         table.setX(coord.getLeft());
         table.setY(coord.getRight());
         addActorToScreen(table);
@@ -194,9 +198,9 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         Collections.shuffle(allOptions);
         for (Pair<String, Res> option : allOptions) {
             int itemsAlreadyAdded = optionsImg.size();
-            Pair<Float, Float> coord = getCoordsForOptionRow(itemsAlreadyAdded);
-            Table img = addOptionImg(coord, option.getRight(), option.getLeft());
-            KidLearnImgInfo opt = new KidLearnImgInfo(coord, img, option.getLeft());
+            final Pair<Float, Float> coord = getCoordsForOptionRow(itemsAlreadyAdded);
+            final Table img = addOptionImg(coord, option.getRight(), option.getLeft());
+            final KidLearnImgInfo opt = new KidLearnImgInfo(coord, img, option.getLeft());
             optionsImg.add(opt);
             img.addListener(new DragListener() {
 
