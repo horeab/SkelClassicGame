@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableLong;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -452,6 +453,11 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
                     super.hide();
                     popupDisplayed = false;
                 }
+
+                @Override
+                public float getPrefWidth() {
+                    return ScreenDimensionsManager.getScreenWidth();
+                }
             };
             viewImgPopup.getContentTable().add(origImg).width(origImg.getWidth()).height(origImg.getHeight());
             viewImgPopup.addToPopupManager();
@@ -476,25 +482,42 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
     }
 
     void levelFinished() {
-        boolean secondsRecord = false;
-        boolean movesRecord = false;
+        final MutableBoolean secondsRecord = new MutableBoolean(false);
+        final MutableBoolean movesRecord = new MutableBoolean(false);
         executorService.shutdown();
         int maxSeconds = imageSplitPreferencesManager.getMaxSeconds(gameType, campaignLevelEnum);
         if (maxSeconds == 0 || totalSeconds.intValue() < maxSeconds) {
-            secondsRecord = true;
+            secondsRecord.setTrue();
             imageSplitPreferencesManager.putMaxSeconds(gameType, campaignLevelEnum, totalSeconds.intValue());
         }
         int maxMoves = imageSplitPreferencesManager.getMaxMoves(gameType, campaignLevelEnum);
         if (maxMoves == 0 || totalMoves < maxMoves) {
-            movesRecord = true;
+            movesRecord.setTrue();
             imageSplitPreferencesManager.putMaxMoves(gameType, campaignLevelEnum, totalMoves);
         }
-        popupDisplayed = true;
-        addLevelFinishedPopup(secondsRecord, movesRecord);
+        Gdx.input.setInputProcessor(getStage());
+        showOriginalImage(secondsRecord.booleanValue(), movesRecord.booleanValue());
+    }
+
+    private void showOriginalImage(final boolean secondsRecord, final boolean movesRecord) {
+        fadeOutImageParts(0.5f);
+        Image origImg = GraphicUtils.getImage(imgRes);
+        origImg.setWidth(totalImgWidth);
+        origImg.setHeight(totalImgHeight);
+        origImg.setX(0);
+        origImg.setY((ScreenDimensionsManager.getExternalDeviceHeight() - totalImgHeight) / 2);
+        origImg.addAction(Actions.fadeOut(0f));
+        origImg.addAction(Actions.sequence(Actions.delay(0.5f), Actions.fadeIn(0.5f), Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                popupDisplayed = true;
+                addLevelFinishedPopup(secondsRecord, movesRecord);
+            }
+        }))));
+        addActor(origImg);
     }
 
     private void addLevelFinishedPopup(boolean secondsRecord, boolean movesRecord) {
-        Gdx.input.setInputProcessor(getStage());
         MyPopup levelFinishedPopup = new MyPopup<AbstractScreen, ImageSplitScreenManager>(getAbstractScreen()) {
             @Override
             protected String getLabelText() {
@@ -553,7 +576,7 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
     }
 
     private float getHeaderSideMargin() {
-        return MainDimen.horizontal_general_margin.getDimen() * 2;
+        return MainDimen.horizontal_general_margin.getDimen() * 8;
     }
 
     private float getHeaderY() {

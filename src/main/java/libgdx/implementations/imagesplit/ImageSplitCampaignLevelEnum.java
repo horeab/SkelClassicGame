@@ -9,7 +9,7 @@ import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
 
 public enum ImageSplitCampaignLevelEnum implements CampaignLevel {
 
-    LEVEL_0_0(2, 2, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE)),
+    LEVEL_0_0(2, 2, ImageSplitSpecificResource.i0, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE)),
     LEVEL_0_1(2, 2, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE)),
     LEVEL_0_2(3, 3, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
     LEVEL_0_3(3, 3, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),

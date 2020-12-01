@@ -8,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.util.Arrays;
+
 import libgdx.campaign.CampaignLevelEnumService;
+import libgdx.constants.Language;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
@@ -23,6 +26,7 @@ import libgdx.implementations.imagesplit.ImageSplitSpecificResource;
 import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
 import libgdx.implementations.imagesplit.spec.ImageSplitPreferencesManager;
 import libgdx.implementations.imagesplit.spec.SwipeDirection;
+import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
@@ -41,16 +45,22 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
     public void buildStage() {
         setBackgroundColor(new RGBColor(1, 206, 255, 211));
         addAllTable();
+        setBackgroundColor(RGBColor.LIGHT_BLUE);
+    }
+
+    protected Res getBackgroundTexture() {
+        return MainResource.transparent_background;
     }
 
     private void addTitle(Table table) {
 
         String appName = Game.getInstance().getAppInfoService().getAppName();
-        float mult = appName.length() > 10 ? 1.6f : 2.1f;
+        float mult = appName.length() > 10 || Arrays.asList(Language.zh.name(), Language.ja.name(), Language.ko.name()).contains(Game.getInstance().getAppInfoService().getLanguage())
+                ? 1.5f : 1.9f;
         mult = appName.length() > 16 ? 1.4f : mult;
-        table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
-                FontColor.GREEN.getColor(), Math.round(FontConfig.FONT_SIZE * mult * 1.2f),
-                8f)).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
+        table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(RGBColor.WHITE.toColor(),
+                RGBColor.DARK_GREEN.toColor(), Math.round(FontConfig.FONT_SIZE * mult * 1.4f),
+                3f, 3, 3, RGBColor.BLACK.toColor(0.5f))).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
     }
 
     private void addAllTable() {
@@ -67,14 +77,14 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         Image image = GraphicUtils.getImage(campaignLevelEnum.getRes());
         float width = ScreenDimensionsManager.getScreenWidthValue(60);
         imgLevelTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
-                FontColor.GREEN.getColor(), Math.round(FontConfig.FONT_SIZE * 1.6f),
-                4f)).setText(campaignLevelEnum.getCols() + " X " + campaignLevelEnum.getRows()).build())).row();
+                FontColor.DARK_GRAY.getColor(), Math.round(FontConfig.FONT_SIZE * 1.4f),
+                3f)).setText(campaignLevelEnum.getCols() + " X " + campaignLevelEnum.getRows()).build())).row();
 
         Table imgNavigTable = new Table();
         addNavigBtnToTable(imgNavigTable, campaignLevelEnum, SwipeDirection.LEFT);
         imgNavigTable.add(image).width(width).height(ScreenDimensionsManager.getNewHeightForNewWidth(width, image));
         addNavigBtnToTable(imgNavigTable, campaignLevelEnum, SwipeDirection.RIGHT);
-        imgLevelTable.add(imgNavigTable).row();
+        imgLevelTable.add(imgNavigTable).height(ScreenDimensionsManager.getScreenHeightValue(50)).row();
 
         Table btnTable = new Table();
         for (ImageSplitGameType gameType : campaignLevelEnum.getGameTypes()) {
@@ -144,9 +154,9 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         Table scoreTable = new Table();
         float imgSideDimen = totalWidth / 2;
         scoreTable.add(GraphicUtils.getImage(icon)).height(imgSideDimen).width(imgSideDimen);
-        Color borderColor = isRecord ? FontColor.RED.getColor() : FontColor.GREEN.getColor();
-        scoreTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
-                borderColor, Math.round(FontConfig.FONT_SIZE * 1.2f), 4f)).setText(text).build()))
+        Color borderColor = isRecord ? RGBColor.DARK_GREEN.toColor() : FontColor.BLACK.getColor();
+        scoreTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(isRecord ? RGBColor.LIGHT_GREEN.toColor() : FontColor.WHITE.getColor(),
+                borderColor, Math.round(FontConfig.FONT_SIZE * 1.2f), 2.5f)).setText(text).build()))
                 .height(totalHeight).width(totalWidth);
         return scoreTable;
     }
