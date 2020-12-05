@@ -133,7 +133,7 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
         KidLearnInAppPurchaseTable inAppPurchaseTable = new KidLearnInAppPurchaseTable(levelBtnSize.getHeight());
         if (!Utils.isValidExtraContent() && level.isLocked()) {
             btn.setDisabled(true);
-            table = inAppPurchaseTable.createForProVersion(table);
+            table = inAppPurchaseTable.createForProVersion(table, true);
         }
 
         float checkImgSideDimen = MainDimen.horizontal_general_margin.getDimen() * 3;

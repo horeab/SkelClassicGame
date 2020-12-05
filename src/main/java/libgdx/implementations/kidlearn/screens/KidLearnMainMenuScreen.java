@@ -61,7 +61,7 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
         float fontSize = KidLearnUtils.getFontSize(appName, 99, FontConfig.FONT_SIZE * 3f, 0.05f);
         table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setWidth(ScreenDimensionsManager.getScreenWidthValue(55))
-                .setFontConfig( new FontConfig(RGBColor.LIGHT_BLUE.toColor(), FontColor.BLUE.getColor(),
+                .setFontConfig(new FontConfig(RGBColor.LIGHT_BLUE.toColor(), FontColor.BLUE.getColor(),
                         fontSize, 4f)).setText(appName).build()))
                 .padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
     }

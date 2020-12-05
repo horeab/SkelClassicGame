@@ -128,7 +128,7 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         KidLearnInAppPurchaseTable inAppPurchaseTable = new KidLearnInAppPurchaseTable(btnSize.getHeight() / 1.3f);
         if (!Utils.isValidExtraContent() && level.isLocked()) {
             btn.setDisabled(true);
-            chooseLevelBtnTable = inAppPurchaseTable.createForProVersion(chooseLevelBtnTable);
+            chooseLevelBtnTable = inAppPurchaseTable.createForProVersion(chooseLevelBtnTable, true);
         }
         return chooseLevelBtnTable;
     }
