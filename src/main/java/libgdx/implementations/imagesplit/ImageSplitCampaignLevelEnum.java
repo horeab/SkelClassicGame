@@ -11,13 +11,13 @@ public enum ImageSplitCampaignLevelEnum implements CampaignLevel {
 
     LEVEL_0_0(2, 2, ImageSplitSpecificResource.i0, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE)),
     LEVEL_0_1(2, 2, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE)),
-    LEVEL_0_2(3, 3, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
-    LEVEL_0_3(3, 3, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
-    LEVEL_0_4(4, 4, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
-    LEVEL_0_5(4, 4, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
-    LEVEL_0_6(5, 5, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
-    LEVEL_0_7(6, 6, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
-    LEVEL_0_8(7, 7, ImageSplitSpecificResource.i1, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
+    LEVEL_0_2(3, 3, ImageSplitSpecificResource.i2, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
+    LEVEL_0_3(3, 3, ImageSplitSpecificResource.i3, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
+    LEVEL_0_4(4, 4, ImageSplitSpecificResource.i4, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
+    LEVEL_0_5(4, 4, ImageSplitSpecificResource.i5, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
+    LEVEL_0_6(5, 5, ImageSplitSpecificResource.i6, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
+    LEVEL_0_7(6, 6, ImageSplitSpecificResource.i7, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
+    LEVEL_0_8(7, 7, ImageSplitSpecificResource.i8, Arrays.asList(ImageSplitGameType.SWAP, ImageSplitGameType.SLIDE, ImageSplitGameType.PUSH)),
     ;
 
     private int cols;

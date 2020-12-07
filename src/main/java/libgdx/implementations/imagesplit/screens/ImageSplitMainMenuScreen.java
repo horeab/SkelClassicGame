@@ -3,6 +3,7 @@ package libgdx.implementations.imagesplit.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -108,7 +109,7 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
     }
 
     private MyButton createNavigationBtn(SwipeDirection direction, final ImageSplitCampaignLevelEnum campaignLevelEnum) {
-        MyButton button = new ButtonBuilder()
+        final MyButton button = new ButtonBuilder()
                 .setFixedButtonSize(SkelClassicButtonSize.IMAGE_SPLIT_NAVIG_BTN)
                 .setButtonSkin(direction == SwipeDirection.RIGHT ? SkelClassicButtonSkin.IMAGE_SPLIT_NAVIG_RIGHT : SkelClassicButtonSkin.IMAGE_SPLIT_NAVIG_LEFT).build();
         final int amount = direction == SwipeDirection.RIGHT ? 1 : -1;
@@ -119,6 +120,7 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
                 imgLevelTable.addAction(Actions.sequence(Actions.fadeOut(duration), Utils.createRunnableAction(new Runnable() {
                     @Override
                     public void run() {
+                        button.setTouchable(Touchable.disabled);
                         imgLevelTable.clear();
                         imgLevelTable.addAction(Actions.fadeIn(duration));
                         createImgLevel(ImageSplitCampaignLevelEnum.valueOf("LEVEL_0_" + (CampaignLevelEnumService.getCategory(campaignLevelEnum.getName()) + amount)));

@@ -30,7 +30,14 @@ public enum ImageSplitSpecificResource implements SpecificResource {
     rightarrow("buttons/rightarrow.png", Texture.class),
 
     i0("images/i0.png", Texture.class),
-    i1("images/i1.jpg", Texture.class),
+    i1("images/i1.png", Texture.class),
+    i2("images/i2.png", Texture.class),
+    i3("images/i3.png", Texture.class),
+    i4("images/i4.png", Texture.class),
+    i5("images/i5.png", Texture.class),
+    i6("images/i6.png", Texture.class),
+    i7("images/i7.png", Texture.class),
+    i8("images/i8.png", Texture.class),
     ;
 
     // @formatter:on
