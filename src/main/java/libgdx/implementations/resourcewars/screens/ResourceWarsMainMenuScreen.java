@@ -14,6 +14,8 @@ import libgdx.controls.popup.MyPopup;
 import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
+import libgdx.implementations.buylow.BuyLowGame;
+import libgdx.implementations.resourcewars.ResourceWarsGame;
 import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
 import libgdx.implementations.resourcewars.spec.logic.GamePreferencesManager;
 import libgdx.implementations.resourcewars.spec.logic.HighScorePreferencesManager;
@@ -37,6 +39,15 @@ public class ResourceWarsMainMenuScreen extends AbstractScreen<ResourceWarsScree
     public void buildStage() {
         setBackgroundColor(new RGBColor(1, 206, 255, 211));
         addAllTable();
+        executeOnFirstTimeMainMenuDisplayed();
+    }
+
+    private void executeOnFirstTimeMainMenuDisplayed() {
+        ResourceWarsGame instance = ResourceWarsGame.getInstance();
+        if (instance.isFirstTimeMainMenuDisplayed()) {
+            instance.getMainDependencyManager().createRatingService(this).appLaunched();
+            instance.setFirstTimeMainMenuDisplayed(false);
+        }
     }
 
 

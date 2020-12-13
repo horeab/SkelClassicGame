@@ -12,8 +12,10 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
+import libgdx.implementations.buylow.BuyLowGame;
 import libgdx.implementations.buylow.BuyLowScreenManager;
 import libgdx.implementations.buylow.spec.BuyLowHighScorePreferencesManager;
+import libgdx.implementations.kidlearn.KidLearnGame;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
@@ -29,6 +31,15 @@ public class BuyLowMainMenuScreen extends AbstractScreen<BuyLowScreenManager> {
     public void buildStage() {
         setBackgroundColor(new RGBColor(1, 206, 255, 211));
         addAllTable();
+        executeOnFirstTimeMainMenuDisplayed();
+    }
+
+    private void executeOnFirstTimeMainMenuDisplayed() {
+        BuyLowGame instance = BuyLowGame.getInstance();
+        if (instance.isFirstTimeMainMenuDisplayed()) {
+            instance.getMainDependencyManager().createRatingService(this).appLaunched();
+            instance.setFirstTimeMainMenuDisplayed(false);
+        }
     }
 
 

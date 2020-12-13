@@ -220,7 +220,6 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
     @Override
     public void buildStage() {
         createAllTable();
-        hoverBackButton = new BackButtonBuilder().addHoverBackButton(this);
         controlsToFront();
         if (!imageSplitPreferencesManager.isTutorialPlayed(gameType)) {
             imageSplitPreferencesManager.putTutorialPlayed(gameType);
@@ -232,9 +231,6 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         allTable = new Table();
         allTable.setFillParent(true);
         addActor(allTable);
-        if (hoverBackButton != null) {
-            hoverBackButton.toFront();
-        }
         createImageTable();
         createAllMarginTable();
     }
@@ -394,6 +390,11 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             addActor(btn);
             btnStartX = btnStartX + getNextBtnStartX(1);
         }
+        hoverBackButton = new BackButtonBuilder().createScreenBackButton(this);
+        hoverBackButton.setX(getBackBtnX());
+        hoverBackButton.setY(getBackBtnY());
+        hoverBackButton.toFront();
+        addActor(hoverBackButton);
     }
 
     private float getNextBtnStartX(int index) {
@@ -420,11 +421,20 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         if (!popupDisplayed) {
             replayBtnPressed(x, y, btnStartX, btnStartY);
             viewImgBtnPressed(x, y, btnStartX + getNextBtnStartX(1), btnStartY);
+            backBtnPressed(x, y, getBackBtnX(), getBackBtnY());
         } else {
             if (viewImgPopup != null) {
                 viewImgPopup.hide();
             }
         }
+    }
+
+    private float getBackBtnX() {
+        return MainDimen.horizontal_general_margin.getDimen() / 2;
+    }
+
+    private float getBackBtnY() {
+        return getBtnStartY() - getBtnSize().getHeight();
     }
 
     private void viewImgBtnPressed(float x, float y, float btnStartX, float btnStartY) {
@@ -481,6 +491,14 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
                     screenManager.showGameScreen(gameType, campaignLevelEnum);
                 }
             })));
+        }
+    }
+
+    private void backBtnPressed(float x, float y, float btnStartX, float btnStartY) {
+        MainButtonSize buttonSize = getBtnSize();
+        if (x > btnStartX && x < btnStartX + buttonSize.getWidth()
+                && y > btnStartY && y < btnStartY + buttonSize.getHeight()) {
+            onBackKeyPress();
         }
     }
 

@@ -15,6 +15,8 @@ import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
+import libgdx.implementations.imagesplit.ImageSplitGame;
+import libgdx.implementations.kidlearn.KidLearnGame;
 import libgdx.implementations.kidlearn.KidLearnScreenManager;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnControlsUtils;
@@ -45,6 +47,15 @@ public class KidLearnMainMenuScreen extends AbstractScreen<KidLearnScreenManager
         getAllTable().row();
         getAllTable().add(createLevelsTable()).padBottom(MainDimen.vertical_general_margin.getDimen() * 5);
         SoundUtils.addSoundTable(getAbstractScreen(), KidLearnSpecificResource.background_music);
+        executeOnFirstTimeMainMenuDisplayed();
+    }
+
+    private void executeOnFirstTimeMainMenuDisplayed() {
+        KidLearnGame instance = KidLearnGame.getInstance();
+        if (instance.isFirstTimeMainMenuDisplayed()) {
+            instance.getMainDependencyManager().createRatingService(this).appLaunched();
+            instance.setFirstTimeMainMenuDisplayed(false);
+        }
     }
 
     private Table createLevelsTable() {

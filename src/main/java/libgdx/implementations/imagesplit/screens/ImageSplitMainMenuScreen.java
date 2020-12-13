@@ -23,6 +23,7 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.imagesplit.ImageSplitCampaignLevelEnum;
+import libgdx.implementations.imagesplit.ImageSplitGame;
 import libgdx.implementations.imagesplit.ImageSplitScreenManager;
 import libgdx.implementations.imagesplit.ImageSplitSpecificResource;
 import libgdx.implementations.imagesplit.spec.ImageSplitGameType;
@@ -48,6 +49,15 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         setBackgroundColor(new RGBColor(1, 206, 255, 211));
         addAllTable();
         setBackgroundColor(RGBColor.LIGHT_BLUE);
+        executeOnFirstTimeMainMenuDisplayed();
+    }
+
+    private void executeOnFirstTimeMainMenuDisplayed() {
+        ImageSplitGame instance = ImageSplitGame.getInstance();
+        if (instance.isFirstTimeMainMenuDisplayed()) {
+            instance.getMainDependencyManager().createRatingService(this).appLaunched();
+            instance.setFirstTimeMainMenuDisplayed(false);
+        }
     }
 
     protected Res getBackgroundTexture() {
@@ -142,7 +152,8 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         btnTable.add(createScoresTable(maxSec, maxMoves, false, false)).width(btnWidth);
 
 
-        boolean extraContentLocked = campaignLevelEnum.getIndex() > 4 && !Utils.isValidExtraContent();
+//        boolean extraContentLocked = campaignLevelEnum.getIndex() > 4 && !Utils.isValidExtraContent();
+        boolean extraContentLocked = false;
         InAppPurchaseTable inAppPurchaseTable = new InAppPurchaseTable();
         btnTable = extraContentLocked ? inAppPurchaseTable.create(btnTable, Language.en.name(), "Unlock difficulty level and remove Ads!", new Runnable() {
             @Override
@@ -177,7 +188,7 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
     private MyButton createStartGameBtn(final ImageSplitGameType gameType, final ImageSplitCampaignLevelEnum campaignLevelEnum) {
         int levelToAdd = CampaignLevelEnumService.getCategory(campaignLevelEnum.getName());
         int firstNotFinishedLevel = CampaignLevelEnumService.getCategory(getFirstNotFinishedLevel().getName());
-        boolean btnDisabled = levelToAdd > firstNotFinishedLevel;
+        boolean btnDisabled = -1 > firstNotFinishedLevel;
         MyButton button = new ButtonBuilder()
                 .setDisabled(btnDisabled)
                 .setFixedButtonSize(SkelClassicButtonSize.IMAGE_SPLIT_START_GAME_BTN)
