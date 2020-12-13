@@ -1,10 +1,13 @@
 package libgdx.implementations.imagesplit.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
@@ -519,7 +522,7 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
                     }
                 };
                 int showAdPopupValue = imageSplitPreferencesManager.getShowAdPopupValue();
-                if (showAdPopupValue > 0 && showAdPopupValue % 3 == 0) {
+                if (showAdPopupValue > 0 && showAdPopupValue % 4 == 0) {
                     Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
                         @Override
                         public void run() {
@@ -568,6 +571,18 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             @Override
             public void hide() {
                 Game.getInstance().getScreenManager().showMainScreen();
+            }
+
+
+            @Override
+            public MyPopup addToPopupManager() {
+                addText();
+                addButtons();
+                padBottom(MainDimen.vertical_general_margin.getDimen());
+                padTop(MainDimen.vertical_general_margin.getDimen());
+                setBackground();
+                getPopupManager().addPopupToDisplay(this);
+                return this;
             }
         };
         levelFinishedPopup.getContentTable().add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(
