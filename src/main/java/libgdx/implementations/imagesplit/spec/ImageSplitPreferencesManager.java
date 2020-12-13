@@ -22,12 +22,20 @@ public class ImageSplitPreferencesManager {
         return preferencesService.getPreferences().getInteger(getMovesKey(gameType, campaignLevelEnum));
     }
 
-    public void putMaxSeconds(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum, int seconds) {
-        preferencesService.putInteger(getSecondsKey(gameType, campaignLevelEnum), seconds);
-    }
-
     public void putMaxMoves(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum, int moves) {
         preferencesService.putInteger(getMovesKey(gameType, campaignLevelEnum), moves);
+    }
+
+    public int getShowAdPopupValue() {
+        return preferencesService.getPreferences().getInteger(getAdPopupValueKey(), 0);
+    }
+
+    public void incrementWithAdPopupValue(int val) {
+        preferencesService.putInteger(getAdPopupValueKey(), getShowAdPopupValue() + val);
+    }
+
+    public void putMaxSeconds(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum, int seconds) {
+        preferencesService.putInteger(getSecondsKey(gameType, campaignLevelEnum), seconds);
     }
 
     public void putTutorialPlayed(ImageSplitGameType gameType) {
@@ -49,6 +57,11 @@ public class ImageSplitPreferencesManager {
     private String getMovesKey(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum) {
         return getLevelKey(gameType, campaignLevelEnum) + "_MOVES";
     }
+
+    private String getAdPopupValueKey() {
+        return "WON_GAMES";
+    }
+
 
     private String getLevelKey(ImageSplitGameType gameType, ImageSplitCampaignLevelEnum campaignLevelEnum) {
         return gameType.name() + ":" + campaignLevelEnum.getName();

@@ -495,6 +495,7 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             movesRecord.setTrue();
             imageSplitPreferencesManager.putMaxMoves(gameType, campaignLevelEnum, totalMoves);
         }
+        imageSplitPreferencesManager.incrementWithAdPopupValue(campaignLevelEnum.getShowPopupAdIncrementValue());
         Gdx.input.setInputProcessor(getStage());
         showOriginalImage(secondsRecord.booleanValue(), movesRecord.booleanValue());
     }
@@ -510,8 +511,24 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         origImg.addAction(Actions.sequence(Actions.delay(0.5f), Actions.fadeIn(0.5f), Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
             @Override
             public void run() {
-                popupDisplayed = true;
-                addLevelFinishedPopup(secondsRecord, movesRecord);
+                final Runnable showPopup = new Runnable() {
+                    @Override
+                    public void run() {
+                        popupDisplayed = true;
+                        addLevelFinishedPopup(secondsRecord, movesRecord);
+                    }
+                };
+                int showAdPopupValue = imageSplitPreferencesManager.getShowAdPopupValue();
+                if (showAdPopupValue > 0 && showAdPopupValue % 3 == 0) {
+                    Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                        @Override
+                        public void run() {
+                            showPopup.run();
+                        }
+                    });
+                } else {
+                    showPopup.run();
+                }
             }
         }))));
         addActor(origImg);

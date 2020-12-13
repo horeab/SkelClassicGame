@@ -17,6 +17,7 @@ import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.controls.labelimage.InAppPurchaseTable;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
@@ -139,6 +140,16 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         Table btnTable = new Table();
         btnTable.add(startGameBtn).height(startGameBtn.getHeight()).width(btnWidth).pad(MainDimen.horizontal_general_margin.getDimen()).row();
         btnTable.add(createScoresTable(maxSec, maxMoves, false, false)).width(btnWidth);
+
+
+        boolean extraContentLocked = campaignLevelEnum.getIndex() > 4 && !Utils.isValidExtraContent();
+        InAppPurchaseTable inAppPurchaseTable = new InAppPurchaseTable();
+        btnTable = extraContentLocked ? inAppPurchaseTable.create(btnTable, Language.en.name(), "Unlock difficulty level and remove Ads!", new Runnable() {
+            @Override
+            public void run() {
+                screenManager.showMainScreen();
+            }
+        }) : btnTable;
         return btnTable;
     }
 
@@ -164,9 +175,9 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
     }
 
     private MyButton createStartGameBtn(final ImageSplitGameType gameType, final ImageSplitCampaignLevelEnum campaignLevelEnum) {
-        int category = CampaignLevelEnumService.getCategory(campaignLevelEnum.getName());
-        int firstNotFinishedCategory = CampaignLevelEnumService.getCategory(getFirstNotFinishedLevel().getName());
-        boolean btnDisabled = category > firstNotFinishedCategory;
+        int levelToAdd = CampaignLevelEnumService.getCategory(campaignLevelEnum.getName());
+        int firstNotFinishedLevel = CampaignLevelEnumService.getCategory(getFirstNotFinishedLevel().getName());
+        boolean btnDisabled = levelToAdd > firstNotFinishedLevel;
         MyButton button = new ButtonBuilder()
                 .setDisabled(btnDisabled)
                 .setFixedButtonSize(SkelClassicButtonSize.IMAGE_SPLIT_START_GAME_BTN)
