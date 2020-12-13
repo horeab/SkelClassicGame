@@ -42,6 +42,11 @@ public class ImageSplitDependencyManager extends CampaignGameDependencyManager {
     }
 
     @Override
+    public String getExtraContentProductId() {
+        return "extracontent.imagesplit";
+    }
+
+    @Override
     public RGBColor getScreenBackgroundColor() {
         return new RGBColor(1, 230, 242, 255);
     }
