@@ -1,13 +1,10 @@
 package libgdx.implementations.imagesplit.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
@@ -25,6 +22,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import libgdx.controls.ScreenRunnable;
+import libgdx.controls.button.ButtonSize;
 import libgdx.controls.button.MainButtonSize;
 import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
@@ -216,6 +214,7 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
             }
         }));
     }
+
 
     @Override
     public void buildStage() {
@@ -471,7 +470,20 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
                 public float getPrefWidth() {
                     return ScreenDimensionsManager.getScreenWidth();
                 }
+
+                @Override
+                public MyPopup addToPopupManager() {
+                    addText();
+                    addButtons();
+                    padBottom(MainDimen.vertical_general_margin.getDimen());
+                    padTop(MainDimen.vertical_general_margin.getDimen());
+                    setBackground();
+                    getPopupManager().addPopupToDisplay(this);
+                    return this;
+                }
             };
+            ButtonSize btnSize = getBtnSize();
+            viewImgPopup.getContentTable().add(GraphicUtils.getImage(MainResource.btn_back_down_white)).width(btnSize.getWidth()).height(btnSize.getHeight()).row();
             viewImgPopup.getContentTable().add(origImg).width(origImg.getWidth()).height(origImg.getHeight());
             viewImgPopup.addToPopupManager();
         }
@@ -498,7 +510,12 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
         MainButtonSize buttonSize = getBtnSize();
         if (x > btnStartX && x < btnStartX + buttonSize.getWidth()
                 && y > btnStartY && y < btnStartY + buttonSize.getHeight()) {
-            onBackKeyPress();
+            addAction(Actions.delay(0.2f, Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                    onBackKeyPress();
+                }
+            })));
         }
     }
 
