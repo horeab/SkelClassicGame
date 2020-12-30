@@ -1,12 +1,14 @@
 package libgdx.implementations.buylow.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableLong;
 
 import java.util.LinkedHashMap;
@@ -26,16 +28,20 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.buylow.BuyLowScreenManager;
+import libgdx.implementations.buylow.BuyLowSpecificResource;
 import libgdx.implementations.buylow.spec.BuyLowHighScorePreferencesManager;
 import libgdx.implementations.buylow.spec.BuyLowLevelFinishedPopup;
 import libgdx.implementations.buylow.spec.BuyLowResource;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
+import libgdx.skelgameimpl.skelgame.SkelGameLabel;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
+import libgdx.utils.model.RGBColor;
 
 public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
 
@@ -91,38 +97,75 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
 
     private void refreshAllTable() {
         allTable.clear();
-        createAllRes();
         createInvTable();
+        allTable.row();
+        createAllRes();
     }
 
     private void createInvTable() {
         Table table = new Table();
         Table head = new Table();
-        float horizMargin = MainDimen.horizontal_general_margin.getDimen() * 2;
         float screenWidthValue = ScreenDimensionsManager.getScreenWidthValue(100);
-        float headerContainerWidth = screenWidthValue / 2.05f;
         MyWrappedLabel budgetLabel = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setWidth(headerContainerWidth).setFontConfig(new FontConfig(FontColor.BLUE.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 1.2f))).setText("Budget: " + formatNrToCurrencyWithDollar(budget)).build());
+                new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue).setFontConfig(new FontConfig(FontColor.BLUE.getColor(),
+                        Math.round(FontConfig.FONT_SIZE * 1.2f))).setText(SkelGameLabel.l_budget.getText() + ": " + formatNrToCurrencyWithDollar(budget)).build());
         MyWrappedLabel daysLabel = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setWidth(headerContainerWidth).setFontConfig(new FontConfig(FontColor.RED.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 1.2f))).setText("Days: " + (countdownAmountMillis.getValue() / 1000) + "").build());
-        MyWrappedLabel invSpace = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue).setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
-                        Math.round(FontConfig.FONT_SIZE))).setText("Inventory space: " + getTotalInv() + "/" + MAX_INVENTORY).build());
-        MyWrappedLabel invValue = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue).setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
-                        Math.round(FontConfig.FONT_SIZE))).setText("Inventory value: " + formatNrToCurrencyWithDollar(getInvValue()) + "").build());
-        invSpace.setAlignment(Align.left);
-        invValue.setAlignment(Align.left);
-        daysLabel.setAlignment(Align.right);
-        head.add(budgetLabel).align(Align.left).width(headerContainerWidth);
-        head.add(daysLabel).padRight(horizMargin).align(Align.right).width(headerContainerWidth);
-        table.add(head).width(screenWidthValue).padBottom(MainDimen.vertical_general_margin.getDimen()).row();
-        table.add(invSpace).padLeft(horizMargin).align(Align.left).width(screenWidthValue).row();
-        table.add(invValue).padLeft(horizMargin).align(Align.left).width(screenWidthValue).row();
-        allTable.add(table).width(screenWidthValue)
+                new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue).setFontConfig(new FontConfig(FontColor.RED.getColor(),
+                        Math.round(FontConfig.FONT_SIZE * 1.2f))).setText(SkelGameLabel.l_remaining_days.getText() + ": " + getDaysToDisplay() + "").build());
+        budgetLabel.setAlignment(Align.left);
+        daysLabel.setAlignment(Align.left);
+        head.add(budgetLabel).align(Align.left).row();
+        head.add(daysLabel).align(Align.left);
+        table.add(head).padTop(MainDimen.vertical_general_margin.getDimen() * 2).padBottom(MainDimen.vertical_general_margin.getDimen()).row();
+        float invRowHeight = ScreenDimensionsManager.getScreenHeightValue(5);
+        table.add(createInvInfoTable(SkelGameLabel.l_inventory.getText() + ": ",
+                getTotalInv() + "/" + MAX_INVENTORY,
+                formatNrToCurrencyWithDollar(getInvValue()),
+                getInvSpaceFontConfig(), new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
+                        getInvValueFontSize(), 3f)))
+                .height(invRowHeight).row();
+        allTable.add(table).width(screenWidthValue / 1.1f)
                 .height(ScreenDimensionsManager.getScreenHeight() - itemHeight() * resAmount.size());
+    }
+
+    private long getDaysToDisplay() {
+        long days = countdownAmountMillis.getValue() / 1000;
+        return days < 0 ? 0 : days;
+    }
+
+    private FontConfig getInvSpaceFontConfig() {
+        FontColor fontColor = FontColor.WHITE;
+        float fontSize = getInvValueFontSize();
+        Color borderColor = Color.BLUE;
+        if (getTotalInv() >= MAX_INVENTORY) {
+            fontColor = FontColor.RED;
+            borderColor = FontColor.DARK_RED.getColor();
+            fontSize = fontSize * 1.3f;
+        }
+        return new FontConfig(fontColor.getColor(), borderColor, fontSize, 3f);
+    }
+
+    private float getInvValueFontSize() {
+        return FontConfig.FONT_SIZE * 1.2f;
+    }
+
+    private Table createInvInfoTable(String labelText, String spaceLabelValue, String valueLabelValue, FontConfig spaceFontConfig, FontConfig valueFontConfig) {
+        float screenWidthValue = ScreenDimensionsManager.getScreenWidthValue(97);
+        Table invTable = new Table();
+        MyWrappedLabel invSpace = new MyWrappedLabel(
+                new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue / 3).setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
+                        Math.round(FontConfig.FONT_SIZE))).setText(labelText).build());
+        MyWrappedLabel invSpaceValue = new MyWrappedLabel(
+                new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue / 3).setFontConfig(spaceFontConfig).setText(spaceLabelValue).build());
+        MyWrappedLabel invValueValue = new MyWrappedLabel(
+                new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue / 3).setFontConfig(valueFontConfig).setText(valueLabelValue).build());
+        invTable.add(invSpace).align(Align.left);
+        invTable.add(invSpaceValue).align(Align.center);
+        invTable.add(invValueValue).align(Align.right);
+        invSpace.setAlignment(Align.left);
+        invSpaceValue.setAlignment(Align.center);
+        invValueValue.setAlignment(Align.right);
+        return invTable;
     }
 
     public static String formatNrToCurrencyWithDollar(int nr) {
@@ -163,7 +206,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
     }
 
     private float itemHeight() {
-        return ScreenDimensionsManager.getScreenHeightValue(20);
+        return ScreenDimensionsManager.getScreenHeightValue(18);
     }
 
     private float itemWidth() {
@@ -176,25 +219,28 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         float infoHeight = itemHeight / 1.5f;
         Table table = new Table();
         Table head = new Table();
+        String resNameEnum = res.name().toLowerCase();
         MyWrappedLabel resName = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
-                        Math.round(FontConfig.FONT_SIZE))).setText(res.name()).build());
+                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.BLACK.getColor(),
+                        Math.round(FontConfig.FONT_SIZE), 3f)).setText(StringUtils.capitalize(SkelGameLabel.valueOf("l_" + resNameEnum).getText())).build());
         MyWrappedLabel resAmountLabel = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
-                        Math.round(FontConfig.FONT_SIZE))).setText(this.resAmount.get(res) + "").build());
+                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.BLUE.getColor(),
+                        Math.round(FontConfig.FONT_SIZE), 3f)).setText(this.resAmount.get(res) + "").build());
         float dimen = MainDimen.horizontal_general_margin.getDimen();
         head.add(resName).width(itemWidth / 2.1f).padRight(dimen * 2);
         head.add(resAmountLabel).width(itemWidth / 2.1f).padLeft(dimen * 2);
         Table info = new Table();
         float iconSideDimen = infoHeight / 1.3f;
-        info.add(GraphicUtils.getImage(MainResource.heart_full)).width(iconSideDimen).height(iconSideDimen);
+        info.add(GraphicUtils.getImage(BuyLowSpecificResource.valueOf(resNameEnum))).width(iconSideDimen).height(iconSideDimen);
         Table priceAmount = new Table();
         MyWrappedLabel price = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 1.5f))).setText(formatNrToCurrencyWithDollar(currentPrice) + "").build());
+                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.LIGHT_GREEN.getColor(), FontColor.BLACK.getColor(),
+                        Math.round(FontConfig.FONT_SIZE * 1.5f), 3f)).setText(formatNrToCurrencyWithDollar(currentPrice) + "").build());
+        FontConfig amountAffordGreenConfig = new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(), Math.round(FontConfig.FONT_SIZE), 3f);
+        FontConfig amountAffordRedConfig = new FontConfig(RGBColor.WHITE.toColor(), FontColor.RED.getColor(), Math.round(FontConfig.FONT_SIZE), 3f);
+        int amountYouAffordAndHaveSpaceFor = getAmountYouAffordAndHaveSpaceFor(currentPrice);
         MyWrappedLabel amountAfford = new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
-                        Math.round(FontConfig.FONT_SIZE))).setText(getAmountYouAffordAndHaveSpaceFor(currentPrice) + "").build());
+                new MyWrappedLabelConfigBuilder().setFontConfig(amountYouAffordAndHaveSpaceFor == 0 ? amountAffordRedConfig : amountAffordGreenConfig).setText(amountYouAffordAndHaveSpaceFor + "").build());
         priceAmount.add(price).row();
         priceAmount.add(amountAfford);
         info.add(priceAmount).height(infoHeight).width(itemWidth - infoHeight);
@@ -203,8 +249,9 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         item.add(info).height(infoHeight).width(itemWidth);
         Table buySell = new Table();
         SkelClassicButtonSkin skin = SkelClassicButtonSkin.valueOf("BUYLOW_SELLBUY" + index + "_BTN");
-        MyButton buyBtn = new ButtonBuilder().setButtonSkin(skin).setFixedButtonSize(SkelClassicButtonSize.BUYLOW_SELLBUY_BTN).setText("Buy").build();
-        buyBtn.setDisabled(getAmountYouAffordAndHaveSpaceFor(currentPrice) == 0);
+        boolean buyBtnDisabled = buyBtnDisabled(currentPrice);
+        MyButton buyBtn = new ButtonBuilder().setFontColor(buyBtnDisabled ? FontColor.GRAY : FontColor.BLACK).setButtonSkin(skin).setFixedButtonSize(SkelClassicButtonSize.BUYLOW_SELLBUY_BTN).setText(MainGameLabel.l_buy.getText()).build();
+        buyBtn.setDisabled(buyBtnDisabled);
         buyBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -214,8 +261,9 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
                 refreshAllTable();
             }
         });
-        MyButton sellBtn = new ButtonBuilder().setButtonSkin(skin).setFixedButtonSize(SkelClassicButtonSize.BUYLOW_SELLBUY_BTN).setText("Sell").build();
-        sellBtn.setDisabled(this.resAmount.get(res) == 0);
+        boolean sellBtnDisabled = sellBtnDisabled(res);
+        MyButton sellBtn = new ButtonBuilder().setFontColor(sellBtnDisabled ? FontColor.GRAY : FontColor.BLACK).setButtonSkin(skin).setFixedButtonSize(SkelClassicButtonSize.BUYLOW_SELLBUY_BTN).setText(SkelGameLabel.l_sell.getText()).build();
+        sellBtn.setDisabled(sellBtnDisabled);
         sellBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -224,7 +272,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
                 refreshAllTable();
             }
         });
-        buySell.add(buyBtn).height(buyBtn.getHeight()).width(buyBtn.getWidth()).row();
+        buySell.add(buyBtn).height(buyBtn.getHeight()).width(buyBtn.getWidth()).padBottom(MainDimen.vertical_general_margin.getDimen() / 4).row();
         buySell.add(sellBtn).height(sellBtn.getHeight()).width(sellBtn.getWidth());
         table.add(item).width(itemWidth);
         table.add(buySell).width(ScreenDimensionsManager.getScreenWidth() - itemWidth).height(itemHeight);
@@ -232,12 +280,20 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         return table;
     }
 
-    private MainResource getResBackgr(BuyLowResource res, int currentPrice) {
-        MainResource backr = MainResource.btn_lowcolor_up;
+    private boolean sellBtnDisabled(BuyLowResource res) {
+        return this.resAmount.get(res) == 0 || getTotalInv() <= 0;
+    }
+
+    private boolean buyBtnDisabled(int currentPrice) {
+        return getAmountYouAffordAndHaveSpaceFor(currentPrice) == 0 || getTotalInv() >= MAX_INVENTORY;
+    }
+
+    private BuyLowSpecificResource getResBackgr(BuyLowResource res, int currentPrice) {
+        BuyLowSpecificResource backr = BuyLowSpecificResource.price_normal;
         if (currentPrice > res.getPrice()) {
-            backr = MainResource.btn_menu_down;
+            backr = BuyLowSpecificResource.price_up;
         } else if (currentPrice < res.getPrice()) {
-            backr = MainResource.btn_menu_up;
+            backr = BuyLowSpecificResource.price_down;
         }
         return backr;
     }
@@ -272,7 +328,12 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
     }
 
     private int getAmountYouAfford(int resourcePrice) {
-        return budget / resourcePrice;
+        int amountYouAfford = budget / resourcePrice;
+        int freeSpace = MAX_INVENTORY - getTotalInv();
+        if (amountYouAfford > freeSpace) {
+            amountYouAfford = freeSpace;
+        }
+        return amountYouAfford;
     }
 
     private void changeResPrice() {

@@ -13,7 +13,7 @@ public enum SkelClassicButtonSize implements ButtonSize {
     APPLEPIE_PRESS_BTN(MainDimen.side_btn_image.getDimen() * 3f, MainDimen.side_btn_image.getDimen() * 3f),
 
     BUYLOW_MENU_BTN(MainDimen.horizontal_general_margin.getDimen() * 30, MainDimen.horizontal_general_margin.getDimen() * 12),
-    BUYLOW_SELLBUY_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 1.25f),
+    BUYLOW_SELLBUY_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 1.0f),
 
     IMAGE_SPLIT_START_GAME_BTN(MainDimen.side_btn_image.getDimen() * 2f, MainDimen.side_btn_image.getDimen() * 2f),
     IMAGE_SPLIT_NAVIG_BTN(MainDimen.side_btn_image.getDimen() * 1.2f, MainDimen.side_btn_image.getDimen() * 1.2f),

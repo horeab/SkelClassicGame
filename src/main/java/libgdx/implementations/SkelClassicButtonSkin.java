@@ -46,9 +46,9 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     //BUYLOW
     BUYLOW_MENU(ResourceWarsSpecificResource.menu, ResourceWarsSpecificResource.menu_clicked, ResourceWarsSpecificResource.menu, ResourceWarsSpecificResource.btn_disabled, null),
     BUYLOW_SELLBUY0_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
-    BUYLOW_SELLBUY1_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
-    BUYLOW_SELLBUY2_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
-    BUYLOW_SELLBUY3_BTN(BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn0_clicked, BuyLowSpecificResource.btn0, BuyLowSpecificResource.btn_disabled, null),
+    BUYLOW_SELLBUY1_BTN(BuyLowSpecificResource.btn1, BuyLowSpecificResource.btn1_clicked, BuyLowSpecificResource.btn1, BuyLowSpecificResource.btn_disabled, null),
+    BUYLOW_SELLBUY2_BTN(BuyLowSpecificResource.btn2, BuyLowSpecificResource.btn2_clicked, BuyLowSpecificResource.btn2, BuyLowSpecificResource.btn_disabled, null),
+    BUYLOW_SELLBUY3_BTN(BuyLowSpecificResource.btn3, BuyLowSpecificResource.btn3_clicked, BuyLowSpecificResource.btn3, BuyLowSpecificResource.btn_disabled, null),
 
     IMAGE_SPLIT_GAME_TYPE_SLIDE(ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_clicked, ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_disabled, null),
     IMAGE_SPLIT_GAME_TYPE_PUSH(ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_clicked, ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_disabled, null),
