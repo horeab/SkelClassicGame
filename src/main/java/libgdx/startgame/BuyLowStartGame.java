@@ -37,63 +37,63 @@ public class BuyLowStartGame {
     public static String getTitle() {
         switch (Language.valueOf(Game.getInstance().getAppInfoService().getLanguage())) {
             case cs:
-                return "Matematika";
+                return "Zisková hra";
             case da:
-                return "Matematik";
+                return "Profit spil";
             case de:
-                return "Mathematik";
+                return "Profit machen!";
             case el:
-                return "Μαθηματικά";
+                return "Παιχνίδι κέρδους";
             case en:
-                return "Math Test";
+                return "Profit Game";
             case es:
-                return "Matemáticas";
+                return "Juego de ganancias";
             case fi:
-                return "Matematiikka";
+                return "Voittopeli";
             case fr:
-                return "Mathématiques";
+                return "Jeu de profit";
             case hi:
-                return "गणित";
+                return "लाभ का खेल";
             case hr:
-                return "Matematika";
+                return "Dobitna igra";
             case hu:
-                return "Matematika";
+                return "Profit játék";
             case id:
-                return "Matematika";
+                return "Game untung";
             case it:
-                return "Test di matematica";
+                return "Gioco di profitto";
             case ja:
-                return "数学";
+                return "利益ゲーム";
             case ko:
-                return "수학";
+                return "이익 게임";
             case ms:
-                return "Matematik";
+                return "Permainan untung";
             case nl:
-                return "Wiskunde";
+                return "Winst spel";
             case no:
-                return "Matte";
+                return "Profitt spill";
             case pl:
-                return "Matematyka";
+                return "Gra zysku";
             case pt:
-                return "Matemática";
+                return "Jogo de lucro";
             case ro:
-                return "Matematică";
+                return "Joc de profit";
             case ru:
-                return "Математика";
+                return "Прибыльная игра";
             case sk:
-                return "Matematika";
+                return "Zisková hra";
             case sv:
-                return "Matematik";
+                return "Vinstspel";
             case th:
-                return "คณิตศาสตร์";
+                return "เกมกำไร";
             case tr:
-                return "Matematik";
+                return "Kar oyunu";
             case uk:
-                return "Математика";
+                return "Прибуткова гра";
             case vi:
-                return "Toán học";
+                return "Trò chơi lợi nhuận";
             case zh:
-                return "数学";
+                return "利润游戏";
         }
         return null;
     }

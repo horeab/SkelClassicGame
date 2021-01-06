@@ -118,7 +118,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         head.add(daysLabel).align(Align.left);
         table.add(head).padTop(MainDimen.vertical_general_margin.getDimen() * 2).padBottom(MainDimen.vertical_general_margin.getDimen()).row();
         float invRowHeight = ScreenDimensionsManager.getScreenHeightValue(5);
-        table.add(createInvInfoTable(SkelGameLabel.l_inventory.getText() + ": ",
+        table.add(createInvInfoTable(SkelGameLabel.l_inventory.getText() ,
                 getTotalInv() + "/" + MAX_INVENTORY,
                 formatNrToCurrencyWithDollar(getInvValue()),
                 getInvSpaceFontConfig(), new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),

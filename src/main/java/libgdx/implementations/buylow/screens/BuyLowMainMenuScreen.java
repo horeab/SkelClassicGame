@@ -1,10 +1,13 @@
 package libgdx.implementations.buylow.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import libgdx.constants.Language;
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
@@ -14,8 +17,10 @@ import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.buylow.BuyLowGame;
 import libgdx.implementations.buylow.BuyLowScreenManager;
+import libgdx.implementations.buylow.BuyLowSpecificResource;
 import libgdx.implementations.buylow.spec.BuyLowHighScorePreferencesManager;
 import libgdx.implementations.kidlearn.KidLearnGame;
+import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
@@ -29,6 +34,7 @@ public class BuyLowMainMenuScreen extends AbstractScreen<BuyLowScreenManager> {
 
     @Override
     public void buildStage() {
+        new ActorAnimation(getAbstractScreen()).createScrollingBackground(BuyLowSpecificResource.scroll_background_main);
         setBackgroundColor(new RGBColor(1, 206, 255, 211));
         addAllTable();
         executeOnFirstTimeMainMenuDisplayed();
@@ -46,13 +52,19 @@ public class BuyLowMainMenuScreen extends AbstractScreen<BuyLowScreenManager> {
     private void addTitle(Table table) {
 
         String appName = Game.getInstance().getAppInfoService().getAppName();
-        float mult = appName.length() > 10 ? 2.1f : 2.5f;
+        float mult = appName.length() > 10 ? 1.9f : 2.5f;
         mult = appName.length() > 16 ? 1.8f : mult;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.es.name()) ? 1.5f : mult;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.fi.name()) ? 1.6f : mult;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.sv.name()) ? 1.6f : mult;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.th.name()) ? 1.6f : mult;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.ms.name()) ? 1.4f : mult;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.uk.name()) ? 1.4f : mult;
+        mult = Game.getInstance().getAppInfoService().getLanguage().equals(Language.ru.name()) ? 1.4f : mult;
         table.add(new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
-                        FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * mult * 1.2f),
-                        8f)).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
+                new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(RGBColor.WHITE.toColor(),
+                        Color.SCARLET, Math.round(FontConfig.FONT_SIZE * mult * 1.8f),
+                        8f, 3, 3, RGBColor.BLACK.toColor(0.8f))).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
     }
 
     private void addAllTable() {

@@ -24,6 +24,7 @@ public enum BuyLowSpecificResource implements SpecificResource {
     btn_disabled("buttons/btn_disabled.png", Texture.class),
     menu("buttons/menu.png", Texture.class),
     menu_clicked("buttons/menu_clicked.png", Texture.class),
+    scroll_background_main("scroll_background_main.png", Texture.class),
 
     price_down("price_down.png", Texture.class),
     price_normal("price_normal.png", Texture.class),
