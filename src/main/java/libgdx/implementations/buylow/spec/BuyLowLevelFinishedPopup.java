@@ -30,7 +30,7 @@ public class BuyLowLevelFinishedPopup extends MyPopup<AbstractScreen, AbstractSc
         goBack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Game.getInstance().getScreenManager().showMainScreen();
+                onBackKeyPress();
             }
         });
         addButton(goBack);
