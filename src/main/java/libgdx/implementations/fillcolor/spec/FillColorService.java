@@ -53,6 +53,7 @@ public class FillColorService {
     }
 
     public Stack fillWithColor(RGBColor colorToFill, int x, int y) {
+        System.out.println("x " + x + " : y " + y);
         int pixmapY = getPixmapY(y);
         floodFill(processedPixmap, Pair.of(x, pixmapY), processedPixmap.getPixel(x, pixmapY),
                 Color.rgba8888(colorToFill.toColor()));

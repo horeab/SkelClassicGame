@@ -1,5 +1,6 @@
 package libgdx.implementations.fillcolor.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -39,6 +40,10 @@ import libgdx.utils.model.RGBColor;
 
 public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> {
 
+    public static final int TOTAL_MAX_SCORE = 3;
+    public static final String STAR_IMG_NAME = "STAR_IMG_NAME";
+    public static final String COLORBUCKETTABLE_NAME = "COLORBUCKETTABLE_NAME";
+    public static final RGBColor TOOLBAR_COLOR = new RGBColor(1, 76, 199, 228);
     private Image imgToDisplay;
     private Res imgToFill;
     private FillColorService fillColorService;
@@ -56,35 +61,77 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
 
     private Map<Pair<Integer, Integer>, RGBColor> createCorrectColors() {
         Map<Pair<Integer, Integer>, RGBColor> correctColors = new HashMap<>();
-        correctColors.put(Pair.of(166, FillColorService.getPixmapY(100)), RGBColor.LIGHT_RED1);
-        correctColors.put(Pair.of(176, FillColorService.getPixmapY(226)), RGBColor.GREEN);
-        correctColors.put(Pair.of(137, FillColorService.getPixmapY(271)), RGBColor.GREEN);
+        correctColors.put(Pair.of(175, FillColorService.getPixmapY(175)), RGBColor.RED);
+        correctColors.put(Pair.of(227, FillColorService.getPixmapY(300)), RGBColor.GREEN);
+        correctColors.put(Pair.of(181, FillColorService.getPixmapY(355)), RGBColor.DARK_BLUE);
         return correctColors;
     }
 
 
     @Override
     public void buildStage() {
-        addLevelIcon();
         setUpAllTable();
         Table container = new Table();
         Table stackContainer = createImageStackContainer();
         container.add(stackContainer).width(stackContainer.getWidth())
                 .height(stackContainer.getHeight());
+        getAllTable().add(createTopBar()).growX().row();
         getAllTable().add(container).grow();
         addImage(stackContainer);
         getAllTable().row();
         int progressBarWidth = getProgressBarWidth();
-        getAllTable().add(createProgressBar(2)).width(progressBarWidth);
+        getAllTable().add(createProgressBar()).width(progressBarWidth);
         getAllTable().row();
         getAllTable().add(createColorToolbar()).width(progressBarWidth);
     }
 
-    protected int getProgressBarWidth() {
+    private Stack createTopBar() {
+        Table topBar = new Table();
+        Table bar1 = new Table();
+        bar1.setBackground(GraphicUtils.getColorBackground(TOOLBAR_COLOR.toColor()));
+        int bar1HeightPercent = 4;
+        int bar2HeightPercent = 1;
+        bar1.setHeight(ScreenDimensionsManager.getScreenHeightValue(bar1HeightPercent));
+        Table bar2 = new Table();
+        bar2.setHeight(ScreenDimensionsManager.getScreenHeightValue(bar2HeightPercent));
+        bar2.setBackground(GraphicUtils.getColorBackground(RGBColor.DARK_BLUE.toColor()));
+        topBar.add(bar1).growX().height(bar1.getHeight()).row();
+        topBar.add(bar2).growX().height(bar2.getHeight());
+        topBar.padTop(-ScreenDimensionsManager.getScreenHeightValue(bar1HeightPercent));
+        Table levelIconTable = new Table();
+        float marginDimen = MainDimen.horizontal_general_margin.getDimen();
+        levelIconTable.add(createLevelIcon()).pad(marginDimen).width(ScreenDimensionsManager.getScreenWidthValue(40))
+                .height(ScreenDimensionsManager.getScreenHeightValue(bar1HeightPercent + bar1HeightPercent));
+        levelIconTable.add().growX();
+        Stack stack = new Stack();
+        stack.add(topBar);
+        stack.add(levelIconTable);
+        return stack;
+    }
+
+    private Stack createLevelIcon() {
+        float labelWidth = ScreenDimensionsManager.getScreenWidthValue(30);
+        float labelHeight = ScreenDimensionsManager.getScreenHeightValue(7);
+        MyWrappedLabel levelNr = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontConfig(new FontConfig(RGBColor.WHITE.toColor(),
+                        Color.BLACK, Math.round(FontConfig.FONT_SIZE * 1.1f),
+                        3f, 3, 3, RGBColor.BLACK.toColor(0.4f)))
+                .setText(MainGameLabel.l_level.getText("0"))
+                .setWrappedLineLabel(labelWidth)
+                .setSingleLineLabel().build());
+        levelNr.setWidth(labelWidth);
+        levelNr.setHeight(labelHeight);
+        Stack stack = new Stack();
+        stack.add(GraphicUtils.getImage(FillColorSpecificResource.level_nr_background));
+        stack.add(levelNr);
+        return stack;
+    }
+
+    private int getProgressBarWidth() {
         return ScreenDimensionsManager.getScreenWidth();
     }
 
-    protected Table createImageStackContainer() {
+    private Table createImageStackContainer() {
         Stack image = fillColorService.getStackFromImage(imgToDisplay);
         Table stackContainer = new Table();
         stackContainer.add(image).width(image.getWidth()).height(image.getHeight());
@@ -113,6 +160,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
                 if (pressedCorrectAnswers > 0) {
                     percentTable.setVisible(true);
                 }
+                refreshStarImages();
                 percentTable.addAction(Actions.sequence(Actions.sizeBy(amountToIncrease, 0, 0.2f),
                         Utils.createRunnableAction(new Runnable() {
                             @Override
@@ -127,38 +175,76 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         });
     }
 
-    private Stack createProgressBar(int correctResp) {
-        float height = ScreenDimensionsManager.getScreenHeightValue(10);
-        MyWrappedLabel imgName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 1.5f), 8f))
-                .setText("Orange")
-                .setSingleLineLabel().build());
-        Table emptyTable = new Table();
-        Table progressTable = new Table();
-        Table transparentTable = new Table();
-        emptyTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
-        float marginDimen = MainDimen.horizontal_general_margin.getDimen();
-        transparentTable.add(imgName).padLeft(marginDimen * 1);
-        transparentTable.add().growX();
-        Table starsTable = new Table();
-        float starSideDimen = marginDimen * 5;
-        for (int i = 0; i < 3; i++) {
-            starsTable.add(GraphicUtils.getImage(MainResource.heart_full)).width(starSideDimen).height(starSideDimen);
+    private void refreshStarImages() {
+        for (int i = 0; i < fillColorService.getWrongColorsPressed(); i++) {
+            Image starImg = getRoot().findActor(STAR_IMG_NAME + i);
+            if (starImg != null && starImg.isVisible()) {
+                starImg.addAction(Actions.sequence(Actions.fadeOut(0.2f), Utils.createRunnableAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        starImg.setVisible(false);
+                    }
+                })));
+            }
         }
+    }
+
+    private Stack createProgressBar() {
+        initPercentTable();
+        Stack stack = new Stack();
+        stack.add(createEmptyTable());
+        stack.add(createProgressTable());
+        stack.add(createTransparentTable());
+        return stack;
+    }
+
+    private Table createEmptyTable() {
+        Table emptyTable1 = new Table();
+        Table emptyTable2 = new Table();
+        emptyTable1.setBackground(GraphicUtils.getNinePatch(FillColorSpecificResource.progress_table_background1));
+        emptyTable2.setBackground(GraphicUtils.getNinePatch(FillColorSpecificResource.progress_table_background2));
+        Table emptyTable = new Table();
+        emptyTable.add(emptyTable1).grow().row();
+        emptyTable.add(emptyTable2).grow();
+        return emptyTable;
+    }
+
+    private void initPercentTable() {
+        float height = ScreenDimensionsManager.getScreenHeightValue(10);
         percentTable = new Table();
         percentTable.setVisible(false);
         percentTable.setWidth(0);
         percentTable.setHeight(height);
-        percentTable.setBackground(GraphicUtils.getNinePatch(MainResource.green_background));
+        percentTable.setBackground(GraphicUtils.getNinePatch(FillColorSpecificResource.progress_table_fill));
+    }
+
+    private Table createProgressTable() {
+        Table progressTable = new Table();
         progressTable.add(percentTable).width(percentTable.getWidth()).height(percentTable.getHeight());
         progressTable.add().width(getProgressBarWidth());
+        return progressTable;
+    }
+
+    private Table createTransparentTable() {
+        float marginDimen = MainDimen.horizontal_general_margin.getDimen();
+        MyWrappedLabel imgName = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontConfig(new FontConfig(RGBColor.WHITE.toColor(),
+                        Color.BLACK, Math.round(FontConfig.FONT_SIZE * 1.8f),
+                        3f, 3, 3, RGBColor.BLACK.toColor(0.8f)))
+                .setText("Orange")
+                .setSingleLineLabel().build());
+        Table transparentTable = new Table();
+        transparentTable.add(imgName).padLeft(marginDimen * 1);
+        transparentTable.add().growX();
+        Table starsTable = new Table();
+        float starSideDimen = marginDimen * 5;
+        for (int i = 0; i < TOTAL_MAX_SCORE; i++) {
+            Image starImg = GraphicUtils.getImage(FillColorSpecificResource.star);
+            starImg.setName(STAR_IMG_NAME + i);
+            starsTable.add(starImg).width(starSideDimen).padRight(marginDimen).height(starSideDimen);
+        }
         transparentTable.add(starsTable);
-        Stack stack = new Stack();
-        stack.add(emptyTable);
-        stack.add(progressTable);
-        stack.add(transparentTable);
-        return stack;
+        return transparentTable;
     }
 
     private float getCorrectAnswerStepPercent() {
@@ -167,24 +253,39 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
 
     private Table createColorToolbar() {
         Table table = new Table();
-        table.setBackground(GraphicUtils.getColorBackground(RGBColor.LIGHT_BLUE.toColor()));
-        float sideDimen = MainDimen.horizontal_general_margin.getDimen() * 8;
-        List<RGBColor> colors = createRandomRGBColors(2);
+        table.setBackground(GraphicUtils.getColorBackground(TOOLBAR_COLOR.toColor()));
+        List<RGBColor> colors = createRandomRGBColors(3);
+        float maxSideDimen = ScreenDimensionsManager.getScreenWidthValue(20);
+        float sideDimen = ScreenDimensionsManager.getScreenWidth() / colors.size();
+        sideDimen = sideDimen > maxSideDimen ? maxSideDimen : sideDimen;
         Collections.shuffle(colors);
         selectedColor = colors.get(0);
         for (final RGBColor color : colors) {
+            Stack stack = new Stack();
             Table colorTable = new Table();
             colorTable.setWidth(sideDimen);
             colorTable.setHeight(sideDimen);
             colorTable.setBackground(GraphicUtils.getColorBackground(color.toColor()));
-            table.add(colorTable).height(colorTable.getHeight()).width(colorTable.getWidth());
             colorTable.setTouchable(Touchable.enabled);
-            colorTable.addListener(new ClickListener() {
+            FillColorSpecificResource colorBucketRes = color.equals(selectedColor) ? FillColorSpecificResource.color_bucket_selected : FillColorSpecificResource.color_bucket;
+            stack.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     selectedColor = color;
+                    for (final RGBColor color : colors) {
+                        FillColorSpecificResource colorBucketRes = color.equals(selectedColor) ? FillColorSpecificResource.color_bucket_selected : FillColorSpecificResource.color_bucket;
+                        Table colorBucketTable = getRoot().findActor(COLORBUCKETTABLE_NAME + color.toHexadecimal());
+                        colorBucketTable.clearChildren();
+                        colorBucketTable.add(GraphicUtils.getImage(colorBucketRes));
+                    }
                 }
             });
+            Table colorBucketTable = new Table();
+            colorBucketTable.setName(COLORBUCKETTABLE_NAME + color.toHexadecimal());
+            colorBucketTable.add(GraphicUtils.getImage(colorBucketRes));
+            stack.add(colorTable);
+            stack.add(colorBucketTable);
+            table.add(stack).height(sideDimen).width(sideDimen);
         }
         return table;
     }
@@ -196,23 +297,6 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
                     new Random().nextInt(255) + 1, new Random().nextInt(255) + 1));
         }
         return new ArrayList<>(colors);
-    }
-
-    private void addLevelIcon() {
-        float labelWidth = ScreenDimensionsManager.getScreenWidthValue(30);
-        float labelHeight = ScreenDimensionsManager.getScreenHeightValue(7);
-        MyWrappedLabel levelNr = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(FontColor.WHITE.getColor(), FontColor.GREEN.getColor(),
-                        Math.round(FontConfig.FONT_SIZE * 1f), 4f))
-                .setText(MainGameLabel.l_level.getText("0"))
-                .setWrappedLineLabel(labelWidth)
-                .setSingleLineLabel().build());
-        levelNr.setX(ScreenDimensionsManager.getScreenWidth() - labelWidth - MainDimen.horizontal_general_margin.getDimen());
-        levelNr.setY(ScreenDimensionsManager.getScreenHeight() - MainDimen.vertical_general_margin.getDimen() * 6);
-        levelNr.setWidth(labelWidth);
-        levelNr.setHeight(labelHeight);
-        levelNr.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
-        addActor(levelNr);
     }
 
     @Override

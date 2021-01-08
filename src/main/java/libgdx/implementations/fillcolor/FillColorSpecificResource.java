@@ -12,6 +12,14 @@ public enum FillColorSpecificResource implements SpecificResource {
 
     specific_labels("labels/labels", I18NBundle.class),
 
+    color_bucket("color_bucket.png", Texture.class),
+    color_bucket_selected("color_bucket_selected.png", Texture.class),
+    star("star.png", Texture.class),
+    progress_table_background1("progress_table_background1.png", Texture.class),
+    progress_table_background2("progress_table_background2.png", Texture.class),
+    progress_table_fill("progress_table_fill.png", Texture.class),
+    level_nr_background("level_nr_background.png", Texture.class),
+
     img0("img/img0.png", Texture.class),
     img0_fill("img/img0_fill.png", Texture.class),
     img1("img/img1.png", Texture.class),
