@@ -27,14 +27,12 @@ import libgdx.implementations.fillcolor.FillColorCampaignLevelEnum;
 import libgdx.implementations.fillcolor.FillColorScreenManager;
 import libgdx.implementations.fillcolor.FillColorSpecificResource;
 import libgdx.implementations.fillcolor.spec.FillColorService;
-import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
-import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
 
@@ -61,9 +59,10 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
 
     private Map<Pair<Integer, Integer>, RGBColor> createCorrectColors() {
         Map<Pair<Integer, Integer>, RGBColor> correctColors = new HashMap<>();
-        correctColors.put(Pair.of(175, FillColorService.getPixmapY(175)), RGBColor.RED);
-        correctColors.put(Pair.of(227, FillColorService.getPixmapY(300)), RGBColor.GREEN);
-        correctColors.put(Pair.of(181, FillColorService.getPixmapY(355)), RGBColor.DARK_BLUE);
+        correctColors.put(Pair.of(235, FillColorService.getPixmapY(142)), RGBColor.GREEN);
+        correctColors.put(Pair.of(338, FillColorService.getPixmapY(221)), RGBColor.GREEN);
+        correctColors.put(Pair.of(135, FillColorService.getPixmapY(371)), RGBColor.YELLOW);
+        correctColors.put(Pair.of(225, FillColorService.getPixmapY(270)), RGBColor.YELLOW);
         return correctColors;
     }
 
@@ -100,8 +99,10 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         topBar.padTop(-ScreenDimensionsManager.getScreenHeightValue(bar1HeightPercent));
         Table levelIconTable = new Table();
         float marginDimen = MainDimen.horizontal_general_margin.getDimen();
-        levelIconTable.add(createLevelIcon()).pad(marginDimen).width(ScreenDimensionsManager.getScreenWidthValue(40))
-                .height(ScreenDimensionsManager.getScreenHeightValue(bar1HeightPercent + bar1HeightPercent));
+        float levelInfoWidth = ScreenDimensionsManager.getScreenWidthValue(40);
+        Image levelIconBackground = GraphicUtils.getImage(FillColorSpecificResource.level_nr_background);
+        levelIconTable.add(createLevelIcon(levelIconBackground)).pad(marginDimen).width(levelInfoWidth)
+                .height(ScreenDimensionsManager.getNewHeightForNewWidth(levelInfoWidth, levelIconBackground));
         levelIconTable.add().growX();
         Stack stack = new Stack();
         stack.add(topBar);
@@ -109,7 +110,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         return stack;
     }
 
-    private Stack createLevelIcon() {
+    private Stack createLevelIcon(Image levelIconBackground) {
         float labelWidth = ScreenDimensionsManager.getScreenWidthValue(30);
         float labelHeight = ScreenDimensionsManager.getScreenHeightValue(7);
         MyWrappedLabel levelNr = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
@@ -122,7 +123,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         levelNr.setWidth(labelWidth);
         levelNr.setHeight(labelHeight);
         Stack stack = new Stack();
-        stack.add(GraphicUtils.getImage(FillColorSpecificResource.level_nr_background));
+        stack.add(levelIconBackground);
         stack.add(levelNr);
         return stack;
     }
@@ -141,7 +142,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     }
 
     private void addImage(final Table stackContainer) {
-        final int beforePressCorrectAnswersNr = fillColorService.getCorrectColorsPressed().size();
+        final int beforePressCorrectAnswersNr = fillColorService.getNrOfCorrectColorsPressed();
         stackContainer.setTouchable(Touchable.enabled);
         stackContainer.addListener(new ClickListener() {
             @Override
@@ -151,7 +152,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
                 stackContainer.add(img).width(img.getWidth()).height(img.getHeight());
                 addImage(stackContainer);
                 float amountToIncrease = getCorrectAnswerStepPercent();
-                final int pressedCorrectAnswers = fillColorService.getCorrectColorsPressed().size();
+                final int pressedCorrectAnswers = fillColorService.getNrOfCorrectColorsPressed();
                 if (beforePressCorrectAnswersNr > pressedCorrectAnswers) {
                     amountToIncrease = -amountToIncrease;
                 } else if (beforePressCorrectAnswersNr == pressedCorrectAnswers) {
