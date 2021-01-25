@@ -24,18 +24,15 @@ public class FillColorService {
     private Map<Pair<Integer, Integer>, RGBColor> correctColors;
     private Map<RGBColor, Integer> correctColorsPressed = new HashMap<>();
     private int wrongColorsPressed;
-    private Image imgToDisplay;
-    private Res imgToFill;
+    private Res imgRes;
 
-    public FillColorService(Image imgToDisplay, Res imgToFill,
-                            Map<Pair<Integer, Integer>, RGBColor> correctColors) {
+    public FillColorService(Res imgRes, Map<Pair<Integer, Integer>, RGBColor> correctColors) {
         this.correctColors = correctColors;
-        this.processedPixmap = getPixMapFromRes(imgToFill);
-        this.imgToDisplay = imgToDisplay;
-        this.imgToFill = imgToFill;
+        this.processedPixmap = getPixMapFromRes(imgRes);
+        this.imgRes = imgRes;
     }
 
-    public static int getPixmapY(int y) {
+    public static int convertPixmapY(int y) {
         return Math.round(IMG_HEIGHT) - y;
     }
 
@@ -51,13 +48,19 @@ public class FillColorService {
         return wrongColorsPressed;
     }
 
+    public Stack fillWithCorrectColors() {
+        Stack stack = null;
+        for (Map.Entry<Pair<Integer, Integer>, RGBColor> e : correctColors.entrySet()) {
+            stack = fillWithColor(e.getValue(), e.getKey().getLeft(), convertPixmapY(e.getKey().getRight()));
+        }
+        return stack;
+    }
+
     public Stack fillWithColor(RGBColor colorToFill, int x, int y) {
-        System.out.println("correctColors.put(Pair.of(" + x + ", FillColorService.getPixmapY(" + y + ")), RGBColor.GREEN);");
-        int pixmapY = getPixmapY(y);
+        System.out.println("correctColors.put(Pair.of(" + x + ", FillColorService.convertPixmapY(" + y + ")), RGBColor.GREEN);");
+        int pixmapY = convertPixmapY(y);
         floodFill(processedPixmap, Pair.of(x, pixmapY), processedPixmap.getPixel(x, pixmapY), colorToFill);
-        Stack stackFromImage = getStackFromImage(getImageFromPixmap(processedPixmap));
-        stackFromImage.add(imgToDisplay);
-        return stackFromImage;
+        return getStackFromImage(getImageFromPixmap(processedPixmap));
     }
 
     public static Pixmap getPixMapFromRes(Res res) {
@@ -142,7 +145,7 @@ public class FillColorService {
         int width = image.getWidth();
         int height = image.getHeight();
         int replacementColor = Color.rgba8888(replacementColorRgb.toColor());
-        SectionFillStatus isColorCorrect = isColorCorrect(getPixMapFromRes(imgToFill), node, targetColor, replacementColor);
+        SectionFillStatus isColorCorrect = isColorCorrect(getPixMapFromRes(imgRes), node, targetColor, replacementColor);
         if (isColorCorrect == SectionFillStatus.CORRECT) {
             int beforeVal = 0;
             if (correctColorsPressed.containsKey(replacementColorRgb)) {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
@@ -33,28 +34,31 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     public static final String STAR_IMG_NAME = "STAR_IMG_NAME";
     public static final String COLORBUCKETTABLE_NAME = "COLORBUCKETTABLE_NAME";
     public static final RGBColor TOOLBAR_COLOR = new RGBColor(1, 76, 199, 228);
-    private Image imgToDisplay;
-    private Res imgToFill;
+    public static final String IMAGE_TABLE_NAME = "IMAGE_TABLE";
+    public static final String IMAGE_STACK_NAME = "IMAGE_STACK_NAME";
     private FillColorService fillColorService;
+    private FillColorService correctImagefillColorService;
     private Map<Pair<Integer, Integer>, RGBColor> correctColors;
     private Table percentTable;
     private RGBColor selectedColor;
+    private Res imageRes;
 
     public FillColorGameScreen(FillColorCampaignLevelEnum campaignLevelEnum) {
-        FillColorSpecificResource res = FillColorSpecificResource.img0_fill;
+        imageRes = FillColorSpecificResource.img1_fill;
+        Res correctImageRes = FillColorSpecificResource.img1;
         correctColors = createCorrectColors();
-        imgToDisplay = FillColorService.getImageFromPixmap(FillColorService.getPixMapFromRes(res));
-        imgToFill = FillColorSpecificResource.valueOf(res.name());
-        fillColorService = new FillColorService(imgToDisplay, imgToFill, correctColors);
+        fillColorService = new FillColorService(imageRes, correctColors);
+        correctImagefillColorService = new FillColorService(correctImageRes, correctColors);
     }
 
     private Map<Pair<Integer, Integer>, RGBColor> createCorrectColors() {
         Map<Pair<Integer, Integer>, RGBColor> correctColors = new HashMap<>();
-        correctColors.put(Pair.of(126, FillColorService.getPixmapY(141)), RGBColor.RED);
-        correctColors.put(Pair.of(273, FillColorService.getPixmapY(79)), RGBColor.RED);
-        correctColors.put(Pair.of(333, FillColorService.getPixmapY(158)), RGBColor.RED);
-        correctColors.put(Pair.of(296, FillColorService.getPixmapY(256)), RGBColor.RED);
-        correctColors.put(Pair.of(355, FillColorService.getPixmapY(408)), RGBColor.GREEN);
+        correctColors.put(Pair.of(140, FillColorService.convertPixmapY(51)), RGBColor.YELLOW);
+        correctColors.put(Pair.of(119, FillColorService.convertPixmapY(107)), RGBColor.YELLOW);
+        correctColors.put(Pair.of(246, FillColorService.convertPixmapY(76)), RGBColor.YELLOW);
+        correctColors.put(Pair.of(188, FillColorService.convertPixmapY(131)), RGBColor.YELLOW);
+        correctColors.put(Pair.of(354, FillColorService.convertPixmapY(220)), RGBColor.YELLOW);
+        correctColors.put(Pair.of(294, FillColorService.convertPixmapY(450)), RGBColor.DARK_GREEN);
         return correctColors;
     }
 
@@ -63,17 +67,34 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     public void buildStage() {
         setUpAllTable();
         Table container = new Table();
-        Table stackContainer = createImageStackContainer();
-        container.add(stackContainer).width(stackContainer.getWidth())
-                .height(stackContainer.getHeight());
+        Stack imageStack = fillColorService.getStackFromImage(FillColorService.getImageFromPixmap(FillColorService.getPixMapFromRes(imageRes)));
+        Table imgTable = addToTableImageStack(new Table(), imageStack);
+        imgTable.setName(IMAGE_TABLE_NAME);
+        container.add(imgTable).width(imgTable.getWidth())
+                .height(imgTable.getHeight());
         getAllTable().add(createTopBar()).growX().row();
         getAllTable().add(container).grow();
-        addImage(stackContainer);
+        addImageListener(imgTable);
         getAllTable().row();
         int progressBarWidth = getProgressBarWidth();
         getAllTable().add(createProgressBar()).width(progressBarWidth);
         getAllTable().row();
         getAllTable().add(createColorToolbar()).width(progressBarWidth);
+    }
+
+    private void displayCorrectImage() {
+        Table imgTable = getRoot().findActor(IMAGE_TABLE_NAME);
+        Stack imgStack = imgTable.findActor(IMAGE_STACK_NAME);
+        imgStack.addAction(Actions.sequence(Actions.fadeOut(0.2f), Utils.createRunnableAction(new Runnable() {
+            @Override
+            public void run() {
+                Stack correctImageStack = correctImagefillColorService.fillWithCorrectColors();
+                correctImageStack.setVisible(false);
+                new ActorAnimation(correctImageStack, getAbstractScreen()).animateFastFadeIn();
+                imgTable.clearChildren();
+                addToTableImageStack(imgTable, correctImageStack);
+            }
+        })));
     }
 
     private Stack createTopBar() {
@@ -124,25 +145,24 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         return ScreenDimensionsManager.getScreenWidth();
     }
 
-    private Table createImageStackContainer() {
-        Stack image = fillColorService.getStackFromImage(imgToDisplay);
-        Table stackContainer = new Table();
-        stackContainer.add(image).width(image.getWidth()).height(image.getHeight());
-        stackContainer.setHeight(image.getHeight());
-        stackContainer.setWidth(image.getWidth());
-        return stackContainer;
+    private Table addToTableImageStack(Table table, Stack imgStack) {
+        table.add(imgStack).width(imgStack.getWidth()).height(imgStack.getHeight());
+        table.setHeight(imgStack.getHeight());
+        table.setWidth(imgStack.getWidth());
+        return table;
     }
 
-    private void addImage(final Table stackContainer) {
+    private void addImageListener(final Table imgTable) {
         final int beforePressCorrectAnswersNr = fillColorService.getNrOfCorrectColorsPressed();
-        stackContainer.setTouchable(Touchable.enabled);
-        stackContainer.addListener(new ClickListener() {
+        imgTable.setTouchable(Touchable.enabled);
+        imgTable.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Stack img = fillColorService.fillWithColor(selectedColor, Math.round(x), Math.round(y));
-                stackContainer.clear();
-                stackContainer.add(img).width(img.getWidth()).height(img.getHeight());
-                addImage(stackContainer);
+                Stack imgStack = fillColorService.fillWithColor(selectedColor, Math.round(x), Math.round(y));
+                imgStack.setName(IMAGE_STACK_NAME);
+                imgTable.clear();
+                imgTable.add(imgStack).width(imgStack.getWidth()).height(imgStack.getHeight());
+                addImageListener(imgTable);
                 float amountToIncrease = getCorrectAnswerStepPercent();
                 final int pressedCorrectAnswers = fillColorService.getNrOfCorrectColorsPressed();
                 if (beforePressCorrectAnswersNr > pressedCorrectAnswers) {
@@ -161,11 +181,18 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
                                 if (pressedCorrectAnswers == 0) {
                                     percentTable.setVisible(false);
                                 }
+                                if (gameFinishedSuccessfully()) {
+                                    displayCorrectImage();
+                                }
                             }
                         })));
 
             }
         });
+    }
+
+    private boolean gameFinishedSuccessfully() {
+        return fillColorService.getNrOfCorrectColorsPressed() == correctColors.size();
     }
 
     private void refreshStarImages() {
