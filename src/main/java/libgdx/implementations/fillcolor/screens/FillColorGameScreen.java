@@ -8,18 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.graphics.GraphicUtils;
@@ -35,6 +23,9 @@ import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.*;
 
 public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> {
 
@@ -50,19 +41,20 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     private RGBColor selectedColor;
 
     public FillColorGameScreen(FillColorCampaignLevelEnum campaignLevelEnum) {
-        FillColorSpecificResource res = FillColorSpecificResource.img0;
+        FillColorSpecificResource res = FillColorSpecificResource.img0_fill;
         correctColors = createCorrectColors();
         imgToDisplay = FillColorService.getImageFromPixmap(FillColorService.getPixMapFromRes(res));
-        imgToFill = FillColorSpecificResource.valueOf(res.name() + "_fill");
+        imgToFill = FillColorSpecificResource.valueOf(res.name());
         fillColorService = new FillColorService(imgToDisplay, imgToFill, correctColors);
     }
 
     private Map<Pair<Integer, Integer>, RGBColor> createCorrectColors() {
         Map<Pair<Integer, Integer>, RGBColor> correctColors = new HashMap<>();
-        correctColors.put(Pair.of(235, FillColorService.getPixmapY(142)), RGBColor.GREEN);
-        correctColors.put(Pair.of(338, FillColorService.getPixmapY(221)), RGBColor.GREEN);
-        correctColors.put(Pair.of(135, FillColorService.getPixmapY(371)), RGBColor.YELLOW);
-        correctColors.put(Pair.of(225, FillColorService.getPixmapY(270)), RGBColor.YELLOW);
+        correctColors.put(Pair.of(126, FillColorService.getPixmapY(141)), RGBColor.RED);
+        correctColors.put(Pair.of(273, FillColorService.getPixmapY(79)), RGBColor.RED);
+        correctColors.put(Pair.of(333, FillColorService.getPixmapY(158)), RGBColor.RED);
+        correctColors.put(Pair.of(296, FillColorService.getPixmapY(256)), RGBColor.RED);
+        correctColors.put(Pair.of(355, FillColorService.getPixmapY(408)), RGBColor.GREEN);
         return correctColors;
     }
 

@@ -52,7 +52,7 @@ public class FillColorService {
     }
 
     public Stack fillWithColor(RGBColor colorToFill, int x, int y) {
-        System.out.println("x " + x + " : y " + y);
+        System.out.println("correctColors.put(Pair.of(" + x + ", FillColorService.getPixmapY(" + y + ")), RGBColor.GREEN);");
         int pixmapY = getPixmapY(y);
         floodFill(processedPixmap, Pair.of(x, pixmapY), processedPixmap.getPixel(x, pixmapY), colorToFill);
         Stack stackFromImage = getStackFromImage(getImageFromPixmap(processedPixmap));
@@ -65,6 +65,7 @@ public class FillColorService {
         int newWidth = Math.round(ScreenDimensionsManager.getNewWidthForNewHeight(IMG_HEIGHT, pixmapOrignal.getWidth(), pixmapOrignal.getHeight()));
         Pixmap pixmapResized = new Pixmap(newWidth, Math.round(IMG_HEIGHT), pixmapOrignal.getFormat());
         pixmapResized.setBlending(Pixmap.Blending.None);
+        pixmapResized.setFilter(Pixmap.Filter.NearestNeighbour);
         pixmapResized.drawPixmap(pixmapOrignal,
                 0, 0, pixmapOrignal.getWidth(), pixmapOrignal.getHeight(),
                 0, 0, pixmapResized.getWidth(), pixmapResized.getHeight()
