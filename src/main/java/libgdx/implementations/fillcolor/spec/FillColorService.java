@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.game.Game;
+import libgdx.implementations.fillcolor.screens.FillColorGameScreen;
 import libgdx.resources.Res;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.RGBColor;
@@ -20,6 +21,7 @@ import java.util.*;
 public class FillColorService {
 
     private Pixmap processedPixmap;
+    private Stack stack;
     private static float IMG_HEIGHT = ScreenDimensionsManager.getScreenHeightValue(55);
     private Map<Pair<Integer, Integer>, RGBColor> correctColors;
     private Map<RGBColor, Integer> correctColorsPressed = new HashMap<>();
@@ -60,6 +62,7 @@ public class FillColorService {
         System.out.println("correctColors.put(Pair.of(" + x + ", FillColorService.convertPixmapY(" + y + ")), RGBColor.GREEN);");
         int pixmapY = convertPixmapY(y);
         floodFill(processedPixmap, Pair.of(x, pixmapY), processedPixmap.getPixel(x, pixmapY), colorToFill);
+
         return getStackFromImage(getImageFromPixmap(processedPixmap));
     }
 
@@ -78,8 +81,14 @@ public class FillColorService {
     }
 
     public Stack getStackFromImage(Image image) {
-        Stack stack = new Stack();
+        if (stack == null) {
+            stack = new Stack();
+            stack.setName(FillColorGameScreen.IMAGE_STACK_NAME);
+        } else {
+            stack.clear();
+        }
         stack.add(image);
+        image.setName(FillColorGameScreen.MAIN_IMG_NAME);
         stack.setWidth(image.getWidth());
         stack.setHeight(image.getHeight());
         return stack;

@@ -24,6 +24,12 @@ public enum FillColorSpecificResource implements SpecificResource {
     img0_fill("img/img0_fill.png", Texture.class),
     img1("img/img1.png", Texture.class),
     img1_fill("img/img1_fill.png", Texture.class),
+    img2("img/img2.png", Texture.class),
+    img2_fill("img/img2_fill.png", Texture.class),
+    img3("img/img3.png", Texture.class),
+    img3_fill("img/img3_fill.png", Texture.class),
+    img4("img/img4.png", Texture.class),
+    img4_fill("img/img4_fill.png", Texture.class),
     ;
 
     // @formatter:on
