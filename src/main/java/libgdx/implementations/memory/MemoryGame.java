@@ -4,7 +4,7 @@ package libgdx.implementations.memory;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class MemoryGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class MemoryGame extends CampaignGame<AppInfoService,
         MemoryDependencyManager,
         AbstractScreen,
         MemoryScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public MemoryGame(AppInfoService appInfoService) {

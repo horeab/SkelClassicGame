@@ -29,6 +29,8 @@ public enum SkelClassicButtonSize implements ButtonSize {
     KIDLEARN_RESPONSE_ARROW(MainDimen.side_btn_image.getDimen() * 3f, MainDimen.side_btn_image.getDimen() / 1.4f),
     KIDLEARN_HANGMAN_BUTTON(MainDimen.side_btn_image.getDimen() * 1.5f, MainDimen.side_btn_image.getDimen() * 1.5f),
 
+    IQTEST_HEADER_BUTTON(MainDimen.horizontal_general_margin.getDimen() * 14f, MainDimen.horizontal_general_margin.getDimen() * 6f),
+
     FILLCOLOR_ZOOM_BUTTON(MainDimen.side_btn_image.getDimen() * 1f, MainDimen.side_btn_image.getDimen() * 1f),
     ;
     private float width;

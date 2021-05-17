@@ -2,7 +2,7 @@ package libgdx.startgame;
 
 import libgdx.constants.Language;
 import libgdx.game.Game;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.buylow.BuyLowGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 
@@ -13,7 +13,7 @@ public class BuyLowStartGame {
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.buylow.name();
+                        return SkelClassicGameIdEnum.buylow.name();
                     }
 
                     @Override

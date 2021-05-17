@@ -4,7 +4,7 @@ package libgdx.implementations.math;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class MathGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class MathGame extends CampaignGame<AppInfoService,
         MathDependencyManager,
         AbstractScreen,
         MathScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public MathGame(AppInfoService appInfoService) {

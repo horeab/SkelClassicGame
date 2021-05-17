@@ -2,8 +2,7 @@ package libgdx.startgame;
 
 import libgdx.constants.Language;
 import libgdx.game.Game;
-import libgdx.implementations.GameIdEnum;
-import libgdx.implementations.memory.MemoryGame;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.resourcewars.ResourceWarsGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 
@@ -19,7 +18,7 @@ public class ResourceWarsStartGame {
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.resourcewars.name();
+                        return SkelClassicGameIdEnum.resourcewars.name();
                     }
 
                     @Override

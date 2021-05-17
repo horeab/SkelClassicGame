@@ -4,7 +4,7 @@ package libgdx.implementations.applepie;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class ApplePieGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class ApplePieGame extends CampaignGame<AppInfoService,
         ApplePieDependencyManager,
         AbstractScreen,
         ApplePieScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public ApplePieGame(AppInfoService appInfoService) {

@@ -4,7 +4,7 @@ package libgdx.implementations.balloon;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class BalloonGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class BalloonGame extends CampaignGame<AppInfoService,
         BalloonDependencyManager,
         AbstractScreen,
         BalloonScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public BalloonGame(AppInfoService appInfoService) {

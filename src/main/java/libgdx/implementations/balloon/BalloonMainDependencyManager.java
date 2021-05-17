@@ -3,8 +3,7 @@ package libgdx.implementations.balloon;
 import libgdx.controls.labelimage.InventoryTableBuilderCreator;
 import libgdx.controls.popup.RatingService;
 import libgdx.game.MainDependencyManager;
-import libgdx.implementations.GameIdEnum;
-import libgdx.implementations.math.MathScreenManager;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.implementations.skelgame.SkelGameRatingService;
 import libgdx.resources.Resource;
@@ -12,7 +11,7 @@ import libgdx.resources.ResourceService;
 import libgdx.screen.AbstractScreen;
 import libgdx.transactions.TransactionsService;
 
-public class BalloonMainDependencyManager extends MainDependencyManager<BalloonScreenManager, AbstractScreen, SkelGameLabel, Resource, GameIdEnum> {
+public class BalloonMainDependencyManager extends MainDependencyManager<BalloonScreenManager, AbstractScreen, SkelGameLabel, Resource, SkelClassicGameIdEnum> {
 
     @Override
     public Class<Resource> getMainResourcesClass() {
@@ -20,8 +19,8 @@ public class BalloonMainDependencyManager extends MainDependencyManager<BalloonS
     }
 
     @Override
-    public Class<GameIdEnum> getGameIdClass() {
-        return GameIdEnum.class;
+    public Class<SkelClassicGameIdEnum> getGameIdClass() {
+        return SkelClassicGameIdEnum.class;
     }
 
     @Override

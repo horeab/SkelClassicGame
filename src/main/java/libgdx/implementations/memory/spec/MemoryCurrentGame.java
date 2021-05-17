@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrentGame implements Serializable {
+public class MemoryCurrentGame implements Serializable {
 
     private MatrixChoice firstChoice;
 
@@ -24,7 +24,7 @@ public class CurrentGame implements Serializable {
 
     private int selectedDifficulty;
 
-    public CurrentGame(MemoryGameScreen memoryGameScreen, int levelNr, int selectedDifficulty) {
+    public MemoryCurrentGame(MemoryGameScreen memoryGameScreen, int levelNr, int selectedDifficulty) {
         ItemsUtil itemsUtil = new ItemsUtil(memoryGameScreen);
         this.allItems = itemsUtil.getItemsFromResources();
         this.allLevels = itemsUtil.getLevelsFromResources(allItems);

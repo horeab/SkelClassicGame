@@ -4,7 +4,7 @@ package libgdx.implementations.buylow;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class BuyLowGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class BuyLowGame extends CampaignGame<AppInfoService,
         BuyLowDependencyManager,
         AbstractScreen,
         BuyLowScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public BuyLowGame(AppInfoService appInfoService) {

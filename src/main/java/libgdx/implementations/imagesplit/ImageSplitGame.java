@@ -4,7 +4,7 @@ package libgdx.implementations.imagesplit;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class ImageSplitGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class ImageSplitGame extends CampaignGame<AppInfoService,
         ImageSplitDependencyManager,
         AbstractScreen,
         ImageSplitScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public ImageSplitGame(AppInfoService appInfoService) {

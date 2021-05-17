@@ -2,9 +2,8 @@ package libgdx.startgame;
 
 import libgdx.constants.Language;
 import libgdx.game.Game;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.fillcolor.FillColorGame;
-import libgdx.implementations.kidlearn.KidLearnGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 
 public class FillColorStartGame {
@@ -14,7 +13,7 @@ public class FillColorStartGame {
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.fillcolor.name();
+                        return SkelClassicGameIdEnum.fillcolor.name();
                     }
 
                     @Override

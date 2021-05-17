@@ -4,7 +4,7 @@ package libgdx.implementations.kidlearn;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class KidLearnGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class KidLearnGame extends CampaignGame<AppInfoService,
         KidLearnDependencyManager,
         AbstractScreen,
         KidLearnScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public KidLearnGame(AppInfoService appInfoService) {

@@ -1,16 +1,13 @@
 package libgdx.implementations.memory.spec;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.memory.MemorySpecificResource;
 import libgdx.implementations.memory.screens.MemoryGameScreen;
 import libgdx.resources.Res;
-import libgdx.resources.gamelabel.GameLabelUtils;
 import libgdx.resources.gamelabel.SpecificPropertiesUtils;
 
 import java.util.ArrayList;
@@ -83,23 +80,23 @@ public class ItemsUtil {
         return "comm";
     }
 
-    private void insertDiscoveredItem(CurrentGame currentGame, MatrixChoice clickedItem) {
+    private void insertDiscoveredItem(MemoryCurrentGame memoryCurrentGame, MatrixChoice clickedItem) {
 //        List<String> discoveredItems = context.getDiscoveredItems();
-//        Item item = getItemForIndex(clickedItem.getItem(), currentGame.getAllItems());
+//        Item item = getItemForIndex(clickedItem.getItem(), memoryCurrentGame.getAllItems());
 //        if (!discoveredItems.contains(item.getItemName())) {
 //            context.getDiscoveredItems().add(item.getItemName());
 //        }
     }
 
-    private void secondChoiceMadeProcesses(final CurrentGame currentGame) {
-        if (currentGame.getFirstChoice() == null) {
+    private void secondChoiceMadeProcesses(final MemoryCurrentGame memoryCurrentGame) {
+        if (memoryCurrentGame.getFirstChoice() == null) {
 //            Handler handler = new Handler();
 //            handler.postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
-//                    int rows = currentGame.getCurrentLevel().getRows();
-//                    int col = currentGame.getCurrentLevel().getCols();
-//                    refreshImageViews(rows, col, currentGame.getLevelMatrix(), false);
+//                    int rows = memoryCurrentGame.getCurrentLevel().getRows();
+//                    int col = memoryCurrentGame.getCurrentLevel().getCols();
+//                    refreshImageViews(rows, col, memoryCurrentGame.getLevelMatrix(), false);
 //                }
 //            }, 500);
         }

@@ -1,6 +1,6 @@
 package libgdx.implementations.math;
 
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.controls.labelimage.InventoryTableBuilderCreator;
 import libgdx.controls.popup.RatingService;
 import libgdx.game.MainDependencyManager;
@@ -11,7 +11,7 @@ import libgdx.resources.ResourceService;
 import libgdx.screen.AbstractScreen;
 import libgdx.transactions.TransactionsService;
 
-public class MathMainDependencyManager extends MainDependencyManager<MathScreenManager, AbstractScreen, SkelGameLabel, Resource, GameIdEnum> {
+public class MathMainDependencyManager extends MainDependencyManager<MathScreenManager, AbstractScreen, SkelGameLabel, Resource, SkelClassicGameIdEnum> {
 
     @Override
     public Class<Resource> getMainResourcesClass() {
@@ -19,8 +19,8 @@ public class MathMainDependencyManager extends MainDependencyManager<MathScreenM
     }
 
     @Override
-    public Class<GameIdEnum> getGameIdClass() {
-        return GameIdEnum.class;
+    public Class<SkelClassicGameIdEnum> getGameIdClass() {
+        return SkelClassicGameIdEnum.class;
     }
 
     @Override

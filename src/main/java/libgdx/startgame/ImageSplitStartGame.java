@@ -2,8 +2,7 @@ package libgdx.startgame;
 
 import libgdx.constants.Language;
 import libgdx.game.Game;
-import libgdx.implementations.GameIdEnum;
-import libgdx.implementations.buylow.BuyLowGame;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.imagesplit.ImageSplitGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 
@@ -14,7 +13,7 @@ public class ImageSplitStartGame {
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.imagesplit.name();
+                        return SkelClassicGameIdEnum.imagesplit.name();
                     }
 
                     @Override

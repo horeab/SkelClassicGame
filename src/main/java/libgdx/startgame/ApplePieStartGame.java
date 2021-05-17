@@ -2,9 +2,8 @@ package libgdx.startgame;
 
 import libgdx.constants.Language;
 import libgdx.game.Game;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.applepie.ApplePieGame;
-import libgdx.implementations.math.MathGame;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 
 public class ApplePieStartGame {
@@ -14,7 +13,7 @@ public class ApplePieStartGame {
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.applepie.name();
+                        return SkelClassicGameIdEnum.applepie.name();
                     }
 
                     @Override

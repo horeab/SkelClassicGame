@@ -46,7 +46,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
 
     private final String CELL_NAME = "CELL_NAME";
     private MatrixElement[][] levelMatrix;
-    private CurrentGame currentGame;
+    private MemoryCurrentGame memoryCurrentGame;
     private boolean enableImageClick = false;
     private int levelNr;
     private List<TableCell> cells = new ArrayList<>();
@@ -92,13 +92,13 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     private void addAllTable(final int levelNr) {
         this.levelNr = levelNr;
         this.gameLevel = GameLevel.values()[levelNr];
-        this.currentGame = new CurrentGame(this, this.gameLevel.ordinal(), 0);
+        this.memoryCurrentGame = new MemoryCurrentGame(this, this.gameLevel.ordinal(), 0);
         levelMatrix = new GameLogic().generateMatrix(gameLevel);
         hideAllImageViews();
         final Table table = new Table();
 
-        final int rows = currentGame.getCurrentLevel().getRows();
-        final int columns = currentGame.getCurrentLevel().getCols();
+        final int rows = memoryCurrentGame.getCurrentLevel().getRows();
+        final int columns = memoryCurrentGame.getCurrentLevel().getCols();
 
         table.setFillParent(true);
         Table headerTable = createHeaderTable();
@@ -129,13 +129,13 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                 cell.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (enableImageClick && !clickedItem.equals(currentGame.getFirstChoice()) && !currentItem.isFound() && !currentItem.isShowed()) {
+                        if (enableImageClick && !clickedItem.equals(memoryCurrentGame.getFirstChoice()) && !currentItem.isFound() && !currentItem.isShowed()) {
                             currentItem.setShowed(true);
                             refreshImageViews(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (currentGame.getFirstChoice() != null) {
-                                        processScore(currentGame, clickedItem);
+                                    if (memoryCurrentGame.getFirstChoice() != null) {
+                                        processScore(memoryCurrentGame, clickedItem);
                                         if (isLevelFailed(levelMatrix)) {
                                             new LevelFinishedPopup(getAbstractScreen(), false, new Runnable() {
                                                 @Override
@@ -178,11 +178,11 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                                         }
                                     }
 
-                                    final String firstChoiceName = currentGame.getFirstChoice() == null ? "" : getCellName(currentGame.getFirstChoice().getX(), currentGame.getFirstChoice().getY());
-                                    MatrixChoice firstItemClicked = currentGame.getFirstChoice() == null ? clickedItem : null;
-                                    currentGame.setFirstChoice(firstItemClicked);
+                                    final String firstChoiceName = memoryCurrentGame.getFirstChoice() == null ? "" : getCellName(memoryCurrentGame.getFirstChoice().getX(), memoryCurrentGame.getFirstChoice().getY());
+                                    MatrixChoice firstItemClicked = memoryCurrentGame.getFirstChoice() == null ? clickedItem : null;
+                                    memoryCurrentGame.setFirstChoice(firstItemClicked);
 
-                                    if (currentGame.getFirstChoice() == null) {
+                                    if (memoryCurrentGame.getFirstChoice() == null) {
                                         setEnableImageClick(false);
                                         getAbstractScreen().getRoot().addAction(Actions.sequence(Actions.delay(0.5f), Utils.createRunnableAction(new Runnable() {
                                             @Override
@@ -221,7 +221,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     }
 
     private int getImageSideDimen() {
-        final int rows = currentGame.getCurrentLevel().getRows();
+        final int rows = memoryCurrentGame.getCurrentLevel().getRows();
         int side = calcHorizSide();
         if (isVerticalGreater()) {
             side = (int) ((ScreenDimensionsManager.getScreenHeight() / rows) - (getImagePadding(false) * rows));
@@ -230,13 +230,13 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     }
 
     private int calcHorizSide() {
-        double columns = currentGame.getCurrentLevel().getCols();
+        double columns = memoryCurrentGame.getCurrentLevel().getCols();
         return (int) ((ScreenDimensionsManager.getScreenWidth() / columns) - (getImagePadding(true) * (columns / 2)));
     }
 
     private boolean isVerticalGreater() {
         int side = calcHorizSide();
-        final int rows = currentGame.getCurrentLevel().getRows();
+        final int rows = memoryCurrentGame.getCurrentLevel().getRows();
         return side * rows + ((getImagePadding(true) * rows)) > ScreenDimensionsManager.getScreenHeight() - (getImagePadding(true) * rows) - getHeaderHeight();
     }
 
@@ -261,11 +261,11 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     private Table createHeaderTable() {
         Table table = new Table();
         int fontSize = FontConfig.FONT_SIZE * 3;
-        forScore = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(currentGame.getStageScoreFor() + "")
+        forScore = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(memoryCurrentGame.getStageScoreFor() + "")
                 .setFontConfig(new FontConfig(FontColor.GREEN.getColor(), fontSize)).build());
         MyWrappedLabel between = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(" - ")
                 .setFontConfig(new FontConfig(fontSize)).build());
-        againstScore = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(currentGame.getStageScoreAgainst() + "")
+        againstScore = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(memoryCurrentGame.getStageScoreAgainst() + "")
                 .setFontConfig(new FontConfig(FontColor.RED.getColor(), fontSize)).build());
         table.add(forScore).width(ScreenDimensionsManager.getScreenWidthValue(10));
         table.add(between).width(ScreenDimensionsManager.getScreenWidthValue(10));
@@ -331,26 +331,26 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
         }
     }
 
-    private void processScore(CurrentGame currentGame, MatrixChoice clickedItem) {
+    private void processScore(MemoryCurrentGame memoryCurrentGame, MatrixChoice clickedItem) {
         int scoreForToIncrement = 0;
         int scoreAgainstToIncrement = 0;
         String itemValue = null;
 
-        if (new GameLogic().doButtonsMatchAndProcess(clickedItem, currentGame.getFirstChoice(), levelMatrix)) {
-            insertDiscoveredItem(currentGame, clickedItem);
+        if (new GameLogic().doButtonsMatchAndProcess(clickedItem, memoryCurrentGame.getFirstChoice(), levelMatrix)) {
+            insertDiscoveredItem(memoryCurrentGame, clickedItem);
 //            scoreForToIncrement = difficultyUtil.getScoreForToIncrement();
             scoreForToIncrement = 1;
         } else {
 //            scoreAgainstToIncrement = difficultyUtil.getScoreAgainstToIncrement();
             scoreAgainstToIncrement = 1;
         }
-        currentGame.setStageScoreFor(currentGame.getStageScoreFor() + scoreForToIncrement);
-        currentGame.setStageScoreAgainst(currentGame.getStageScoreAgainst() + scoreAgainstToIncrement);
-        currentGame.setTotalScoreFor(currentGame.getTotalScoreFor() + scoreForToIncrement);
-        currentGame.setTotalScoreAgainst(currentGame.getTotalScoreAgainst() + scoreAgainstToIncrement);
+        memoryCurrentGame.setStageScoreFor(memoryCurrentGame.getStageScoreFor() + scoreForToIncrement);
+        memoryCurrentGame.setStageScoreAgainst(memoryCurrentGame.getStageScoreAgainst() + scoreAgainstToIncrement);
+        memoryCurrentGame.setTotalScoreFor(memoryCurrentGame.getTotalScoreFor() + scoreForToIncrement);
+        memoryCurrentGame.setTotalScoreAgainst(memoryCurrentGame.getTotalScoreAgainst() + scoreAgainstToIncrement);
     }
 
-    private void insertDiscoveredItem(CurrentGame currentGame, MatrixChoice clickedItem) {
+    private void insertDiscoveredItem(MemoryCurrentGame memoryCurrentGame, MatrixChoice clickedItem) {
         String itemId = "item" + clickedItem.getItem();
         if (!campaignStoreService.isQuestionAlreadyPlayed(itemId)) {
             campaignStoreService.putQuestionPlayed(itemId);
@@ -370,15 +370,15 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     }
 
     private boolean isLevelFailed(MatrixElement[][] matrix) {
-        int totalItemPairs = (currentGame.getCurrentLevel().getCols() * currentGame.getCurrentLevel().getRows()) / 2;
+        int totalItemPairs = (memoryCurrentGame.getCurrentLevel().getCols() * memoryCurrentGame.getCurrentLevel().getRows()) / 2;
         int totalFoundPairs = totalFoundItems(matrix) / 2;
-        int scoreDiff = currentGame.getTotalScoreAgainst() - currentGame.getTotalScoreFor();
+        int scoreDiff = memoryCurrentGame.getTotalScoreAgainst() - memoryCurrentGame.getTotalScoreFor();
         int notFoundPairs = totalItemPairs - totalFoundPairs;
         return scoreDiff > notFoundPairs;
     }
 
     private boolean isLevelFinished(MatrixElement[][] matrix) {
-        int totalItemPairs = (currentGame.getCurrentLevel().getCols() * currentGame.getCurrentLevel().getRows()) / 2;
+        int totalItemPairs = (memoryCurrentGame.getCurrentLevel().getCols() * memoryCurrentGame.getCurrentLevel().getRows()) / 2;
         int totalFoundPairs = totalFoundItems(matrix) / 2;
         return totalFoundPairs == totalItemPairs;
     }
@@ -396,8 +396,8 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     }
 
     private void refreshTextViews() {
-        forScore.setText(currentGame.getStageScoreFor() + "");
-        againstScore.setText(currentGame.getStageScoreAgainst() + "");
+        forScore.setText(memoryCurrentGame.getStageScoreFor() + "");
+        againstScore.setText(memoryCurrentGame.getStageScoreAgainst() + "");
     }
 
     @Override

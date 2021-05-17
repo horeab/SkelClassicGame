@@ -4,7 +4,7 @@ package libgdx.implementations.resourcewars;
 import libgdx.campaign.CampaignGame;
 import libgdx.game.Game;
 import libgdx.game.external.AppInfoService;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.screen.AbstractScreen;
 
 public class ResourceWarsGame extends CampaignGame<AppInfoService,
@@ -12,7 +12,7 @@ public class ResourceWarsGame extends CampaignGame<AppInfoService,
         ResourceWarsDependencyManager,
         AbstractScreen,
         ResourceWarsScreenManager,
-        GameIdEnum
+        SkelClassicGameIdEnum
         > {
 
     public ResourceWarsGame(AppInfoService appInfoService) {

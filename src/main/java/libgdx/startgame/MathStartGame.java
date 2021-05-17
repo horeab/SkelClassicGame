@@ -2,7 +2,7 @@ package libgdx.startgame;
 
 import libgdx.constants.Language;
 import libgdx.game.Game;
-import libgdx.implementations.GameIdEnum;
+import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.utils.startgame.test.DefaultAppInfoService;
 import libgdx.implementations.math.MathGame;
 
@@ -13,7 +13,7 @@ public class MathStartGame {
                 new DefaultAppInfoService() {
                     @Override
                     public String getGameIdPrefix() {
-                        return GameIdEnum.math.name();
+                        return SkelClassicGameIdEnum.math.name();
                     }
 
                     @Override
