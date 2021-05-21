@@ -17,6 +17,7 @@ public enum MathSpecificResource implements SpecificResource {
     wrong_pressed("wrong_pressed.png", Texture.class),
     btn_level_up("btn_level_up.png", Texture.class),
     btn_level_down("btn_level_down.png", Texture.class),
+    background_texture("background_texture.png", Texture.class),
     calculator("calculator.png", Texture.class);
 
     // @formatter:on

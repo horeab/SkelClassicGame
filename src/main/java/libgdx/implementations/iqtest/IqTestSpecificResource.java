@@ -9,10 +9,19 @@ public enum IqTestSpecificResource implements SpecificResource {
 
     // @formatter:off
 
+    num_seq_btn_up("buttons/num_seq_btn_up.png", Texture.class),
+    num_seq_btn_pressed("buttons/num_seq_btn_pressed.png", Texture.class),
+    delete_btn_up("buttons/delete_btn_up.png", Texture.class),
+    delete_btn_down("buttons/delete_btn_down.png", Texture.class),
+    submit_btn_up("buttons/submit_btn_up.png", Texture.class),
+    submit_btn_down("buttons/submit_btn_down.png", Texture.class),
+
     red_background("red_background.png", Texture.class),
     popup_background("popup_background.png", Texture.class),
-    finalscore("questions/finalscore.png", Texture.class),
-    specific_labels("labels/labels", I18NBundle.class),;
+    finalscore("questions/iq/finalscore.png", Texture.class),
+    background_texture("background_texture.png", Texture.class),
+    specific_labels("labels/labels", I18NBundle.class),
+    ;
     // @formatter:on
 
     private String path;

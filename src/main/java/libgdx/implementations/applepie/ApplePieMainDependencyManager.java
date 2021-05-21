@@ -24,11 +24,6 @@ public class ApplePieMainDependencyManager extends MainDependencyManager<ApplePi
     }
 
     @Override
-    public ResourceService createResourceService() {
-        return new ApplePieGameResourceService();
-    }
-
-    @Override
     public Class<SkelGameLabel> getGameLabelClass() {
         return SkelGameLabel.class;
     }

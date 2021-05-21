@@ -11,13 +11,13 @@ public class IqTestScreenManager extends AbstractScreenManager {
 
     @Override
     public void showMainScreen() {
-        showScreen(IqTestScreenTypeEnum.MAIN_MENU_SCREEN);
+        showScreen(IqTestScreenTypeEnum.GAME_SCREEN);
         HashMap<Integer, Integer> questionWithAnswer = new HashMap<>();
         for (IqTestQuestion question : IqTestQuestion.values()) {
             questionWithAnswer.put(question.getQuestionNr(), new Random().nextInt(8));
         }
 //        showGameOver(questionWithAnswer);
-        showCorrectAnswers(questionWithAnswer);
+//        showCorrectAnswers(questionWithAnswer);
     }
 
     public void showGameOver(Map<Integer, Integer> questionWithAnswer) {

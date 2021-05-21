@@ -1,5 +1,6 @@
 package libgdx.implementations.iqtest.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -14,6 +15,7 @@ import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
+import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
@@ -45,12 +47,15 @@ public class IqTestCorrectAnswersScreen extends AbstractScreen<IqTestScreenManag
     private Table createAllTable() {
         Table table = new Table();
         float dimen = MainDimen.horizontal_general_margin.getDimen();
+        float separatorHeight = ScreenDimensionsManager.getScreenHeightValue(2);
         for (IqTestQuestion question : IqTestQuestion.values()) {
             Table qaTable = new Table();
             Image questionImage = GraphicUtils.getImage(Game.getInstance().getMainDependencyManager().createResourceService().getByName("q" + question.getQuestionNr()));
             float questionDimen = dimen * 40;
             float sideRatio = questionImage.getHeight() / ((float) questionImage.getWidth());
-            qaTable.add(new MyWrappedLabel((question.getQuestionNr() + 1) + "", FontConfig.FONT_SIZE * 2)).padBottom(dimen / 2).padTop(dimen * 2).row();
+            qaTable.add(new MyWrappedLabel((question.getQuestionNr() + 1) + "", new FontConfig(Color.BLACK,
+                    FontConfig.FONT_SIZE * 2.4f)))
+                    .padBottom(dimen / 2).padTop(dimen * 2).row();
             qaTable.add(questionImage).width(questionDimen).height(questionDimen * sideRatio).padBottom(dimen / 2).row();
             qaTable.add();
             table.add(qaTable).row();
@@ -87,6 +92,9 @@ public class IqTestCorrectAnswersScreen extends AbstractScreen<IqTestScreenManag
                         .height(answerHeight).width(correctAnswer.getWidth());
             }
             table.add(answerTable).padBottom(dimen * 4).row();
+            Table separator = new Table();
+            separator.setBackground(GraphicUtils.getColorBackground(Color.GRAY));
+            table.add(separator).height(separatorHeight).growX().row();
         }
         return table;
     }

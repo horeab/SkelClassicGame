@@ -71,9 +71,6 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
     }
 
     private void createAllTable() {
-        if (Game.getInstance().getCurrentUser() != null) {
-            new GameStatsDbApiService().incrementGameStatsQuestionsWon(Game.getInstance().getCurrentUser().getId(), Long.valueOf(DateUtils.getNowMillis()).toString());
-        }
         executorService = Executors.newSingleThreadScheduledExecutor();
         allTable = new Table();
         allTable.add(headerTable()).pad(MainDimen.horizontal_general_margin.getDimen() * 2).row();

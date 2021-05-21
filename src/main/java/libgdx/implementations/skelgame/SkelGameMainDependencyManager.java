@@ -6,7 +6,6 @@ import libgdx.controls.popup.RatingService;
 import libgdx.game.MainDependencyManager;
 import libgdx.game.ScreenManager;
 import libgdx.resources.Resource;
-import libgdx.resources.ResourceService;
 import libgdx.screen.AbstractScreen;
 import libgdx.transactions.TransactionsService;
 
@@ -20,11 +19,6 @@ public class SkelGameMainDependencyManager extends MainDependencyManager<ScreenM
     @Override
     public Class<GameIdEnum> getGameIdClass() {
         return GameIdEnum.class;
-    }
-
-    @Override
-    public ResourceService createResourceService() {
-        return new SkelGameResourceService();
     }
 
     @Override

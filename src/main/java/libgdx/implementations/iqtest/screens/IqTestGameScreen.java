@@ -4,12 +4,13 @@ import com.badlogic.gdx.Gdx;
 import libgdx.game.Game;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
 import libgdx.implementations.iqtest.spec.IqTestGameCreator;
+import libgdx.implementations.iqtest.spec.IqTestNumberSeqCreator;
 import libgdx.screen.AbstractScreen;
 import libgdx.skelgameimpl.skelgame.SkelGameRatingService;
 import libgdx.utils.Utils;
 import libgdx.utils.model.RGBColor;
 
-public class IqTestMainMenuScreen extends AbstractScreen {
+public class IqTestGameScreen extends AbstractScreen {
 
     private IqTestCurrentGame currentGame;
 
@@ -20,7 +21,8 @@ public class IqTestMainMenuScreen extends AbstractScreen {
         }
         setBackgroundColor(RGBColor.WHITE);
         currentGame = new IqTestCurrentGame();
-        IqTestGameCreator creator = new IqTestGameCreator(currentGame);
+        IqTestNumberSeqCreator creator = new IqTestNumberSeqCreator(currentGame);
+//        IqTestGameCreator creator = new IqTestGameCreator(currentGame);
         creator.refreshLevel();
     }
 

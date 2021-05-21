@@ -7,7 +7,6 @@ import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.implementations.skelgame.SkelGameRatingService;
 import libgdx.resources.Resource;
-import libgdx.resources.ResourceService;
 import libgdx.screen.AbstractScreen;
 import libgdx.transactions.TransactionsService;
 
@@ -21,11 +20,6 @@ public class BalloonMainDependencyManager extends MainDependencyManager<BalloonS
     @Override
     public Class<SkelClassicGameIdEnum> getGameIdClass() {
         return SkelClassicGameIdEnum.class;
-    }
-
-    @Override
-    public ResourceService createResourceService() {
-        return new BalloonResourceService();
     }
 
     @Override

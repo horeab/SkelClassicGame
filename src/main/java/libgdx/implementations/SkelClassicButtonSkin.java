@@ -8,11 +8,13 @@ import libgdx.implementations.applepie.ApplePieSpecificResource;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.buylow.BuyLowSpecificResource;
 import libgdx.implementations.imagesplit.ImageSplitSpecificResource;
+import libgdx.implementations.iqtest.IqTestSpecificResource;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.resourcewars.ResourceWarsSpecificResource;
 import libgdx.resources.MainResource;
 import libgdx.resources.Res;
+import libgdx.resources.Resource;
 import libgdx.utils.model.FontColor;
 
 public enum SkelClassicButtonSkin implements ButtonSkin {
@@ -49,6 +51,10 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     BUYLOW_SELLBUY1_BTN(BuyLowSpecificResource.btn1, BuyLowSpecificResource.btn1_clicked, BuyLowSpecificResource.btn1, BuyLowSpecificResource.btn_disabled, null),
     BUYLOW_SELLBUY2_BTN(BuyLowSpecificResource.btn2, BuyLowSpecificResource.btn2_clicked, BuyLowSpecificResource.btn2, BuyLowSpecificResource.btn_disabled, null),
     BUYLOW_SELLBUY3_BTN(BuyLowSpecificResource.btn3, BuyLowSpecificResource.btn3_clicked, BuyLowSpecificResource.btn3, BuyLowSpecificResource.btn_disabled, null),
+
+    IQTEST_NUM_SEQ_BTN(IqTestSpecificResource.num_seq_btn_up, IqTestSpecificResource.num_seq_btn_pressed, IqTestSpecificResource.num_seq_btn_up, IqTestSpecificResource.num_seq_btn_up, null),
+    IQTEST_SUBMIT_BTN(IqTestSpecificResource.submit_btn_up, IqTestSpecificResource.submit_btn_down, IqTestSpecificResource.submit_btn_up, IqTestSpecificResource.submit_btn_up, null),
+    IQTEST_DELETE_BTN(IqTestSpecificResource.delete_btn_up, IqTestSpecificResource.delete_btn_down, IqTestSpecificResource.delete_btn_up, IqTestSpecificResource.delete_btn_up, null),
 
     IMAGE_SPLIT_GAME_TYPE_SLIDE(ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_clicked, ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_disabled, null),
     IMAGE_SPLIT_GAME_TYPE_PUSH(ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_clicked, ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_disabled, null),

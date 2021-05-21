@@ -11,11 +11,13 @@ public class IqTestDependencyManager extends CampaignGameDependencyManager {
     @Override
     public List<? extends IncrementingRes> getIncrementResList() {
         List<IncrementingRes> list = new ArrayList<>();
-        int totalQuestions = 38;
-        list.add(new ImageQuestionIncrementRes(0, totalQuestions, ImageQuestionIncrementRes.PNG));
+        int totalIqQuestionsInclusivePlusOne = 38;
+        list.add(new IqTestIqImageQuestionIncrementRes(0, totalIqQuestionsInclusivePlusOne, IqTestIqImageQuestionIncrementRes.PNG));
         for (int i = 0; i < 8; i++) {
-            list.add(new ImageAnswerIncrementRes(0, totalQuestions, i, ImageQuestionIncrementRes.PNG));
+            list.add(new IqTestIqImageAnswerIncrementRes(0, totalIqQuestionsInclusivePlusOne, i, IqTestIqImageAnswerIncrementRes.PNG));
         }
+        int totalNumberSeqQuestionsInclusivePlusOne = 13;
+        list.add(new IqTestNumberSeqImageQuestionIncrementRes(0, totalNumberSeqQuestionsInclusivePlusOne, IqTestNumberSeqImageQuestionIncrementRes.PNG));
         return list;
     }
 

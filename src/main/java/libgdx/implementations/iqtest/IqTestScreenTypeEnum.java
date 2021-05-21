@@ -2,7 +2,7 @@ package libgdx.implementations.iqtest;
 
 import libgdx.implementations.iqtest.screens.IqTestCorrectAnswersScreen;
 import libgdx.implementations.iqtest.screens.IqTestGameOverScreen;
-import libgdx.implementations.iqtest.screens.IqTestMainMenuScreen;
+import libgdx.implementations.iqtest.screens.IqTestGameScreen;
 import libgdx.screen.AbstractScreen;
 import libgdx.screen.ScreenType;
 
@@ -10,9 +10,9 @@ import java.util.Map;
 
 public enum IqTestScreenTypeEnum implements ScreenType {
 
-    MAIN_MENU_SCREEN {
+    GAME_SCREEN {
         public AbstractScreen getScreen(Object... params) {
-            return new IqTestMainMenuScreen();
+            return new IqTestGameScreen();
         }
     },
     GAME_OVER_SCREEN {

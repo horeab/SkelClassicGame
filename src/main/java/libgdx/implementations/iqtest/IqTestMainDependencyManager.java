@@ -5,9 +5,7 @@ import libgdx.controls.popup.RatingService;
 import libgdx.game.MainDependencyManager;
 import libgdx.implementations.SkelClassicGameIdEnum;
 import libgdx.implementations.skelgame.SkelGameRatingService;
-import libgdx.implementations.skelgame.SkelGameResourceService;
 import libgdx.resources.Resource;
-import libgdx.resources.ResourceService;
 import libgdx.screen.AbstractScreen;
 import libgdx.transactions.TransactionsService;
 
@@ -21,11 +19,6 @@ public class IqTestMainDependencyManager extends MainDependencyManager<IqTestScr
     @Override
     public Class<SkelClassicGameIdEnum> getGameIdClass() {
         return SkelClassicGameIdEnum.class;
-    }
-
-    @Override
-    public ResourceService createResourceService() {
-        return new SkelGameResourceService();
     }
 
     @Override
