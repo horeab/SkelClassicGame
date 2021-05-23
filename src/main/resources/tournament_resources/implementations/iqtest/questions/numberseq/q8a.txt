@@ -1,4 +1,6 @@
 2
+question_mark_blue,8,68.6,10.5
+feaec9
 G = 7
 P = 16
 S = 19

@@ -124,7 +124,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
             public void run() {
                 Stack correctImageStack = correctImagefillColorService.fillWithCorrectColors();
                 correctImageStack.setVisible(false);
-                new ActorAnimation(correctImageStack, getAbstractScreen()).animateFastFadeIn();
+                new ActorAnimation(getAbstractScreen()).animateFastFadeIn(correctImageStack);
                 imgTable.clearChildren();
                 addToTableImageStack(imgTable, correctImageStack);
             }

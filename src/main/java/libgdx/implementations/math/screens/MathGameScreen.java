@@ -300,7 +300,7 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         }
         MyWrappedLabel expressionLabel = createLabel(fontScale, expression, FontColor.WHITE.getColor());
         expressionLabel.setVisible(false);
-        new ActorAnimation(expressionLabel, getAbstractScreen()).animateFastFadeIn();
+        new ActorAnimation(getAbstractScreen()).animateFastFadeIn(expressionLabel);
         table.add(expressionLabel).grow().row();
 
         Table answerTable = new Table();

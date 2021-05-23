@@ -48,7 +48,7 @@ public class KidLearnDifficultyService {
             } else {
                 toAdd = createDifficultyButton(levelType, difficultyLevel);
                 ((MyButton) toAdd).setTransform(true);
-                new ActorAnimation(toAdd, Game.getInstance().getAbstractScreen()).animateZoomInZoomOut(0.1f);
+                new ActorAnimation(Game.getInstance().getAbstractScreen()).animateZoomInZoomOut(toAdd, 0.1f);
             }
             table.add(toAdd).width(kidlearnDifficultySize.getWidth()).pad(marginDimen * 2).height(kidlearnDifficultySize.getHeight());
             if (vertical) {

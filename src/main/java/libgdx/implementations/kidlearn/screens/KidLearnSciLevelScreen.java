@@ -84,7 +84,7 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         contentContainer.add(difficultyButtonsTable).height(ScreenDimensionsManager.getScreenHeightValue(10)).top().row();
         contentContainer.add(btnTable).top().height(btnTableHeight);
         table.add(contentContainer).top().height(btnTableHeight);
-        new ActorAnimation(table, getAbstractScreen()).animateFastFadeIn();
+        new ActorAnimation(getAbstractScreen()).animateFastFadeIn(table);
         getAllTable().add(table).grow();
     }
 

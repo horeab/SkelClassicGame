@@ -1,5 +1,6 @@
 package libgdx.implementations.iqtest.spec;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
+import libgdx.controls.button.MainButtonSize;
 import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
@@ -15,6 +17,7 @@ import libgdx.controls.popup.ProVersionPopup;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.iqtest.IqTestGame;
 import libgdx.implementations.iqtest.IqTestGameLabel;
 import libgdx.implementations.iqtest.screens.IqTestGameOverScreen;
@@ -24,6 +27,7 @@ import libgdx.resources.ResourceService;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
+import libgdx.utils.model.FontConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +57,9 @@ public abstract class IqTestLevelCreator {
 
     Table createHeader() {
         Table table = new Table();
-        float btnFontScale = FontManager.calculateMultiplierStandardFontSize(0.8f);
-        MyButton newGame = new ButtonBuilder(IqTestGameLabel.new_game.getText(),
-                btnFontScale).setButtonSkin(MainButtonSkin.DEFAULT).setFixedButtonSize(SkelClassicButtonSize.IQTEST_HEADER_BUTTON).build();
+        MyButton newGame = new ButtonBuilder()
+                .setButtonSkin(SkelClassicButtonSkin.IQTEST_NEW_GAME_BTN)
+                .setFixedButtonSize(SkelClassicButtonSize.IQTEST_HEADER_IMG_BUTTON).build();
         newGame.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -63,8 +67,8 @@ public abstract class IqTestLevelCreator {
             }
 
         });
-        final MyButton skip = new ButtonBuilder(IqTestGameLabel.skip.getText(),
-                btnFontScale).setButtonSkin(MainButtonSkin.DEFAULT).setFixedButtonSize(SkelClassicButtonSize.IQTEST_HEADER_BUTTON).build();
+        final MyButton skip = new ButtonBuilder().setButtonSkin(SkelClassicButtonSkin.IQTEST_SKIP_BTN)
+                .setFixedButtonSize(SkelClassicButtonSize.IQTEST_HEADER_IMG_BUTTON).build();
         skip.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,35 +79,39 @@ public abstract class IqTestLevelCreator {
         Table firstRow = new Table();
         Table secondRow = new Table();
         float dimen = MainDimen.horizontal_general_margin.getDimen();
-        MyWrappedLabel currentQLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText((iqTestCurrentGame.getCurrentQuestionToDisplay() + "/" + IqTestQuestion.values().length)).setFontScale(FontManager.getBigFontDim()).setSingleLineLabel().build());
-        if (!Utils.isValidExtraContent()) {
-            final Image mug = GraphicUtils.getImage(MainResource.mug);
-            float mugDimen = dimen * 7;
-            mug.setWidth(mugDimen);
-            mug.setHeight(mugDimen);
-            new ActorAnimation(mug, Game.getInstance().getAbstractScreen()).animateZoomInZoomOut();
-            firstRow.add(mug).pad(dimen).growX().width(mugDimen).height(mugDimen);
-            mug.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    IqTestGameOverScreen.displayInAppPurchasesPopup(new Runnable() {
-                        @Override
-                        public void run() {
-                            refreshLevel();
-                        }
-                    });
-                }
-            });
-            firstRow.add().growX();
-            /////////////////
-            secondRow.add(currentQLabel).colspan(4);
-        } else {
-            firstRow.add(currentQLabel).width(ScreenDimensionsManager.getScreenWidthValue(25));
+        MyWrappedLabel currentQLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setText((iqTestCurrentGame.getCurrentQuestionToDisplay() + "/" + IqTestQuestion.values().length))
+                .setFontConfig(new FontConfig(Color.WHITE, Color.BLACK,
+                        FontConfig.FONT_SIZE * 1.5f, FontConfig.STANDARD_BORDER_WIDTH * 8.5f))
+                .setSingleLineLabel().build());
+        final Image mug = GraphicUtils.getImage(MainResource.mug_black_border);
+        float mugDimen = dimen * 7;
+        mug.setWidth(mugDimen);
+        mug.setHeight(mugDimen);
+        new ActorAnimation(Game.getInstance().getAbstractScreen()).animateZoomInZoomOut(mug);
+        firstRow.add(mug).padLeft(MainButtonSize.BACK_BUTTON.getWidth() * 1.2f).growX().width(mugDimen).height(mugDimen);
+        mug.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                IqTestGameOverScreen.displayInAppPurchasesPopup(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLevel();
+                    }
+                });
+            }
+        });
+        firstRow.add().growX();
+        /////////////////
+        secondRow.add(currentQLabel).colspan(4);
+
+        if (Utils.isValidExtraContent()) {
+            mug.setVisible(false);
         }
 
-        firstRow.add(newGame).pad(dimen).width(newGame.getWidth()).height(newGame.getHeight());
         firstRow.add().growX();
-        firstRow.add(skip).pad(dimen).width(skip.getWidth() + skip.getWidth() / 2).height(skip.getHeight());
+        firstRow.add(newGame).pad(dimen).width(newGame.getWidth()).height(newGame.getHeight());
+        firstRow.add(skip).pad(dimen).width(skip.getWidth()).height(skip.getHeight());
         table.add(firstRow).growX();
         table.row();
         table.add(secondRow);

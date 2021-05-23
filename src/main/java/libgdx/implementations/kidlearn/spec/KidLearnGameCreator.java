@@ -64,7 +64,7 @@ public abstract class KidLearnGameCreator {
     }
 
     protected void addActorToScreen(Actor actor) {
-        new ActorAnimation(actor, screen).animateFastFadeIn();
+        new ActorAnimation(screen).animateFastFadeIn(actor);
         screen.addActor(actor);
     }
 

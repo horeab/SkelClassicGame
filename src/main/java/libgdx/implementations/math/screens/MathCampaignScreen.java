@@ -94,7 +94,7 @@ public class MathCampaignScreen extends AbstractScreen<MathScreenManager> {
                 image = GraphicUtils.getImage(res);
                 image.setWidth(imgDimen);
                 image.setHeight(imgDimen);
-                new ActorAnimation(image, getAbstractScreen()).animateZoomInZoomOut();
+                new ActorAnimation(getAbstractScreen()).animateZoomInZoomOut(image);
             } else {
                 res = MainResource.lock;
                 levelBtn.setTouchable(Touchable.disabled);

@@ -15,7 +15,13 @@ public enum IqTestSpecificResource implements SpecificResource {
     delete_btn_down("buttons/delete_btn_down.png", Texture.class),
     submit_btn_up("buttons/submit_btn_up.png", Texture.class),
     submit_btn_down("buttons/submit_btn_down.png", Texture.class),
+    skip_btn_down("buttons/skip_btn_down.png", Texture.class),
+    skip_btn_up("buttons/skip_btn_up.png", Texture.class),
+    new_game_btn_down("buttons/new_game_btn_down.png", Texture.class),
+    new_game_btn_up("buttons/new_game_btn_up.png", Texture.class),
 
+    question_mark_orange("question_mark_orange.png", Texture.class),
+    question_mark_blue("question_mark_blue.png", Texture.class),
     red_background("red_background.png", Texture.class),
     popup_background("popup_background.png", Texture.class),
     finalscore("questions/iq/finalscore.png", Texture.class),

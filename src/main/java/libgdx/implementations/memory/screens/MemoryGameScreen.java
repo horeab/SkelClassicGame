@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 import libgdx.campaign.CampaignStoreService;
 import libgdx.controls.ScreenRunnable;
 import libgdx.controls.button.MainButtonSize;
@@ -37,10 +36,11 @@ import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
-
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
 
@@ -62,7 +62,7 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
     }
 
     @Override
-    protected void setBackgroundColor(RGBColor backgroundColor) {
+    public void setBackgroundColor(RGBColor backgroundColor) {
         super.setBackgroundColor(backgroundColor);
     }
 
