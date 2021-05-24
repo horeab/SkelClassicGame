@@ -1,4 +1,4 @@
-package libgdx.implementations.iqtest.spec;
+package libgdx.implementations.iqtest.spec.iqtest;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -11,6 +11,8 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.iqtest.IqTestDimen;
 import libgdx.implementations.iqtest.IqTestGameLabel;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
+import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
+import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
 import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
@@ -37,6 +39,10 @@ public class IqTestGameCreator extends IqTestLevelCreator {
         Game.getInstance().getAbstractScreen().addActor(table);
     }
 
+    @Override
+    protected String getScore() {
+        return "xxx";
+    }
 
     private Table createAnswersImages(int questionNr) {
         Table table = new Table();

@@ -1,14 +1,18 @@
-package libgdx.implementations.iqtest.spec;
+package libgdx.implementations.iqtest.spec.iqtest;
 
 import libgdx.implementations.iqtest.IqTestGameLabel;
+import libgdx.implementations.iqtest.spec.IqGameQuestion;
+import libgdx.implementations.iqtest.spec.IqGameQuestionUtil;
+
+import java.util.List;
 
 public class IqTestQuestionService {
 
     public static final int MIN_SCORE = 57;
     public static final int MAX_SCORE = 143;
 
-    public boolean isAnswerCorrect(int questionNr, int answer) {
-        return IqTestQuestion.getQuestion(questionNr).getAnwser() == answer;
+    public boolean isAnswerCorrect(int questionNr, int answer, List<IqGameQuestion> allQuestions) {
+        return IqGameQuestionUtil.getQuestion(questionNr, allQuestions).getAnwser() == answer;
     }
 
     public int calculateIq(int correctAnswers) {

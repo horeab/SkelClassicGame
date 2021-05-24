@@ -1,4 +1,3 @@
-32
 question_mark_orange,12,83.1,49
 5c6bc0
 0² * 2 = 0

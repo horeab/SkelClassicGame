@@ -1,6 +1,11 @@
-package libgdx.implementations.iqtest.spec;
+package libgdx.implementations.iqtest.spec.iqtest;
 
-public enum IqTestQuestion {
+import libgdx.implementations.iqtest.spec.IqGameQuestion;
+
+import java.util.Arrays;
+import java.util.List;
+
+public enum IqTestQuestion implements IqGameQuestion {
 
     //@formatter:off
     Q0(0, 3),
@@ -44,40 +49,29 @@ public enum IqTestQuestion {
     Q35(35, 5),
     Q36(36, 7),
     Q37(37, 5),
-    Q38(38, 1);
-    ;
+    Q38(38, 1);;
     //@formatter:on
 
     private int questionNr;
     private int anwser;
 
+    @Override
     public int getQuestionNr() {
         return questionNr;
     }
 
+    @Override
     public int getAnwser() {
         return anwser;
     }
 
-    private IqTestQuestion(int questionNr, int anwser) {
+    @Override
+    public List<IqGameQuestion> getEnumAllValues() {
+        return Arrays.asList(values());
+    }
+
+    IqTestQuestion(int questionNr, int anwser) {
         this.questionNr = questionNr;
         this.anwser = anwser;
-    }
-
-    public static String getQuestionFileName(int questionNr) {
-        return "q" + questionNr;
-    }
-
-    public static String getAnswerForQuestionFileName(int questionNr, int answerNr) {
-        return "q" + questionNr + "a" + answerNr;
-    }
-
-    public static IqTestQuestion getQuestion(int nr) {
-        for (IqTestQuestion iqTestQuestion : IqTestQuestion.values()) {
-            if (iqTestQuestion.questionNr == nr) {
-                return iqTestQuestion;
-            }
-        }
-        return null;
     }
 }

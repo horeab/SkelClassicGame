@@ -19,7 +19,8 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.iqtest.IqTestGameLabel;
 import libgdx.implementations.iqtest.IqTestScreenManager;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
-import libgdx.implementations.iqtest.spec.IqTestQuestionService;
+import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestion;
+import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestionService;
 import libgdx.resources.FontManager;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
@@ -43,7 +44,7 @@ public class IqTestGameOverScreen extends AbstractScreen<IqTestScreenManager> {
         int totalCorrectAnswers = 0;
         this.questionWithAnswer = questionWithAnswer;
         for (Map.Entry<Integer, Integer> entry : questionWithAnswer.entrySet()) {
-            if (questionService.isAnswerCorrect(entry.getKey(), entry.getValue())) {
+            if (questionService.isAnswerCorrect(entry.getKey(), entry.getValue(), IqTestQuestion.Q0.getEnumAllValues())) {
                 totalCorrectAnswers++;
             }
         }

@@ -1,4 +1,3 @@
-2
 question_mark_blue,8,68.6,10.5
 feaec9
 G = 7

@@ -1,8 +1,9 @@
-package libgdx.implementations.iqtest.spec;
+package libgdx.implementations.iqtest.spec.numseq;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -20,19 +21,23 @@ import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.imagesplit.ImageSplitScreenManager;
 import libgdx.implementations.iqtest.IqTestNumberSeqImageQuestionIncrementRes;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
+import libgdx.implementations.iqtest.spec.IqGameQuestionUtil;
+import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
+import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
-import libgdx.utils.model.RGBColor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class IqTestNumberSeqCreator extends IqTestLevelCreator {
 
@@ -73,11 +78,48 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         submitBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                clearPressedLetters();
+                if (pressedAnswers.size() > 0) {
+                    Integer answer = Integer.valueOf(StringUtils.join(pressedAnswers, ""));
+                    iqTestCurrentGame.getQuestionWithAnswer().put(iqTestCurrentGame.getCurrentQuestion(), answer);
+                    if (iqTestCurrentGame.getCurrentQuestionEnum().getAnwser() == answer) {
+                        scoreLabel.setText(getScore());
+                        processCorrectAnswerPressed(new Runnable() {
+                            @Override
+                            public void run() {
+                                goToNextLevel();
+                            }
+                        });
+                    } else {
+                        goToNextLevel();
+                    }
+                    clearPressedLetters();
+                }
             }
         });
         submitBtn.setVisible(false);
         addQuestionScreen(questionNr);
+    }
+
+    private void processCorrectAnswerPressed(Runnable afterAnimation) {
+        float scaleFactor = 0.3f;
+        float duration = 0.2f;
+        if (scoreLabel != null) {
+            scoreLabel.addAction(Actions.sequence(Actions.scaleBy(scaleFactor, scaleFactor, duration),
+                    Actions.scaleBy(-scaleFactor, -scaleFactor, duration), Utils.createRunnableAction(afterAnimation)));
+        }
+    }
+
+    @Override
+    protected String getScore() {
+        int totalScore = 0;
+        Map<Integer, Integer> questionWithAnswer = iqTestCurrentGame.getQuestionWithAnswer();
+        for (IqNumSeqQuestion question : IqNumSeqQuestion.values()) {
+            if (questionWithAnswer.get(question.getQuestionNr()) == question.getAnwser()) {
+                totalScore++;
+            }
+        }
+        String prefix = totalScore > 0 ? "+" : "";
+        return prefix + totalScore;
     }
 
     private void clearPressedLetters() {
@@ -133,7 +175,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
 
         float solRowHeight = ScreenDimensionsManager.getScreenHeightValue(5);
         MyWrappedLabel answerLabel = createAnswLabel(MainGameLabel.l_correct_answer.getText()
-                + ": " + iqTestNumSeqLevelInfo.getCorrectAnswer(), 1.8f, FontColor.WHITE);
+                + ": " + iqTestCurrentGame.getCurrentQuestionEnum().getAnwser(), 1.8f, FontColor.WHITE);
         table.add(answerLabel).height(solRowHeight).row();
 
         for (String sol : iqTestNumSeqLevelInfo.getAnswerSolution()) {

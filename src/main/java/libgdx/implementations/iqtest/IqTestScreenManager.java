@@ -1,6 +1,6 @@
 package libgdx.implementations.iqtest;
 
-import libgdx.implementations.iqtest.spec.IqTestQuestion;
+import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestion;
 import libgdx.screen.AbstractScreenManager;
 
 import java.util.HashMap;

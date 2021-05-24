@@ -1,4 +1,3 @@
-6
 question_mark_blue,9,50,28.37
 7cb342
 2 + 3 = 5

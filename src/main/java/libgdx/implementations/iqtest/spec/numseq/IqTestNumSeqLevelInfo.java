@@ -1,4 +1,4 @@
-package libgdx.implementations.iqtest.spec;
+package libgdx.implementations.iqtest.spec.numseq;
 
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.model.RGBColor;
@@ -14,18 +14,14 @@ public class IqTestNumSeqLevelInfo {
     }
 
     public void setBackgroundColor(AbstractScreen abstractScreen) {
-        abstractScreen.setBackgroundColor(new RGBColor("#" + levelInfo.get(2).trim()));
+        abstractScreen.setBackgroundColor(new RGBColor("#" + levelInfo.get(1).trim()));
     }
 
     public String getQuestionMarkInfo() {
-        return levelInfo.get(1);
-    }
-
-    public String getCorrectAnswer() {
         return levelInfo.get(0);
     }
 
     public List<String> getAnswerSolution() {
-        return levelInfo.subList(3, levelInfo.size());
+        return levelInfo.subList(2, levelInfo.size());
     }
 }
