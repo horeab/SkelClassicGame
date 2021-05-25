@@ -14,6 +14,7 @@ import libgdx.implementations.iqtest.IqTestSpecificResource;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
 import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
 import libgdx.resources.FontManager;
+import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
@@ -53,7 +54,6 @@ public class IqTestGameCreator extends IqTestLevelCreator {
                 .growX()
                 .colspan(4)
                 .row();
-        table.setBackground(GraphicUtils.getNinePatch(IqTestSpecificResource.popup_background));
         int answerNr = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 4; j++) {

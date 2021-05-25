@@ -3,6 +3,7 @@ package libgdx.implementations.iqtest.screens;
 import com.badlogic.gdx.Gdx;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.game.Game;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.iqtest.spec.numseq.IqNumSeqQuestion;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
 import libgdx.implementations.iqtest.spec.numseq.IqTestNumberSeqCreator;
@@ -23,7 +24,9 @@ public class IqTestGameScreen extends AbstractScreen {
         IqTestNumberSeqCreator creator = new IqTestNumberSeqCreator(currentGame, this);
 //        IqTestGameCreator creator = new IqTestGameCreator(currentGame);
         creator.refreshLevel();
-        new BackButtonBuilder().addHoverBackButton(this, BackButtonBuilder.getX(), BackButtonBuilder.getY() * 1.01f);
+        new BackButtonBuilder()
+                .setButtonSkin(SkelClassicButtonSkin.IQTEST_BACK_BTN)
+                .addHoverBackButton(this, BackButtonBuilder.getX(), BackButtonBuilder.getY() * 1.01f);
     }
 
     @Override

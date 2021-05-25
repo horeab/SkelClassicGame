@@ -57,6 +57,8 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     IQTEST_DELETE_BTN(IqTestSpecificResource.delete_btn_up, IqTestSpecificResource.delete_btn_down, IqTestSpecificResource.delete_btn_up, IqTestSpecificResource.delete_btn_up, null),
     IQTEST_NEW_GAME_BTN(IqTestSpecificResource.new_game_btn_up, IqTestSpecificResource.new_game_btn_down, IqTestSpecificResource.new_game_btn_up, IqTestSpecificResource.new_game_btn_up, null),
     IQTEST_SKIP_BTN(IqTestSpecificResource.skip_btn_up, IqTestSpecificResource.skip_btn_down, IqTestSpecificResource.skip_btn_up, IqTestSpecificResource.skip_btn_up, null),
+    IQTEST_NEXT_BTN(IqTestSpecificResource.next_btn_up, IqTestSpecificResource.next_btn_down, IqTestSpecificResource.next_btn_up, IqTestSpecificResource.next_btn_up, null),
+    IQTEST_BACK_BTN(IqTestSpecificResource.btn_back_up, IqTestSpecificResource.btn_back_down, IqTestSpecificResource.btn_back_up, IqTestSpecificResource.btn_back_up, null),
 
     IMAGE_SPLIT_GAME_TYPE_SLIDE(ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_clicked, ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_disabled, null),
     IMAGE_SPLIT_GAME_TYPE_PUSH(ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_clicked, ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_disabled, null),

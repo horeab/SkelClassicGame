@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align;
 import libgdx.campaign.QuestionConfigFileHandler;
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
+import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
@@ -21,7 +22,6 @@ import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.imagesplit.ImageSplitScreenManager;
 import libgdx.implementations.iqtest.IqTestNumberSeqImageQuestionIncrementRes;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
-import libgdx.implementations.iqtest.spec.IqGameQuestionUtil;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
 import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
 import libgdx.resources.Res;
@@ -44,12 +44,14 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
     private QuestionConfigFileHandler fileHandler = new QuestionConfigFileHandler();
     private MyWrappedLabel pressedLettersLabel;
     private List<Integer> pressedAnswers = new ArrayList<>();
+    private List<MyPopup> shownMyPopups = new ArrayList<>();
     private final static String MAIN_TABLE_NAME = "MAIN_TABLE_NAME";
     private final static List<Integer> availableNr = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     private MyButton clearBtn;
     private MyButton submitBtn;
     private AbstractScreen abstractScreen;
     private ActorAnimation actorAnimation;
+    private IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo;
 
     public IqTestNumberSeqCreator(IqTestCurrentGame currentGame, AbstractScreen abstractScreen) {
         super(currentGame);
@@ -75,29 +77,43 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         submitBtn = new ButtonBuilder()
                 .setFixedButtonSize(SkelClassicButtonSize.IQTEST_NUM_SEQ_SUBMIT_DELETE)
                 .setButtonSkin(SkelClassicButtonSkin.IQTEST_SUBMIT_BTN).build();
+        submitBtn.setVisible(false);
+        addQuestionScreen(questionNr);
+    }
+
+    private void addSubmitButtonListener(int questionNr) {
         submitBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (pressedAnswers.size() > 0) {
                     Integer answer = Integer.valueOf(StringUtils.join(pressedAnswers, ""));
                     iqTestCurrentGame.getQuestionWithAnswer().put(iqTestCurrentGame.getCurrentQuestion(), answer);
-                    if (iqTestCurrentGame.getCurrentQuestionEnum().getAnwser() == answer) {
+                    if (isAnswerCorrect()) {
                         scoreLabel.setText(getScore());
                         processCorrectAnswerPressed(new Runnable() {
                             @Override
                             public void run() {
-                                goToNextLevel();
+                                createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo, false).addToPopupManager();
                             }
                         });
                     } else {
-                        goToNextLevel();
+                        createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo, false).addToPopupManager();
                     }
-                    clearPressedLetters();
                 }
             }
         });
-        submitBtn.setVisible(false);
-        addQuestionScreen(questionNr);
+    }
+
+    private boolean isAnswerCorrect() {
+        if (pressedAnswers.size() > 0) {
+            int answer = getAnswer();
+            return iqTestCurrentGame.getCurrentQuestionEnum().getAnwser() == answer;
+        }
+        return false;
+    }
+
+    private int getAnswer() {
+        return Integer.parseInt(StringUtils.join(pressedAnswers, ""));
     }
 
     private void processCorrectAnswerPressed(Runnable afterAnimation) {
@@ -138,9 +154,17 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
     }
 
     public void addQuestionScreen(int questionNr) {
+        if (submitBtn != null) {
+            submitBtn.remove();
+        }
+        submitBtn = new ButtonBuilder()
+                .setFixedButtonSize(SkelClassicButtonSize.IQTEST_NUM_SEQ_SUBMIT_DELETE)
+                .setButtonSkin(SkelClassicButtonSkin.IQTEST_SUBMIT_BTN).build();
+        addSubmitButtonListener(questionNr);
+        clearPressedLetters();
         List<String> answerCoordsSolution = Arrays.asList(fileHandler.getFileText(String.format("questions/numberseq/q%sa.txt",
                 questionNr)).split("\n"));
-        IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo = new IqTestNumSeqLevelInfo(answerCoordsSolution);
+        iqTestNumSeqLevelInfo = new IqTestNumSeqLevelInfo(answerCoordsSolution);
         iqTestNumSeqLevelInfo.setBackgroundColor(abstractScreen);
 
         Table table = new Table();
@@ -159,30 +183,79 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         abstractScreen.addActor(table);
     }
 
-    private Table createQuestionWithAnswerTable(int questionNr, IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo) {
+    private Table createQuestionWithAnswerTable(int questionNr,
+                                                IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo,
+                                                boolean showSolution) {
         Table table = new Table();
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
         Table imgTable = createQuestionTable(questionNr, iqTestNumSeqLevelInfo.getAnswerSolution().size() > 5 ? 35 : 50, iqTestNumSeqLevelInfo);
-        Table answerTable = createAnswerTable(iqTestNumSeqLevelInfo);
+        Table answerTable = createAnswerTable(questionNr, iqTestNumSeqLevelInfo, showSolution);
         table.add(imgTable).padBottom(verticalGeneralMarginDimen);
         table.row();
         table.add(answerTable);
         return table;
     }
 
-    private Table createAnswerTable(IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo) {
+    private Table createAnswerTable(int questionNr, IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo, boolean showSolution) {
         Table table = new Table();
 
-        float solRowHeight = ScreenDimensionsManager.getScreenHeightValue(5);
+        FontColor correctAnswerFontColor = FontColor.GREEN;
+        boolean answerCorrect = isAnswerCorrect();
+        if (!answerCorrect) {
+            String resultLabel = MainGameLabel.l_wrong_answer.getText();
+            FontColor resultColor = FontColor.RED;
+            correctAnswerFontColor = FontColor.BLACK;
+            if (!showSolution) {
+                MyWrappedLabel resultMyWrappedLabel = createAnswLabel(resultLabel, 1.4f, resultColor);
+                table.add(resultMyWrappedLabel).row();
+            }
+        }
+
+        List<String> answerSolution = iqTestNumSeqLevelInfo.getAnswerSolution();
+        float solRowHeight = ScreenDimensionsManager.getScreenHeightValue(answerSolution.size() > 6 ? 4 : 5);
         MyWrappedLabel answerLabel = createAnswLabel(MainGameLabel.l_correct_answer.getText()
-                + ": " + iqTestCurrentGame.getCurrentQuestionEnum().getAnwser(), 1.8f, FontColor.WHITE);
+                + ": " + iqTestCurrentGame.getCurrentQuestionEnum().getAnwser(), 1.4f, correctAnswerFontColor);
+
+        if (!answerCorrect) {
+            table.add(createAnswLabel(MainGameLabel.l_your_answer.getText() + ": " + getAnswer(),
+                    1.1f, FontColor.BLACK)).row();
+        }
+
         table.add(answerLabel).height(solRowHeight).row();
 
-        for (String sol : iqTestNumSeqLevelInfo.getAnswerSolution()) {
-            MyWrappedLabel solutionLabel = createAnswLabel(sol, 1.2f, FontColor.WHITE);
-            table.add(solutionLabel).height(solRowHeight).row();
+        float margin = MainDimen.vertical_general_margin.getDimen();
+
+        if (showSolution) {
+            for (String sol : answerSolution) {
+                MyWrappedLabel solutionLabel = createAnswLabel(sol, 1.1f, FontColor.BLACK);
+                table.add(solutionLabel).height(solRowHeight).row();
+            }
+        } else {
+            MyButton showExplanationBtn = new ButtonBuilder()
+                    .setText(MainGameLabel.l_show_explanation.getText())
+                    .setFontConfig(new FontConfig(Color.WHITE, Color.BLACK,
+                            FontConfig.FONT_SIZE * 1.5f, FontConfig.STANDARD_BORDER_WIDTH * 8.5f))
+                    .setButtonSkin(MainButtonSkin.DEFAULT).build();
+            showExplanationBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    hideAllShownPopups();
+                    createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo, true).addToPopupManager();
+                }
+            });
+            table.add(showExplanationBtn).padTop(margin).width(showExplanationBtn.getWidth()).height(showExplanationBtn.getHeight());
         }
         return table;
+    }
+
+    private void hideAllShownPopups() {
+        for (MyPopup myPopup : shownMyPopups) {
+            myPopup.hide(Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                }
+            }));
+        }
     }
 
     private Table createQuestionTable(int questionNr, int ifHeightGreaterPercent, IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo) {
@@ -202,13 +275,6 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         Table imgTable = new Table();
         Group questionImageGroup = createQuestionImageGroup(image, iqTestNumSeqLevelInfo);
         imgTable.add(questionImageGroup).width(questionImageGroup.getWidth()).height(questionImageGroup.getHeight());
-        image.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.print((x / image.getWidth()) * 100 + "," + (y / image.getHeight()) * 100 + "\n");
-                createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo).addToPopupManager();
-            }
-        });
         return imgTable;
     }
 
@@ -234,7 +300,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
                 new MyWrappedLabelConfigBuilder()
 //                        .setFontConfig(new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(),
 //                                FontConfig.FONT_SIZE * fontSize, FontConfig.STANDARD_BORDER_WIDTH * 6))
-                        .setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
+                        .setFontConfig(new FontConfig(fontColor.getColor(),
                                 FontConfig.FONT_SIZE * fontSize))
                         .setSingleLineLabel()
                         .setText(text)
@@ -252,8 +318,9 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         return table;
     }
 
-    private MyPopup createCorrectAnswerPopup(final int questionNr, IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo) {
-        return new MyPopup<AbstractScreen, ImageSplitScreenManager>(abstractScreen) {
+    private MyPopup createCorrectAnswerPopup(final int questionNr, final IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo,
+                                             final boolean showSolution) {
+        MyPopup<AbstractScreen, ImageSplitScreenManager> myPopup = new MyPopup<AbstractScreen, ImageSplitScreenManager>(abstractScreen) {
             @Override
             protected String getLabelText() {
                 return "";
@@ -270,7 +337,6 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
 
             @Override
             public void hide() {
-                super.hide();
             }
 
             @Override
@@ -280,11 +346,31 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
 
             @Override
             public MyPopup addToPopupManager() {
-                super.addToPopupManager();
-                getContentTable().add(createQuestionWithAnswerTable(questionNr, iqTestNumSeqLevelInfo));
+                MyButton continueBtn = new ButtonBuilder()
+                        .setFixedButtonSize(SkelClassicButtonSize.IQTEST_NUM_SEQ_SUBMIT_DELETE)
+                        .setButtonSkin(SkelClassicButtonSkin.IQTEST_NEXT_BTN).build();
+                continueBtn.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        hideAllShownPopups();
+                        goToNextLevel();
+                    }
+                });
+                float margin = MainDimen.horizontal_general_margin.getDimen();
+                Table btnTables = new Table();
+                btnTables.add().growX();
+                btnTables.add(continueBtn).padRight(margin).width(continueBtn.getWidth()).height(continueBtn.getHeight()).row();
+                getContentTable().add(btnTables).growX().row();
+                padBottom(MainDimen.vertical_general_margin.getDimen());
+                padTop(MainDimen.vertical_general_margin.getDimen());
+                setBackground();
+                getContentTable().add(createQuestionWithAnswerTable(questionNr, iqTestNumSeqLevelInfo, showSolution));
+                getPopupManager().addPopupToDisplay(this);
                 return this;
             }
         };
+        shownMyPopups.add(myPopup);
+        return myPopup;
     }
 
     private float getPressedLettersLabelWidth() {

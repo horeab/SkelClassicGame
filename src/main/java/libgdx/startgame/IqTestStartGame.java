@@ -33,7 +33,7 @@ public class IqTestStartGame {
 
                     @Override
                     public String getLanguage() {
-                        return "ro";
+                        return Language.en.name();
                     }
                 });
         libgdx.utils.startgame.StartGame.main(game, args);
