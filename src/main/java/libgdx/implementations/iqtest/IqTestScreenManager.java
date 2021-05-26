@@ -16,8 +16,17 @@ public class IqTestScreenManager extends AbstractScreenManager {
         for (IqTestQuestion question : IqTestQuestion.values()) {
             questionWithAnswer.put(question.getQuestionNr(), new Random().nextInt(8));
         }
+        showScreen(IqTestScreenTypeEnum.MAIN_MENU_SCREEN);
 //        showGameOver(questionWithAnswer);
 //        showCorrectAnswers(questionWithAnswer);
+    }
+
+    public void showGamScreen() {
+        showScreen(IqTestScreenTypeEnum.GAME_SCREEN);
+        HashMap<Integer, Integer> questionWithAnswer = new HashMap<>();
+        for (IqTestQuestion question : IqTestQuestion.values()) {
+            questionWithAnswer.put(question.getQuestionNr(), new Random().nextInt(8));
+        }
     }
 
     public void showGameOver(Map<Integer, Integer> questionWithAnswer) {

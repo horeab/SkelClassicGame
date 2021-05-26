@@ -59,6 +59,10 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     IQTEST_SKIP_BTN(IqTestSpecificResource.skip_btn_up, IqTestSpecificResource.skip_btn_down, IqTestSpecificResource.skip_btn_up, IqTestSpecificResource.skip_btn_up, null),
     IQTEST_NEXT_BTN(IqTestSpecificResource.next_btn_up, IqTestSpecificResource.next_btn_down, IqTestSpecificResource.next_btn_up, IqTestSpecificResource.next_btn_up, null),
     IQTEST_BACK_BTN(IqTestSpecificResource.btn_back_up, IqTestSpecificResource.btn_back_down, IqTestSpecificResource.btn_back_up, IqTestSpecificResource.btn_back_up, null),
+    IQTEST_LEVEL_MAIN_0(IqTestSpecificResource.btn_level_main_0_up, IqTestSpecificResource.btn_level_main_0_down, IqTestSpecificResource.btn_level_main_0_up, IqTestSpecificResource.btn_level_main_0_up, null),
+    IQTEST_LEVEL_MAIN_1(IqTestSpecificResource.btn_level_main_1_up, IqTestSpecificResource.btn_level_main_1_down, IqTestSpecificResource.btn_level_main_1_up, IqTestSpecificResource.btn_level_main_1_up, null),
+    IQTEST_LEVEL_MAIN_2(IqTestSpecificResource.btn_level_main_2_up, IqTestSpecificResource.btn_level_main_2_down, IqTestSpecificResource.btn_level_main_2_up, IqTestSpecificResource.btn_level_main_2_up, null),
+    IQTEST_LEVEL_MAIN_3(IqTestSpecificResource.btn_level_main_3_up, IqTestSpecificResource.btn_level_main_3_down, IqTestSpecificResource.btn_level_main_3_up, IqTestSpecificResource.btn_level_main_3_up, null),
 
     IMAGE_SPLIT_GAME_TYPE_SLIDE(ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_clicked, ImageSplitSpecificResource.gametype_slide, ImageSplitSpecificResource.gametype_slide_disabled, null),
     IMAGE_SPLIT_GAME_TYPE_PUSH(ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_clicked, ImageSplitSpecificResource.gametype_push, ImageSplitSpecificResource.gametype_push_disabled, null),
