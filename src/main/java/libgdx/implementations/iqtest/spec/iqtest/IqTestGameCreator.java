@@ -10,11 +10,10 @@ import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.iqtest.IqTestDimen;
 import libgdx.implementations.iqtest.IqTestGameLabel;
-import libgdx.implementations.iqtest.IqTestSpecificResource;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
+import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
 import libgdx.resources.FontManager;
-import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
@@ -42,7 +41,7 @@ public class IqTestGameCreator extends IqTestLevelCreator {
 
     @Override
     protected String getScore() {
-        return "xxx";
+        return "";
     }
 
     private Table createAnswersImages(int questionNr) {
@@ -86,6 +85,10 @@ public class IqTestGameCreator extends IqTestLevelCreator {
         return table;
     }
 
+    @Override
+    protected IqTestGameType getIqTestGameType() {
+        return IqTestGameType.IQ_TEST;
+    }
 
     private void answerClick(int answerNr) {
         iqTestCurrentGame.getQuestionWithAnswer().put(iqTestCurrentGame.getCurrentQuestion(), answerNr);

@@ -1,5 +1,6 @@
 package libgdx.implementations.iqtest;
 
+import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestion;
 import libgdx.screen.AbstractScreenManager;
 
@@ -11,18 +12,18 @@ public class IqTestScreenManager extends AbstractScreenManager {
 
     @Override
     public void showMainScreen() {
-        showScreen(IqTestScreenTypeEnum.GAME_SCREEN);
         HashMap<Integer, Integer> questionWithAnswer = new HashMap<>();
         for (IqTestQuestion question : IqTestQuestion.values()) {
             questionWithAnswer.put(question.getQuestionNr(), new Random().nextInt(8));
         }
+        showScreen(IqTestScreenTypeEnum.GAME_SCREEN, IqTestGameType.IQ_TEST);
         showScreen(IqTestScreenTypeEnum.MAIN_MENU_SCREEN);
 //        showGameOver(questionWithAnswer);
 //        showCorrectAnswers(questionWithAnswer);
     }
 
-    public void showGamScreen() {
-        showScreen(IqTestScreenTypeEnum.GAME_SCREEN);
+    public void showGamScreen(IqTestGameType iqTestGameType) {
+        showScreen(IqTestScreenTypeEnum.GAME_SCREEN, iqTestGameType);
         HashMap<Integer, Integer> questionWithAnswer = new HashMap<>();
         for (IqTestQuestion question : IqTestQuestion.values()) {
             questionWithAnswer.put(question.getQuestionNr(), new Random().nextInt(8));

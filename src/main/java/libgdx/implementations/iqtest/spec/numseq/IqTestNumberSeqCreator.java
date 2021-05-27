@@ -23,6 +23,7 @@ import libgdx.implementations.imagesplit.ImageSplitScreenManager;
 import libgdx.implementations.iqtest.IqTestNumberSeqImageQuestionIncrementRes;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
+import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
@@ -145,14 +146,6 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         actorAnimation.animateFastFadeOut(submitBtn);
     }
 
-    public void refreshLevel() {
-        Group root = abstractScreen.getRoot();
-        root.findActor(MAIN_TABLE_NAME).remove();
-//        addQuestionScreen(iqTestCurrentGame.getCurrentQuestion());
-        addQuestionScreen(0);
-//        saveCurrentState();
-    }
-
     public void addQuestionScreen(int questionNr) {
         if (submitBtn != null) {
             submitBtn.remove();
@@ -160,6 +153,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         submitBtn = new ButtonBuilder()
                 .setFixedButtonSize(SkelClassicButtonSize.IQTEST_NUM_SEQ_SUBMIT_DELETE)
                 .setButtonSkin(SkelClassicButtonSkin.IQTEST_SUBMIT_BTN).build();
+        submitBtn.setVisible(false);
         addSubmitButtonListener(questionNr);
         clearPressedLetters();
         List<String> answerCoordsSolution = Arrays.asList(fileHandler.getFileText(String.format("questions/numberseq/q%sa.txt",
@@ -425,6 +419,11 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
             answList.add(button);
         }
         return answList;
+    }
+
+    @Override
+    protected IqTestGameType getIqTestGameType() {
+        return IqTestGameType.NUM_SEQ;
     }
 
 }

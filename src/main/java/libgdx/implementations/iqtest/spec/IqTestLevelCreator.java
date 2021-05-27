@@ -33,6 +33,7 @@ import java.util.Map;
 public abstract class IqTestLevelCreator {
 
 
+    private IqTestPreferencesManager iqTestPreferencesManager = new IqTestPreferencesManager();
     protected ResourceService resourceService = Game.getInstance().getMainDependencyManager().createResourceService();
 
     protected final static String MAIN_TABLE_NAME = "MAIN_TABLE_NAME";
@@ -49,12 +50,15 @@ public abstract class IqTestLevelCreator {
 
     protected abstract String getScore();
 
-    private void refreshLevel() {
+    public void refreshLevel() {
         Group root = Game.getInstance().getAbstractScreen().getStage().getRoot();
         root.findActor(MAIN_TABLE_NAME).remove();
         addQuestionScreen(iqTestCurrentGame.getCurrentQuestion());
-//        saveCurrentState();
+        iqTestPreferencesManager.putCurrentQAState(getIqTestGameType(), iqTestCurrentGame.getQuestionWithAnswer());
+
     }
+
+    protected abstract IqTestGameType getIqTestGameType();
 
     protected Table createHeader() {
         Table table = new Table();

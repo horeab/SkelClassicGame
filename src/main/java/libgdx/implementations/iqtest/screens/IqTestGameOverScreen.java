@@ -49,6 +49,7 @@ public class IqTestGameOverScreen extends AbstractScreen<IqTestScreenManager> {
             }
         }
         this.finalScore = questionService.calculateIq(totalCorrectAnswers);
+        new BackButtonBuilder().addHoverBackButton(this);
 
     }
 
@@ -57,12 +58,6 @@ public class IqTestGameOverScreen extends AbstractScreen<IqTestScreenManager> {
         setBackgroundColor(RGBColor.WHITE);
         Table table = new Table();
         table.setFillParent(true);
-        if (Gdx.app.getType() == Application.ApplicationType.iOS) {
-            MyButton backButton = new BackButtonBuilder().createScreenBackButton(this);
-            backButton.setX(MainDimen.horizontal_general_margin.getDimen());
-            backButton.setY(ScreenDimensionsManager.getScreenHeight() - MainDimen.vertical_general_margin.getDimen() - backButton.getHeight());
-            addActor(backButton);
-        }
         table.add(createQuestionImage()).bottom().height(screenHeight / 2).row();
         table.add(createInfoLabel()).center().height(screenHeight / 2).pad(MainDimen.vertical_general_margin.getDimen()).growX().row();
 

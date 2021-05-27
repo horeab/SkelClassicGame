@@ -4,6 +4,7 @@ import libgdx.implementations.iqtest.screens.IqTestCorrectAnswersScreen;
 import libgdx.implementations.iqtest.screens.IqTestGameOverScreen;
 import libgdx.implementations.iqtest.screens.IqTestGameScreen;
 import libgdx.implementations.iqtest.screens.IqTestMainMenuScreen;
+import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.screen.AbstractScreen;
 import libgdx.screen.ScreenType;
 
@@ -18,7 +19,7 @@ public enum IqTestScreenTypeEnum implements ScreenType {
     },
     GAME_SCREEN {
         public AbstractScreen getScreen(Object... params) {
-            return new IqTestGameScreen();
+            return new IqTestGameScreen((IqTestGameType) params[0]);
         }
     },
     GAME_OVER_SCREEN {

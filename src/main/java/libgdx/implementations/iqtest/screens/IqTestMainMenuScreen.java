@@ -1,22 +1,23 @@
 package libgdx.implementations.iqtest.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.animations.ActorAnimation;
-import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.ImageButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.controls.labelimage.LabelImageConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.iqtest.IqTestScreenManager;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
+import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.implementations.iqtest.spec.IqTestPreferencesManager;
 import libgdx.resources.FontManager;
 import libgdx.resources.MainResource;
@@ -78,19 +79,19 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
         Table table = new Table();
         float pad = ScreenDimensionsManager.getScreenWidthValue(10);
 
-        MyButton levelBtn1 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_0);
+        MyButton levelBtn1 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_0, IqTestGameType.IQ_TEST);
         table.add(levelBtn1).pad(pad).width(levelBtn1.getWidth()).height(levelBtn1.getHeight()).colspan(2).row();
 
-        MyButton levelBtn2 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_1);
+        MyButton levelBtn2 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_1, IqTestGameType.NUM_SEQ);
         table.add(levelBtn2).pad(pad).width(levelBtn2.getWidth()).height(levelBtn2.getHeight());
 
-        MyButton levelBtn3 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_2);
+        MyButton levelBtn3 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_2, IqTestGameType.IQ_TEST);
         table.add(levelBtn3).pad(pad).width(levelBtn3.getWidth()).height(levelBtn3.getHeight());
 
         return table;
     }
 
-    private MyButton createLevelBtn(SkelClassicButtonSkin buttonSkin) {
+    private MyButton createLevelBtn(SkelClassicButtonSkin buttonSkin, final IqTestGameType iqTest) {
         SkelClassicButtonSize buttonSize = SkelClassicButtonSize.IQTEST_LEVEL_BTN;
         MyButton button = new ImageButtonBuilder(buttonSkin, getAbstractScreen())
                 .textButtonWidth(buttonSize.getWidth() * 1.3f)
@@ -99,6 +100,12 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
                 .setFixedButtonSize(buttonSize)
                 .setText("text")
                 .build();
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                screenManager.showGamScreen(iqTest);
+            }
+        });
         return button;
     }
 
