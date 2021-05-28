@@ -1,10 +1,14 @@
 package libgdx.implementations.iqtest.spec;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.gson.Gson;
 import libgdx.preferences.PreferencesService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class IqTestPreferencesManager {
 
@@ -24,7 +28,13 @@ public class IqTestPreferencesManager {
     public Map<Integer, Integer> getCurrentQAState(IqTestGameType iqTestGameType) {
         String res = preferencesService.getPreferences().getString(getCurrentStateKey(iqTestGameType), "");
         if (StringUtils.isNotBlank(res)) {
-            return new Gson().fromJson(res, Map.class);
+            Map rawMap = new Gson().fromJson(res, Map.class);
+            Map<Integer, Integer> map = new LinkedHashMap<>();
+            for (Object o : rawMap.entrySet()) {
+                map.put((int) Math.round(Double.valueOf(((Map.Entry) o).getKey().toString())),
+                        (int) Math.round(Double.valueOf(((Map.Entry) o).getValue().toString())));
+            }
+            return map;
         }
         return null;
     }

@@ -59,4 +59,16 @@ public class IqTestCurrentGame {
     public void setQuestionWithAnswer(Map<Integer, Integer> questionWithAnswer) {
         this.questionWithAnswer = questionWithAnswer;
     }
+
+    public int getNextQuestion() {
+        int nextQuestion = -1;
+        for (Map.Entry<Integer, Integer> entry : getQuestionWithAnswer().entrySet()) {
+            if (entry.getKey() > currentQuestion && entry.getValue() == -1) {
+                nextQuestion = entry.getKey();
+                break;
+            }
+
+        }
+        return nextQuestion;
+    }
 }

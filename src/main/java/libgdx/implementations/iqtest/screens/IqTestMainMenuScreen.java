@@ -85,7 +85,7 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
         MyButton levelBtn2 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_1, IqTestGameType.NUM_SEQ);
         table.add(levelBtn2).pad(pad).width(levelBtn2.getWidth()).height(levelBtn2.getHeight());
 
-        MyButton levelBtn3 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_2, IqTestGameType.IQ_TEST);
+        MyButton levelBtn3 = createLevelBtn(SkelClassicButtonSkin.IQTEST_LEVEL_MAIN_2, IqTestGameType.MEM_NUM);
         table.add(levelBtn3).pad(pad).width(levelBtn3.getWidth()).height(levelBtn3.getHeight());
 
         return table;

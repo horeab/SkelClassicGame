@@ -6,6 +6,7 @@ import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.iqtest.spec.*;
 import libgdx.implementations.iqtest.spec.iqtest.IqTestGameCreator;
 import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestion;
+import libgdx.implementations.iqtest.spec.memnum.IqTestQuestionMemNumCreator;
 import libgdx.implementations.iqtest.spec.numseq.IqNumSeqQuestion;
 import libgdx.implementations.iqtest.spec.numseq.IqTestNumberSeqCreator;
 import libgdx.screen.AbstractScreen;
@@ -31,14 +32,16 @@ public class IqTestGameScreen extends AbstractScreen {
             new SkelGameRatingService(this).appLaunched();
         }
 
-        IqTestLevelCreator creator;
+        IqTestBaseLevelCreator creator;
         if (iqTestGameType == IqTestGameType.IQ_TEST) {
-            IqTestCurrentGame currentGame = createCurrentGame(IqTestGameType.IQ_TEST, IqTestQuestion.Q0.getEnumAllValues());
+            IqTestCurrentGame currentGame = createCurrentGame(iqTestGameType, IqTestQuestion.Q0.getEnumAllValues());
             creator = new IqTestGameCreator(currentGame);
             setBackgroundColor(RGBColor.WHITE);
 
+        } else if (iqTestGameType == IqTestGameType.MEM_NUM) {
+            creator = new IqTestQuestionMemNumCreator(this);
         } else {
-            IqTestCurrentGame currentGame = createCurrentGame(IqTestGameType.NUM_SEQ, IqNumSeqQuestion.Q0.getEnumAllValues());
+            IqTestCurrentGame currentGame = createCurrentGame(iqTestGameType, IqNumSeqQuestion.Q0.getEnumAllValues());
             creator = new IqTestNumberSeqCreator(currentGame, this);
         }
 
@@ -53,6 +56,18 @@ public class IqTestGameScreen extends AbstractScreen {
         Map<Integer, Integer> state = iqTestPreferencesManager.getCurrentQAState(iqTestGameType);
         if (state != null) {
             currentGame.setQuestionWithAnswer(state);
+            int firstQuestion = -1;
+            for (Map.Entry<Integer, Integer> entry : currentGame.getQuestionWithAnswer().entrySet()) {
+                if (entry.getValue() == -1) {
+                    firstQuestion = entry.getKey();
+                    break;
+                }
+            }
+            if (firstQuestion > -1) {
+                currentGame.setCurrentQuestion(firstQuestion);
+            } else {
+                currentGame.reset();
+            }
         }
         return currentGame;
     }

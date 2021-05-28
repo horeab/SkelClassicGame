@@ -88,7 +88,10 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
             public void clicked(InputEvent event, float x, float y) {
                 if (pressedAnswers.size() > 0) {
                     Integer answer = Integer.valueOf(StringUtils.join(pressedAnswers, ""));
+
                     iqTestCurrentGame.getQuestionWithAnswer().put(iqTestCurrentGame.getCurrentQuestion(), answer);
+                    iqTestPreferencesManager.putCurrentQAState(getIqTestGameType(), iqTestCurrentGame.getQuestionWithAnswer());
+
                     if (isAnswerCorrect()) {
                         scoreLabel.setText(getScore());
                         processCorrectAnswerPressed(new Runnable() {
@@ -115,15 +118,6 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
 
     private int getAnswer() {
         return Integer.parseInt(StringUtils.join(pressedAnswers, ""));
-    }
-
-    private void processCorrectAnswerPressed(Runnable afterAnimation) {
-        float scaleFactor = 0.3f;
-        float duration = 0.2f;
-        if (scoreLabel != null) {
-            scoreLabel.addAction(Actions.sequence(Actions.scaleBy(scaleFactor, scaleFactor, duration),
-                    Actions.scaleBy(-scaleFactor, -scaleFactor, duration), Utils.createRunnableAction(afterAnimation)));
-        }
     }
 
     @Override
@@ -292,8 +286,6 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
     private MyWrappedLabel createAnswLabel(String text, float fontSize, FontColor fontColor) {
         return new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder()
-//                        .setFontConfig(new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(),
-//                                FontConfig.FONT_SIZE * fontSize, FontConfig.STANDARD_BORDER_WIDTH * 6))
                         .setFontConfig(new FontConfig(fontColor.getColor(),
                                 FontConfig.FONT_SIZE * fontSize))
                         .setSingleLineLabel()

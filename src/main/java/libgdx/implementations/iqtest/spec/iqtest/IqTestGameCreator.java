@@ -92,6 +92,7 @@ public class IqTestGameCreator extends IqTestLevelCreator {
 
     private void answerClick(int answerNr) {
         iqTestCurrentGame.getQuestionWithAnswer().put(iqTestCurrentGame.getCurrentQuestion(), answerNr);
+        iqTestPreferencesManager.putCurrentQAState(getIqTestGameType(), iqTestCurrentGame.getQuestionWithAnswer());
         goToNextLevel();
     }
 
