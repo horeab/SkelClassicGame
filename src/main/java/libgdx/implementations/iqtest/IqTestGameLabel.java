@@ -15,7 +15,14 @@ public enum IqTestGameLabel implements libgdx.resources.gamelabel.GameLabel {
     low,
     normal,
     high,
-    veryhigh,;
+    veryhigh,
+    gametype_iqtest,
+    gametype_numseq,
+    gametype_memnum,
+    gametype_memnum_descr,
+    gametype_space,
+    gametype_space_descr,
+    ;
 
     @Override
     public String getText(Object... params) {

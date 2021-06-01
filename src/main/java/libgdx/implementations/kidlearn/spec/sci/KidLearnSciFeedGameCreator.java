@@ -105,12 +105,12 @@ public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreato
 
     @Override
     protected float getOptionsAvailableScreenWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(90);
+        return ScreenDimensionsManager.getScreenWidth(90);
     }
 
     @Override
     protected float getResponseAvailableScreenWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(90);
+        return ScreenDimensionsManager.getScreenWidth(90);
     }
 
     @Override
@@ -157,6 +157,6 @@ public class KidLearnSciFeedGameCreator extends KidLearnHorizontalDragDropCreato
 
     @Override
     protected float getOptionWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(11);
+        return ScreenDimensionsManager.getScreenWidth(11);
     }
 }

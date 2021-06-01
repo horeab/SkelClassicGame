@@ -55,8 +55,8 @@ public class BalloonCampaignScreen extends AbstractScreen<BalloonScreenManager> 
         } else if (stageNr == 2) {
             btnSkin = SkelClassicButtonSkin.BALLOON_STAGE2;
         }
-        float levelBtnWidth = ScreenDimensionsManager.getScreenWidthValue(20);
-        float levelBtnHeight = ScreenDimensionsManager.getScreenWidthValue(6);
+        float levelBtnWidth = ScreenDimensionsManager.getScreenWidth(20);
+        float levelBtnHeight = ScreenDimensionsManager.getScreenWidth(6);
         String text = getStageTitle(stageNr);
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(

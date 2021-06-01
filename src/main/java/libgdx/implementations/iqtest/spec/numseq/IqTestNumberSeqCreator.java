@@ -3,7 +3,6 @@ package libgdx.implementations.iqtest.spec.numseq;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -200,7 +199,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         }
 
         List<String> answerSolution = iqTestNumSeqLevelInfo.getAnswerSolution();
-        float solRowHeight = ScreenDimensionsManager.getScreenHeightValue(answerSolution.size() > 6 ? 4 : 5);
+        float solRowHeight = ScreenDimensionsManager.getScreenHeight(answerSolution.size() > 6 ? 4 : 5);
         MyWrappedLabel answerLabel = createAnswLabel(MainGameLabel.l_correct_answer.getText()
                 + ": " + iqTestCurrentGame.getCurrentQuestionEnum().getAnwser(), 1.4f, correctAnswerFontColor);
 
@@ -252,11 +251,11 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         float imgHeight = image.getHeight();
         float imgWidth = image.getWidth();
         if (imgHeight > imgWidth) {
-            image.setHeight(ScreenDimensionsManager.getScreenHeightValue(ifHeightGreaterPercent));
+            image.setHeight(ScreenDimensionsManager.getScreenHeight(ifHeightGreaterPercent));
             image.setWidth(ScreenDimensionsManager.getNewWidthForNewHeight(image.getHeight(), imgWidth, imgHeight));
         } else {
             int percent = imgWidth / imgHeight > 2 ? 100 : 75;
-            image.setWidth(ScreenDimensionsManager.getScreenWidthValue(percent));
+            image.setWidth(ScreenDimensionsManager.getScreenWidth(percent));
             image.setHeight(ScreenDimensionsManager.getNewHeightForNewWidth(image.getWidth(), imgWidth, imgHeight));
         }
 
@@ -272,7 +271,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
         group.addActor(image);
         group.setHeight(image.getHeight());
         group.setWidth(image.getWidth());
-        float imgSideDimen = ScreenDimensionsManager.getScreenWidthValue(Integer.valueOf(questionMarkInfoArray[1]));
+        float imgSideDimen = ScreenDimensionsManager.getScreenWidth(Integer.valueOf(questionMarkInfoArray[1]));
         Image questionMark = GraphicUtils.getImage(IqTestSpecificResource.valueOf(questionMarkInfoArray[0]));
         questionMark.setWidth(imgSideDimen);
         questionMark.setHeight(imgSideDimen);
@@ -360,7 +359,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
     }
 
     private float getPressedLettersLabelWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(60);
+        return ScreenDimensionsManager.getScreenWidth(60);
     }
 
     private Table createAnswerBtnTable() {

@@ -89,7 +89,7 @@ public class KidLearnDifficultyService {
                 .setFontConfig(KidLearnControlsUtils.getSubTitleFontConfig(mainColor,
                         KidLearnControlsUtils.getTitleStandardFontSize() / 2.2f))
                 .setFixedButtonSize(btnSize)
-//                .setWrappedText(labelText, ScreenDimensionsManager.getScreenWidthValue(20))
+//                .setWrappedText(labelText, ScreenDimensionsManager.getScreenWidth(20))
                 .build();
         btn.addListener(new ClickListener() {
             @Override

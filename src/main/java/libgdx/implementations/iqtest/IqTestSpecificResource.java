@@ -31,6 +31,10 @@ public enum IqTestSpecificResource implements SpecificResource {
     btn_level_main_2_up("buttons/btn_level_main_2_up.png", Texture.class),
     btn_level_main_3_down("buttons/btn_level_main_3_down.png", Texture.class),
     btn_level_main_3_up("buttons/btn_level_main_3_up.png", Texture.class),
+    mem_num_blue_btn_down("buttons/mem_num_blue_btn_down.png", Texture.class),
+    mem_num_blue_btn_up("buttons/mem_num_blue_btn_up.png", Texture.class),
+    mem_num_green_btn_up("buttons/mem_num_green_btn_up.png", Texture.class),
+    mem_num_red_btn_up("buttons/mem_num_red_btn_up.png", Texture.class),
 
     eye("eye.png", Texture.class),
     question_mark_orange("question_mark_orange.png", Texture.class),

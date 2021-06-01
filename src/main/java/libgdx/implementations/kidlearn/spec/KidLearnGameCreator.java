@@ -70,9 +70,9 @@ public abstract class KidLearnGameCreator {
 
     private Table createCorrectAnswerPopup() {
         Table table = new Table();
-        float popupWidth = ScreenDimensionsManager.getScreenWidthValue(60);
+        float popupWidth = ScreenDimensionsManager.getScreenWidth(60);
         table.setWidth(popupWidth);
-        table.setHeight(ScreenDimensionsManager.getScreenHeightValue(30));
+        table.setHeight(ScreenDimensionsManager.getScreenHeight(30));
         table.setX(ScreenDimensionsManager.getScreenWidth() / 2 - popupWidth / 2);
         table.setY(ScreenDimensionsManager.getScreenHeight() / 2 - table.getHeight() / 2);
         table.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
@@ -119,7 +119,7 @@ public abstract class KidLearnGameCreator {
     }
 
     private float getHeaderY() {
-        return ScreenDimensionsManager.getScreenHeightValue(93);
+        return ScreenDimensionsManager.getScreenHeight(93);
     }
 
     String getScoreLabelText() {

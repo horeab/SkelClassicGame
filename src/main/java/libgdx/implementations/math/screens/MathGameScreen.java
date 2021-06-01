@@ -13,7 +13,6 @@ import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.button.builders.ImageButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.dbapi.GameStatsDbApiService;
 import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
@@ -26,7 +25,6 @@ import libgdx.implementations.math.spec.Operation;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
-import libgdx.utils.DateUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
@@ -378,8 +376,8 @@ public class MathGameScreen extends AbstractScreen<MathScreenManager> {
         scoreLabel.setName(SCORE_LABEL);
         MyWrappedLabel levelLabel = createLabel(fontScale, getLevelText(totalLevel), FontColor.WHITE.getColor());
         levelLabel.setName(LEVEL_LABEL);
-        table.add(levelLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
-        table.add(scoreLabel).width(ScreenDimensionsManager.getScreenWidthValue(percent));
+        table.add(levelLabel).width(ScreenDimensionsManager.getScreenWidth(percent));
+        table.add(scoreLabel).width(ScreenDimensionsManager.getScreenWidth(percent));
         return table;
     }
 

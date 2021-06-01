@@ -33,7 +33,7 @@ public enum SkelClassicButtonSize implements ButtonSize {
     IQTEST_HEADER_IMG_BUTTON(MainDimen.side_btn_image.getDimen(), MainDimen.side_btn_image.getDimen()),
     IQTEST_NUM_SEQ_BUTTON(MainDimen.side_btn_image.getDimen(), MainDimen.side_btn_image.getDimen()),
     IQTEST_NUM_SEQ_SUBMIT_DELETE(MainDimen.side_btn_image.getDimen(), MainDimen.side_btn_image.getDimen()),
-    IQTEST_LEVEL_BTN(MainDimen.side_btn_image.getDimen() * 1.4f, MainDimen.side_btn_image.getDimen() * 1.4f),
+    IQTEST_LEVEL_BTN(MainDimen.side_btn_image.getDimen() * 1.1f, MainDimen.side_btn_image.getDimen() * 1.1f),
 
     FILLCOLOR_ZOOM_BUTTON(MainDimen.side_btn_image.getDimen() * 1f, MainDimen.side_btn_image.getDimen() * 1f),
     ;

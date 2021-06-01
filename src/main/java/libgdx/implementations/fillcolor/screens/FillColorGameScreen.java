@@ -137,16 +137,16 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         bar1.setBackground(GraphicUtils.getColorBackground(TOOLBAR_COLOR.toColor()));
         int bar1HeightPercent = 4;
         int bar2HeightPercent = 1;
-        bar1.setHeight(ScreenDimensionsManager.getScreenHeightValue(bar1HeightPercent));
+        bar1.setHeight(ScreenDimensionsManager.getScreenHeight(bar1HeightPercent));
         Table bar2 = new Table();
-        bar2.setHeight(ScreenDimensionsManager.getScreenHeightValue(bar2HeightPercent));
+        bar2.setHeight(ScreenDimensionsManager.getScreenHeight(bar2HeightPercent));
         bar2.setBackground(GraphicUtils.getColorBackground(RGBColor.DARK_BLUE.toColor()));
         topBar.add(bar1).growX().height(bar1.getHeight()).row();
         topBar.add(bar2).growX().height(bar2.getHeight());
-        topBar.padTop(-ScreenDimensionsManager.getScreenHeightValue(bar1HeightPercent));
+        topBar.padTop(-ScreenDimensionsManager.getScreenHeight(bar1HeightPercent));
         Table levelIconTable = new Table();
         float marginDimen = MainDimen.horizontal_general_margin.getDimen();
-        float levelInfoWidth = ScreenDimensionsManager.getScreenWidthValue(40);
+        float levelInfoWidth = ScreenDimensionsManager.getScreenWidth(40);
         Image levelIconBackground = GraphicUtils.getImage(FillColorSpecificResource.level_nr_background);
         levelIconTable.add(createLevelIcon(levelIconBackground)).pad(marginDimen).width(levelInfoWidth)
                 .height(ScreenDimensionsManager.getNewHeightForNewWidth(levelInfoWidth, levelIconBackground));
@@ -211,8 +211,8 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     }
 
     private Stack createLevelIcon(Image levelIconBackground) {
-        float labelWidth = ScreenDimensionsManager.getScreenWidthValue(30);
-        float labelHeight = ScreenDimensionsManager.getScreenHeightValue(7);
+        float labelWidth = ScreenDimensionsManager.getScreenWidth(30);
+        float labelHeight = ScreenDimensionsManager.getScreenHeight(7);
         MyWrappedLabel levelNr = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(RGBColor.WHITE.toColor(),
                         Color.BLACK, Math.round(FontConfig.FONT_SIZE * 1.1f),
@@ -254,7 +254,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                float isClickDimen = ScreenDimensionsManager.getScreenWidthValue(2f);
+                float isClickDimen = ScreenDimensionsManager.getScreenWidth(2f);
                 boolean isClick = Math.abs(initialX - x) < isClickDimen && Math.abs(initialY - y) < isClickDimen;
                 if (isClick) {
                     clickImage(x, y, beforePressCorrectAnswersNr);
@@ -264,7 +264,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
             }
 
             private void dragImage(float x, float y) {
-                float moveImg = ScreenDimensionsManager.getScreenWidthValue(25f);
+                float moveImg = ScreenDimensionsManager.getScreenWidth(25f);
                 float moveX = 0;
                 float moveY = 0;
                 if (Math.abs(initialX - x) > Math.abs(initialY - y)) {
@@ -352,7 +352,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
     }
 
     private void initPercentTable() {
-        float height = ScreenDimensionsManager.getScreenHeightValue(10);
+        float height = ScreenDimensionsManager.getScreenHeight(10);
         percentTable = new Table();
         percentTable.setVisible(false);
         percentTable.setWidth(0);
@@ -397,7 +397,7 @@ public class FillColorGameScreen extends AbstractScreen<FillColorScreenManager> 
         Table table = new Table();
         table.setBackground(GraphicUtils.getColorBackground(TOOLBAR_COLOR.toColor()));
         List<RGBColor> colors = createRandomRGBColors(0);
-        float maxSideDimen = ScreenDimensionsManager.getScreenWidthValue(20);
+        float maxSideDimen = ScreenDimensionsManager.getScreenWidth(20);
         float sideDimen = ScreenDimensionsManager.getScreenWidth() / colors.size();
         sideDimen = sideDimen > maxSideDimen ? maxSideDimen : sideDimen;
         Collections.shuffle(colors);

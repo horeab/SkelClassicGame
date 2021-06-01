@@ -3,11 +3,9 @@ package libgdx.implementations.resourcewars.screens;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import libgdx.constants.Language;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.game.Game;
 import libgdx.implementations.resourcewars.ResourceWarsScreenManager;
 import libgdx.implementations.resourcewars.spec.creator.ContainerManager;
 import libgdx.implementations.resourcewars.spec.logic.GamePreferencesManager;
@@ -24,12 +22,12 @@ public class ResourceWarsGameScreen extends AbstractScreen<ResourceWarsScreenMan
 
 
     private boolean incrDecrIsBeingMade = false;
-    private static final float INV_MARKET_HEIGHT = ScreenDimensionsManager.getScreenHeightValue(68);
-    public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidthValue(43);
+    private static final float INV_MARKET_HEIGHT = ScreenDimensionsManager.getScreenHeight(68);
+    public static float INVMARKETWIDTH = ScreenDimensionsManager.getScreenWidth(43);
     public static float NUMBERPICKERWIDTH = ScreenDimensionsManager.getScreenWidth() - INVMARKETWIDTH * 2;
     private ContainerManager containerManager;
     private CurrentGame currentGame;
-    public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidthValue(97);
+    public static float HEADERWIDTH = ScreenDimensionsManager.getScreenWidth(97);
     public static String ALLTABLE_NAME = "ALLTABLE_NAME";
 
     public ResourceWarsGameScreen(CurrentGame currentGame) {

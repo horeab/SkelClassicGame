@@ -107,7 +107,7 @@ public class KidLearnEngWordsGameCreator extends KidLearnHorizontalDragDropCreat
 
     @Override
     protected float getOptionsAvailableScreenWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(90);
+        return ScreenDimensionsManager.getScreenWidth(90);
     }
 
     @Override

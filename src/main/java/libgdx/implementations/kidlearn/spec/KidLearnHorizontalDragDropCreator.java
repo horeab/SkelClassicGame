@@ -24,7 +24,7 @@ public abstract class KidLearnHorizontalDragDropCreator extends KidLearnDragDrop
     }
 
     protected float getVariableResponseY() {
-        return ScreenDimensionsManager.getScreenHeightValue(new Random().nextInt(5));
+        return ScreenDimensionsManager.getScreenHeight(new Random().nextInt(5));
     }
 
     @Override

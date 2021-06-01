@@ -124,7 +124,7 @@ public class KidLearnMathCaterGameCreator extends KidLearnHorizontalDragDropCrea
 
     @Override
     protected float getOptionWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(16);
+        return ScreenDimensionsManager.getScreenWidth(16);
     }
 
     @Override

@@ -1,40 +1,24 @@
 package libgdx.implementations.memory.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import libgdx.campaign.CampaignLevelStatusEnum;
-import libgdx.campaign.CampaignService;
-import libgdx.campaign.CampaignStoreLevel;
 import libgdx.campaign.CampaignStoreService;
 import libgdx.constants.Language;
-import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MainButtonSkin;
 import libgdx.controls.button.MyButton;
-import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
-import libgdx.implementations.SkelClassicButtonSkin;
-import libgdx.implementations.math.MathCampaignLevelEnum;
-import libgdx.implementations.math.MathScreenManager;
-import libgdx.implementations.math.MathSpecificResource;
 import libgdx.implementations.memory.MemoryScreenManager;
 import libgdx.implementations.memory.MemorySpecificResource;
-import libgdx.implementations.memory.spec.GameLevel;
 import libgdx.implementations.memory.spec.Item;
 import libgdx.implementations.memory.spec.ItemsUtil;
 import libgdx.implementations.skelgame.SkelGameRatingService;
 import libgdx.resources.FontManager;
-import libgdx.resources.MainResource;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
@@ -84,7 +68,7 @@ public class MemoryCampaignScreen extends AbstractScreen<MemoryScreenManager> {
     private Table createAllTable() {
         Table table = new Table();
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
-        table.add(createStartGameBtn()).height(ScreenDimensionsManager.getScreenHeightValue(13)).width(ScreenDimensionsManager.getScreenWidthValue(70))
+        table.add(createStartGameBtn()).height(ScreenDimensionsManager.getScreenHeight(13)).width(ScreenDimensionsManager.getScreenWidth(70))
                 .padTop(verticalGeneralMarginDimen * 4).padBottom(verticalGeneralMarginDimen * 2).row();
         table.add(createDiscoveredItemsTable());
         return table;

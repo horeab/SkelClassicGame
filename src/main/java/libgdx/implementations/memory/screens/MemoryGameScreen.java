@@ -210,14 +210,14 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                 gameTable.setVisible(true);
             }
         }), Actions.fadeIn(0.3f)));
-        table.add(gameTable).width(ScreenDimensionsManager.getScreenWidthValue(95));
+        table.add(gameTable).width(ScreenDimensionsManager.getScreenWidth(95));
         addActor(table);
         backButton.toFront();
         refreshButton.toFront();
     }
 
     private float getHeaderHeight() {
-        return ScreenDimensionsManager.getScreenHeightValue(10);
+        return ScreenDimensionsManager.getScreenHeight(10);
     }
 
     private int getImageSideDimen() {
@@ -267,9 +267,9 @@ public class MemoryGameScreen extends AbstractScreen<MemoryScreenManager> {
                 .setFontConfig(new FontConfig(fontSize)).build());
         againstScore = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setText(memoryCurrentGame.getStageScoreAgainst() + "")
                 .setFontConfig(new FontConfig(FontColor.RED.getColor(), fontSize)).build());
-        table.add(forScore).width(ScreenDimensionsManager.getScreenWidthValue(10));
-        table.add(between).width(ScreenDimensionsManager.getScreenWidthValue(10));
-        table.add(againstScore).width(ScreenDimensionsManager.getScreenWidthValue(10));
+        table.add(forScore).width(ScreenDimensionsManager.getScreenWidth(10));
+        table.add(between).width(ScreenDimensionsManager.getScreenWidth(10));
+        table.add(againstScore).width(ScreenDimensionsManager.getScreenWidth(10));
         return table;
     }
 

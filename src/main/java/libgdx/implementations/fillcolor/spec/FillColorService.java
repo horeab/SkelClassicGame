@@ -22,7 +22,7 @@ public class FillColorService {
 
     private Pixmap processedPixmap;
     private Stack stack;
-    private static float IMG_HEIGHT = ScreenDimensionsManager.getScreenHeightValue(55);
+    private static float IMG_HEIGHT = ScreenDimensionsManager.getScreenHeight(55);
     private Map<Pair<Integer, Integer>, RGBColor> correctColors;
     private Map<RGBColor, Integer> correctColorsPressed = new HashMap<>();
     private int wrongColorsPressed;

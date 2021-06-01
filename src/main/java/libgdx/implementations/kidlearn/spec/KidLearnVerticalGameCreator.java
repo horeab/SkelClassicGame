@@ -43,7 +43,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         img.setWidth(newWidthForNewHeight);
 
         img.setX((getResponsesRowX() - newWidthForNewHeight) / 2);
-        img.setY(ScreenDimensionsManager.getScreenHeightValue(5));
+        img.setY(ScreenDimensionsManager.getScreenHeight(5));
         addActorToScreen(img);
     }
 
@@ -89,7 +89,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
         int screenHeight = ScreenDimensionsManager.getScreenHeight();
         float availableScreenHeight = getAvailableScreenHeight();
         float partHeight = availableScreenHeight / getTotalOptions();
-        float halfScreen = ScreenDimensionsManager.getScreenWidthValue(50);
+        float halfScreen = ScreenDimensionsManager.getScreenWidth(50);
         float halfQ = halfScreen / 4;
         float x = halfScreen + halfQ / 1.3f;
         if (index % 2 != 0) {
@@ -136,7 +136,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected float getVerifyBtnY() {
-        return ScreenDimensionsManager.getScreenHeightValue(50) - verifyBtn.getHeight() / 2;
+        return ScreenDimensionsManager.getScreenHeight(50) - verifyBtn.getHeight() / 2;
     }
 
 
@@ -175,7 +175,7 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
     }
 
     private float getResponsesRowX() {
-        return ScreenDimensionsManager.getScreenWidthValue(35);
+        return ScreenDimensionsManager.getScreenWidth(35);
     }
 
     @Override
@@ -200,11 +200,11 @@ public class KidLearnVerticalGameCreator extends KidLearnDragDropCreator {
 
     @Override
     protected float getOptionWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(17);
+        return ScreenDimensionsManager.getScreenWidth(17);
     }
 
     @Override
     protected float getOptionHeight() {
-        return ScreenDimensionsManager.getScreenHeightValue(9);
+        return ScreenDimensionsManager.getScreenHeight(9);
     }
 }

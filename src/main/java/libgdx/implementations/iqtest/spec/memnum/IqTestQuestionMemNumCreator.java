@@ -9,10 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.animations.ActorAnimation;
-import libgdx.controls.label.MyWrappedLabel;
-import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.controls.button.ButtonBuilder;
+import libgdx.controls.button.MyButton;
+import libgdx.controls.label.MyLabel;
+import libgdx.controls.labelimage.LabelImageConfigBuilder;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
+import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
 import libgdx.implementations.iqtest.spec.IqTestBaseLevelCreator;
 import libgdx.implementations.iqtest.spec.IqTestGameType;
@@ -37,7 +40,8 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
     private List<Integer> answersToPress;
     private static final int ROWS = 4;
     private static final int COLS = 4;
-    private List<MyWrappedLabel> allCellTextLabels = new ArrayList<>();
+    private List<MyLabel> allCellTextLabels = new ArrayList<>();
+    private List<MyButton> allCellBtns = new ArrayList<>();
 
     public IqTestQuestionMemNumCreator(AbstractScreen abstractScreen) {
         this.abstractScreen = abstractScreen;
@@ -114,14 +118,14 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
         float verticalGeneralMarginDimen = MainDimen.vertical_general_margin.getDimen();
         table.add(createHeader()).pad(verticalGeneralMarginDimen).width(screenWidth).row();
         table.add().growY().row();
-        float allTableWidth = ScreenDimensionsManager.getScreenWidthValue(75);
+        float allTableWidth = ScreenDimensionsManager.getScreenWidth(75);
 
 
         Image eye = GraphicUtils.getImage(IqTestSpecificResource.eye);
         abstractScreen.addActor(eye);
         final float durationEye = 2f;
         final float durationShowNr = 1f;
-        actorAnimation.animateFadeOut(eye, durationEye);
+        actorAnimation.animateFadeOut(eye, durationEye, true);
         ActorPositionManager.setActorCenterScreen(eye);
         abstractScreen.addAction(Actions.delay(durationEye, Utils.createRunnableAction(new Runnable() {
             @Override
@@ -133,8 +137,8 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                 abstractScreen.addAction(Actions.delay(durationShowNr, Utils.createRunnableAction(new Runnable() {
                     @Override
                     public void run() {
-                        eye.remove();
                         showAllCellTextLabels(false);
+                        disabledAllCellTextButtons(false);
                     }
                 })));
             }
@@ -160,38 +164,49 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                 Table cell = new Table();
                 if (randomPositionsForNumbers.containsKey(pos)) {
                     Integer nr = randomPositionsForNumbers.get(pos);
-                    final MyWrappedLabel cellTextLabel = createCellVal(nr + "");
+                    MyButton cellBtn = new ButtonBuilder()
+                            .setWrappedText(new LabelImageConfigBuilder().setText(nr + "").setFontConfig(new FontConfig(Color.WHITE, Color.BLACK,
+                                    FontConfig.FONT_SIZE * 2.1f, FontConfig.STANDARD_BORDER_WIDTH * 8.5f)))
+                            .setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_BLUE_BTN).build();
+                    MyLabel cellTextLabel = cellBtn.getCenterRowLabels().get(0);
                     allCellTextLabels.add(cellTextLabel);
-                    cell.add(cellTextLabel);
-                    cell.setName(CELL_NAME + nr);
-                    cell.setBackground(GraphicUtils.getColorBackground(Color.BLUE));
+                    allCellBtns.add(cellBtn);
+                    cell.add(cellBtn).width(sideDimen).height(sideDimen);
+                    cellBtn.setName(CELL_NAME + nr);
                     cell.setTouchable(Touchable.enabled);
-                    cell.addListener(new ClickListener() {
+                    cellBtn.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
-                            if (isCorrectPressed(nr)) {
-                                answersToPress.remove(nr);
-                                cellTextLabel.setVisible(true);
-                                if (answersToPress.isEmpty()) {
-                                    currentQuestion++;
-                                    scoreLabel.setText(getScore());
-                                    processCorrectAnswerPressed(new Runnable() {
-                                        @Override
-                                        public void run() {
+                            if (!answersToPress.isEmpty()) {
+                                if (isCorrectPressed(nr)) {
+                                    answersToPress.remove(nr);
+                                    cellTextLabel.setVisible(true);
+                                    if (answersToPress.isEmpty()) {
+                                        for (MyButton button : allCellBtns) {
+                                            button.setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_GREEN_BTN);
                                         }
-                                    });
-                                    abstractScreen.addAction(Actions.delay(2f, Utils.createRunnableAction(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            refreshLevel();
-                                        }
-                                    })));
+                                        disabledAllCellTextButtons(true);
+                                        currentQuestion++;
+                                        scoreLabel.setText(getScore());
+                                        processCorrectAnswerPressed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                            }
+                                        });
+                                        abstractScreen.addAction(Actions.delay(2f, Utils.createRunnableAction(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                refreshLevel();
+                                            }
+                                        })));
+                                    }
+                                } else {
+                                    disabledAllCellTextButtons(true);
+                                    showAllCellTextLabels(true);
+                                    cellBtn.setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_RED_BTN);
+                                    MyButton correctAnsw = abstractScreen.getRoot().findActor(CELL_NAME + Collections.min(answersToPress));
+                                    correctAnsw.setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_GREEN_BTN);
                                 }
-                            } else {
-                                showAllCellTextLabels(true);
-                                cell.setBackground(GraphicUtils.getColorBackground(Color.RED));
-                                Table correctAnsw = abstractScreen.getRoot().findActor(CELL_NAME + Collections.min(answersToPress));
-                                correctAnsw.setBackground(GraphicUtils.getColorBackground(Color.GREEN));
                             }
                         }
                     });
@@ -200,6 +215,7 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                 pos++;
             }
         }
+        disabledAllCellTextButtons(true);
         return table;
     }
 
@@ -207,20 +223,17 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
         return Collections.min(answersToPress) == nr;
     }
 
-    private void showAllCellTextLabels(boolean visible) {
-        for (MyWrappedLabel label : allCellTextLabels) {
-            label.setVisible(visible);
+    private void disabledAllCellTextButtons(boolean disabled) {
+        for (MyButton button : allCellBtns) {
+            button.setDisabled(disabled);
+            button.setTouchable(disabled ? Touchable.disabled : Touchable.enabled);
         }
     }
 
-
-    private MyWrappedLabel createCellVal(String text) {
-        return new MyWrappedLabel(
-                new MyWrappedLabelConfigBuilder()
-                        .setFontConfig(new FontConfig(Color.BLACK, FontConfig.FONT_SIZE * 2))
-                        .setSingleLineLabel()
-                        .setText(text)
-                        .build());
+    private void showAllCellTextLabels(boolean visible) {
+        for (MyLabel label : allCellTextLabels) {
+            label.setVisible(visible);
+        }
     }
 
     @Override

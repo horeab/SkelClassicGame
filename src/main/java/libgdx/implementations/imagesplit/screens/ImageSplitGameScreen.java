@@ -647,7 +647,7 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
     }
 
     private float getHeaderY() {
-        return ScreenDimensionsManager.getScreenHeightValue(92);
+        return ScreenDimensionsManager.getScreenHeight(92);
     }
 
     private void countdownProcess() {
@@ -725,6 +725,6 @@ public abstract class ImageSplitGameScreen extends AbstractScreen<ImageSplitScre
     }
 
     private float getImageTableStartX() {
-        return ScreenDimensionsManager.getScreenHeightValue(0);
+        return ScreenDimensionsManager.getScreenHeight(0);
     }
 }

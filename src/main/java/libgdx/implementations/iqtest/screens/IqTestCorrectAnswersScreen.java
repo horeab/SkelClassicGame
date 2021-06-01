@@ -46,7 +46,7 @@ public class IqTestCorrectAnswersScreen extends AbstractScreen<IqTestScreenManag
     private Table createAllTable() {
         Table table = new Table();
         float dimen = MainDimen.horizontal_general_margin.getDimen();
-        float separatorHeight = ScreenDimensionsManager.getScreenHeightValue(2);
+        float separatorHeight = ScreenDimensionsManager.getScreenHeight(2);
         for (IqTestQuestion question : IqTestQuestion.values()) {
             Table qaTable = new Table();
             Image questionImage = GraphicUtils.getImage(Game.getInstance().getMainDependencyManager().createResourceService().getByName("q" + question.getQuestionNr()));

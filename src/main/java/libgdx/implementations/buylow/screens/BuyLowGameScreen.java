@@ -32,7 +32,6 @@ import libgdx.implementations.buylow.BuyLowSpecificResource;
 import libgdx.implementations.buylow.spec.BuyLowHighScorePreferencesManager;
 import libgdx.implementations.buylow.spec.BuyLowLevelFinishedPopup;
 import libgdx.implementations.buylow.spec.BuyLowResource;
-import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
@@ -105,7 +104,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
     private void createInvTable() {
         Table table = new Table();
         Table head = new Table();
-        float screenWidthValue = ScreenDimensionsManager.getScreenWidthValue(100);
+        float screenWidthValue = ScreenDimensionsManager.getScreenWidth(100);
         MyWrappedLabel budgetLabel = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue).setFontConfig(new FontConfig(FontColor.BLUE.getColor(),
                         Math.round(FontConfig.FONT_SIZE * 1.2f))).setText(SkelGameLabel.l_budget.getText() + ": " + formatNrToCurrencyWithDollar(budget)).build());
@@ -117,7 +116,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         head.add(budgetLabel).align(Align.left).row();
         head.add(daysLabel).align(Align.left);
         table.add(head).padTop(MainDimen.vertical_general_margin.getDimen() * 2).padBottom(MainDimen.vertical_general_margin.getDimen()).row();
-        float invRowHeight = ScreenDimensionsManager.getScreenHeightValue(5);
+        float invRowHeight = ScreenDimensionsManager.getScreenHeight(5);
         table.add(createInvInfoTable(SkelGameLabel.l_inventory.getText() ,
                 getTotalInv() + "/" + MAX_INVENTORY,
                 formatNrToCurrencyWithDollar(getInvValue()),
@@ -150,7 +149,7 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
     }
 
     private Table createInvInfoTable(String labelText, String spaceLabelValue, String valueLabelValue, FontConfig spaceFontConfig, FontConfig valueFontConfig) {
-        float screenWidthValue = ScreenDimensionsManager.getScreenWidthValue(97);
+        float screenWidthValue = ScreenDimensionsManager.getScreenWidth(97);
         Table invTable = new Table();
         MyWrappedLabel invSpace = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setWidth(screenWidthValue / 3).setFontConfig(new FontConfig(FontColor.BLACK.getColor(),
@@ -199,18 +198,18 @@ public class BuyLowGameScreen extends AbstractScreen<BuyLowScreenManager> {
         int i = 0;
         for (Map.Entry<BuyLowResource, Integer> e : resAmount.entrySet()) {
             allTable.add(createResTable(i, e.getKey(), resCurrentPrice.get(e.getKey())))
-                    .width(ScreenDimensionsManager.getScreenWidthValue(100))
+                    .width(ScreenDimensionsManager.getScreenWidth(100))
                     .height(itemHeight()).row();
             i++;
         }
     }
 
     private float itemHeight() {
-        return ScreenDimensionsManager.getScreenHeightValue(18);
+        return ScreenDimensionsManager.getScreenHeight(18);
     }
 
     private float itemWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(65);
+        return ScreenDimensionsManager.getScreenWidth(65);
     }
 
     private Table createResTable(int index, final BuyLowResource res, final int currentPrice) {

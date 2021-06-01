@@ -87,7 +87,7 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
 
     private Table createImgLevel(ImageSplitCampaignLevelEnum campaignLevelEnum) {
         Image image = GraphicUtils.getImage(campaignLevelEnum.getRes());
-        float width = ScreenDimensionsManager.getScreenWidthValue(60);
+        float width = ScreenDimensionsManager.getScreenWidth(60);
         imgLevelTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(FontColor.WHITE.getColor(),
                 FontColor.DARK_GRAY.getColor(), Math.round(FontConfig.FONT_SIZE * 1.4f),
                 3f)).setText(campaignLevelEnum.getCols() + " X " + campaignLevelEnum.getRows()).build())).row();
@@ -96,7 +96,7 @@ public class ImageSplitMainMenuScreen extends AbstractScreen<ImageSplitScreenMan
         addNavigBtnToTable(imgNavigTable, campaignLevelEnum, SwipeDirection.LEFT);
         imgNavigTable.add(image).width(width).height(ScreenDimensionsManager.getNewHeightForNewWidth(width, image));
         addNavigBtnToTable(imgNavigTable, campaignLevelEnum, SwipeDirection.RIGHT);
-        imgLevelTable.add(imgNavigTable).height(ScreenDimensionsManager.getScreenHeightValue(50)).row();
+        imgLevelTable.add(imgNavigTable).height(ScreenDimensionsManager.getScreenHeight(50)).row();
 
         Table btnTable = new Table();
         for (ImageSplitGameType gameType : campaignLevelEnum.getGameTypes()) {

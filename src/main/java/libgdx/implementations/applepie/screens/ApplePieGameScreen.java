@@ -202,13 +202,13 @@ public class ApplePieGameScreen extends AbstractScreen<ApplePieScreenManager> {
     }
 
     private float getObjectiveLabelWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(90);
+        return ScreenDimensionsManager.getScreenWidth(90);
     }
 
     private Table createAllIngredientTable() {
         Table table = new Table();
         for (ApplePieIngredient ingredient : ApplePieIngredient.values()) {
-            table.add(createIngredientTable(ingredient)).growX().height(ScreenDimensionsManager.getScreenHeightValue(10)).row();
+            table.add(createIngredientTable(ingredient)).growX().height(ScreenDimensionsManager.getScreenHeight(10)).row();
         }
         return table;
     }
@@ -274,7 +274,7 @@ public class ApplePieGameScreen extends AbstractScreen<ApplePieScreenManager> {
 
     private Stack createCookPieTable() {
         allTable.clear();
-        float cookPieSideDimen = ScreenDimensionsManager.getScreenWidthValue(60);
+        float cookPieSideDimen = ScreenDimensionsManager.getScreenWidth(60);
         Stack stack = new Stack();
         MyWrappedLabel percentCooked = new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setWidth(cookPieSideDimen).setFontConfig(new FontConfig(FontColor.BLUE.getColor(),

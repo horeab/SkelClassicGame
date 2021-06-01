@@ -62,7 +62,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
     private void createChooseLevelMenu() {
         Table table = new Table();
         Table btnTable = new Table();
-        float btnTableHeight = ScreenDimensionsManager.getScreenHeightValue(70);
+        float btnTableHeight = ScreenDimensionsManager.getScreenHeight(70);
         List<KidLearnEngWordsLevel> wordsLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnEngWordsLevel.class, difficultyLevelClass());
         List<KidLearnEngHangmanLevel> hangmanLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnEngHangmanLevel.class, difficultyLevelClass());
         List<KidLearnEngVerbLevel> verbLevels = kidLearnDifficultyService.getLevelsForDifficulty(KidLearnEngVerbLevel.class, difficultyLevelClass());
@@ -87,7 +87,7 @@ public class KidLearnEngLevelScreen extends AbstractScreen<KidLearnScreenManager
         contentContainer.add(btnTable).top().height(btnTableHeight);
         Table difficultyButtonsTable = kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), true, new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()));
         difficultyButtonsTable.toBack();
-        contentContainer.add(difficultyButtonsTable).width(ScreenDimensionsManager.getScreenWidthValue(20)).top().height(btnTableHeight);
+        contentContainer.add(difficultyButtonsTable).width(ScreenDimensionsManager.getScreenWidth(20)).top().height(btnTableHeight);
         table.add(contentContainer).top().height(btnTableHeight);
         new ActorAnimation(getAbstractScreen()).animateFastFadeIn(table);
         getAllTable().add(table).grow();

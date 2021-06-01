@@ -53,6 +53,9 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
     BUYLOW_SELLBUY3_BTN(BuyLowSpecificResource.btn3, BuyLowSpecificResource.btn3_clicked, BuyLowSpecificResource.btn3, BuyLowSpecificResource.btn_disabled, null),
 
     IQTEST_NUM_SEQ_BTN(IqTestSpecificResource.num_seq_btn_up, IqTestSpecificResource.num_seq_btn_pressed, IqTestSpecificResource.num_seq_btn_up, IqTestSpecificResource.num_seq_btn_up, null),
+    IQTEST_MEM_NUM_BLUE_BTN(IqTestSpecificResource.mem_num_blue_btn_up, IqTestSpecificResource.mem_num_blue_btn_down, IqTestSpecificResource.mem_num_blue_btn_up, IqTestSpecificResource.mem_num_blue_btn_up, null),
+    IQTEST_MEM_NUM_RED_BTN(IqTestSpecificResource.mem_num_red_btn_up, IqTestSpecificResource.mem_num_red_btn_up, IqTestSpecificResource.mem_num_red_btn_up, IqTestSpecificResource.mem_num_red_btn_up, null),
+    IQTEST_MEM_NUM_GREEN_BTN(IqTestSpecificResource.mem_num_green_btn_up, IqTestSpecificResource.mem_num_green_btn_up, IqTestSpecificResource.mem_num_green_btn_up, IqTestSpecificResource.mem_num_green_btn_up, null),
     IQTEST_SUBMIT_BTN(IqTestSpecificResource.submit_btn_up, IqTestSpecificResource.submit_btn_down, IqTestSpecificResource.submit_btn_up, IqTestSpecificResource.submit_btn_up, null),
     IQTEST_DELETE_BTN(IqTestSpecificResource.delete_btn_up, IqTestSpecificResource.delete_btn_down, IqTestSpecificResource.delete_btn_up, IqTestSpecificResource.delete_btn_up, null),
     IQTEST_NEW_GAME_BTN(IqTestSpecificResource.new_game_btn_up, IqTestSpecificResource.new_game_btn_down, IqTestSpecificResource.new_game_btn_up, IqTestSpecificResource.new_game_btn_up, null),
@@ -105,6 +108,10 @@ public enum SkelClassicButtonSkin implements ButtonSkin {
         this.imgChecked = imgChecked;
         this.imgDisabled = imgDisabled;
         this.buttonDisabledFontColor = buttonDisabledFontColor;
+    }
+
+    public Res getImgUpRes() {
+        return imgUp;
     }
 
     @Override

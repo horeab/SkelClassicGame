@@ -104,7 +104,7 @@ public abstract class KidLearnMultipleItemsGameCreator extends KidLearnHorizonta
 
     @Override
     protected float getOptionsAvailableScreenWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(95);
+        return ScreenDimensionsManager.getScreenWidth(95);
     }
 
     @Override

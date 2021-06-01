@@ -115,7 +115,7 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
         finger.setY(centerOption.initialCoord.getRight());
         addActorToScreen(finger);
         finger.addAction(Actions.sequence(Actions.delay(initialDelayDuration), Actions.moveTo(response.initialCoord.getLeft() + getOptionWidth() / 2,
-                finger.getY() + ScreenDimensionsManager.getScreenHeightValue(20), moveDuration), Actions.fadeOut(fadeOutDuration)));
+                finger.getY() + ScreenDimensionsManager.getScreenHeight(20), moveDuration), Actions.fadeOut(fadeOutDuration)));
     }
 
     protected Table addOptionImg(Pair<Float, Float> coord, Res res, String text) {
@@ -378,15 +378,15 @@ public abstract class KidLearnDragDropCreator extends KidLearnGameCreator {
     }
 
     protected float getVerifyBtnY() {
-        return ScreenDimensionsManager.getScreenHeightValue(25);
+        return ScreenDimensionsManager.getScreenHeight(25);
     }
 
     protected float getOptionWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(12);
+        return ScreenDimensionsManager.getScreenWidth(12);
     }
 
     protected float getOptionHeight() {
-        return ScreenDimensionsManager.getScreenWidthValue(12);
+        return ScreenDimensionsManager.getScreenWidth(12);
     }
 
     protected float getResponseWidth() {

@@ -18,6 +18,10 @@ public class IqTestDependencyManager extends CampaignGameDependencyManager {
         }
         int totalNumberSeqQuestionsInclusivePlusOne = 13;
         list.add(new IqTestNumberSeqImageQuestionIncrementRes(0, totalNumberSeqQuestionsInclusivePlusOne, IqTestNumberSeqImageQuestionIncrementRes.PNG));
+
+        int totalSpaceQuestionsPlusOne = 9;
+        list.add(new IqTestSpaceImageQcQuestionIncrementRes(0, totalSpaceQuestionsPlusOne, IqTestSpaceImageQcQuestionIncrementRes.PNG));
+        list.add(new IqTestSpaceImageQwQuestionIncrementRes(0, totalSpaceQuestionsPlusOne, IqTestSpaceImageQwQuestionIncrementRes.PNG));
         return list;
     }
 

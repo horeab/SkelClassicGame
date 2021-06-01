@@ -74,14 +74,14 @@ public class KidLearnSciLevelScreen extends AbstractScreen<KidLearnScreenManager
         for (KidLearnSciStateLevel level : stateLevels) {
             addLevelToTable(btnTable, level, KidLearnSciStateGameCreator.TOTAL_QUESTIONS);
         }
-        float btnTableHeight = ScreenDimensionsManager.getScreenHeightValue(70);
+        float btnTableHeight = ScreenDimensionsManager.getScreenHeight(70);
         float extraHeight = ScreenDimensionsManager.getScreenHeight() - btnTableHeight;
         table.add(KidLearnControlsUtils.createGameTitleAllWidth(
                 KidLearnGameLabel.l_sci_title.getText(), kidLearnDifficultyService.getTitleBorderColor(difficultyLevelClass()))).height(extraHeight / 2).row();
         table.add().height(extraHeight / 2).row();
         Table contentContainer = new Table();
         Table difficultyButtonsTable = kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), false, new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()));
-        contentContainer.add(difficultyButtonsTable).height(ScreenDimensionsManager.getScreenHeightValue(10)).top().row();
+        contentContainer.add(difficultyButtonsTable).height(ScreenDimensionsManager.getScreenHeight(10)).top().row();
         contentContainer.add(btnTable).top().height(btnTableHeight);
         table.add(contentContainer).top().height(btnTableHeight);
         new ActorAnimation(getAbstractScreen()).animateFastFadeIn(table);

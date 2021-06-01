@@ -9,6 +9,7 @@ import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestion;
 import libgdx.implementations.iqtest.spec.memnum.IqTestQuestionMemNumCreator;
 import libgdx.implementations.iqtest.spec.numseq.IqNumSeqQuestion;
 import libgdx.implementations.iqtest.spec.numseq.IqTestNumberSeqCreator;
+import libgdx.implementations.iqtest.spec.space.IqTestQuestionSpaceCreator;
 import libgdx.screen.AbstractScreen;
 import libgdx.skelgameimpl.skelgame.SkelGameRatingService;
 import libgdx.utils.Utils;
@@ -40,6 +41,8 @@ public class IqTestGameScreen extends AbstractScreen {
 
         } else if (iqTestGameType == IqTestGameType.MEM_NUM) {
             creator = new IqTestQuestionMemNumCreator(this);
+        } else if (iqTestGameType == IqTestGameType.SPACE) {
+            creator = new IqTestQuestionSpaceCreator(this);
         } else {
             IqTestCurrentGame currentGame = createCurrentGame(iqTestGameType, IqNumSeqQuestion.Q0.getEnumAllValues());
             creator = new IqTestNumberSeqCreator(currentGame, this);

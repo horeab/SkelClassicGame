@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.campaign.CampaignStoreService;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
-import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.button.builders.SoundIconButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
@@ -48,8 +47,8 @@ public class BalloonMainMenuScreen extends AbstractScreen<BalloonScreenManager> 
         float soundBtnSize = verticalGeneralMarginDimen * 5;
         table.add(new SoundIconButtonBuilder().createSoundButton()).right().width(soundBtnSize).height(soundBtnSize).row();
         addTitle(table);
-        float btnHeight = ScreenDimensionsManager.getScreenHeightValue(14);
-        float btnWidth = ScreenDimensionsManager.getScreenWidthValue(35);
+        float btnHeight = ScreenDimensionsManager.getScreenHeight(14);
+        float btnWidth = ScreenDimensionsManager.getScreenWidth(35);
         table.add(createStartGameBtn()).height(btnHeight).width(btnWidth).padTop(verticalGeneralMarginDimen * 4).row();
         table.add(createMultiplayerBtn()).height(btnHeight).width(btnWidth).padTop(verticalGeneralMarginDimen * 2).row();
         addActor(table);
@@ -62,8 +61,8 @@ public class BalloonMainMenuScreen extends AbstractScreen<BalloonScreenManager> 
         float imgDimen = verticalGeneralMarginDimen * 25;
         image.setHeight(imgDimen);
         image.setWidth(imgDimen);
-        image.setX(ScreenDimensionsManager.getScreenWidthValue(5));
-        image.setY(ScreenDimensionsManager.getScreenHeightValue(5));
+        image.setX(ScreenDimensionsManager.getScreenWidth(5));
+        image.setY(ScreenDimensionsManager.getScreenHeight(5));
         image.toBack();
         addActor(image);
     }

@@ -15,6 +15,6 @@ public class KidLearnSciBodyGameCreator extends KidLearnVerticalGameCreator {
 
     @Override
     protected float getOptionWidth() {
-        return ScreenDimensionsManager.getScreenWidthValue(15);
+        return ScreenDimensionsManager.getScreenWidth(15);
     }
 }

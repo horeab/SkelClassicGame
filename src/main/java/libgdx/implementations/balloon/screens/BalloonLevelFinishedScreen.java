@@ -14,13 +14,9 @@ import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.BackButtonBuilder;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.controls.popup.notificationpopup.MyNotificationPopupConfigBuilder;
-import libgdx.controls.popup.notificationpopup.MyNotificationPopupCreator;
-import libgdx.dbapi.GameStatsDbApiService;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSkin;
-import libgdx.implementations.balloon.BalloonCampaignLevelEnum;
 import libgdx.implementations.balloon.BalloonScreenManager;
 import libgdx.implementations.balloon.BalloonSpecificResource;
 import libgdx.implementations.balloon.logic.LevelManager;
@@ -29,7 +25,6 @@ import libgdx.implementations.skelgame.SkelGameLabel;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
-import libgdx.utils.DateUtils;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
@@ -121,7 +116,7 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
             text = text + " - " + player2Score;
         }
         Table table = new Table();
-        MyWrappedLabel lvlInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(levelInfo.isOnePlayerLevel() ? 20 : 50))
+        MyWrappedLabel lvlInfo = new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidth(levelInfo.isOnePlayerLevel() ? 20 : 50))
                 .setFontConfig(new FontConfig(FontColor.LIGHT_GREEN.getColor(), FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * 5f), 4f))
                 .setText(text).build());
         table.add(lvlInfo);
@@ -137,8 +132,8 @@ public class BalloonLevelFinishedScreen extends AbstractScreen<BalloonScreenMana
 
     private Table createButtons() {
         Table btnTable = new Table();
-        float btnWidth = ScreenDimensionsManager.getScreenWidthValue(25);
-        float btnHeight = ScreenDimensionsManager.getScreenWidthValue(10);
+        float btnWidth = ScreenDimensionsManager.getScreenWidth(25);
+        float btnHeight = ScreenDimensionsManager.getScreenWidth(10);
 
         MyButton replayBtn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.BALLOON_STAGE0)

@@ -29,7 +29,6 @@ import libgdx.campaign.CampaignService;
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
-import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.balloon.BalloonGame;
 import libgdx.implementations.balloon.BalloonSpecificResource;
@@ -39,7 +38,6 @@ import libgdx.implementations.balloon.model.MatrixValue;
 import libgdx.implementations.balloon.model.MatrixWithChangedCells;
 import libgdx.implementations.balloon.model.PlayerPosition;
 import libgdx.implementations.balloon.screens.BalloonCampaignScreen;
-import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
@@ -90,7 +88,7 @@ public class MainViewCreator {
         campaignService = new CampaignService();
         imageManager = new ImageManager();
         mcu = new MatrixCoordinatesUtils(nrOfCols, nrOfRows);
-        cellDimen = ScreenDimensionsManager.getScreenWidthValue(100 / nrOfCols);
+        cellDimen = ScreenDimensionsManager.getScreenWidth(100 / nrOfCols);
         backBtn = new BackButtonBuilder().addHoverBackButton(screen, MainDimen.horizontal_general_margin.getDimen() / 2, BackButtonBuilder.getY());
     }
 
@@ -140,7 +138,7 @@ public class MainViewCreator {
     }
 
     private MyWrappedLabel getLvlInfoLabel(String text, FontColor fontColor) {
-        return new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidthValue(20))
+        return new MyWrappedLabel(new MyWrappedLabelConfigBuilder().setWidth(ScreenDimensionsManager.getScreenWidth(20))
                 .setFontConfig(new FontConfig(fontColor.getColor(), FontColor.BLACK.getColor(), Math.round(FontConfig.FONT_SIZE * (text.length() > 7 ? 2f : 2.5f)), 4f))
                 .setText(text).build());
     }

@@ -71,7 +71,7 @@ public class ContainerManager {
     private ResourceTransactionsManager resourceTransactionsManager;
     private HighScorePreferencesManager highScorePreferencesManager = new HighScorePreferencesManager();
     private LocationMovementManager locationMovementManager;
-    private static float INV_MARKET_ITEM_HEIGHT = ScreenDimensionsManager.getScreenWidthValue(15);
+    private static float INV_MARKET_ITEM_HEIGHT = ScreenDimensionsManager.getScreenWidth(15);
     private Integer increaseAmountButtonPressedSeconds = null;
     private Integer decreaseAmountButtonPressedSeconds = null;
 

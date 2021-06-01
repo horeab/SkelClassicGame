@@ -22,11 +22,9 @@ import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
-import libgdx.implementations.kidlearn.KidLearnQuestionDifficultyLevel;
 import libgdx.implementations.kidlearn.KidLearnSpecificResource;
 import libgdx.implementations.kidlearn.spec.KidLearnGameContext;
 import libgdx.implementations.kidlearn.spec.KidLearnGameCreator;
-import libgdx.implementations.kidlearn.spec.KidLearnLevel;
 import libgdx.implementations.kidlearn.spec.KidLearnUtils;
 import libgdx.implementations.kidlearn.spec.KidLearnWordImgConfig;
 import libgdx.resources.dimen.MainDimen;
@@ -67,7 +65,7 @@ public class KidLearnEngHangmanGameCreator extends KidLearnGameCreator {
         super.create();
         Table table = new Table();
         Table image = new Table();
-        float imgSideDimen = ScreenDimensionsManager.getScreenHeightValue(30);
+        float imgSideDimen = ScreenDimensionsManager.getScreenHeight(30);
         image.add(GraphicUtils.getImage(kidLearnWordImgConfig.img)).width(imgSideDimen).height(imgSideDimen);
         table.add(image).row();
         table.add(createPressedAnswersTable()).row();
@@ -154,7 +152,7 @@ public class KidLearnEngHangmanGameCreator extends KidLearnGameCreator {
             for (int j = 0; j < getNrOfAnswersOnRow(); j++) {
                 if (answerIndex < allAnswerButtons.size()) {
                     MyButton button = allAnswerButtons.get(answerIndex);
-                    buttonRow.add(button).width(button.getWidth()).height(button.getHeight()).padRight(ScreenDimensionsManager.getScreenWidthValue(0.65f));
+                    buttonRow.add(button).width(button.getWidth()).height(button.getHeight()).padRight(ScreenDimensionsManager.getScreenWidth(0.65f));
                     answerIndex++;
                 }
             }

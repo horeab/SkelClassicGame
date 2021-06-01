@@ -57,13 +57,13 @@ public class KidLearnMathLevelScreen extends AbstractScreen<KidLearnScreenManage
     private void createLevelMenu(String titleText) {
         Table table = new Table();
         Table headerTable = new Table();
-        float screenWidth = ScreenDimensionsManager.getScreenWidthValue(90);
+        float screenWidth = ScreenDimensionsManager.getScreenWidth(90);
         headerTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setWidth(ScreenDimensionsManager.getScreenWidthValue(38))
+                .setWidth(ScreenDimensionsManager.getScreenWidth(38))
                 .setFontConfig(KidLearnControlsUtils.getTitleFontConfig(titleText, kidLearnDifficultyService.getTitleBorderColor(difficultyLevelClass()))).setText(titleText).build()))
                 .padTop(MainDimen.vertical_general_margin.getDimen() * 2).width(screenWidth / 2);
         headerTable.add(kidLearnDifficultyService.createDifficultyButtonsTable(difficultyLevelClass(), false, new KidLearnPreferencesManager().getDifficultyLevel(difficultyLevelClass()))).width(screenWidth / 2);
-        float headerHeight = ScreenDimensionsManager.getScreenHeightValue(20);
+        float headerHeight = ScreenDimensionsManager.getScreenHeight(20);
         table.add(headerTable).height(headerHeight).width(screenWidth).row();
         Table levelsContainer = new Table();
         levelsContainer.add(createLevelContainer(kidLearnDifficultyService.getLevelsForDifficulty(KidLearnMathCaterOrdLevel.class, difficultyLevelClass()), KidLearnGameLabel.l_math_ord_title.getText())).width(screenWidth / 2);
