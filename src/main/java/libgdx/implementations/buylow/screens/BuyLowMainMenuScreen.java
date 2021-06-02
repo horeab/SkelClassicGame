@@ -64,7 +64,8 @@ public class BuyLowMainMenuScreen extends AbstractScreen<BuyLowScreenManager> {
         table.add(new MyWrappedLabel(
                 new MyWrappedLabelConfigBuilder().setFontConfig(new FontConfig(RGBColor.WHITE.toColor(),
                         Color.SCARLET, Math.round(FontConfig.FONT_SIZE * mult * 1.8f),
-                        8f, 3, 3, RGBColor.BLACK.toColor(0.8f))).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
+                        8f, 3, 3,
+                        RGBColor.BLACK.toColor(0.8f))).setText(appName).build())).padBottom(MainDimen.vertical_general_margin.getDimen() * 1).row();
     }
 
     private void addAllTable() {

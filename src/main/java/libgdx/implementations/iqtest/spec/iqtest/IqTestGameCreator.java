@@ -80,7 +80,7 @@ public class IqTestGameCreator extends IqTestLevelCreator {
         Image questionImage = GraphicUtils.getImage(questionRes);
         Table table = new Table();
         float sideRatio = questionImage.getHeight() / ((float) questionImage.getWidth());
-        int screenWidth = ScreenDimensionsManager.getScreenWidth();
+        float screenWidth = ScreenDimensionsManager.getScreenWidth(98);
         table.add(questionImage).width(screenWidth).height(screenWidth * sideRatio);
         return table;
     }

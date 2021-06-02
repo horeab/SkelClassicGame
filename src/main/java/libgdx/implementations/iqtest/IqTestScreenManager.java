@@ -22,7 +22,7 @@ public class IqTestScreenManager extends AbstractScreenManager {
 //        showCorrectAnswers(questionWithAnswer);
     }
 
-    public void showGamScreen(IqTestGameType iqTestGameType) {
+    public void showGameScreen(IqTestGameType iqTestGameType) {
         showScreen(IqTestScreenTypeEnum.GAME_SCREEN, iqTestGameType);
         HashMap<Integer, Integer> questionWithAnswer = new HashMap<>();
         for (IqTestQuestion question : IqTestQuestion.values()) {

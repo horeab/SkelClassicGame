@@ -25,6 +25,7 @@ import libgdx.utils.ActorPositionManager;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontConfig;
+import libgdx.utils.model.RGBColor;
 
 import java.util.*;
 
@@ -47,6 +48,7 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
         this.abstractScreen = abstractScreen;
         actorAnimation = new ActorAnimation(abstractScreen);
         addQuestionScreen(0);
+        abstractScreen.setBackgroundColor(RGBColor.LIGHT_BLUE);
     }
 
     @Override
@@ -206,6 +208,8 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                                     cellBtn.setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_RED_BTN);
                                     MyButton correctAnsw = abstractScreen.getRoot().findActor(CELL_NAME + Collections.min(answersToPress));
                                     correctAnsw.setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_GREEN_BTN);
+                                    newGameBtn.setTransform(true);
+                                    actorAnimation.animateZoomInZoomOut(newGameBtn);
                                 }
                             }
                         }

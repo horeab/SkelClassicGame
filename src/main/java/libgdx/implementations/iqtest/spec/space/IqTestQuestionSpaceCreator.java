@@ -26,6 +26,7 @@ import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.model.FontColor;
+import libgdx.utils.model.RGBColor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,7 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
         this.abstractScreen = abstractScreen;
         actorAnimation = new ActorAnimation(abstractScreen);
         addQuestionScreen(currentQuestion);
+        abstractScreen.setBackgroundColor(RGBColor.LIGHT_BLUE);
     }
 
     @Override

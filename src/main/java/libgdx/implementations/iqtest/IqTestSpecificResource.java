@@ -1,5 +1,6 @@
 package libgdx.implementations.iqtest;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.I18NBundle;
 import libgdx.game.Game;
@@ -36,6 +37,10 @@ public enum IqTestSpecificResource implements SpecificResource {
     mem_num_green_btn_up("buttons/mem_num_green_btn_up.png", Texture.class),
     mem_num_red_btn_up("buttons/mem_num_red_btn_up.png", Texture.class),
 
+
+    background_music("sounds/background.wav", Music.class),
+
+    main_backgr_img("main_backgr_img.png", Texture.class),
     eye("eye.png", Texture.class),
     question_mark_orange("question_mark_orange.png", Texture.class),
     question_mark_blue("question_mark_blue.png", Texture.class),

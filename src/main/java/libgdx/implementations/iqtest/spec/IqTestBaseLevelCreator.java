@@ -20,6 +20,7 @@ import libgdx.implementations.iqtest.screens.IqTestGameOverScreen;
 import libgdx.resources.MainResource;
 import libgdx.resources.ResourceService;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
@@ -31,6 +32,7 @@ public abstract class IqTestBaseLevelCreator {
     protected IqTestPreferencesManager iqTestPreferencesManager = new IqTestPreferencesManager();
     protected ResourceService resourceService = Game.getInstance().getMainDependencyManager().createResourceService();
     protected MyWrappedLabel scoreLabel;
+    protected MyButton newGameBtn;
 
     public abstract void refreshLevel();
 
@@ -109,12 +111,27 @@ public abstract class IqTestBaseLevelCreator {
                         FontConfig.FONT_SIZE * 1.5f, FontConfig.STANDARD_BORDER_WIDTH * 8.5f))
                 .setSingleLineLabel().build());
 
+        MyWrappedLabel descr = null;
+        if (getIqTestGameType().getDescr() != null) {
+            descr = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                    .setText(getIqTestGameType().getDescr().getText())
+                    .setWrappedLineLabel(ScreenDimensionsManager.getScreenWidth(55))
+                    .setFontConfig(new FontConfig(Color.BLACK,
+                            FontConfig.FONT_SIZE * 1.1f)).build());
+        }
+
         Table secondRow = new Table();
-        secondRow.add(scoreLabel).growX();
+        float marginDimen = MainDimen.horizontal_general_margin.getDimen();
+        float scoreLevelWidth = ScreenDimensionsManager.getScreenWidth(20);
+        secondRow.add(scoreLabel).padLeft(marginDimen).width(scoreLevelWidth);
         secondRow.add().growX();
+        if (descr != null) {
+            secondRow.add(descr).growX();
+        } else {
+            secondRow.add().growX();
+        }
         secondRow.add().growX();
-        secondRow.add().growX();
-        secondRow.add(currentQLabel).growX();
+        secondRow.add(currentQLabel).padRight(marginDimen).width(scoreLevelWidth);
         return secondRow;
     }
 
@@ -128,17 +145,17 @@ public abstract class IqTestBaseLevelCreator {
     }
 
     private MyButton createNewGameBtn() {
-        MyButton newGame = new ButtonBuilder()
+        newGameBtn = new ButtonBuilder()
                 .setButtonSkin(SkelClassicButtonSkin.IQTEST_NEW_GAME_BTN)
                 .setFixedButtonSize(SkelClassicButtonSize.IQTEST_HEADER_IMG_BUTTON).build();
-        newGame.addListener(new ClickListener() {
+        newGameBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 startNewGame();
             }
 
         });
-        return newGame;
+        return newGameBtn;
     }
 
     protected MyButton createSkipBtn() {
