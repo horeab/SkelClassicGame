@@ -38,8 +38,6 @@ public abstract class IqTestBaseLevelCreator {
 
     protected abstract IqTestGameType getIqTestGameType();
 
-    protected abstract int getTotalQuestions();
-
     protected abstract int getCurrentQuestionToDisplay();
 
     protected abstract void startNewGame();
@@ -106,15 +104,15 @@ public abstract class IqTestBaseLevelCreator {
         scoreLabel.setTransform(true);
 
         MyWrappedLabel currentQLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setText(getCurrentQuestionToDisplay() + "/" + getTotalQuestions())
+                .setText(getCurrentQuestionToDisplay() + "/" + getIqTestGameType().totalQuestions)
                 .setFontConfig(new FontConfig(Color.WHITE, Color.BLACK,
                         FontConfig.FONT_SIZE * 1.5f, FontConfig.STANDARD_BORDER_WIDTH * 8.5f))
                 .setSingleLineLabel().build());
 
         MyWrappedLabel descr = null;
-        if (getIqTestGameType().getDescr() != null) {
+        if (getIqTestGameType().descr!= null) {
             descr = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                    .setText(getIqTestGameType().getDescr().getText())
+                    .setText(getIqTestGameType().descr.getText())
                     .setWrappedLineLabel(ScreenDimensionsManager.getScreenWidth(55))
                     .setFontConfig(new FontConfig(Color.BLACK,
                             FontConfig.FONT_SIZE * 1.1f)).build());

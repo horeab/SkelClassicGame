@@ -68,11 +68,6 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
     }
 
     @Override
-    protected int getTotalQuestions() {
-        return 10;
-    }
-
-    @Override
     protected int getCurrentQuestionToDisplay() {
         return currentQuestion + 1;
     }
@@ -189,6 +184,7 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                                         }
                                         disabledAllCellTextButtons(true);
                                         currentQuestion++;
+                                        iqTestPreferencesManager.putLevelScore(getIqTestGameType(), currentQuestion);
                                         scoreLabel.setText(getScore());
                                         processCorrectAnswerPressed(new Runnable() {
                                             @Override

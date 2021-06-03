@@ -23,6 +23,7 @@ import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.implementations.iqtest.spec.IqTestPreferencesManager;
 import libgdx.resources.MainResource;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.skelgameimpl.skelgame.SkelGameRatingService;
 import libgdx.utils.ScreenDimensionsManager;
@@ -69,7 +70,7 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
 
     private Stack createTitleStack(MyWrappedLabel titleLabel) {
         Stack stack = new Stack();
-        Image image = GraphicUtils.getImage(IqTestSpecificResource.background_texture);
+        Image image = GraphicUtils.getImage(IqTestSpecificResource.title_clouds_background);
         stack.addActor(image);
         stack.addActor(titleLabel);
         stack.setWidth(ScreenDimensionsManager.getScreenWidth());
@@ -87,14 +88,12 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
                         RGBColor.BLACK.toColor(0.8f)))
                 .setText(appName).build());
 
-        float dimen = MainDimen.vertical_general_margin.getDimen();
         Stack titleStack = createTitleStack(titleLabel);
-        table.add(titleStack).height(ScreenDimensionsManager.getScreenHeight(10))
-                .padBottom(dimen * 2)
-                .width(titleStack.getWidth()).padTop(dimen).row();
+        table.add(titleStack).height(ScreenDimensionsManager.getScreenHeight(20))
+                .width(titleStack.getWidth()).padTop(0).row();
 
         table.row();
-        table.add(createLevelButtonsTable()).height(ScreenDimensionsManager.getScreenHeight(70));
+        table.add(createLevelButtonsTable()).height(ScreenDimensionsManager.getScreenHeight(80));
         return table;
     }
 
@@ -105,45 +104,57 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
             Table toAdd = createLevelBtnTable(gameType);
             table.add(toAdd).width(toAdd.getWidth()).height(toAdd.getHeight()).grow().row();
         }
-
+        table.padBottom(MainDimen.vertical_general_margin.getDimen() * 3);
         return table;
     }
 
-    private Table createLevelBtnTable(final IqTestGameType iqTest) {
+    private Table createLevelBtnTable(final IqTestGameType gameType) {
         SkelClassicButtonSize buttonSize = SkelClassicButtonSize.IQTEST_LEVEL_BTN;
-        float btnLabelWidth = ScreenDimensionsManager.getScreenWidth(45);
-        String text = iqTest.getName().getText();
-        MyButton iconButton = new ButtonWithIconBuilder(text, iqTest.getIcon())
+        float btnLabelWidth = ScreenDimensionsManager.getScreenWidth(65);
+        String text = gameType.name.getText();
+        MyButton iconButton = new ButtonWithIconBuilder(text, gameType.icon)
                 .setLabelWidth(btnLabelWidth)
-                .setFontConfig(new FontConfig(RGBColor.BLACK.toColor(),
-                        FontConfig.FONT_SIZE / (text.length() > 20 ? 1.3f : 1.2f)))
+                .setFontConfig(new FontConfig(RGBColor.RED.toColor(),
+                        RGBColor.DARK_RED.toColor(), FontConfig.FONT_SIZE / (text.length() > 20 ? 1.1f : 1.0f),
+                        FontConfig.STANDARD_BORDER_WIDTH * 3, 0, 0,
+                        RGBColor.BLACK.toColor(0.2f)))
                 .setFixedButtonSize(buttonSize).build();
 
         iconButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screenManager.showGameScreen(iqTest);
+                screenManager.showGameScreen(gameType);
             }
         });
+        float allTableHeight = ScreenDimensionsManager.getScreenHeight(17);
         Table table = new Table();
-        float padHoriz = MainDimen.horizontal_general_margin.getDimen() * 2;
+        float btnWidth = ScreenDimensionsManager.getScreenWidth(90);
         Table btnTable = new Table();
-        float btnWidth = buttonSize.getWidth() * 1.7f + btnLabelWidth;
-        float btnHeight = ScreenDimensionsManager.getScreenHeight(15);
-        btnTable.add(iconButton).width(btnWidth).height(btnHeight);
+        btnTable.setHeight(allTableHeight / 1.9f);
+        btnTable.add(iconButton).width(btnWidth).height(btnTable.getHeight());
         btnTable.setBackground(GraphicUtils.getNinePatch(MainResource.popup_background));
-        btnTable.setWidth(btnWidth);
-        btnTable.setHeight(btnHeight);
-        table.add(btnTable).padLeft(padHoriz * 2).width(btnTable.getWidth()).height(btnTable.getHeight());
-        table.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
-                .setFontConfig(new FontConfig(Color.WHITE, Color.BLACK,
-                        FontConfig.FONT_SIZE * 2.1f, FontConfig.STANDARD_BORDER_WIDTH * 8.5f))
-                .setWrappedLineLabel(ScreenDimensionsManager.getScreenWidth(10))
-                .setText(iqTestPreferencesManager.getLevelScore(iqTest) + "").build()))
-                .growX();
-        table.setHeight(iconButton.getHeight());
-        table.setWidth(ScreenDimensionsManager.getScreenWidth());
+        table.add(btnTable);
+        table.setWidth(btnWidth);
+        table.setHeight(allTableHeight);
+        table.row();
+        int levelScore = iqTestPreferencesManager.getLevelScore(gameType);
+        String scoreText = getScoreText(gameType, levelScore);
+        Table scoreTable = new Table();
+        scoreTable.add(new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
+                .setFontConfig(new FontConfig(levelScore > 0 ? RGBColor.LIGHT_GREEN.toColor() : Color.WHITE,
+                        levelScore > 0 ? RGBColor.DARK_GREEN.toColor() : Color.BLACK,
+                        FontConfig.FONT_SIZE * 1.3f, FontConfig.STANDARD_BORDER_WIDTH * 5.5f))
+                .setSingleLineLabel()
+                .setText(scoreText).build()));
+        scoreTable.setBackground(GraphicUtils.getColorBackground(RGBColor.LIGHT_RED2.toColor(0.8f)));
+        table.add(scoreTable).growX();
         return table;
+    }
+
+    private String getScoreText(IqTestGameType gameType, int levelScore) {
+        return gameType == IqTestGameType.IQ_TEST
+                ? IqTestGameLabel.gametype_iqtest.getText() + " " + (levelScore > 0 ? levelScore : "?")
+                : MainGameLabel.l_score.getText((levelScore > 0 ? levelScore + "/" + gameType.totalQuestions : "?"));
     }
 
     @Override

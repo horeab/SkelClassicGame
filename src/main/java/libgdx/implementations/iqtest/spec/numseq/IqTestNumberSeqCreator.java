@@ -92,6 +92,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
                     iqTestPreferencesManager.putCurrentQAState(getIqTestGameType(), iqTestCurrentGame.getQuestionWithAnswer());
 
                     if (isAnswerCorrect()) {
+                        iqTestPreferencesManager.putLevelScore(getIqTestGameType(), getTotalScore());
                         scoreLabel.setText(getScore());
                         processCorrectAnswerPressed(new Runnable() {
                             @Override
@@ -105,6 +106,12 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
                 }
             }
         });
+    }
+
+    @Override
+    protected void goToLevel(int level) {
+        iqTestCurrentGame.setCurrentQuestion(level);
+        refreshLevel();
     }
 
     private boolean isAnswerCorrect() {
@@ -121,6 +128,12 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
 
     @Override
     protected String getScore() {
+        int totalScore = getTotalScore();
+        String prefix = totalScore > 0 ? "+" : "";
+        return prefix + totalScore;
+    }
+
+    private int getTotalScore() {
         int totalScore = 0;
         Map<Integer, Integer> questionWithAnswer = iqTestCurrentGame.getQuestionWithAnswer();
         for (IqNumSeqQuestion question : IqNumSeqQuestion.values()) {
@@ -128,8 +141,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
                 totalScore++;
             }
         }
-        String prefix = totalScore > 0 ? "+" : "";
-        return prefix + totalScore;
+        return totalScore;
     }
 
     private void clearPressedLetters() {

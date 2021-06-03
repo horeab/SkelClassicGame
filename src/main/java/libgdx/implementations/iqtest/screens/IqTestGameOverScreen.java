@@ -1,7 +1,5 @@
 package libgdx.implementations.iqtest.screens;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -19,6 +17,8 @@ import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.iqtest.IqTestGameLabel;
 import libgdx.implementations.iqtest.IqTestScreenManager;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
+import libgdx.implementations.iqtest.spec.IqTestGameType;
+import libgdx.implementations.iqtest.spec.IqTestPreferencesManager;
 import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestion;
 import libgdx.implementations.iqtest.spec.iqtest.IqTestQuestionService;
 import libgdx.resources.FontManager;
@@ -49,6 +49,7 @@ public class IqTestGameOverScreen extends AbstractScreen<IqTestScreenManager> {
             }
         }
         this.finalScore = questionService.calculateIq(totalCorrectAnswers);
+        new IqTestPreferencesManager().putLevelScore(IqTestGameType.IQ_TEST, finalScore);
         new BackButtonBuilder().addHoverBackButton(this);
 
     }

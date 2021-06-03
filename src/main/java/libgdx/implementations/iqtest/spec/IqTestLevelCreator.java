@@ -5,12 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
-import libgdx.controls.popup.ProVersionPopup;
 import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
-import libgdx.implementations.iqtest.IqTestGame;
-import libgdx.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,33 +45,11 @@ public abstract class IqTestLevelCreator extends IqTestBaseLevelCreator {
     }
 
     @Override
-    protected int getTotalQuestions() {
-        return iqTestCurrentGame.getQuestions().size();
-    }
-
-    @Override
     protected int getCurrentQuestionToDisplay() {
         return iqTestCurrentGame.getCurrentQuestionToDisplay();
     }
 
-    private void goToLevel(int level) {
-        if (level == 10 && !Utils.isValidExtraContent()) {
-            new ProVersionPopup(Game.getInstance().getAbstractScreen()).addToPopupManager();
-        } else if (level == 20 || level == 30) {
-            Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
-                @Override
-                public void run() {
-                }
-            });
-        }
-
-        if (isGameOver()) {
-            IqTestGame.getInstance().getScreenManager().showGameOver(iqTestCurrentGame.getQuestionWithAnswer());
-        } else {
-            iqTestCurrentGame.setCurrentQuestion(level);
-            refreshLevel();
-        }
-    }
+    protected abstract void goToLevel(int level);
 
     @Override
     protected void startNewGame() {
@@ -119,16 +94,5 @@ public abstract class IqTestLevelCreator extends IqTestBaseLevelCreator {
             }
         }
         return skippedQuestions;
-    }
-
-    private boolean isGameOver() {
-        boolean isGameOver = true;
-        for (Map.Entry<Integer, Integer> entry : iqTestCurrentGame.getQuestionWithAnswer().entrySet()) {
-            if (entry.getValue() == -1) {
-                isGameOver = false;
-                break;
-            }
-        }
-        return isGameOver;
     }
 }

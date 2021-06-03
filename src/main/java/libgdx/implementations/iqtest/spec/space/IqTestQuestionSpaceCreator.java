@@ -59,11 +59,6 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
     }
 
     @Override
-    protected int getTotalQuestions() {
-        return 10;
-    }
-
-    @Override
     protected int getCurrentQuestionToDisplay() {
         return currentQuestion + 1;
     }
@@ -183,6 +178,7 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
                         currentQuestion++;
                         if (isWrongImagePressed) {
                             correctAnswers++;
+                            iqTestPreferencesManager.putLevelScore(getIqTestGameType(), correctAnswers);
                             scoreLabel.setText(getScore());
                             processCorrectAnswerPressed(new Runnable() {
                                 @Override

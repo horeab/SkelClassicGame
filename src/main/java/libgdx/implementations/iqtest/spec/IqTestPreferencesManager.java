@@ -1,14 +1,11 @@
 package libgdx.implementations.iqtest.spec;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.google.gson.Gson;
 import libgdx.preferences.PreferencesService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class IqTestPreferencesManager {
 

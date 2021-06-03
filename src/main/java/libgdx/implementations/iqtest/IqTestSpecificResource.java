@@ -40,6 +40,7 @@ public enum IqTestSpecificResource implements SpecificResource {
 
     background_music("sounds/background.wav", Music.class),
 
+    title_clouds_background("title_clouds_background.png", Texture.class),
     main_backgr_img("main_backgr_img.png", Texture.class),
     eye("eye.png", Texture.class),
     question_mark_orange("question_mark_orange.png", Texture.class),

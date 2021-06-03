@@ -6,9 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
+import libgdx.controls.popup.ProVersionPopup;
 import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.iqtest.IqTestDimen;
+import libgdx.implementations.iqtest.IqTestGame;
 import libgdx.implementations.iqtest.IqTestGameLabel;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
 import libgdx.implementations.iqtest.spec.IqTestGameType;
@@ -17,6 +19,9 @@ import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
+
+import java.util.Map;
 
 public class IqTestGameCreator extends IqTestLevelCreator {
 
@@ -94,6 +99,37 @@ public class IqTestGameCreator extends IqTestLevelCreator {
         iqTestCurrentGame.getQuestionWithAnswer().put(iqTestCurrentGame.getCurrentQuestion(), answerNr);
         iqTestPreferencesManager.putCurrentQAState(getIqTestGameType(), iqTestCurrentGame.getQuestionWithAnswer());
         goToNextLevel();
+    }
+
+    @Override
+    protected void goToLevel(int level) {
+        if (level == 10 && !Utils.isValidExtraContent()) {
+            new ProVersionPopup(Game.getInstance().getAbstractScreen()).addToPopupManager();
+        } else if (level == 20 || level == 30) {
+            Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                @Override
+                public void run() {
+                }
+            });
+        }
+
+        if (isGameOver()) {
+            IqTestGame.getInstance().getScreenManager().showGameOver(iqTestCurrentGame.getQuestionWithAnswer());
+        } else {
+            iqTestCurrentGame.setCurrentQuestion(level);
+            refreshLevel();
+        }
+    }
+
+    private boolean isGameOver() {
+        boolean isGameOver = true;
+        for (Map.Entry<Integer, Integer> entry : iqTestCurrentGame.getQuestionWithAnswer().entrySet()) {
+            if (entry.getValue() == -1) {
+                isGameOver = false;
+                break;
+            }
+        }
+        return isGameOver;
     }
 
 }
