@@ -25,6 +25,7 @@ import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.RGBColor;
 
@@ -43,6 +44,7 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
     private final static String MAIN_TABLE_NAME = "MAIN_TABLE_NAME";
     private AbstractScreen abstractScreen;
     private ActorAnimation actorAnimation;
+    private List<MyButton> allBtns = new ArrayList<>();
 
     public IqTestQuestionSpaceCreator(AbstractScreen abstractScreen) {
         this.abstractScreen = abstractScreen;
@@ -53,9 +55,23 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
 
     @Override
     public void refreshLevel() {
-        Group root = Game.getInstance().getAbstractScreen().getStage().getRoot();
-        root.findActor(MAIN_TABLE_NAME).remove();
-        addQuestionScreen(currentQuestion);
+        if (isGameOver()) {
+            abstractScreen.addAction(Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                    abstractScreen.getScreenManager().showMainScreen();
+                }
+            })));
+        } else {
+            Group root = Game.getInstance().getAbstractScreen().getStage().getRoot();
+            root.findActor(MAIN_TABLE_NAME).remove();
+            addQuestionScreen(currentQuestion);
+        }
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return currentQuestion > getIqTestGameType().totalQuestions - 1;
     }
 
     @Override
@@ -171,10 +187,11 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
                                 return null;
                             }
                         }).build();
-
+                allBtns.add(cellBtn);
                 cellBtn.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
+                        disabledAllCellTextButtons(true);
                         currentQuestion++;
                         if (isWrongImagePressed) {
                             correctAnswers++;
@@ -202,6 +219,13 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
             }
         }
         return table;
+    }
+
+    private void disabledAllCellTextButtons(boolean disabled) {
+        for (MyButton button : allBtns) {
+            button.setDisabled(disabled);
+            button.setTouchable(disabled ? Touchable.disabled : Touchable.enabled);
+        }
     }
 
     private void setRandomStartingRotation(MyButton image, Random random) {

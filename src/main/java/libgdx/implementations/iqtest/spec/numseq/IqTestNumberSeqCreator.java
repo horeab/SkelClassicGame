@@ -270,7 +270,12 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
             image.setWidth(ScreenDimensionsManager.getScreenWidth(percent));
             image.setHeight(ScreenDimensionsManager.getNewHeightForNewWidth(image.getWidth(), imgWidth, imgHeight));
         }
-
+        image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.print((x / image.getWidth()) * 100 + "," + (y / image.getHeight()) * 100 + "\n");
+            }
+        });
         Table imgTable = new Table();
         Group questionImageGroup = createQuestionImageGroup(image, iqTestNumSeqLevelInfo);
         imgTable.add(questionImageGroup).width(questionImageGroup.getWidth()).height(questionImageGroup.getHeight());

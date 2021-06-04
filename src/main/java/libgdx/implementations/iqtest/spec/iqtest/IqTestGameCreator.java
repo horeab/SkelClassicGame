@@ -121,15 +121,4 @@ public class IqTestGameCreator extends IqTestLevelCreator {
         }
     }
 
-    private boolean isGameOver() {
-        boolean isGameOver = true;
-        for (Map.Entry<Integer, Integer> entry : iqTestCurrentGame.getQuestionWithAnswer().entrySet()) {
-            if (entry.getValue() == -1) {
-                isGameOver = false;
-                break;
-            }
-        }
-        return isGameOver;
-    }
-
 }

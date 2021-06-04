@@ -31,6 +31,10 @@ public class IqTestPreferencesManager {
                 map.put((int) Math.round(Double.valueOf(((Map.Entry) o).getKey().toString())),
                         (int) Math.round(Double.valueOf(((Map.Entry) o).getValue().toString())));
             }
+            //it means that new image questions were added in the folder in the mean time
+            if (map.size() != iqTestGameType.totalQuestions) {
+                return null;
+            }
             return map;
         }
         return null;

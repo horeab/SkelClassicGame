@@ -1,6 +1,8 @@
 package libgdx.implementations.iqtest;
 
 import libgdx.campaign.*;
+import libgdx.implementations.iqtest.spec.IqTestGameType;
+import libgdx.implementations.iqtest.spec.numseq.IqNumSeqQuestion;
 import libgdx.resources.IncrementingRes;
 
 import java.util.ArrayList;
@@ -11,15 +13,15 @@ public class IqTestDependencyManager extends CampaignGameDependencyManager {
     @Override
     public List<? extends IncrementingRes> getIncrementResList() {
         List<IncrementingRes> list = new ArrayList<>();
-        int totalIqQuestionsInclusivePlusOne = 38;
+        int totalIqQuestionsInclusivePlusOne = IqTestGameType.IQ_TEST.totalQuestions - 1;;
         list.add(new IqTestIqImageQuestionIncrementRes(0, totalIqQuestionsInclusivePlusOne, IqTestIqImageQuestionIncrementRes.PNG));
         for (int i = 0; i < 8; i++) {
             list.add(new IqTestIqImageAnswerIncrementRes(0, totalIqQuestionsInclusivePlusOne, i, IqTestIqImageAnswerIncrementRes.PNG));
         }
-        int totalNumberSeqQuestionsInclusivePlusOne = 13;
+        int totalNumberSeqQuestionsInclusivePlusOne = IqTestGameType.NUM_SEQ.totalQuestions - 1;
         list.add(new IqTestNumberSeqImageQuestionIncrementRes(0, totalNumberSeqQuestionsInclusivePlusOne, IqTestNumberSeqImageQuestionIncrementRes.PNG));
 
-        int totalSpaceQuestionsPlusOne = 9;
+        int totalSpaceQuestionsPlusOne = IqTestGameType.SPACE.totalQuestions - 1;;
         list.add(new IqTestSpaceImageQcQuestionIncrementRes(0, totalSpaceQuestionsPlusOne, IqTestSpaceImageQcQuestionIncrementRes.PNG));
         list.add(new IqTestSpaceImageQwQuestionIncrementRes(0, totalSpaceQuestionsPlusOne, IqTestSpaceImageQwQuestionIncrementRes.PNG));
         return list;

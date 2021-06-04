@@ -36,6 +36,8 @@ public abstract class IqTestBaseLevelCreator {
 
     public abstract void refreshLevel();
 
+    public abstract boolean isGameOver();
+
     protected abstract IqTestGameType getIqTestGameType();
 
     protected abstract int getCurrentQuestionToDisplay();
@@ -110,7 +112,7 @@ public abstract class IqTestBaseLevelCreator {
                 .setSingleLineLabel().build());
 
         MyWrappedLabel descr = null;
-        if (getIqTestGameType().descr!= null) {
+        if (getIqTestGameType().descr != null) {
             descr = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                     .setText(getIqTestGameType().descr.getText())
                     .setWrappedLineLabel(ScreenDimensionsManager.getScreenWidth(55))

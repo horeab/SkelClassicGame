@@ -53,18 +53,32 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
 
     @Override
     public void refreshLevel() {
-        currentAvailableNrs.clear();
-        Group root = Game.getInstance().getAbstractScreen().getStage().getRoot();
-        root.findActor(MAIN_TABLE_NAME).remove();
-        int maxInitNumber = 3;
-        for (int i = 1; i <= maxInitNumber; i++) {
-            currentAvailableNrs.add(i);
+        if (isGameOver()) {
+            abstractScreen.addAction(Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                    abstractScreen.getScreenManager().showMainScreen();
+                }
+            })));
+        } else {
+            currentAvailableNrs.clear();
+            Group root = Game.getInstance().getAbstractScreen().getStage().getRoot();
+            root.findActor(MAIN_TABLE_NAME).remove();
+            int maxInitNumber = 3;
+            for (int i = 1; i <= maxInitNumber; i++) {
+                currentAvailableNrs.add(i);
 
+            }
+            for (int i = 1; i <= currentQuestion; i++) {
+                currentAvailableNrs.add(i + maxInitNumber);
+            }
+            addQuestionScreen(currentQuestion);
         }
-        for (int i = 1; i <= currentQuestion; i++) {
-            currentAvailableNrs.add(i + maxInitNumber);
-        }
-        addQuestionScreen(currentQuestion);
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return currentQuestion > getIqTestGameType().totalQuestions - 1;
     }
 
     @Override

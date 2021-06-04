@@ -2,12 +2,15 @@ package libgdx.implementations.iqtest.spec;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import libgdx.controls.button.ButtonBuilder;
 import libgdx.controls.button.MyButton;
 import libgdx.game.Game;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
+import libgdx.screen.AbstractScreen;
+import libgdx.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,11 +66,21 @@ public abstract class IqTestLevelCreator extends IqTestBaseLevelCreator {
     }
 
     protected void goToNextLevel() {
-        int nextQuestion = iqTestCurrentGame.getNextQuestion();
-        if (nextQuestion == -1) {
-            nextQuestion = getNextQuestionForSkipped();
+        if (isGameOver()) {
+            final AbstractScreen abstractScreen = Game.getInstance().getAbstractScreen();
+            abstractScreen.addAction(Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                    abstractScreen.getScreenManager().showMainScreen();
+                }
+            })));
+        } else {
+            int nextQuestion = iqTestCurrentGame.getNextQuestion();
+            if (nextQuestion == -1) {
+                nextQuestion = getNextQuestionForSkipped();
+            }
+            goToLevel(nextQuestion);
         }
-        goToLevel(nextQuestion);
     }
 
 
@@ -94,5 +107,17 @@ public abstract class IqTestLevelCreator extends IqTestBaseLevelCreator {
             }
         }
         return skippedQuestions;
+    }
+
+    @Override
+    public boolean isGameOver() {
+        boolean isGameOver = true;
+        for (Map.Entry<Integer, Integer> entry : iqTestCurrentGame.getQuestionWithAnswer().entrySet()) {
+            if (entry.getValue() == -1) {
+                isGameOver = false;
+                break;
+            }
+        }
+        return isGameOver;
     }
 }
