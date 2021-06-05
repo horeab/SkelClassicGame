@@ -3,6 +3,7 @@ package libgdx.implementations.iqtest.spec.numseq;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -15,12 +16,15 @@ import libgdx.controls.button.MyButton;
 import libgdx.controls.label.MyWrappedLabel;
 import libgdx.controls.label.MyWrappedLabelConfigBuilder;
 import libgdx.controls.popup.MyPopup;
+import libgdx.controls.popup.ProVersionPopup;
+import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.SkelClassicButtonSize;
 import libgdx.implementations.SkelClassicButtonSkin;
 import libgdx.implementations.imagesplit.ImageSplitScreenManager;
 import libgdx.implementations.iqtest.IqTestNumberSeqImageQuestionIncrementRes;
 import libgdx.implementations.iqtest.IqTestSpecificResource;
+import libgdx.implementations.iqtest.screens.IqTestGameOverScreen;
 import libgdx.implementations.iqtest.spec.IqTestCurrentGame;
 import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
@@ -29,6 +33,7 @@ import libgdx.resources.dimen.MainDimen;
 import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.SoundUtils;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.FontConfig;
@@ -92,6 +97,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
                     iqTestPreferencesManager.putCurrentQAState(getIqTestGameType(), iqTestCurrentGame.getQuestionWithAnswer());
 
                     if (isAnswerCorrect()) {
+                        SoundUtils.playSound(IqTestSpecificResource.level_success);
                         iqTestPreferencesManager.putLevelScore(getIqTestGameType(), getTotalScore());
                         scoreLabel.setText(getScore());
                         processCorrectAnswerPressed(new Runnable() {
@@ -101,6 +107,7 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
                             }
                         });
                     } else {
+                        SoundUtils.playSound(IqTestSpecificResource.level_fail);
                         createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo, false).addToPopupManager();
                     }
                 }
@@ -110,8 +117,22 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
 
     @Override
     protected void goToLevel(int level) {
+        if (level == 7 && !Utils.isValidExtraContent()) {
+            new ProVersionPopup(Game.getInstance().getAbstractScreen()).addToPopupManager();
+        } else if (level == 12 || level == 17) {
+            Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                @Override
+                public void run() {
+                }
+            });
+        }
         iqTestCurrentGame.setCurrentQuestion(level);
         refreshLevel();
+    }
+
+    @Override
+    protected String getInAppPurchaseTextToBeShown() {
+        return MainGameLabel.l_show_explanation.getText() + "\n+" + MainGameLabel.billing_remove_ads.getText();
     }
 
     private boolean isAnswerCorrect() {
@@ -238,13 +259,49 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
             showExplanationBtn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    hideAllShownPopups();
-                    createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo, true).addToPopupManager();
+                    if (Utils.isValidExtraContent()) {
+                        showExplanationProcess(questionNr, iqTestNumSeqLevelInfo);
+                    } else {
+                        hideAllShownPopups();
+                        IqTestGameOverScreen.displayInAppPurchasesPopup(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showExplanationProcess(questionNr, iqTestNumSeqLevelInfo);
+                                    }
+                                }, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo, false).addToPopupManager();
+                                    }
+                                },
+                                getInAppPurchaseTextToBeShown());
+                    }
                 }
             });
             table.add(showExplanationBtn).padTop(margin).width(showExplanationBtn.getWidth()).height(showExplanationBtn.getHeight());
         }
         return table;
+    }
+
+    @Override
+    protected void goToNextLevel() {
+        if (isGameOver()) {
+            final AbstractScreen abstractScreen = Game.getInstance().getAbstractScreen();
+            abstractScreen.addAction(Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
+                @Override
+                public void run() {
+                    abstractScreen.getScreenManager().showMainScreen();
+                }
+            })));
+        } else {
+            super.goToNextLevel();
+        }
+    }
+
+    private void showExplanationProcess(int questionNr, IqTestNumSeqLevelInfo iqTestNumSeqLevelInfo) {
+        hideAllShownPopups();
+        createCorrectAnswerPopup(questionNr, iqTestNumSeqLevelInfo, true).addToPopupManager();
     }
 
     private void hideAllShownPopups() {
@@ -270,12 +327,12 @@ public class IqTestNumberSeqCreator extends IqTestLevelCreator {
             image.setWidth(ScreenDimensionsManager.getScreenWidth(percent));
             image.setHeight(ScreenDimensionsManager.getNewHeightForNewWidth(image.getWidth(), imgWidth, imgHeight));
         }
-        image.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.print((x / image.getWidth()) * 100 + "," + (y / image.getHeight()) * 100 + "\n");
-            }
-        });
+//        image.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                System.out.print((x / image.getWidth()) * 100 + "," + (y / image.getHeight()) * 100 + "\n");
+//            }
+//        });
         Table imgTable = new Table();
         Group questionImageGroup = createQuestionImageGroup(image, iqTestNumSeqLevelInfo);
         imgTable.add(questionImageGroup).width(questionImageGroup.getWidth()).height(questionImageGroup.getHeight());

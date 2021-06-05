@@ -84,7 +84,7 @@ public class IqTestGameOverScreen extends AbstractScreen<IqTestScreenManager> {
                         public void run() {
                             screenManager.showCorrectAnswers(questionWithAnswer);
                         }
-                    });
+                    }, MainGameLabel.l_showanswers.getText() + "\n+" + MainGameLabel.billing_remove_ads.getText());
                 }
             }
         });
@@ -99,13 +99,22 @@ public class IqTestGameOverScreen extends AbstractScreen<IqTestScreenManager> {
         return table;
     }
 
-    public static void displayInAppPurchasesPopup(Runnable redirectAfterBoughtScreen) {
-        String textToBeShown = MainGameLabel.l_showanswers.getText() + "\n+" + MainGameLabel.billing_remove_ads.getText();
+    public static void displayInAppPurchasesPopup(Runnable redirectAfterBoughtScreen, String textToBeShown) {
+        displayInAppPurchasesPopup(redirectAfterBoughtScreen, new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, textToBeShown);
+    }
+
+    public static void displayInAppPurchasesPopup(Runnable redirectAfterBoughtScreen, Runnable executeAfterBackBtnPressed, String textToBeShown) {
         Game.getInstance().getInAppPurchaseManager().displayInAppPurchasesPopup(
                 Language.en.name(),
                 textToBeShown,
                 textToBeShown,
-                redirectAfterBoughtScreen);
+                redirectAfterBoughtScreen,
+                executeAfterBackBtnPressed);
     }
 
     private Table createQuestionImage() {

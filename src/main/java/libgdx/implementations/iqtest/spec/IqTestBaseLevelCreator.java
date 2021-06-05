@@ -20,6 +20,7 @@ import libgdx.implementations.iqtest.screens.IqTestGameOverScreen;
 import libgdx.resources.MainResource;
 import libgdx.resources.ResourceService;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontConfig;
@@ -61,14 +62,16 @@ public abstract class IqTestBaseLevelCreator {
                     public void run() {
                         refreshLevel();
                     }
-                });
+                }, getInAppPurchaseTextToBeShown());
             }
         });
-        if (!Utils.isValidExtraContent()) {
+        if (Utils.isValidExtraContent()) {
             mug.setVisible(false);
         }
         return mug;
     }
+
+    protected abstract String getInAppPurchaseTextToBeShown();
 
     protected Table createHeader() {
         Table table = new Table();

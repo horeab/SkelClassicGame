@@ -19,12 +19,15 @@ import libgdx.game.Game;
 import libgdx.graphics.GraphicUtils;
 import libgdx.implementations.iqtest.IqTestSpaceImageQcQuestionIncrementRes;
 import libgdx.implementations.iqtest.IqTestSpaceImageQwQuestionIncrementRes;
+import libgdx.implementations.iqtest.IqTestSpecificResource;
 import libgdx.implementations.iqtest.spec.IqTestBaseLevelCreator;
 import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.SoundUtils;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontColor;
 import libgdx.utils.model.RGBColor;
@@ -54,12 +57,29 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
     }
 
     @Override
+    protected String getInAppPurchaseTextToBeShown() {
+        return MainGameLabel.billing_remove_ads.getText();
+    }
+
+    @Override
     public void refreshLevel() {
+        if (currentQuestion == 6) {
+            Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                @Override
+                public void run() {
+                }
+            });
+        }
         if (isGameOver()) {
             abstractScreen.addAction(Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
                 @Override
                 public void run() {
-                    abstractScreen.getScreenManager().showMainScreen();
+                    Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                        @Override
+                        public void run() {
+                            abstractScreen.getScreenManager().showMainScreen();
+                        }
+                    });
                 }
             })));
         } else {
@@ -194,6 +214,7 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
                         disabledAllCellTextButtons(true);
                         currentQuestion++;
                         if (isWrongImagePressed) {
+                            SoundUtils.playSound(IqTestSpecificResource.level_success);
                             correctAnswers++;
                             iqTestPreferencesManager.putLevelScore(getIqTestGameType(), correctAnswers);
                             scoreLabel.setText(getScore());
@@ -204,6 +225,7 @@ public class IqTestQuestionSpaceCreator extends IqTestBaseLevelCreator {
                                 }
                             });
                         } else {
+                            SoundUtils.playSound(IqTestSpecificResource.level_fail);
                             actorAnimation.animatePulse();
                             refreshLevel();
                         }

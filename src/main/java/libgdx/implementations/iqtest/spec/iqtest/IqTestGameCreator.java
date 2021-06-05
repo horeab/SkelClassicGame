@@ -18,6 +18,7 @@ import libgdx.implementations.iqtest.spec.IqTestLevelCreator;
 import libgdx.resources.FontManager;
 import libgdx.resources.Res;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.utils.ScreenDimensionsManager;
 import libgdx.utils.Utils;
 
@@ -42,6 +43,11 @@ public class IqTestGameCreator extends IqTestLevelCreator {
         table.add(createAnswersImages(questionNr)).padBottom(verticalGeneralMarginDimen * 2).width(screenWidth);
         table.setFillParent(true);
         Game.getInstance().getAbstractScreen().addActor(table);
+    }
+
+    @Override
+    protected String getInAppPurchaseTextToBeShown() {
+        return MainGameLabel.l_showanswers.getText() + "\n+" + MainGameLabel.billing_remove_ads.getText();
     }
 
     @Override

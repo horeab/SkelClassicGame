@@ -20,9 +20,11 @@ import libgdx.implementations.iqtest.IqTestSpecificResource;
 import libgdx.implementations.iqtest.spec.IqTestBaseLevelCreator;
 import libgdx.implementations.iqtest.spec.IqTestGameType;
 import libgdx.resources.dimen.MainDimen;
+import libgdx.resources.gamelabel.MainGameLabel;
 import libgdx.screen.AbstractScreen;
 import libgdx.utils.ActorPositionManager;
 import libgdx.utils.ScreenDimensionsManager;
+import libgdx.utils.SoundUtils;
 import libgdx.utils.Utils;
 import libgdx.utils.model.FontConfig;
 import libgdx.utils.model.RGBColor;
@@ -52,6 +54,11 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
     }
 
     @Override
+    protected String getInAppPurchaseTextToBeShown() {
+        return MainGameLabel.billing_remove_ads.getText();
+    }
+
+    @Override
     public void refreshLevel() {
         if (isGameOver()) {
             abstractScreen.addAction(Actions.delay(1f, Utils.createRunnableAction(new Runnable() {
@@ -61,19 +68,32 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                 }
             })));
         } else {
-            currentAvailableNrs.clear();
-            Group root = Game.getInstance().getAbstractScreen().getStage().getRoot();
-            root.findActor(MAIN_TABLE_NAME).remove();
-            int maxInitNumber = 3;
-            for (int i = 1; i <= maxInitNumber; i++) {
-                currentAvailableNrs.add(i);
-
+            if (currentQuestion == 3) {
+                Game.getInstance().getAppInfoService().showPopupAd(new Runnable() {
+                    @Override
+                    public void run() {
+                        goToLevel();
+                    }
+                });
+            } else {
+                goToLevel();
             }
-            for (int i = 1; i <= currentQuestion; i++) {
-                currentAvailableNrs.add(i + maxInitNumber);
-            }
-            addQuestionScreen(currentQuestion);
         }
+    }
+
+    private void goToLevel() {
+        currentAvailableNrs.clear();
+        Group root = Game.getInstance().getAbstractScreen().getStage().getRoot();
+        root.findActor(MAIN_TABLE_NAME).remove();
+        int maxInitNumber = 3;
+        for (int i = 1; i <= maxInitNumber; i++) {
+            currentAvailableNrs.add(i);
+
+        }
+        for (int i = 1; i <= currentQuestion; i++) {
+            currentAvailableNrs.add(i + maxInitNumber);
+        }
+        addQuestionScreen(currentQuestion);
     }
 
     @Override
@@ -193,6 +213,7 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                                     answersToPress.remove(nr);
                                     cellTextLabel.setVisible(true);
                                     if (answersToPress.isEmpty()) {
+                                        SoundUtils.playSound(IqTestSpecificResource.level_success);
                                         for (MyButton button : allCellBtns) {
                                             button.setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_GREEN_BTN);
                                         }
@@ -213,6 +234,7 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
                                         })));
                                     }
                                 } else {
+                                    SoundUtils.playSound(IqTestSpecificResource.level_fail);
                                     disabledAllCellTextButtons(true);
                                     showAllCellTextLabels(true);
                                     cellBtn.setButtonSkin(SkelClassicButtonSkin.IQTEST_MEM_NUM_RED_BTN);
