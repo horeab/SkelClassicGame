@@ -83,7 +83,7 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
         String appName = Game.getInstance().getAppInfoService().getAppName();
         MyWrappedLabel titleLabel = new MyWrappedLabel(new MyWrappedLabelConfigBuilder()
                 .setFontConfig(new FontConfig(RGBColor.LIGHT_RED1.toColor(),
-                        Color.SCARLET, Math.round(FontConfig.FONT_SIZE * (appName.length() >= 20 ? 2 : 2.2f)),
+                        Color.SCARLET, Math.round(FontConfig.FONT_SIZE * getTitleFontScale(appName)),
                         5f, 3, 3,
                         RGBColor.BLACK.toColor(0.8f)))
                 .setText(appName).build());
@@ -95,6 +95,14 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
         table.row();
         table.add(createLevelButtonsTable()).height(ScreenDimensionsManager.getScreenHeight(80));
         return table;
+    }
+
+    private float getTitleFontScale(String appName) {
+        if (appName.length() >= 20 || (appName.length() > 13 && !appName.contains(" "))) {
+            return 2;
+        } else {
+            return 2.2f;
+        }
     }
 
     private Table createLevelButtonsTable() {
