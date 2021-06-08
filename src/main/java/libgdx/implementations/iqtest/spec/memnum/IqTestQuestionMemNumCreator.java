@@ -151,8 +151,10 @@ public class IqTestQuestionMemNumCreator extends IqTestBaseLevelCreator {
         table.add().growY().row();
         float allTableWidth = ScreenDimensionsManager.getScreenWidth(75);
 
-
+        float eyeDimen = screenWidth / 3;
         Image eye = GraphicUtils.getImage(IqTestSpecificResource.eye);
+        eye.setWidth(eyeDimen);
+        eye.setHeight(eyeDimen);
         abstractScreen.addActor(eye);
         final float durationEye = 2f;
         final float durationShowNr = 1f;
