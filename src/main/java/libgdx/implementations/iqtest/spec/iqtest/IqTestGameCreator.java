@@ -89,6 +89,12 @@ public class IqTestGameCreator extends IqTestLevelCreator {
 
     private Table createQuestionImage(Res questionRes) {
         Image questionImage = GraphicUtils.getImage(questionRes);
+//        questionImage.addListener(new ClickListener(){
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                IqTestGame.getInstance().getScreenManager().showGameOver(iqTestCurrentGame.getQuestionWithAnswer());
+//            }
+//        });
         Table table = new Table();
         float sideRatio = questionImage.getHeight() / ((float) questionImage.getWidth());
         float screenWidth = ScreenDimensionsManager.getScreenWidth(98);

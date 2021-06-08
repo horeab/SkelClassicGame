@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import libgdx.constants.Language;
 import libgdx.controls.animations.ActorAnimation;
 import libgdx.controls.button.MyButton;
 import libgdx.controls.button.builders.ButtonWithIconBuilder;
@@ -98,7 +99,9 @@ public class IqTestMainMenuScreen extends AbstractScreen<IqTestScreenManager> {
     }
 
     private float getTitleFontScale(String appName) {
-        if (appName.length() >= 20 || (appName.length() > 13 && !appName.contains(" "))) {
+        if (appName.length() >= 20
+                || (appName.length() > 13 && !appName.contains(" "))
+                || Language.th.name().equals(Game.getInstance().getAppInfoService().getLanguage())) {
             return 2;
         } else {
             return 2.2f;
