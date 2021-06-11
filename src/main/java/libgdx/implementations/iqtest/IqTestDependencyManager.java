@@ -36,10 +36,10 @@ public class IqTestDependencyManager extends CampaignGameDependencyManager {
 
     @Override
     public String getExtraContentProductId() {
-        //TODO Android
-        return "extracontent.iqtest";
+        // Android
+//        return "extracontent.iqtest";
         //IOS
-//        return "extraContentIqtest";
+        return "extraContentIqtest";
     }
 
     @Override
